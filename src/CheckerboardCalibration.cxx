@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
  
 	// Find the chessboard corners
 	std::vector<std::vector<cv::Point2f> > imagePoints(1);
-	bool found = findChessboardCorners(
+	bool found = cv::findChessboardCorners(
 		image,
 		boardSize,
 		imagePoints[0]
@@ -64,7 +64,7 @@ int main(int argc, char* argv[]) {
 		distortionCoefficients,
 		rotationVectors,
 		translationVectors,
-		flags|CV_CALIB_FIX_K4|CV_CALIB_FIX_K5
+		0 //flags|CV_CALIB_FIX_K4|CV_CALIB_FIX_K5
 	);
  
 	std::cout << "RMS: " << rms << std::endl;
@@ -73,9 +73,9 @@ int main(int argc, char* argv[]) {
 	std::cout << "Distortion _coefficients: " << distortionCoefficients << std::endl;
 
 	cv::Mat undistorted = image.clone();
-	//cv::drawChessboardCorners(image, boardSize, cv::Mat(imagePoints[0]), found );
+	//cv::drawChessboardCorners(image, boardSize, cv::Mat(imagePoints[0]), found);
 	cv::undistort(undistorted, image, cameraMatrix, distortionCoefficients);
-	cv::drawChessboardCorners(undistorted, boardSize, cv::Mat(imagePoints[0]), found );
+	cv::drawChessboardCorners(undistorted, boardSize, cv::Mat(imagePoints[0]), found);
  
 	cv::imshow("Image View", image);
 	cv::imshow("Undistorted Image View", undistorted);
@@ -89,8 +89,8 @@ std::vector<cv::Point3f> create3DChessboardCorners(cv::Size boardSize, float squ
  
 	std::vector<cv::Point3f> corners;
  
-	for( int i = 0; i < boardSize.height; i++ ) {
-		for( int j = 0; j < boardSize.width; j++ ) {
+	for (int i = 0; i < boardSize.height; i++) {
+		for (int j = 0; j < boardSize.width; j++) {
 			corners.push_back(
 				cv::Point3f(
 					float(j * squareSize),
