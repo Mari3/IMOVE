@@ -56,7 +56,7 @@ int main(int argc, char* argv[]) {
 	cv::Mat cameraMatrix = cv::Mat::eye(3, 3, CV_64F);
  
 	int flags = 0;
-	double rms = calibrateCamera(
+	double rms = cv::calibrateCamera(
 		objectPoints,
 		imagePoints,
 		imageSize,
@@ -72,12 +72,13 @@ int main(int argc, char* argv[]) {
 	std::cout << "Camera matrix: " << cameraMatrix << std::endl;
 	std::cout << "Distortion _coefficients: " << distortionCoefficients << std::endl;
 
-	drawChessboardCorners(image, boardSize, cv::Mat(imagePoints[0]), found );
-	cv::Mat temp = image.clone();
-	cv::undistort(temp, image, cameraMatrix, distortionCoefficients);
+	cv::Mat undistorted = image.clone();
+	//cv::drawChessboardCorners(image, boardSize, cv::Mat(imagePoints[0]), found );
+	cv::undistort(undistorted, image, cameraMatrix, distortionCoefficients);
+	cv::drawChessboardCorners(undistorted, boardSize, cv::Mat(imagePoints[0]), found );
  
 	cv::imshow("Image View", image);
-	cv::imshow("Undistorted Image View", temp);
+	cv::imshow("Undistorted Image View", undistorted);
 	cv::waitKey(0);
  
 	return 0;
