@@ -204,6 +204,29 @@ std::cout << "OP" << object_perspective_points[2] << std::endl;
 	//cv::drawChessboardCorners(pattern, checkerboard_size, cv::Mat(imagePoints), found);
 	cv::drawChessboardCorners(pattern, checkerboard_size, cv::Mat(undistortedImagePoints), found);
 	cv::drawChessboardCorners(pattern, checkerboard_size, cv::Mat(objectPoints), found);
+
+	std::vector<cv::Point2f> camera_points_list;
+	camera_points_list.push_back(cv::Point2f(485.f, 235.f));
+std::cout << "TTT" << camera_points_list[0] << std::endl;
+	std::vector<cv::Point2f> projector_points_list;
+	perspectiveTransform(camera_points_list, projector_points_list, perspective_transformation);
+	cv::Point2f projector_point = projector_points_list[0];
+
+std::cout << "TTT" << camera_points_list[0] << std::endl;
+	circle(
+		image,
+	  camera_points_list[0],
+		8,
+		cv::Scalar(0, 0, 255),
+		1.f
+	);
+	circle(
+		undistorted,
+	  projector_points_list[0],
+		8,
+		cv::Scalar(0, 0, 255),
+		1.f
+	);
 	 
 	cv::imshow("Image View", image);
 	cv::imshow("Undistorted Image View", undistorted);
