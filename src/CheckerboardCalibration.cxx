@@ -128,7 +128,6 @@ int main(int argc, char* argv[]) {
 	std::vector<cv::Mat> rotationVectors;
 	std::vector<cv::Mat> translationVectors;
 	int flags = 0;
-std::cout << "BEFORE" << std::endl;
 	double rms = cv::calibrateCamera(
 		object3DPoints,
 		image2DPoints,
@@ -139,25 +138,70 @@ std::cout << "BEFORE" << std::endl;
 		translationVectors,
 		0 //flags|CV_CALIB_FIX_K4|CV_CALIB_FIX_K5
 	);
-std::cout << "AFTER" << std::endl;
+	
+std::cout <<	
+		imagePoints[0] <<
+		imagePoints[checkerboard_size.width - 1] <<
+		imagePoints[(checkerboard_size.height - 1) * checkerboard_size.width] <<
+		imagePoints[checkerboard_size.height * checkerboard_size.width - 1]
+	<< std::endl;
+std::cout <<
+		objectPoints[0] <<
+		objectPoints[checkerboard_size.width - 1] <<
+		objectPoints[(checkerboard_size.height - 1) * checkerboard_size.width] <<
+		objectPoints[checkerboard_size.height * checkerboard_size.width - 1]
+	<< std::endl;
+	cv::Point2f image_perspective_points[] = {
+		imagePoints[0],
+		imagePoints[checkerboard_size.width - 1],
+		imagePoints[(checkerboard_size.height - 1) * checkerboard_size.width],
+		imagePoints[checkerboard_size.height * checkerboard_size.width - 1]
+	};
+	cv::Point2f object_perspective_points[] = {
+		objectPoints[0],
+		objectPoints[checkerboard_size.width - 1],
+		objectPoints[(checkerboard_size.height - 1) * checkerboard_size.width],
+		objectPoints[checkerboard_size.height * checkerboard_size.width - 1]
+	};
+std::cout << "IP" << image_perspective_points[2] << std::endl;
+std::cout << "OP" << object_perspective_points[2] << std::endl;
+	cv::Mat perspective_transformation = cv::getPerspectiveTransform(
+		image_perspective_points,
+		object_perspective_points
+	);
+
  
+	std::cout << "perspective_warp: " << perspective_transformation << std::endl;
 	std::cout << "RMS: " << rms << std::endl;
 	std::cout << "Checkers object points: " << objectPoints << std::endl;
 	std::cout << "Checkers image points: " << imagePoints << std::endl; //TODO map 256x248 to a point in the 9 x 6
 	std::cout << "Camera matrix: " << cameraMatrix << std::endl;
 	std::cout << "Distortion _coefficients: " << distortionCoefficients << std::endl;
 	
+	cv::drawChessboardCorners(image, checkerboard_size, cv::Mat(imagePoints), found); //debug
 	cv::Mat undistorted;
-	cv::undistort(image, undistorted, cameraMatrix, distortionCoefficients);
+	cv::warpPerspective(
+		image,
+		undistorted,
+		perspective_transformation,
+		pattern.size()
+	);
+	//cv::undistort(image, undistorted, cameraMatrix, distortionCoefficients);
 	
 	std::vector<cv::Point2f> undistortedImagePoints;
-	cv::undistortPoints(imagePoints, undistortedImagePoints, cameraMatrix, distortionCoefficients);
+//	cv::warpPerspective(
+//		imagePoints,
+//		undistortedImagePoints,
+//		perspective_transformation,
+//		pattern.size()
+//	);
+	//cv::undistortPoints(imagePoints, undistortedImagePoints, cameraMatrix, distortionCoefficients);
 	std::cout << "Undistorted Checkers points: " << undistortedImagePoints << std::endl;
 	
-	cv::drawChessboardCorners(image, checkerboard_size, cv::Mat(imagePoints), found);
-	cv::drawChessboardCorners(undistorted, checkerboard_size, cv::Mat(imagePoints), found);
-	cv::drawChessboardCorners(undistorted, checkerboard_size, cv::Mat(undistortedImagePoints), found);
-	cv::drawChessboardCorners(pattern, checkerboard_size, cv::Mat(imagePoints), found);
+	//cv::drawChessboardCorners(image, checkerboard_size, cv::Mat(imagePoints), found);
+	//cv::drawChessboardCorners(undistorted, checkerboard_size, cv::Mat(imagePoints), found);
+//	cv::drawChessboardCorners(undistorted, checkerboard_size, cv::Mat(undistortedImagePoints), found);
+	//cv::drawChessboardCorners(pattern, checkerboard_size, cv::Mat(imagePoints), found);
 	cv::drawChessboardCorners(pattern, checkerboard_size, cv::Mat(undistortedImagePoints), found);
 	cv::drawChessboardCorners(pattern, checkerboard_size, cv::Mat(objectPoints), found);
 	 
@@ -165,7 +209,7 @@ std::cout << "AFTER" << std::endl;
 	cv::imshow("Undistorted Image View", undistorted);
 	cv::imshow("Pattern View", pattern);
 	cv::moveWindow("Undistorted Image View", image.size().width, 0);
-	cv::moveWindow("Pattern View", image.size().width * 2, 0);
+	cv::moveWindow("Pattern View", image.size().width + pattern.size().width, 0);
 	cv::waitKey(0);
  
 	return 0;
