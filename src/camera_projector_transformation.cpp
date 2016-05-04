@@ -18,7 +18,6 @@ int main(int argc, char* argv[]) {
 	}
 	const cv::Size resolution_projector(std::stoi(argv[2]), std::stoi(argv[3]));
 	const cv::Size size_checkerboard(std::stoi(argv[4]), std::stoi(argv[5]));
-std::cout << "a" << size_checkerboard << "b" << resolution_projector << std::endl;
 
 	const cv::Mat camera_projector_transformation = findCameraProjectorTransformationFromCheckerboard(camera_frame, resolution_projector, size_checkerboard);
 
@@ -31,15 +30,31 @@ std::cout << "a" << size_checkerboard << "b" << resolution_projector << std::end
 	);
 	
 	std::vector<cv::Point2f> points_camera_frame(1);
+	srand(time(0));
 	points_camera_frame[0] = cv::Point2f(
-		std::rand() * camera_frame.size().width,
-		std::rand() * camera_frame.size().height
+		((float) std::rand()) / ((float) RAND_MAX) * ((float) camera_frame.size().width),
+		((float) std::rand()) / ((float) RAND_MAX) * ((float) camera_frame.size().height)
 	);
 	std::vector<cv::Point2f> points_projector_frame;
 	cv::perspectiveTransform(
 		points_camera_frame,
 		points_projector_frame,
 		camera_projector_transformation
+	);
+	
+	circle(
+		camera_frame,
+		points_camera_frame[0],
+		8.f,
+		cv::Scalar(0, 0, 255),
+		2.f
+	);
+	circle(
+		derived_projector_frame,
+		points_projector_frame[0],
+		8.f,
+		cv::Scalar(0, 0, 255),
+		2.f
 	);
 	
 	cv::namedWindow("Camera view", 1);
