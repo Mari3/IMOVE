@@ -6,7 +6,7 @@
 #include <iostream>
 #include <string>
 
-#include "findCameraProjectorTransformation.cpp"
+#include "findCameraProjectorTransformation.hpp"
  
 int main(int argc, char* argv[]) {
 	const cv::Size size_checkerboard(9, 6); //todo config
@@ -50,12 +50,15 @@ int main(int argc, char* argv[]) {
 	);
 	
 	cv::namedWindow("Camera view", 1);
-	cv::namedWindow("Derived projector view", 1);
-	cv::moveWindow("Undistorted Image View", camera_frame.size().width, 0);
-	cv::namedWindow("Projector view", 1);
-	cv::moveWindow("Undistorted Image View", camera_frame.size().width + derived_projector_frame.size().width, 0);
+	cv::moveWindow("Camera view", 0, 0);
 	cv::imshow("Camera view", camera_frame);
+
+	cv::namedWindow("Derived projector view", 1);
+	cv::moveWindow("Derived projector view", camera_frame.size().width, 0);
 	cv::imshow("Derived projector view", derived_projector_frame);
+	
+	cv::namedWindow("Projector view", 1);
+	cv::moveWindow("Projector view", camera_frame.size().width + derived_projector_frame.size().width, 0);
 	cv::imshow("Projector view", derived_projector_frame);
 
 	cv::waitKey(0);
