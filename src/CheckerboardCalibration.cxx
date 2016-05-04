@@ -1,4 +1,3 @@
-// Found at http://programmingexamples.net/wiki/OpenCV/CheckerboardCalibration
 #include "opencv2/core/core.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/calib3d/calib3d.hpp"
@@ -7,101 +6,85 @@
 #include <iostream>
 #include <string>
  
-std::vector<cv::Point2f> createChessboardCorners(cv::Size checkerboard_size, float squareSize);
+std::vector<cv::Point2f> createChessboardCorners(const cv::Size size_checkerboard, const cv::Size resolution);
+cv::Point2f* getCornersFromCheckerboard(const std::vector<cv::Point2f> checkerboard_points, const cv::Size size_checkerboard);
+cv::Mat findCameraProjectorTransformationFromCheckerboard(const cv::Mat camera_frame, const cv::Mat projector_frame, const cv::Size size_checkerboard);
 
-// @source http://stackoverflow.com/questions/217578/how-can-i-determine-whether-a-2d-point-is-within-a-polygon/2922778#2922778
-//bool pointInPolygon(std::vector<cv::Point2f> vertices, cv::Point2f test_point) {
-//	int i, j,
-//	bool c = false;
-//	for (i = 0, j = vertices.size() - 1; i < vertices.size(); j = i++) {
-//		if ( (
-//			(vertices[1][i] > test_point[1]) != (vertices[j][1] > test_point[1])
-//		) && (
-//			test_point[0] < (vertices[j][0] - vertices[i][0])
-//			* (test_point[1] - vertices[i][1])
-//			/ (
-//				vertices[j][1] - vertices[i][1]
-//			) + vertices[i][0]
-//		) ) {
-//			c = !c;
-//	}
-//	return c;
-//}
-//
-//cv::Point2f calcProjectorPointFromCameraPoint(cv::Point2F point_on_camera, cv::Size project_resolution, cv::Size checkerboard_size, std::vector<cv::Point2f> camera_objectPoints) {
-//	cv::Point2f projector_location;
-//
-//	std::vector<cv::Point2f> projector_objectPoints(camera_objectPoints.size());
-//	for (int cy = 0; cy < checkerboard_size.heigh; cy++) {
-//		for (int cx = 0; cx < checkerboard_size.width; cx++) {
-//			projector_objectPoints.push_back(cv::Point2f(
-//				project_resolution.width * (cx + 1) / (checkerboard_size.width + 1),
-//				project_resolution.height * (cy + 1) / (checkerboard_size.height + 1)
-//			));
-//		}
-//	}
-//	cv::Mat camera_projector_transformation = cv::estimateRigidTransform(camera_objectPoints, projector_objectPoints, true);
-//
-//
-//	std::vector<cv::Point2f> vertices(4);
-//	int index_topleftx, index_toplefty;
-//
-//	cv::Point3f objectPoint;
-//	for (int cy = 0; cy < checkerboard_size.height - 1; cy++) {
-//		for (int cx = 0; cx < checkerboard_size.width - 1; cx++) {
-//			vertices.push_back(objectPoints[cy * checkerboard_size.width + cx]);
-//			vertices.push_back(objectPoints[cy * checkerboard_size.width + cx + 1]);
-//			vertices.push_back(objectPoints[(cy + 1) * checkerboard_size.width + cx]);
-//			vertices.push_back(objectPoints[(cy + 1) * checkerboard_size.width + cx + 1]);
-//			if (pointInPolygon(vertices, point_on_camera)) {
-//				objectPoint = cv::Point3f(
-//					vertices[0]
-//				);
-//			}
-//			vertices.empty();
-//		}
-//	}
-//
-//	return projector_location;
-//}
- 
 int main(int argc, char* argv[]) {
-	// Specify the number of squares along each dimension of the board.
-	// This is actually the number of "inside corners" (where a black square meets a white square).
-	// That is, if the board is composed of n x m squares, you would use (n-1, m-1) as the arguments.
-	// For example, for a standard checkerboard (8x8 squares), you would use:
-	cv::Size checkerboard_size(9, 6);
+	const cv::Size size_checkerboard(9, 6); //todo config
+
+	if (argc != 3) {
+		std::cout << "Usage: <path to camera frame (image)> <path to projector frame (image)>";
+		return 0;
+	}
  
-	cv::Mat image = cv::imread(argv[1], 1);
-	cv::Mat pattern = cv::imread(argv[2], 1);
-	if (image.empty()) {
+	cv::Mat camera_frame = cv::imread(argv[1], 1);
+	cv::Mat projector_frame = cv::imread(argv[2], 1);
+	if (camera_frame.empty()) {
+		std::cerr << "Camera frame not read correctly!" << std::endl;
+		return -1;
+	}
+	if (projector_frame.empty()) {
+		std::cerr << "Projector frame not read correctly!" << std::endl;
+		return -1;
+	}
+
+	const cv::Mat camera_projector_transformation = findCameraProjectorTransformationFromCheckerboard(camera_frame, projector_frame, size_checkerboard);
+
+	cv::Mat derived_projector_frame;
+	cv::warpPerspective(
+		camera_frame,
+		derived_projector_frame,
+		camera_projector_transformation,
+		projector_frame.size()
+	);
+	
+	std::vector<cv::Point2f> points_camera_frame(1);
+	points_camera_frame[0] = cv::Point2f(
+		std::rand() * camera_frame.size().width,
+		std::rand() * camera_frame.size().height
+	);
+	std::vector<cv::Point2f> points_projector_frame;
+	perspectiveTransform(
+		points_camera_frame,
+		points_projector_frame,
+		camera_projector_transformation
+	);
+	
+	cv::namedWindow("Camera view", 1);
+	cv::namedWindow("Derived projector view", 1);
+	cv::moveWindow("Undistorted Image View", camera_frame.size().width, 0);
+	cv::namedWindow("Projector view", 1);
+	cv::moveWindow("Undistorted Image View", camera_frame.size().width + derived_projector_frame.size().width, 0);
+	cv::imshow("Camera view", camera_frame);
+	cv::imshow("Derived projector view", derived_projector_frame);
+	cv::imshow("Projector view", derived_projector_frame);
+
+	cv::waitKey(0);
+ 
+	return 0;
+}
+
+cv::Mat findCameraProjectorTransformationFromCheckerboard(const cv::Mat camera_frame, const cv::Mat projector_frame, const cv::Size size_checkerboard) {
+	if (camera_frame.empty()) {
 		std::cerr << "Image not read correctly!" << std::endl;
 		exit(-1);
 	}
-	if (pattern.empty()) {
+	if (projector_frame.empty()) {
 		std::cerr << "Pattern not read correctly!" << std::endl;
 		exit(-1);
 	}
-	//cv::Size project_resolution(1665, 1166);
-	//cv::Size project_resolution(480, 336);
-	cv::Size project_resolution(pattern.size().width, pattern.size().height);
-	float squareSize = (project_resolution.width / (checkerboard_size.width + 1) + project_resolution.height / (checkerboard_size.height + 1)) / 2; // This is "1 arbitrary unit"
  
-	cv::namedWindow("Image View", 1);
-	cv::namedWindow("Undistorted Image View", 1);
-	cv::namedWindow("Pattern View", 1);
- 
-	std::vector<cv::Point2f> objectPoints = createChessboardCorners(
-		checkerboard_size,
-		squareSize
+	std::vector<cv::Point2f> checkerboard_points_projector_frame = createChessboardCorners(
+		size_checkerboard,
+		projector_frame.size()
 	);
 	
-	// Find the chessboard corners
-	std::vector<cv::Point2f> imagePoints;
+	std::vector<cv::Point2f> checkerboard_points_camera_frame;
 	bool found = cv::findChessboardCorners(
-		image,
-		checkerboard_size,
-		imagePoints
+		camera_frame,
+		size_checkerboard,
+		checkerboard_points_camera_frame
 	);
 	if (!found) {
 		std::cerr << "Could not find chess board!" << std::endl;
@@ -109,140 +92,37 @@ int main(int argc, char* argv[]) {
 	}
 
 	std::vector<std::vector<cv::Point2f> > image2DPoints(1);
-	image2DPoints[0] = imagePoints;
+	image2DPoints[0] = checkerboard_points_camera_frame;
 
-	std::vector<cv::Point3f> p3Dpoints(objectPoints.size());
-	for (int i = 0; i < objectPoints.size(); i++) {
+	std::vector<cv::Point3f> p3Dpoints(checkerboard_points_camera_frame.size());
+	for (unsigned int i = 0; i < checkerboard_points_projector_frame.size(); i++) {
 		p3Dpoints[i] = cv::Point3f(
-			objectPoints[i].x,
-			objectPoints[i].y,
+			checkerboard_points_projector_frame[i].x,
+			checkerboard_points_projector_frame[i].y,
 			0
 		);
 	}
 	std::vector<std::vector<cv::Point3f> > object3DPoints(1);
 	object3DPoints[0] = p3Dpoints;
- 
-	cv::Mat distortionCoefficients = cv::Mat::zeros(8, 1, CV_64F); // There are 8 distortion coefficients
-	cv::Mat cameraMatrix = cv::Mat::eye(3, 3, CV_64F);
-
-	std::vector<cv::Mat> rotationVectors;
-	std::vector<cv::Mat> translationVectors;
-	int flags = 0;
-	double rms = cv::calibrateCamera(
-		object3DPoints,
-		image2DPoints,
-		image.size(),
-		cameraMatrix,
-		distortionCoefficients,
-		rotationVectors,
-		translationVectors,
-		0 //flags|CV_CALIB_FIX_K4|CV_CALIB_FIX_K5
-	);
 	
-std::cout <<	
-		imagePoints[0] <<
-		imagePoints[checkerboard_size.width - 1] <<
-		imagePoints[(checkerboard_size.height - 1) * checkerboard_size.width] <<
-		imagePoints[checkerboard_size.height * checkerboard_size.width - 1]
-	<< std::endl;
-std::cout <<
-		objectPoints[0] <<
-		objectPoints[checkerboard_size.width - 1] <<
-		objectPoints[(checkerboard_size.height - 1) * checkerboard_size.width] <<
-		objectPoints[checkerboard_size.height * checkerboard_size.width - 1]
-	<< std::endl;
-	cv::Point2f image_perspective_points[] = {
-		imagePoints[0],
-		imagePoints[checkerboard_size.width - 1],
-		imagePoints[(checkerboard_size.height - 1) * checkerboard_size.width],
-		imagePoints[checkerboard_size.height * checkerboard_size.width - 1]
-	};
-	cv::Point2f object_perspective_points[] = {
-		objectPoints[0],
-		objectPoints[checkerboard_size.width - 1],
-		objectPoints[(checkerboard_size.height - 1) * checkerboard_size.width],
-		objectPoints[checkerboard_size.height * checkerboard_size.width - 1]
-	};
-std::cout << "IP" << image_perspective_points[2] << std::endl;
-std::cout << "OP" << object_perspective_points[2] << std::endl;
-	cv::Mat perspective_transformation = cv::getPerspectiveTransform(
-		image_perspective_points,
-		object_perspective_points
+	return cv::getPerspectiveTransform(
+		getCornersFromCheckerboard(
+			checkerboard_points_camera_frame,
+			size_checkerboard
+		),
+		getCornersFromCheckerboard(
+			checkerboard_points_projector_frame,
+			size_checkerboard
+		)
 	);
-
- 
-	std::cout << "perspective_warp: " << perspective_transformation << std::endl;
-	std::cout << "RMS: " << rms << std::endl;
-	std::cout << "Checkers object points: " << objectPoints << std::endl;
-	std::cout << "Checkers image points: " << imagePoints << std::endl; //TODO map 256x248 to a point in the 9 x 6
-	std::cout << "Camera matrix: " << cameraMatrix << std::endl;
-	std::cout << "Distortion _coefficients: " << distortionCoefficients << std::endl;
-	
-	cv::drawChessboardCorners(image, checkerboard_size, cv::Mat(imagePoints), found); //debug
-	cv::Mat undistorted;
-	cv::warpPerspective(
-		image,
-		undistorted,
-		perspective_transformation,
-		pattern.size()
-	);
-	//cv::undistort(image, undistorted, cameraMatrix, distortionCoefficients);
-	
-	std::vector<cv::Point2f> undistortedImagePoints;
-//	cv::warpPerspective(
-//		imagePoints,
-//		undistortedImagePoints,
-//		perspective_transformation,
-//		pattern.size()
-//	);
-	//cv::undistortPoints(imagePoints, undistortedImagePoints, cameraMatrix, distortionCoefficients);
-	std::cout << "Undistorted Checkers points: " << undistortedImagePoints << std::endl;
-	
-	//cv::drawChessboardCorners(image, checkerboard_size, cv::Mat(imagePoints), found);
-	//cv::drawChessboardCorners(undistorted, checkerboard_size, cv::Mat(imagePoints), found);
-//	cv::drawChessboardCorners(undistorted, checkerboard_size, cv::Mat(undistortedImagePoints), found);
-	//cv::drawChessboardCorners(pattern, checkerboard_size, cv::Mat(imagePoints), found);
-	cv::drawChessboardCorners(pattern, checkerboard_size, cv::Mat(undistortedImagePoints), found);
-	cv::drawChessboardCorners(pattern, checkerboard_size, cv::Mat(objectPoints), found);
-
-	std::vector<cv::Point2f> camera_points_list;
-	camera_points_list.push_back(cv::Point2f(485.f, 235.f));
-std::cout << "TTT" << camera_points_list[0] << std::endl;
-	std::vector<cv::Point2f> projector_points_list;
-	perspectiveTransform(camera_points_list, projector_points_list, perspective_transformation);
-	cv::Point2f projector_point = projector_points_list[0];
-
-std::cout << "TTT" << camera_points_list[0] << std::endl;
-	circle(
-		image,
-	  camera_points_list[0],
-		8,
-		cv::Scalar(0, 0, 255),
-		1.f
-	);
-	circle(
-		undistorted,
-	  projector_points_list[0],
-		8,
-		cv::Scalar(0, 0, 255),
-		1.f
-	);
-	 
-	cv::imshow("Image View", image);
-	cv::imshow("Undistorted Image View", undistorted);
-	cv::imshow("Pattern View", pattern);
-	cv::moveWindow("Undistorted Image View", image.size().width, 0);
-	cv::moveWindow("Pattern View", image.size().width + pattern.size().width, 0);
-	cv::waitKey(0);
- 
-	return 0;
 }
  
-std::vector<cv::Point2f> createChessboardCorners(const cv::Size checkerboard_size, const float squareSize) {
+std::vector<cv::Point2f> createChessboardCorners(const cv::Size size_checkerboard, const cv::Size resolution) {
 	std::vector<cv::Point2f> corners;
+	const float squareSize = (resolution.width / (size_checkerboard.width + 1) + resolution.height / (size_checkerboard.height + 1)) / 2;
  
-	for (int y = 0; y < checkerboard_size.height; y++) {
-		for (int x = 0; x < checkerboard_size.width; x++) {
+	for (int y = 0; y < size_checkerboard.height; y++) {
+		for (int x = 0; x < size_checkerboard.width; x++) {
 			corners.push_back(
 				cv::Point2f(
 					float(x + 1) * squareSize,
@@ -252,5 +132,14 @@ std::vector<cv::Point2f> createChessboardCorners(const cv::Size checkerboard_siz
 		}
 	}
  
+	return corners;
+}
+
+cv::Point2f* getCornersFromCheckerboard(const std::vector<cv::Point2f> checkerboard_points, const cv::Size size_checkerboard) {
+	cv::Point2f* corners = new cv::Point2f[4];
+	corners[0] = checkerboard_points[0]; // top left
+	corners[1] = checkerboard_points[size_checkerboard.width - 1]; // top right
+	corners[2] = checkerboard_points[(size_checkerboard.height - 1) * size_checkerboard.width]; // bottom left
+	corners[3] = checkerboard_points[size_checkerboard.height * size_checkerboard.width - 1]; // bottom right
 	return corners;
 }
