@@ -6,32 +6,28 @@
 #include "findCameraProjectorTransformation.hpp"
  
 int main(int argc, char* argv[]) {
-	const cv::Size size_checkerboard(9, 6); //todo config
-
-	if (argc != 3) {
-		std::cout << "Usage: <path to camera frame (image)> <path to projector frame (image)>";
+	if (argc != 6) {
+		std::cout << "Usage: <path to camera frame (image)> <projector resolution width> <projector resolution height> <chessboard corners width> <chessboard corners height>" << std::endl;
 		return 0;
 	}
  
 	cv::Mat camera_frame = cv::imread(argv[1], 1);
-	cv::Mat projector_frame = cv::imread(argv[2], 1);
 	if (camera_frame.empty()) {
 		std::cerr << "Camera frame not read correctly!" << std::endl;
 		return -1;
 	}
-	if (projector_frame.empty()) {
-		std::cerr << "Projector frame not read correctly!" << std::endl;
-		return -1;
-	}
+	const cv::Size resolution_projector(std::stoi(argv[2]), std::stoi(argv[3]));
+	const cv::Size size_checkerboard(std::stoi(argv[4]), std::stoi(argv[5]));
+std::cout << "a" << size_checkerboard << "b" << resolution_projector << std::endl;
 
-	const cv::Mat camera_projector_transformation = findCameraProjectorTransformationFromCheckerboard(camera_frame, projector_frame, size_checkerboard);
+	const cv::Mat camera_projector_transformation = findCameraProjectorTransformationFromCheckerboard(camera_frame, resolution_projector, size_checkerboard);
 
 	cv::Mat derived_projector_frame;
 	cv::warpPerspective(
 		camera_frame,
 		derived_projector_frame,
 		camera_projector_transformation,
-		projector_frame.size()
+		resolution_projector
 	);
 	
 	std::vector<cv::Point2f> points_camera_frame(1);
@@ -53,10 +49,6 @@ int main(int argc, char* argv[]) {
 	cv::namedWindow("Derived projector view", 1);
 	cv::moveWindow("Derived projector view", camera_frame.size().width, 0);
 	cv::imshow("Derived projector view", derived_projector_frame);
-	
-	cv::namedWindow("Projector view", 1);
-	cv::moveWindow("Projector view", camera_frame.size().width + derived_projector_frame.size().width, 0);
-	cv::imshow("Projector view", derived_projector_frame);
 
 	cv::waitKey(0);
  

@@ -1,19 +1,15 @@
 #include "findCameraProjectorTransformation.hpp"
 #include <iostream>
 
-cv::Mat findCameraProjectorTransformationFromCheckerboard(const cv::Mat camera_frame, const cv::Mat projector_frame, const cv::Size size_checkerboard) {
+cv::Mat findCameraProjectorTransformationFromCheckerboard(const cv::Mat camera_frame, const cv::Size resolution_projector, const cv::Size size_checkerboard) {
 	if (camera_frame.empty()) {
 		std::cerr << "Image not read correctly!" << std::endl;
-		exit(-1);
-	}
-	if (projector_frame.empty()) {
-		std::cerr << "Pattern not read correctly!" << std::endl;
 		exit(-1);
 	}
  
 	std::vector<cv::Point2f> checkerboard_points_projector_frame = createChessboardCorners(
 		size_checkerboard,
-		projector_frame.size()
+		resolution_projector
 	);
 	
 	std::vector<cv::Point2f> checkerboard_points_camera_frame;
