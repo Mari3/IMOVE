@@ -28,6 +28,6 @@ elseif(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
 endif()
  
 ADD_EXECUTABLE(calibration calibration/src/main.cpp calibration/src/findCameraProjectorTransformation.cpp)
-ADD_EXECUTABLE(art art/src/main.cpp art/src/Calibration.cpp)
+ADD_EXECUTABLE(scene scene/src/main.cpp scene/src/Calibration.cpp)
 TARGET_LINK_LIBRARIES(calibration ${OpenCV_LIBS})
-TARGET_LINK_LIBRARIES(art ${OpenCV_LIBS})
+TARGET_LINK_LIBRARIES(scene ${OpenCV_LIBS})

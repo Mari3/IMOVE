@@ -8,5 +8,5 @@ popd >> /dev/null
 
 mkdir -p dist
 mv build/calibration dist/calibration
-mv build/art dist/art
+mv build/scene dist/scene
 rm -r build
