@@ -2,10 +2,11 @@
 set -e
 mkdir -p build
 pushd build >> /dev/null
-	cmake ../src
+	cmake ..
 	make
 popd >> /dev/null
 
 mkdir -p dist
-mv build/application dist/application
+mv build/calibration dist/calibration
+mv build/art dist/art
 rm -r build

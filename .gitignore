@@ -1,7 +1,5 @@
 /opencv
 
-/art/build
-/calibration/build
+/build
 
-/art/dist
-/calibration/dist
+/dist
