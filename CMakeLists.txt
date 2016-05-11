@@ -10,7 +10,7 @@ include_directories(${SFML_INCLUDE_DIR})
 find_package(OpenCV REQUIRED HINTS ${OpenCV_DIR})
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 
-set(SOURCE_FILES main.cpp)
+set(SOURCE_FILES src/main.cpp)
 add_executable(imove ${SOURCE_FILES})
 target_link_libraries(imove ${SFML_LIBRARIES})
 target_link_libraries(imove ${OPENCV_LIBRARIES})
