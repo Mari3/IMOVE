@@ -10,7 +10,9 @@ include_directories(${SFML_INCLUDE_DIR})
 find_package(OpenCV REQUIRED HINTS ${OpenCV_DIR})
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 
-set(SOURCE_FILES src/main.cpp)
-add_executable(imove ${SOURCE_FILES})
+file(GLOB_RECURSE SOURCE_FILES "src/*.h" "src/*.cpp")
+
+#set(SOURCE_FILES src/main.cpp src/scene/Scene.cpp src/scene/Scene.h)
+add_executable(imove ${SOURCE_FILES} src/imageprocessing/PeopleExtractor.cpp src/imageprocessing/PeopleExtractor.h src/imageprocessing/cameraprojectionmapper/CameraProjectionMapper.cpp src/imageprocessing/cameraprojectionmapper/CameraProjectionMapper.h src/imageprocessing/detector/PeopleDetector.cpp src/imageprocessing/detector/PeopleDetector.h src/imageprocessing/identifier/PeopleIdentifier.cpp src/imageprocessing/identifier/PeopleIdentifier.h src/Manager.cpp src/Manager.h)
 target_link_libraries(imove ${SFML_LIBRARIES})
 target_link_libraries(imove ${OPENCV_LIBRARIES})

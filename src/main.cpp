@@ -1,8 +1,13 @@
 #include <iostream>
+#include "imageprocessing/PeopleExtractor.h"
+#include "scene/Scene.h"
 
 using namespace std;
 
 int main() {
-    cout << "Hello, World!" << endl;
-    return 0;
+    PeopleExtractor extractor;
+    Scene scene;
+    //TODO initialze these;
+
+
 }
