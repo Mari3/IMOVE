@@ -1,33 +1,16 @@
-cmake_minimum_required(VERSION 2.6)
- 
-PROJECT(application)
- 
-FIND_PACKAGE(OpenCV REQUIRED )
-INCLUDE_DIRECTORIES( ${OPENCV_INCLUDE_DIR} )
+cmake_minimum_required(VERSION 3.5)
+project(imove)
 
-include(CheckCXXCompilerFlag)
-CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
-CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
-if(COMPILER_SUPPORTS_CXX11)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-elseif(COMPILER_SUPPORTS_CXX0X)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
-else()
-	message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
-endif()
-if(MSVC)
-  # Force to always compile with W4
-	if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
-	string(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-else()
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
-endif()
-elseif(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
-  # Update if necessary
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic")
-endif()
- 
-ADD_EXECUTABLE(calibration calibration/src/main.cpp calibration/src/findCameraProjectorTransformation.cpp)
-ADD_EXECUTABLE(scene scene/src/main.cpp scene/src/Calibration.cpp)
-TARGET_LINK_LIBRARIES(calibration ${OpenCV_LIBS})
-TARGET_LINK_LIBRARIES(scene ${OpenCV_LIBS})
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/modules/")
+
+find_package(SFML REQUIRED system window graphics network audio)
+include_directories(${SFML_INCLUDE_DIR})
+find_package(OpenCV REQUIRED HINTS ${OpenCV_DIR})
+include_directories( ${OpenCV_INCLUDE_DIRS} )
+
+set(SOURCE_FILES main.cpp)
+add_executable(imove ${SOURCE_FILES})
+target_link_libraries(imove ${SFML_LIBRARIES})
+target_link_libraries(imove ${OPENCV_LIBRARIES})
