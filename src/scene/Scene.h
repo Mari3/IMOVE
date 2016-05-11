@@ -7,10 +7,14 @@
 
 #include <SFML/Graphics.hpp>
 #include "../shared/Person.h"
+#include "Actions/Action.h"
+#include "Conditions/Condition.h"
 
 class Scene {
 private:
     vector<Person> people;
+    vector<Action*> actions;
+    vector<Condition*> conditions;
 public:
     void updatePeople(vector<Person> people);
     void update(float dt);

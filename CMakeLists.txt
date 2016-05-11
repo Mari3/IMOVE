@@ -13,6 +13,6 @@ include_directories( ${OpenCV_INCLUDE_DIRS} )
 file(GLOB_RECURSE SOURCE_FILES "src/*.h" "src/*.cpp")
 
 #set(SOURCE_FILES src/main.cpp src/scene/Scene.cpp src/scene/Scene.h)
-add_executable(imove ${SOURCE_FILES} src/imageprocessing/PeopleExtractor.cpp src/imageprocessing/PeopleExtractor.h src/imageprocessing/cameraprojectionmapper/CameraProjectionMapper.cpp src/imageprocessing/cameraprojectionmapper/CameraProjectionMapper.h src/imageprocessing/detector/PeopleDetector.cpp src/imageprocessing/detector/PeopleDetector.h src/imageprocessing/identifier/PeopleIdentifier.cpp src/imageprocessing/identifier/PeopleIdentifier.h src/Manager.cpp src/Manager.h src/test/LightsManager.cpp src/test/LightsManager.h src/scene/LightTrailScene.cpp src/scene/LightTrailScene.h)
+add_executable(imove ${SOURCE_FILES})
 target_link_libraries(imove ${SFML_LIBRARIES})
 target_link_libraries(imove ${OPENCV_LIBRARIES})
