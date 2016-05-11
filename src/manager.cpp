@@ -7,8 +7,6 @@
 #include "scene/Scene.h"
 
 void Manager::run() {
-    PeopleExtractor extractor;
-    Scene scene;
     //TODO initialize these
 
     //Thread one

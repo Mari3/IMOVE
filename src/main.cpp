@@ -1,13 +1,11 @@
 #include <iostream>
-#include "imageprocessing/PeopleExtractor.h"
-#include "scene/Scene.h"
+#include "test/LightsManager.h"
 
 using namespace std;
 
 int main() {
-    PeopleExtractor extractor;
-    Scene scene;
-    //TODO initialze these;
 
+    LightsManager manager;
+    manager.run();
 
 }

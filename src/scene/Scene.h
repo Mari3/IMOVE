@@ -14,7 +14,7 @@ private:
 public:
     void updatePeople(vector<Person> people);
     void update(float dt);
-    virtual void draw(sf::RenderTarget target) = 0;
+    virtual void draw(sf::RenderTarget &target) = 0;
 };
 
 
