@@ -6,6 +6,7 @@
 #include "Actions/UpdateLightTrailsAction.h"
 #include "../Util/HueConverter.h"
 #include "Actions/UpdateLightSourcesAction.h"
+#include "Actions/AlternatingGravityPointAction.h"
 
 void LightTrailScene::draw(sf::RenderTarget &target) {
 
@@ -22,7 +23,7 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
     }
 
     for(auto &point : gravityPoints){
-        sf::CircleShape gCircle(2);
+        sf::CircleShape gCircle(8);
         gCircle.setFillColor(sf::Color::Red);
         gCircle.setPosition(point->location.x,point->location.y);
         target.draw(gCircle);
@@ -58,8 +59,8 @@ LightTrailScene::LightTrailScene() : Scene() {
     }*/
 
     gravityPoints = vector<GravityPoint*>();
-    gravityPoints.push_back(new GravityPoint(Vector2(1054,800),Range(0,180,true),200000));
-    gravityPoints.push_back(new GravityPoint(Vector2(1508,800),Range(181,359,true),200000));
+    //gravityPoints.push_back(new GravityPoint(Vector2(1054,800),Range(0,180,true),200000));
+    //gravityPoints.push_back(new GravityPoint(Vector2(1508,800),Range(181,359,true),200000));
     colorHoles = vector<ColorHole*>();
 
     //Add actions and conditions here
@@ -69,6 +70,7 @@ LightTrailScene::LightTrailScene() : Scene() {
 
     actions.push_back(new UpdateLightTrailsAction(lightTrailsPtr,gravityPointsPtr));
     actions.push_back(new UpdateLightSourcesAction(lightSourcesPtr,lightTrailsPtr));
+    actions.push_back(new AlternatingGravityPointAction(gravityPointsPtr));
 }
 
 
