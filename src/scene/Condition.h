@@ -5,7 +5,7 @@
 #ifndef IMOVE_CONDITION_H
 #define IMOVE_CONDITION_H
 
-#include "../Actions/Action.h"
+#include "Action.h"
 
 class Condition{
 public:

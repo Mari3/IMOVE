@@ -6,9 +6,10 @@
 #define IMOVE_LIGHTTRAILSCENE_H
 
 
-#include "Scene.h"
+#include "../Scene.h"
 
 class LightTrailScene : public Scene{
+public:
     LightTrailScene();
     virtual void draw(sf::RenderTarget &target) override;
 };

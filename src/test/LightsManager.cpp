@@ -4,7 +4,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "LightsManager.h"
-#include "../scene/LightTrailScene.h"
+#include "../scene/LightTrail/LightTrailScene.h"
 
 void LightsManager::run() {
 

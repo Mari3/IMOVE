@@ -7,8 +7,8 @@
 
 #include <SFML/Graphics.hpp>
 #include "../shared/Person.h"
-#include "Actions/Action.h"
-#include "Conditions/Condition.h"
+#include "Action.h"
+#include "Condition.h"
 
 class Scene {
 private:
