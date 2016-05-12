@@ -12,6 +12,8 @@ void LightsManager::run() {
 
     Scene* scene = new LightTrailScene();
 
+    sf::Clock clock;
+
     while(window.isOpen()){
 
         // check all the window's events that were triggered since the last iteration of the loop
@@ -22,6 +24,11 @@ void LightsManager::run() {
                 window.close();
         }
 
+        window.clear(sf::Color::Black);
+
+
+        float dt = clock.restart().asSeconds();
+        scene->update(dt);
         scene->draw(window);
 
 

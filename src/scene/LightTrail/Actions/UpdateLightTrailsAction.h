@@ -15,11 +15,11 @@ using namespace std;
 
 class UpdateLightTrailsAction : public Action {
 private:
-    vector<LightTrail> lightTrails;
-    vector<GravityPoint> gravityPoints;
+    vector<LightTrail*> lightTrails;
+    vector<GravityPoint*> gravityPoints;
     Vector2 calculateForce(Vector2 location);
 public:
-    UpdateLightTrailsAction(vector<LightTrail> &lightTrails, vector<GravityPoint> &gravityPoints);
+    UpdateLightTrailsAction(vector<LightTrail*> &lightTrails, vector<GravityPoint*> &gravityPoints);
 
     bool isDone(Action *&followUp) override;
     void execute(float dt) override;

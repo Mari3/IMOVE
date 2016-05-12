@@ -11,7 +11,7 @@
 #include "Condition.h"
 
 class Scene {
-private:
+protected:
     vector<Person> people;
     vector<Action*> actions; //Vector of pointers for polymorphism
     vector<Condition*> conditions; //Idem
