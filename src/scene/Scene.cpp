@@ -30,7 +30,7 @@ void Scene::update(float dt) {
         Action* followUp;
         if(actions[i]->isDone(followUp)){
             //If there is a followup, add it to the list
-            if(followUp != NULL){
+            if(followUp){
                 actions.push_back(followUp);
             }
             actions.erase(actions.begin()+i);
