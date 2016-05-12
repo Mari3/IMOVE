@@ -10,7 +10,7 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
 
 LightTrailScene::LightTrailScene() : Scene() {
     //Add actions and conditions here
-    
+
 }
 
 
