@@ -13,10 +13,11 @@
 class Scene {
 private:
     vector<Person> people;
-    vector<Action*> actions;
-    vector<Condition*> conditions;
+    vector<Action*> actions; //Vector of pointers for polymorphism
+    vector<Condition*> conditions; //Idem
 public:
-    void updatePeople(vector<Person> people);
+    Scene();
+    void updatePeople(vector<Person> newPeople);
     void update(float dt);
     virtual void draw(sf::RenderTarget &target) = 0;
 };

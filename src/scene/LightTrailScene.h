@@ -9,6 +9,7 @@
 #include "Scene.h"
 
 class LightTrailScene : public Scene{
+    LightTrailScene();
     virtual void draw(sf::RenderTarget &target) override;
 };
 
