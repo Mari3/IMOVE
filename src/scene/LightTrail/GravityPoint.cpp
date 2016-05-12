@@ -10,14 +10,13 @@ GravityPoint::GravityPoint(Vector2 location, Range hue, float gravity) :
 
 }
 
-const Vector2 &GravityPoint::getLocation() const {
-    return location;
+void GravityPoint::destroy() {
+    existing = false;
 }
 
-const Range &GravityPoint::getHue() const {
-    return hue;
+bool GravityPoint::exists() {
+    return existing;
 }
 
-float GravityPoint::getGravity() const {
-    return gravity;
-}
+
+

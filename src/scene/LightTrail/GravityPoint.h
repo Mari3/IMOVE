@@ -11,14 +11,14 @@
 
 class GravityPoint {
 private:
+    bool existing = true;
+public:
     Vector2 location;
     Range hue;
     float gravity;
-public:
     GravityPoint(Vector2 location, Range hue, float gravity);
-    const Vector2 & getLocation() const;
-    const Range & getHue() const;
-    float getGravity() const;
+    void destroy();
+    bool exists();
 };
 
 
