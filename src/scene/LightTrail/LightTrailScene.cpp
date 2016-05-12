@@ -5,6 +5,7 @@
 #include "LightTrailScene.h"
 #include "Actions/UpdateLightTrailsAction.h"
 #include "../Util/HueConverter.h"
+#include "Actions/UpdateLightSourcesAction.h"
 
 void LightTrailScene::draw(sf::RenderTarget &target) {
 
@@ -36,9 +37,14 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
 LightTrailScene::LightTrailScene() : Scene() {
     //Initialize lists
     lightSources = vector<LightSource*>();
+    lightSources.push_back(new LightSource(Vector2(0,0),Range(0,90,true),Range(0,90,true),Range(0,400)));
+    lightSources.push_back(new LightSource(Vector2(2560,0),Range(90,180,true),Range(90,180,true),Range(0,400)));
+    lightSources.push_back(new LightSource(Vector2(0,1600),Range(180,270,true),Range(270,0,true),Range(0,400)));
+    lightSources.push_back(new LightSource(Vector2(2560,1600),Range(270,360,true),Range(180,270,true),Range(0,400)));
+
     lightTrails = vector<LightTrail*>();
 
-    Range hueRange(0,360);
+    /*Range hueRange(0,360);
     Range xRange(0,800);
     Range yRange(0,600);
     Range speedRange(-400,400);
@@ -49,7 +55,7 @@ LightTrailScene::LightTrailScene() : Scene() {
                 Vector2(speedRange.drawRandom(),speedRange.drawRandom()),
                 hueRange.drawRandom()
         ));
-    }
+    }*/
 
     gravityPoints = vector<GravityPoint*>();
     gravityPoints.push_back(new GravityPoint(Vector2(1054,800),Range(0,180,true),200000));
@@ -57,7 +63,12 @@ LightTrailScene::LightTrailScene() : Scene() {
     colorHoles = vector<ColorHole*>();
 
     //Add actions and conditions here
-    actions.push_back(new UpdateLightTrailsAction(lightTrails,gravityPoints));
+    vector<LightTrail*>* lightTrailsPtr = &lightTrails;
+    vector<LightSource*>* lightSourcesPtr = &lightSources;
+    vector<GravityPoint*>* gravityPointsPtr = &gravityPoints;
+
+    actions.push_back(new UpdateLightTrailsAction(lightTrailsPtr,gravityPointsPtr));
+    actions.push_back(new UpdateLightSourcesAction(lightSourcesPtr,lightTrailsPtr));
 }
 
 

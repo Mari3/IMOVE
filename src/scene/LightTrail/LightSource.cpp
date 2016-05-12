@@ -13,13 +13,13 @@ LightSource::LightSource(Vector2 location, Range hue, Range angle, Range speed) 
 
 }
 
-LightTrail LightSource::sendOut() {
+LightTrail* LightSource::sendOut() {
     float trailHue = hue.drawRandom();
     float trailSpeed = speed.drawRandom();
     float trailAngle = angle.drawRandom();
     Vector2 trailSpeedVector(trailSpeed*(float)cos(trailAngle/180.f*PI),trailSpeed*(float)sin(trailAngle/180.f*PI));
 
-    return LightTrail(location,trailSpeedVector,trailHue);
+    return new LightTrail(location,trailSpeedVector,trailHue);
 }
 
 Vector2 LightSource::getLocation() {

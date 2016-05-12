@@ -4,12 +4,16 @@
 
 #include "Timer.h"
 
-Timer::Timer(float timeInSeconds) : startTime(timeInSeconds), time(timeInSeconds) {
+Timer::Timer(float timeInSeconds, bool autoRestart) : startTime(timeInSeconds), time(timeInSeconds), autoRestart(autoRestart) {
 }
 
 bool Timer::update(float dt) {
     time -= dt;
-    return time <= 0;
+    if(time <= 0){
+        if(autoRestart)time += startTime;
+        return true;
+    }
+    return false;
 }
 
 void Timer::restart() {

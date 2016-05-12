@@ -16,7 +16,7 @@ private:
     Range hue,angle,speed;
 public:
     LightSource(Vector2 location, Range hue, Range angle, Range speed);
-    LightTrail sendOut();
+    LightTrail * sendOut();
     Vector2 getLocation();
     Range getHue();
 };

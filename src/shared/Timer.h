@@ -9,8 +9,9 @@
 class Timer {
 private:
     float startTime, time;
+    bool autoRestart;
 public:
-    Timer(float timeInSeconds);
+    Timer(float timeInSeconds, bool autoRestart=false);
     bool update(float dt);
     void restart();
     void restart(float newTime);
