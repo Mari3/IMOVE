@@ -8,7 +8,8 @@
 
 void LightsManager::run() {
 
-    sf::RenderWindow window(sf::VideoMode(800,600),"Lights!");
+    sf::RenderWindow window(sf::VideoMode(2560,1600),"Lights!");
+    window.clear(sf::Color::Black);
 
     Scene* scene = new LightTrailScene();
 
@@ -24,7 +25,7 @@ void LightsManager::run() {
                 window.close();
         }
 
-        window.clear(sf::Color::Black);
+        //window.clear(sf::Color::Black);
 
 
         float dt = clock.restart().asSeconds();

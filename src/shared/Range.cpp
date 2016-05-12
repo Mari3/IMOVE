@@ -42,6 +42,17 @@ float Range::drawRandom() {
     }
 }
 
+bool Range::contains(float f) {
+    if(end > start)
+        return f > start && f < end;
+    if(start == end)
+        return f == start;
+
+    return (f > start && f < upperBound) || (f < end && f > lowerBound);
+}
+
+
+
 
 
 

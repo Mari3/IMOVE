@@ -16,6 +16,7 @@ public:
     void update(Vector2 force, float dt);
     Vector2 getLocation();
     float hue;
+    Vector2 getSpeed();
 };
 
 

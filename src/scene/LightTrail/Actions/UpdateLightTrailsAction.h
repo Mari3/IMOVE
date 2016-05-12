@@ -17,7 +17,7 @@ class UpdateLightTrailsAction : public Action {
 private:
     vector<LightTrail*> lightTrails;
     vector<GravityPoint*> gravityPoints;
-    Vector2 calculateForce(Vector2 location);
+    Vector2 calculateForce(LightTrail trail);
 public:
     UpdateLightTrailsAction(vector<LightTrail*> &lightTrails, vector<GravityPoint*> &gravityPoints);
 

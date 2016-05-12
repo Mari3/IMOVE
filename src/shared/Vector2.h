@@ -10,6 +10,7 @@ public:
     float x,y;
     Vector2(float x, float y);
     float distance(Vector2 other);
+    float angle(Vector2 other);
     float size();
     Vector2 operator-(const Vector2& v);
     Vector2 operator+(const Vector2& v);
