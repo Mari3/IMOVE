@@ -25,3 +25,5 @@ Vector2 LightTrail::getLocation() {
 
 
 
+
+

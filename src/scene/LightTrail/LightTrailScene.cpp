@@ -4,6 +4,7 @@
 
 #include "LightTrailScene.h"
 #include "Actions/UpdateLightTrailsAction.h"
+#include "../Util/HueConverter.h"
 
 void LightTrailScene::draw(sf::RenderTarget &target) {
     //TODO do drawing here
@@ -12,8 +13,9 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
     target.draw(rect);
 
     for(auto &trail : lightTrails){
-        sf::CircleShape circle(3);
+        sf::CircleShape circle(5);
         circle.setPosition(trail->getLocation().x,trail->getLocation().y);
+        circle.setFillColor(HueConverter::ToColor(trail->hue));
         target.draw(circle);
     }
 
@@ -29,7 +31,7 @@ LightTrailScene::LightTrailScene() : Scene() {
     //Initialize lists
     lightSources = vector<LightSource*>();
     lightTrails = vector<LightTrail*>();
-    lightTrails.push_back(new LightTrail(Vector2(200,200),Vector2(100,0),0));
+    lightTrails.push_back(new LightTrail(Vector2(200,200),Vector2(100,0),180));
     gravityPoints = vector<GravityPoint*>();
     gravityPoints.push_back(new GravityPoint(Vector2(200,100),Range(.9,.1,true),11000));
     colorHoles = vector<ColorHole*>();

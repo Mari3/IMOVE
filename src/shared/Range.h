@@ -12,7 +12,7 @@ private:
     bool bounds;
     void fixBounds();
 public:
-    Range(float start, float end, bool bounds=false, float lowerBound=0.f, float upperBound=1.f);
+    Range(float start, float end, bool bounds=false, float lowerBound=0.f, float upperBound=360.f);
     void operator+=(const float& f);
     float drawRandom();
 };
