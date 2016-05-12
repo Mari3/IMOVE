@@ -13,6 +13,6 @@ include_directories( ${OpenCV_INCLUDE_DIRS} )
 file(GLOB_RECURSE SOURCE_FILES "src/*.h" "src/*.cpp")
 
 #set(SOURCE_FILES src/main.cpp src/scene/Scene.cpp src/scene/Scene.h)
-add_executable(imove ${SOURCE_FILES} src/scene/LightTrail/LightTrail.cpp src/scene/LightTrail/LightTrail.h)
+add_executable(imove ${SOURCE_FILES})
 target_link_libraries(imove ${SFML_LIBRARIES})
 target_link_libraries(imove ${OPENCV_LIBRARIES})
