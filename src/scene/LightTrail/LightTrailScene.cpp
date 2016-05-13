@@ -16,7 +16,7 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
     target.draw(rect);
 
     for(auto &trail : lightTrails){
-        sf::CircleShape circle(2 );
+        sf::RectangleShape circle(sf::Vector2f(3,3) );
         circle.setPosition(trail->getLocation().x,trail->getLocation().y);
         circle.setFillColor(HueConverter::ToColor(trail->hue));
         target.draw(circle);
@@ -70,6 +70,7 @@ LightTrailScene::LightTrailScene() : Scene() {
 
     actions.push_back(new UpdateLightTrailsAction(lightTrailsPtr,gravityPointsPtr));
     actions.push_back(new UpdateLightSourcesAction(lightSourcesPtr,lightTrailsPtr));
+    actions.push_back(new AlternatingGravityPointAction(gravityPointsPtr));
     actions.push_back(new AlternatingGravityPointAction(gravityPointsPtr));
 }
 

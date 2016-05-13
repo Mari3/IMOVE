@@ -6,7 +6,7 @@
 
 #define FORCE_CONSTANT 1
 #define PROXIMITY_CONSTANT 200
-#define PROXIMITY_MODIFIER 0
+#define PROXIMITY_MODIFIER .5f
 
 bool UpdateLightTrailsAction::isDone(Action *&followUp) {
     return false;
@@ -37,7 +37,7 @@ Vector2 UpdateLightTrailsAction::calculateForce(LightTrail trail) {
             if (dist < PROXIMITY_CONSTANT) {
                 //float angle = diff.angle(trail.getSpeed());
                 //if (slowDownRange.contains(angle))
-                    proximityModifier = PROXIMITY_MODIFIER;
+                proximityModifier = PROXIMITY_MODIFIER * (dist/PROXIMITY_CONSTANT) * (dist/PROXIMITY_CONSTANT);
             }
             totalForce += diff / dist / dist * FORCE_CONSTANT * proximityModifier * gravityPoint->gravity;
         }
