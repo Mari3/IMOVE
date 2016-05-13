@@ -5,10 +5,6 @@
 #include <iostream>
 #include <string>
 
-#include "findCameraProjectorTransformation.hpp"
-
-#include <ctime>
-
 const unsigned char U8_WHITE = 255;
 const signed int NOKEY_ANYKEY = -1;
 
@@ -74,18 +70,20 @@ int main(int argc, char* argv[]) {
 	
 	if (argc != 5) {
 		std::cout << "Usage: <path to configuration file> <int video device> <projector resolution width> <projector resolution height>" << std::endl;
-		return 0;
+		return EXIT_SUCCESS;
 	}
  
 	const cv::Size resolution_projector(std::stoi(argv[3]), std::stoi(argv[4]));
 	
-	cv::Mat projector_frame = cv::Mat::ones(resolution_projector.width, resolution_projector.height, CV_8UC3);
+	cv::Mat projector_frame = cv::Mat::ones(resolution_projector.width, resolution_projector.height, CV_8UC3) * U8_WHITE;
 	cv::namedWindow("Projector", cv::WINDOW_NORMAL | cv::WINDOW_AUTOSIZE);
+	cv::moveWindow("Projector", 0, 0);
 	cv::imshow("Projector", projector_frame);
 
 	cv::Mat frame_camera;
 	cv::VideoCapture video_capture(std::stoi(argv[2]));
 	cv::namedWindow("Camera", cv::WINDOW_NORMAL | cv::WINDOW_AUTOSIZE);
+	cv::moveWindow("Camera", 500, 0);
 	cv::setMouseCallback("Camera", cameraWindowMouseEvent, NULL);
 	
 	while (amount_corners < REQUIRED_CORNERS) {
@@ -110,6 +108,7 @@ int main(int argc, char* argv[]) {
 	std::cout << camera_projector_transformation << std::endl;
 
 	cv::namedWindow("Projection", cv::WINDOW_NORMAL | cv::WINDOW_AUTOSIZE);
+	cv::moveWindow("Projection", 1000, 0);
 	cv::Mat frame_projection;
 	while (cv::waitKey(1) == NOKEY_ANYKEY) {
 		if (!video_capture.read(frame_camera)) {

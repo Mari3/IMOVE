@@ -7,10 +7,13 @@
 
 #include "Calibration.hpp"
 
+const unsigned char U8_WHITE = 255;
+const signed int NOKEY_ANYKEY = -1;
+
 int main(int argc, char* argv[]) {
 	if (argc != 3) {
-		std::cout << "Usage: <path to configuration file> <path to camera frame (image)>" << std::endl;
-		return 0;
+		std::cout << "Usage: <path to configuration file> <int video device>" << std::endl;
+		return EXIT_SUCCESS;
 	}
 
 	cv::FileStorage fs;
@@ -20,50 +23,38 @@ int main(int argc, char* argv[]) {
 	cv::Mat camera_projector_transformation;
 	fs["Camera_projector_transformation"] >> camera_projector_transformation;
 	fs.release();
- 
-	cv::Mat camera_frame = cv::imread(argv[2], 1);
-	if (camera_frame.empty()) {
-		std::cerr << "Camera frame not read correctly!" << std::endl;
-		return -1;
-	}
 
 	const Calibration calibration = Calibration(resolution_projector, camera_projector_transformation);
-	cv::Mat projector_camera_frame;
-	calibration.createProjectorCameraFrameFromCameraFrame(projector_camera_frame, camera_frame);
+	cv::Mat projection_frame;
 	
-	std::vector<cv::Point2f> points_camera_frame(1);
-	srand(time(0));
-	points_camera_frame[0] = cv::Point2f(
-		((float) std::rand()) / ((float) RAND_MAX) * ((float) camera_frame.size().width),
-		((float) std::rand()) / ((float) RAND_MAX) * ((float) camera_frame.size().height)
-	);
-	std::vector<cv::Point2f> points_projector_frame;
-	calibration.createPointsProjectorFrameFromPointsCameraFrame(points_projector_frame, points_camera_frame);
-	
-	circle(
-		camera_frame,
-		points_camera_frame[0],
-		8.f,
-		cv::Scalar(0, 0, 255),
-		2.f
-	);
-	circle(
-		projector_camera_frame,
-		points_projector_frame[0],
-		8.f,
-		cv::Scalar(0, 0, 255),
-		2.f
-	);
-	
-	cv::namedWindow("Camera view", 1);
-	cv::moveWindow("Camera view", 0, 0);
-	cv::imshow("Camera view", camera_frame);
+	cv::Mat projector_frame = cv::Mat::ones(resolution_projector.width, resolution_projector.height, CV_8UC3) * U8_WHITE;
+	cv::namedWindow("Projector", cv::WINDOW_NORMAL | cv::WINDOW_AUTOSIZE);
+	cv::moveWindow("Projector", 0, 0);
+	cv::imshow("Projector", projector_frame);
 
-	cv::namedWindow("Projector camera view", 1);
-	cv::moveWindow("Projector camera view", camera_frame.size().width, 0);
-	cv::imshow("Projector camera view", projector_camera_frame);
+	cv::Mat frame_camera;
+	cv::VideoCapture video_capture(std::stoi(argv[2]));
+	cv::namedWindow("Camera", cv::WINDOW_NORMAL | cv::WINDOW_AUTOSIZE);
+	cv::moveWindow("Camera", 500, 0);
 
-	cv::waitKey(0);
+	cv::namedWindow("Projection", cv::WINDOW_NORMAL | cv::WINDOW_AUTOSIZE);
+	cv::moveWindow("Projection", 1000, 0);
+	cv::Mat frame_projection;
+	while (cv::waitKey(1) == NOKEY_ANYKEY) {
+		if (!video_capture.read(frame_camera)) {
+			std::cerr << "Unable to read next frame." << std::endl;
+			std::cerr << "Exiting..." << std::endl;
+			return EXIT_FAILURE;
+		}
+		cv::imshow("Camera", frame_camera);
+		cv::warpPerspective(
+			frame_camera,
+			frame_projection,
+			camera_projector_transformation,
+			resolution_projector
+		);
+		cv::imshow("Projection", frame_projection);
+	}
  
-	return 0;
+	return EXIT_SUCCESS;
 }
