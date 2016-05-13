@@ -105,7 +105,6 @@ int main(int argc, char* argv[]) {
 		coordinate_corners_camera,
 		coordinate_corners_projector
 	);
-	std::cout << camera_projector_transformation << std::endl;
 
 	cv::namedWindow("Projection", cv::WINDOW_NORMAL);
 	cv::moveWindow("Projection", 1000, 0);
