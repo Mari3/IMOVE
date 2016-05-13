@@ -6,6 +6,7 @@
 #define IMOVE_PEOPLEDETECTOR_H
 
 #include <opencv2/core.hpp>
+#include <opencv2/opencv.hpp>
 #include "opencv2/imgcodecs.hpp"
 #include "opencv2/imgproc.hpp"
 #include "opencv2/videoio.hpp"
@@ -35,7 +36,8 @@ public:
   ~PeopleDetector();
 
   void detectionTest(char* videoFile);
-  void detect(cv::Mat frame, int key);
+  void detectionTest();
+  void detect(cv::Mat frame);
 
 };
 

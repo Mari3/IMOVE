@@ -6,13 +6,14 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
 
-  if (argc != 2) {
-    cerr << "No video input" << endl;
-    return EXIT_FAILURE;
-  }
-
   PeopleDetector peopleDetector = PeopleDetector();
-  peopleDetector.detectionTest(argv[1]);
+
+  if (argc != 2) {
+    peopleDetector.detectionTest();
+  }
+  else {
+    peopleDetector.detectionTest(argv[1]);
+  }
 
   return 0;
 }
