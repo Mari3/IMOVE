@@ -89,8 +89,16 @@ int main(int argc, char* argv[]) {
 	cv::moveWindow("Projection", 1200, 0);
 
 	while (cv::waitKey(1) == NOKEY_ANYKEY && projector_videoreader.read(frame_projector) && camera_videoreader.read(frame_camera)) {
-		frame_camera.copyTo(frame_result);
-
+		
+		cv::warpPerspective(
+			frame_projector,
+			frame_result,
+			camera_projector_transformation.inv(),
+			resolution_projector
+		);
+		
+		//frame_result = frame_camera - frame_projector;
+		
 		cv::warpPerspective(
 			frame_result,
 			frame_projection,
