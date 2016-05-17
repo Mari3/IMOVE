@@ -6,6 +6,7 @@
 #include <string>
 
 const unsigned char U8_WHITE = 255;
+const unsigned char U8_BLACK = 0;
 const signed int NOKEY_ANYKEY = -1;
 
 const cv::Point2f ORIGIN2D = cv::Point2f(
@@ -67,12 +68,6 @@ int main(int argc, char* argv[]) {
 	fs["Camera_projector_transformation"] >> camera_projector_transformation;
 	fs.release();
 	
-	cv::Point2f* coordinate_corners_projector = new cv::Point2f[REQUIRED_CORNERS];
-	coordinate_corners_projector[0] = cv::Point2f(                    ORIGIN2D.x,                      ORIGIN2D.y);
-	coordinate_corners_projector[1] = cv::Point2f(resolution_projector.width - 1,                      ORIGIN2D.y);
-	coordinate_corners_projector[2] = cv::Point2f(										ORIGIN2D.x, resolution_projector.height - 1);
-	coordinate_corners_projector[3] = cv::Point2f(resolution_projector.width - 1, resolution_projector.height - 1);
-	
 	cv::Mat frame_projector;
 	cv::VideoCapture projector_videoreader("./test/Test 1/projector.mp4");
 	cv::namedWindow("Projector", cv::WINDOW_NORMAL);
@@ -93,17 +88,24 @@ int main(int argc, char* argv[]) {
 		cv::warpPerspective(
 			frame_projector,
 			frame_result,
-			camera_projector_transformation.inv(),
-			resolution_projector
+			camera_projector_transformation,
+			frame_camera.size(),
+			cv::INTER_LINEAR | cv::WARP_INVERSE_MAP,
+			cv::BORDER_CONSTANT,
+			cv::Scalar(U8_BLACK, U8_BLACK, U8_BLACK)
 		);
 		
-		//frame_result = frame_camera - frame_projector;
-		
+		frame_result = frame_camera - frame_result;
+std::cout << frame_projector.size() << frame_camera.size() << frame_result.size() << frame_projection.size() << std::endl;
 		cv::warpPerspective(
 			frame_result,
+			//frame_camera,
 			frame_projection,
 			camera_projector_transformation,
-			resolution_projector
+			resolution_projector,
+			cv::INTER_LINEAR,
+			cv::BORDER_CONSTANT,
+			cv::Scalar(U8_BLACK, U8_BLACK, U8_BLACK)
 		);
 		cv::imshow("Projector", frame_projector);
 		cv::imshow("Camera", frame_camera);
