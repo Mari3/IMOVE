@@ -52,29 +52,61 @@ void drawCornersOnImage(cv::Mat& image) {
 	}
 }
 
-void cameraWindowMouseEvent(int event, int x, int y, int flags, void* userdata) {
-	coordinate_mouse = cv::Point2f(x, y);
-	mouse_entered = true;
-
-	if (flags & cv::EVENT_FLAG_LBUTTON && amount_corners < REQUIRED_CORNERS) {
-		coordinate_corners_camera[amount_corners] = coordinate_mouse;
-		++amount_corners;
-	}
-}
 
 int main(int argc, char* argv[]) {
-	scalar_corners[0] = cv::Scalar(255,  0,    0);
-	scalar_corners[1] = cv::Scalar(0,   255,   0);
-	scalar_corners[2] = cv::Scalar(0,     0, 255);
-	scalar_corners[3] = cv::Scalar(255, 255,   0);
-	
 	if (argc != 5) {
 		std::cout << "Usage: <path to configuration file> <int video device> <projector resolution width> <projector resolution height>" << std::endl;
 		return EXIT_SUCCESS;
 	}
- 
-	const cv::Size resolution_projector(std::stoi(argv[3]), std::stoi(argv[4]));
 	
+	cv::FileStorage fs;
+	fs.open(argv[1], cv::FileStorage::READ);
+	cv::Size resolution_projector;
+	fs["Resolution_projector"] >> resolution_projector;
+	cv::Mat camera_projector_transformation; 
+	fs["Camera_projector_transformation"] >> camera_projector_transformation;
+	fs.release();
+	
+	cv::Point2f* coordinate_corners_projector = new cv::Point2f[REQUIRED_CORNERS];
+	coordinate_corners_projector[0] = cv::Point2f(                    ORIGIN2D.x,                      ORIGIN2D.y);
+	coordinate_corners_projector[1] = cv::Point2f(resolution_projector.width - 1,                      ORIGIN2D.y);
+	coordinate_corners_projector[2] = cv::Point2f(										ORIGIN2D.x, resolution_projector.height - 1);
+	coordinate_corners_projector[3] = cv::Point2f(resolution_projector.width - 1, resolution_projector.height - 1);
+	
+	cv::Mat frame_projector;
+	cv::VideoCapture projector_videoreader("./test/Test 1/projector.mp4");
+	cv::namedWindow("Projector", cv::WINDOW_NORMAL);
+	cv::moveWindow("Projector", 0, 0);
+	cv::Mat frame_camera;
+	cv::VideoCapture camera_videoreader("./test/Test 1/camera.mp4");
+	cv::namedWindow("Camera", cv::WINDOW_NORMAL);
+	cv::moveWindow("Camera", 400, 0);
+	cv::Mat frame_result;
+	cv::namedWindow("Result", cv::WINDOW_NORMAL);
+	cv::moveWindow("Result", 800, 0);
+	cv::Mat frame_projection;
+	cv::namedWindow("Projection", cv::WINDOW_NORMAL);
+	cv::moveWindow("Projection", 1200, 0);
+
+	while (cv::waitKey(1) == NOKEY_ANYKEY && projector_videoreader.read(frame_projector) && camera_videoreader.read(frame_camera)) {
+		frame_camera.copyTo(frame_result);
+
+		cv::warpPerspective(
+			frame_result,
+			frame_projection,
+			camera_projector_transformation,
+			resolution_projector
+		);
+		cv::imshow("Projector", frame_projector);
+		cv::imshow("Camera", frame_camera);
+		cv::imshow("Result", frame_result);
+		cv::imshow("Projection", frame_projection);
+	}
+
+	projector_videoreader.release();
+	camera_videoreader.release();
+
+	/*	
 	cv::Mat frame_projector;
 	cv::namedWindow("Projector", cv::WINDOW_NORMAL);
 	cv::moveWindow("Projector", 0, 0);
@@ -167,10 +199,6 @@ int main(int argc, char* argv[]) {
 	camera_video_writer.release();
 	projection_video_writer.release();
 
-	cv::FileStorage fs(argv[1], cv::FileStorage::WRITE);
-	fs << "Resolution_projector" << resolution_projector;
-	fs << "Camera_projector_transformation" << camera_projector_transformation;
-	fs.release();
-
+	*/
 	return EXIT_SUCCESS;
 }
