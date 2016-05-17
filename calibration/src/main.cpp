@@ -61,8 +61,8 @@ int main(int argc, char* argv[]) {
 		return EXIT_SUCCESS;
 	}
 
-	unsigned int frames_projector_camera_delay = 6;
-	double RATIO_PROJECTOR_BACKGROUND_LIGHT = 0.3;
+	unsigned int frames_projector_camera_delay = 5;
+	double RATIO_PROJECTOR_BACKGROUND_LIGHT = 0.39;
 	
 	cv::FileStorage fs;
 	fs.open(argv[1], cv::FileStorage::READ);
@@ -73,14 +73,14 @@ int main(int argc, char* argv[]) {
 	fs.release();
 	
 	cv::Mat frame_projector;
-	cv::VideoCapture projector_videoreader("./test/Test 1/projector.mp4");
+	cv::VideoCapture projector_videoreader("./calibration/test/camera_projector_transformation/big_buck_bunny_1080p_h264.mov");
 	cv::namedWindow("Projector", cv::WINDOW_NORMAL);
 	cv::moveWindow("Projector", 0, 0);
 	cv::Mat frame_delay_projector;
 	cv::namedWindow("Projector delay", cv::WINDOW_NORMAL);
 	cv::moveWindow("Projector delay", 300, 0);
 	cv::Mat frame_camera;
-	cv::VideoCapture camera_videoreader("./test/Test 1/camera.mp4");
+	cv::VideoCapture camera_videoreader(std::stoi(argv[2]));
 	cv::namedWindow("Camera", cv::WINDOW_NORMAL);
 	cv::moveWindow("Camera", 600, 0);
 	cv::Mat frame_projectionelimination;
@@ -91,14 +91,33 @@ int main(int argc, char* argv[]) {
 	cv::moveWindow("Projection", 1200, 0);
 	
 	std::queue<cv::Mat> frames_delay_projector;
-	while (cv::waitKey(1) == NOKEY_ANYKEY && projector_videoreader.read(frame_projector) && camera_videoreader.read(frame_camera)) {
+	char key = NOKEY_ANYKEY;
+	while ((key == NOKEY_ANYKEY || key == ((char) -85) || key == ((char) -83) || key == ((char) 61) || key == ((char) 45)) && projector_videoreader.read(frame_projector) && camera_videoreader.read(frame_camera)) {
 		cv::imshow("Projector", frame_projector);
 		cv::imshow("Camera", frame_camera);
+		if (key == ((char) -85)) {
+			++frames_projector_camera_delay;
+			std::cout << frames_projector_camera_delay << std::endl;
+		}
+		if (key == ((char) -83) && frames_projector_camera_delay > 0) {
+			--frames_projector_camera_delay;
+			std::cout << frames_projector_camera_delay << std::endl;
+		}
+		if (key == ((char) 61)) {
+			RATIO_PROJECTOR_BACKGROUND_LIGHT += 0.01;
+			std::cout << RATIO_PROJECTOR_BACKGROUND_LIGHT << std::endl;
+		}
+		if (key == ((char) 45) && RATIO_PROJECTOR_BACKGROUND_LIGHT > 0) {
+			RATIO_PROJECTOR_BACKGROUND_LIGHT -= 0.01;
+			std::cout << RATIO_PROJECTOR_BACKGROUND_LIGHT << std::endl;
+		}
 		
 		frames_delay_projector.push(frame_projector.clone());
-		if (frames_delay_projector.size() > frames_projector_camera_delay) {
-			frame_delay_projector = frames_delay_projector.front();
+		while (frames_delay_projector.size() > frames_projector_camera_delay) {
 			frames_delay_projector.pop();
+		}
+		if (frames_delay_projector.size() == frames_projector_camera_delay) {
+			frame_delay_projector = frames_delay_projector.front();
 			cv::imshow("Projector delay", frame_delay_projector);
 			cv::warpPerspective(
 				frame_delay_projector,
@@ -124,6 +143,8 @@ int main(int argc, char* argv[]) {
 			cv::imshow("Projection elimination", frame_projectionelimination);
 			cv::imshow("Projection", frame_projection);
 		}
+		key = cv::waitKey(1);
+		//std::cout << ((int) key) << std::endl;
 	}
 
 	projector_videoreader.release();
