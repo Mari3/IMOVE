@@ -75,25 +75,31 @@ int main(int argc, char* argv[]) {
  
 	const cv::Size resolution_projector(std::stoi(argv[3]), std::stoi(argv[4]));
 	
-	cv::Mat projector_frame = cv::Mat::ones(resolution_projector.width, resolution_projector.height, CV_8UC3) * U8_WHITE;
+	cv::Mat frame_projector;
 	cv::namedWindow("Projector", cv::WINDOW_NORMAL);
 	cv::moveWindow("Projector", 0, 0);
-	cv::imshow("Projector", projector_frame);
 
 	cv::Mat frame_camera;
-	cv::VideoCapture video_capture(std::stoi(argv[2]));
+	cv::VideoCapture camera_video_reader(std::stoi(argv[2]));
+	cv::VideoCapture projector_video_reader("./calibration/test/camera_projector_transformation/big_buck_bunny_1080p_h264.mov");
 	cv::namedWindow("Camera", cv::WINDOW_NORMAL);
 	cv::moveWindow("Camera", 500, 0);
 	cv::setMouseCallback("Camera", cameraWindowMouseEvent, NULL);
 	
 	while (amount_corners < REQUIRED_CORNERS) {
-		if (!video_capture.read(frame_camera)) {
+		if (!camera_video_reader.read(frame_camera)) {
+			std::cerr << "Unable to read next frame." << std::endl;
+			std::cerr << "Exiting..." << std::endl;
+			return EXIT_FAILURE;
+		}
+		if (!projector_video_reader.read(frame_projector)) {
 			std::cerr << "Unable to read next frame." << std::endl;
 			std::cerr << "Exiting..." << std::endl;
 			return EXIT_FAILURE;
 		}
 		drawCornersOnImage(frame_camera);
 		cv::imshow("Camera", frame_camera);
+		cv::imshow("Projector", frame_projector);
 		cv::waitKey(1);
 	}
 	cv::Point2f* coordinate_corners_projector = new cv::Point2f[REQUIRED_CORNERS];
@@ -105,18 +111,46 @@ int main(int argc, char* argv[]) {
 		coordinate_corners_camera,
 		coordinate_corners_projector
 	);
+	
+	cv::VideoWriter camera_video_writer(
+		"./test/camera.mp4",
+		cv::VideoWriter::fourcc('M', 'P', 'E', 'G'),
+		25,
+		cv::Size(camera_video_reader.get(cv::CAP_PROP_FRAME_WIDTH), camera_video_reader.get(cv::CAP_PROP_FRAME_HEIGHT)),
+		true
+	);
+	cv::VideoWriter projection_video_writer(
+		"./test/projection.mp4",
+		cv::VideoWriter::fourcc('M', 'P', 'E', 'G'),
+		25,
+		resolution_projector,
+		true
+	);
+	cv::VideoWriter projector_video_writer(
+		"./test/projector.mp4",
+		cv::VideoWriter::fourcc('M', 'P', 'E', 'G'),
+		25,
+		cv::Size(projector_video_reader.get(cv::CAP_PROP_FRAME_WIDTH), projector_video_reader.get(cv::CAP_PROP_FRAME_HEIGHT)),
+		true
+	);
 
 	cv::namedWindow("Projection", cv::WINDOW_NORMAL);
 	cv::moveWindow("Projection", 1000, 0);
 	cv::Mat frame_projection;
 	while (cv::waitKey(1) == NOKEY_ANYKEY) {
-		if (!video_capture.read(frame_camera)) {
+		if (!camera_video_reader.read(frame_camera)) {
+			std::cerr << "Unable to read next frame." << std::endl;
+			std::cerr << "Exiting..." << std::endl;
+			return EXIT_FAILURE;
+		}
+		if (!projector_video_reader.read(frame_projector)) {
 			std::cerr << "Unable to read next frame." << std::endl;
 			std::cerr << "Exiting..." << std::endl;
 			return EXIT_FAILURE;
 		}
 		drawCornersOnImage(frame_camera);
 		cv::imshow("Camera", frame_camera);
+		cv::imshow("Projector", frame_projector);
 		cv::warpPerspective(
 			frame_camera,
 			frame_projection,
@@ -124,7 +158,14 @@ int main(int argc, char* argv[]) {
 			resolution_projector
 		);
 		cv::imshow("Projection", frame_projection);
+		projector_video_writer << frame_projector;
+		projection_video_writer << frame_projection;
+		camera_video_writer << frame_camera;
 	}
+	camera_video_reader.release();
+	projector_video_reader.release();
+	camera_video_writer.release();
+	projection_video_writer.release();
 
 	cv::FileStorage fs(argv[1], cv::FileStorage::WRITE);
 	fs << "Resolution_projector" << resolution_projector;
