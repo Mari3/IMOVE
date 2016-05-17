@@ -86,13 +86,13 @@ void PeopleDetector::detectionTest() {
 
       resize(new_frame, new_frame, Size(960, 540));
 
-      // Mat diff_frame;
-      // absdiff(new_frame, frame, diff_frame);
-      // Scalar sumElems = sum(diff_frame);
-      // if (sumElems[0] + sumElems[1] + sumElems[2] > 10000000) {
-      //   cout << "renew" << endl;
-      //   renew();
-      // }
+      Mat diff_frame;
+      absdiff(new_frame, frame, diff_frame);
+      Scalar sumElems = sum(diff_frame);
+      if (sumElems[0] + sumElems[1] + sumElems[2] > 15000000) {
+        cout << "renew" << endl;
+        renew();
+      }
 
       frame = new_frame;
       detect();
