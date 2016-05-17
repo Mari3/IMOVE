@@ -4,8 +4,10 @@
 
 #include "Person.h"
 
-Person::Person(Vector2 location, int id, PersonType type) : location(location), id(id), type(type) {
+Person::Person(Vector2 location, PersonType type) : location(location), type(type) {
     previousLocations = list<Vector2>();
+    id = count;
+    count++;
 }
 
 /*--------------------
@@ -22,6 +24,8 @@ void Person::setLocation(Vector2 location) {
     previousLocations.push_back(this->location);
     this->location = location;
 }
+
+int Person::count = 0;
 
 int Person::getId() {
     return id;

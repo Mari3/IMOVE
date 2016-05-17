@@ -20,16 +20,19 @@
 #include <vector>
 #include <sstream>
 #include <iostream>
+#include <limits>
 
 using namespace cv;
 
 class PeopleDetector {
 
 private:
-  std::vector<Person> detected_people;
+  std::vector<Person> detected_people = std::vector<Person>();
+  std::vector<Vector2> new_locations;
   SimpleBlobDetector::Params params;
   Ptr<BackgroundSubtractorKNN> bg_sub = createBackgroundSubtractorKNN();
   Ptr<SimpleBlobDetector> detector;
+  Mat frame;
 
 public:
   PeopleDetector();
@@ -37,7 +40,9 @@ public:
 
   void detectionTest(char* videoFile);
   void detectionTest();
-  void detect(cv::Mat frame);
+  void detect();
+  void renew();
+  int getClosest(Vector2 location);
 
 };
 

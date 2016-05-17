@@ -21,9 +21,10 @@ private:
     list<Vector2> previousLocations;
     Vector2 location;
     int id;
+    static int count;
 public:
     PersonType type;
-    Person(Vector2 location, int id, PersonType type);
+    Person(Vector2 location, PersonType type);
     //Getters and setters
     Vector2 getLocation();
     void setLocation(Vector2 location);
