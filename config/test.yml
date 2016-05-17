@@ -1,0 +1,14 @@
+%YAML:1.0
+Camera_device: 0
+Resolution_camera: [ 640, 480 ]
+Resolution_projector: [ 1920, 1080 ]
+Camera_projector_transformation: !!opencv-matrix
+   rows: 3
+   cols: 3
+   dt: d
+   data: [ 4.4741423990866007e+00, -5.3263599989126198e-01,
+       -8.9461542541736344e+02, -3.9792253561171970e-02,
+       1.9365563399770063e+00, -3.8227091587765267e+02,
+       1.9059788341126778e-04, -2.0154653415526691e-03, 1. ]
+Frames_projector_camera_delay: 5
+Percentage_projector_background_light: 39

@@ -16,10 +16,10 @@ void Calibration::createPointsProjectorFrameFromPointsCameraFrame(std::vector<cv
 	);
 }
 
-void Calibration::createProjectorCameraFrameFromCameraFrame(cv::Mat& projector_camera_frame, const cv::Mat& camera_frame) const {
+void Calibration::createProjectionFrameFromCameraFrame(cv::Mat& projection_frame, const cv::Mat& camera_frame) const {
 	cv::warpPerspective(
 		camera_frame,
-		projector_camera_frame,
+		projection_frame,
 		this->camera_projector_transformation,
 		this->resolution_projector
 	);
