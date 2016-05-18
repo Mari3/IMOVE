@@ -91,10 +91,10 @@ int main(int argc, char* argv[]) {
 		read_config["Percentage_projector_background_light"] >> percentage_projector_background_light;
 	}
 	
-	scalar_corners[0] = cv::Scalar(255,  0,    0);
-	scalar_corners[1] = cv::Scalar(0,   255,   0);
-	scalar_corners[2] = cv::Scalar(0,     0, 255);
-	scalar_corners[3] = cv::Scalar(255, 255,   0);
+	scalar_corners[0] = cv::Scalar(  0, 127, 255);
+	scalar_corners[1] = cv::Scalar(  0, 255, 127);
+	scalar_corners[2] = cv::Scalar(127,   0, 255);
+	scalar_corners[3] = cv::Scalar(127, 255,   0);
  
 	cv::Mat frame_projector;
 	cv::VideoCapture projector_videoreader(argv[3]);
