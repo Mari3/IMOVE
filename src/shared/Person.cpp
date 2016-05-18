@@ -4,7 +4,7 @@
 
 #include "Person.h"
 
-Person::Person(Vector2 location, int id, PersonType type) : location(location), id(id), type(type) {
+Person::Person(Vector2 location, unsigned int id, PersonType type) : location(location), id(id), type(type) {
     previousLocations = list<Vector2>();
 }
 
