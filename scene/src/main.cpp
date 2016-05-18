@@ -30,6 +30,8 @@ int main(int argc, char* argv[]) {
 	fs["Frames_projector_camera_delay"] >> frames_projector_camera_delay;
 	int percentage_projector_background_light;
 	fs["Percentage_projector_background_light"] >> percentage_projector_background_light;
+	float meter;
+	fs["Meter"] >> meter;
 	fs.release();
 
 	const Calibration calibration = Calibration(resolution_projector, camera_projector_transformation);
