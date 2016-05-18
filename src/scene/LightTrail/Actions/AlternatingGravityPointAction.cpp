@@ -5,7 +5,8 @@
 #include "AlternatingGravityPointAction.h"
 
 bool AlternatingGravityPointAction::isDone(Action *&followUp) {
-    return false;
+    //This action is done when a person gets close to the scene.
+    return lightPeople->size()>0;
 }
 
 void AlternatingGravityPointAction::execute(float dt) {
@@ -16,7 +17,8 @@ void AlternatingGravityPointAction::execute(float dt) {
 }
 
 AlternatingGravityPointAction::AlternatingGravityPointAction()
-        : gravityPoints(GravityPointRepository::getInstance()), timer(5.f,true), xRange(0,2560), yRange(0,1600),
+        : gravityPoints(GravityPointRepository::getInstance()), lightPeople(LightPersonRepository::getInstance()),
+          timer(5.f,true), xRange(0,2560), yRange(0,1600),
         myGravityPoint(Vector2(0,0),Range(0,360,true),300000)
 {
     GravityPoint* ptr = &myGravityPoint;

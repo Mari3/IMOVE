@@ -11,12 +11,14 @@
 #include "../GravityPoint.h"
 #include "../../../shared/Timer.h"
 #include "../Repositories/GravityPointRepository.h"
+#include "../Repositories/LightPersonRepository.h"
 
 using namespace std;
 
 class AlternatingGravityPointAction : public Action{
 private:
     GravityPointRepository* gravityPoints;
+    LightPersonRepository* lightPeople;
     Timer timer;
     GravityPoint myGravityPoint;
     Range xRange;
