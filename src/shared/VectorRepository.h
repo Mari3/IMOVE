@@ -40,6 +40,7 @@ public:
             items.erase(items.cbegin()+index+modifier);
             modifier--;
         }
+        scheduledForRemoval.clear();
     }
 
     unsigned long size() override {

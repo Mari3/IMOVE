@@ -6,6 +6,7 @@
 
 bool AlternatingGravityPointAction::isDone(Action *&followUp) {
     //This action is done when a person gets close to the scene.
+    gravityPoints->scheduleForRemoval(&myGravityPoint);
     return lightPeople->size()>0;
 }
 

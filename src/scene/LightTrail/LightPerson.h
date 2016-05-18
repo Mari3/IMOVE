@@ -11,11 +11,10 @@
 #include "../../shared/Range.h"
 
 class LightPerson : public Person{
-private:
-    Range hue;
 public:
     LightPerson(const Vector2 &location, int id, PersonType type, Range hue);
     void shiftHue(float shift);
+    Range hue;
 };
 
 

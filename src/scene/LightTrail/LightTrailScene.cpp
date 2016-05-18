@@ -7,6 +7,8 @@
 #include "../Util/HueConverter.h"
 #include "Actions/UpdateLightSourcesAction.h"
 #include "Actions/AlternatingGravityPointAction.h"
+#include "Conditions/PersonTurnedBystanderCondition.h"
+#include "Actions/DeleteAllAction.h"
 
 void LightTrailScene::draw(sf::RenderTarget &target) {
 
@@ -19,6 +21,13 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
         sf::RectangleShape circle(sf::Vector2f(3,3) );
         circle.setPosition(trail->getLocation().x,trail->getLocation().y);
         circle.setFillColor(HueConverter::ToColor(trail->hue));
+        target.draw(circle);
+    }
+
+    for(auto &pair : *lightPeople){
+        sf::CircleShape circle(10);
+        circle.setFillColor(sf::Color::Cyan);
+        circle.setPosition(sf::Vector2f(pair.second->getLocation().x,pair.second->getLocation().y));
         target.draw(circle);
     }
 
@@ -41,17 +50,20 @@ LightTrailScene::LightTrailScene() : Scene(),
                                      gravityPoints(GravityPointRepository::getInstance()),
                                      colorHoles(ColorHoleRepository::getInstance()),
                                      lightPeople(LightPersonRepository::getInstance())
-                                             {
+{
     //Initialize lists
     lightSources->add(new LightSource(Vector2(0,0),Range(0,90,true),Range(0,90,true),Range(0,400)));
     lightSources->add(new LightSource(Vector2(2560,0),Range(90,180,true),Range(90,180,true),Range(0,400)));
     lightSources->add(new LightSource(Vector2(0,1600),Range(180,270,true),Range(270,0,true),Range(0,400)));
     lightSources->add(new LightSource(Vector2(2560,1600),Range(270,360,true),Range(180,270,true),Range(0,400)));
 
+    actions.push_back(new DeleteAllAction());
     actions.push_back(new UpdateLightTrailsAction());
     actions.push_back(new UpdateLightSourcesAction());
     actions.push_back(new AlternatingGravityPointAction());
     actions.push_back(new AlternatingGravityPointAction());
+
+    conditions.push_back(new PersonTurnedBystanderCondition());
 }
 
 void LightTrailScene::updatePeople(vector<Person> newPeople) {

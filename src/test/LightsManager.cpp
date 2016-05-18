@@ -15,6 +15,10 @@ void LightsManager::run() {
 
     sf::Clock clock;
 
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    Person person(Vector2(mousePos.x,mousePos.y),0,Bystander);
+    vector<Person> people;
+
     while(window.isOpen()){
 
         // check all the window's events that were triggered since the last iteration of the loop
@@ -27,8 +31,13 @@ void LightsManager::run() {
 
         //window.clear(sf::Color::Black);
 
+        mousePos = sf::Mouse::getPosition(window);
+        person.setLocation(Vector2(mousePos.x,mousePos.y));
+        people.clear();
+        people.push_back(person);
 
         float dt = clock.restart().asSeconds();
+        scene->updatePeople(people);
         scene->update(dt);
         scene->draw(window);
 

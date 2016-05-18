@@ -24,20 +24,27 @@ void Scene::update(float dt) {
     }
 
     //Execute the actions
+    vector<int> toDelete;
+
     for(int i=0;i<actions.size();++i){
         //Execute the action
         actions[i]->execute(dt);
 
         //Remove action if it is done
-        Action* followUp;
+        Action* followUp = nullptr;
         if(actions[i]->isDone(followUp)){
             //If there is a followup, add it to the list
             if(followUp){
                 actions.push_back(followUp);
             }
-            actions.erase(actions.begin()+i);
-            --i;
+            toDelete.push_back(i);
         }
+    }
+
+    int modifier = 0;
+    for(auto &i : toDelete){
+        actions.erase(actions.begin()+i-modifier);
+        modifier++;
     }
 }
 
