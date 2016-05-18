@@ -23,7 +23,7 @@ void Person::setLocation(Vector2 location) {
     this->location = location;
 }
 
-int Person::getId() {
+unsigned int Person::getId() {
     return id;
 }
 

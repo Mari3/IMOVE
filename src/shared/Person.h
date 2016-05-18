@@ -20,14 +20,14 @@ class Person {
 private:
     list<Vector2> previousLocations;
     Vector2 location;
-    int id;
+    unsigned int id;
 public:
     PersonType type;
     Person(Vector2 location, int id, PersonType type);
     //Getters and setters
     Vector2 getLocation();
     void setLocation(Vector2 location);
-    int getId();
+    unsigned int getId();
 };
 
 

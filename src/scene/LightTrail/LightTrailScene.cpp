@@ -58,7 +58,7 @@ void LightTrailScene::updatePeople(vector<Person> newPeople) {
     Range hueDraw(0,360,true);
     for(int i=0;i<newPeople.size();++i){
         Person person = newPeople[i];
-        int id = person.getId();
+        unsigned int id = person.getId();
         if(lightPeople->has(id)){
             LightPerson* lPerson = lightPeople->get(id);
             lPerson->setLocation(person.getLocation());
