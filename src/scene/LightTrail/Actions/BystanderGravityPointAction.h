@@ -9,12 +9,15 @@
 #include "../../Action.h"
 #include "../Repositories/GravityPointRepository.h"
 #include "../LightPerson.h"
+#include "../../../shared/Timer.h"
 
 class BystanderGravityPointAction : public Action {
 private:
     GravityPointRepository* gravityPoints;
     GravityPoint* gravityPoint;
     LightPerson* person;
+    Timer timer;
+    bool gravityPointActive;
     void setLocation();
 public:
     BystanderGravityPointAction(LightPerson* person);

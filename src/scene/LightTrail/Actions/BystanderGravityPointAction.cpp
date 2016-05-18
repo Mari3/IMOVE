@@ -8,11 +8,12 @@
 #define HEIGHT 1600
 
 BystanderGravityPointAction::BystanderGravityPointAction(LightPerson* person) : person(person),
-    gravityPoints(GravityPointRepository::getInstance())
+    gravityPoints(GravityPointRepository::getInstance()), timer(Timer(5,true))
 {
     gravityPoint = new GravityPoint(Vector2(0,0),person->hue,300000);
     setLocation();
     gravityPoints->add(gravityPoint);
+    gravityPointActive = true;
 }
 
 void BystanderGravityPointAction::setLocation() {
@@ -45,4 +46,13 @@ bool BystanderGravityPointAction::isDone(Action *&followUp) {
 
 void BystanderGravityPointAction::execute(float dt) {
     setLocation();
+    if(timer.update(dt)){
+        if(gravityPointActive){
+            gravityPoints->scheduleForRemoval(gravityPoint);
+            gravityPointActive = false;
+        }else{
+            gravityPoints->add(gravityPoint);
+            gravityPointActive = true;
+        }
+    }
 }
