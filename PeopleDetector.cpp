@@ -105,7 +105,18 @@ void PeopleDetector::detect() {
 
   vector<KeyPoint> keypoints;
   detector->detect(thresh,keypoints);
-  // drawKeypoints(thresh, keypoints, keypoints_frame, Scalar(0,0,255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+  drawKeypoints(thresh, keypoints, keypoints_frame, Scalar(0,0,255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+
+  vector< vector<Point> > contours;
+  findContours(thresh, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
+  vector< vector<Point> > contours_thresholded;
+  for (auto contour : contours) {
+    if (contourArea(contour) > 500) {
+      contours_thresholded.push_back(contour);
+    }
+  }
+  contours.clear();
+  drawContours(keypoints_frame, contours_thresholded, -1, Scalar(0,0,255));
 
   for (auto &kp : keypoints) {
     float xco;
@@ -133,7 +144,7 @@ void PeopleDetector::detect() {
     new_locations.push_back(new_location);
   }
 
-  // imshow("Frame", keypoints_frame);
+  imshow("Frame", keypoints_frame);
 }
 
 void PeopleDetector::renew() {
@@ -170,7 +181,7 @@ void PeopleDetector::match() {
       putText(thresh, std::to_string(new_person.getId()), Point(new_locations[j].x, new_locations[j].y), FONT_HERSHEY_SIMPLEX, 1, Scalar(255,0,0));
     //}
   }
-  imshow("Frame", thresh);
+  //imshow("Frame", thresh);
 }
 
 int PeopleDetector::getClosest(Person person) {
