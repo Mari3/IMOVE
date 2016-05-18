@@ -14,6 +14,7 @@ class Calibration {
 
 		void setFramesProjectorCameraDelay(unsigned int frames_projector_camera_delay);
 		void setProjectorBackgroundLight(double projector_background_light);
+		void setCameraProjectorTransformation(cv::Mat& camera_projector_transformation);
 
 	private:
 		cv::Size resolution_projector;

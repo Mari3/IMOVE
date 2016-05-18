@@ -123,6 +123,7 @@ void onMouseCalibrateProjection(int event, int x, int y, int flags, void* userda
 			coordinate_corners_camera,
 			coordinate_corners_projector
 		);
+		calibration->setCameraProjectorTransformation(camera_projector_transformation);
 	}
 }
 
