@@ -75,15 +75,27 @@ int main(int argc, char* argv[]) {
 		std::cout << "Usage: <path to configuration file> <int video device> <path to calibration projection video file>" << std::endl;
 		return EXIT_SUCCESS;
 	}
+
+	cv::FileStorage read_config;
+	read_config.open(argv[1], cv::FileStorage::READ);
+	int frames_projector_camera_delay;
+	if (read_config["Frames_projector_camera_delay"].isNone()) {
+		frames_projector_camera_delay = 5;
+	} else {
+		read_config["Frames_projector_camera_delay"] >> frames_projector_camera_delay;
+	}
+	int percentage_projector_background_light;
+	if (read_config["Percentage_projector_background_light"].isNone()) {
+		percentage_projector_background_light = 39;
+	} else {
+		read_config["Percentage_projector_background_light"] >> percentage_projector_background_light;
+	}
 	
 	scalar_corners[0] = cv::Scalar(255,  0,    0);
 	scalar_corners[1] = cv::Scalar(0,   255,   0);
 	scalar_corners[2] = cv::Scalar(0,     0, 255);
 	scalar_corners[3] = cv::Scalar(255, 255,   0);
  
-	int frames_projector_camera_delay = 5;
-	int percentage_projector_background_light = 39;
-	
 	cv::Mat frame_projector;
 	cv::VideoCapture projector_videoreader(argv[3]);
 	cv::namedWindow("Projector", cv::WINDOW_NORMAL);
@@ -114,18 +126,37 @@ int main(int argc, char* argv[]) {
 	coordinate_corners_projector[1] = cv::Point2f(resolution_projector.width - 1,                      ORIGIN2D.y);
 	coordinate_corners_projector[2] = cv::Point2f(										ORIGIN2D.x, resolution_projector.height - 1);
 	coordinate_corners_projector[3] = cv::Point2f(resolution_projector.width - 1, resolution_projector.height - 1);
-	
-
 	cv::Size resolution_camera(camera_videoreader.get(cv::CAP_PROP_FRAME_WIDTH), camera_videoreader.get(cv::CAP_PROP_FRAME_HEIGHT));
-	coordinate_corners_camera[0] = cv::Point2f(                 ORIGIN2D.x,                   ORIGIN2D.y);
-	coordinate_corners_camera[1] = cv::Point2f(resolution_camera.width - 1,                   ORIGIN2D.y);
-	coordinate_corners_camera[2] = cv::Point2f(									ORIGIN2D.x, resolution_camera.height - 1);
-	coordinate_corners_camera[3] = cv::Point2f(resolution_camera.width - 1, resolution_camera.height - 1);
-
-	camera_projector_transformation = cv::getPerspectiveTransform(
-		coordinate_corners_camera,
-		coordinate_corners_projector
-	);
+	if (read_config["Camera_projector_transformation"].isNone()) {
+		coordinate_corners_camera[0] = cv::Point2f(                 ORIGIN2D.x,                   ORIGIN2D.y);
+		coordinate_corners_camera[1] = cv::Point2f(resolution_camera.width - 1,                   ORIGIN2D.y);
+		coordinate_corners_camera[2] = cv::Point2f(									ORIGIN2D.x, resolution_camera.height - 1);
+		coordinate_corners_camera[3] = cv::Point2f(resolution_camera.width - 1, resolution_camera.height - 1);
+		
+		camera_projector_transformation = cv::getPerspectiveTransform(
+			coordinate_corners_camera,
+			coordinate_corners_projector
+		);
+	} else {
+		read_config["Camera_projector_transformation"] >> camera_projector_transformation;
+		std::vector<cv::Point2f> points_projector = std::vector<cv::Point2f>(4);
+		points_projector.push_back(cv::Point2f(                    ORIGIN2D.x,                      ORIGIN2D.y));
+		points_projector.push_back(cv::Point2f(resolution_projector.width - 1,                      ORIGIN2D.y));
+		points_projector.push_back(cv::Point2f(									   ORIGIN2D.x, resolution_projector.height - 1));
+		points_projector.push_back(cv::Point2f(resolution_projector.width - 1, resolution_projector.height - 1));
+		std::vector<cv::Point2f> points_projection = std::vector<cv::Point2f>(4);
+		cv::perspectiveTransform(
+			points_projector,
+			points_projection,
+			camera_projector_transformation.inv() //TODO inv flag?
+		);
+		
+		coordinate_corners_camera[0] = points_projection[0];
+		coordinate_corners_camera[1] = points_projection[1];
+		coordinate_corners_camera[2] = points_projection[2];
+		coordinate_corners_camera[3] = points_projection[3];
+	}
+	read_config.release();
 	
 	std::queue<cv::Mat> frames_delay_projector;
 	while (cv::waitKey(1) == NOKEY_ANYKEY && projector_videoreader.read(frame_projector) && camera_videoreader.read(frame_camera)) {
@@ -170,14 +201,14 @@ int main(int argc, char* argv[]) {
 	projector_videoreader.release();
 	camera_videoreader.release();
 
-	cv::FileStorage fs(argv[1], cv::FileStorage::WRITE);
-	fs << "Camera_device" << std::stoi(argv[2]);
-	fs << "Resolution_camera" << resolution_camera;
-	fs << "Resolution_projector" << resolution_projector;
-	fs << "Camera_projector_transformation" << camera_projector_transformation;
-	fs << "Frames_projector_camera_delay" << frames_projector_camera_delay;
-	fs << "Percentage_projector_background_light" << percentage_projector_background_light;
-	fs.release();
+	cv::FileStorage write_config(argv[1], cv::FileStorage::WRITE);
+	write_config << "Camera_device" << std::stoi(argv[2]);
+	write_config << "Resolution_camera" << resolution_camera;
+	write_config << "Resolution_projector" << resolution_projector;
+	write_config << "Camera_projector_transformation" << camera_projector_transformation;
+	write_config << "Frames_projector_camera_delay" << frames_projector_camera_delay;
+	write_config << "Percentage_projector_background_light" << percentage_projector_background_light;
+	write_config.release();
 	
 	return EXIT_SUCCESS;
 }
