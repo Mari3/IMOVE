@@ -10,16 +10,18 @@
 #include "../../Action.h"
 #include "../LightTrail.h"
 #include "../GravityPoint.h"
+#include "../Repositories/LightTrailRepository.h"
+#include "../Repositories/GravityPointRepository.h"
 
 using namespace std;
 
 class UpdateLightTrailsAction : public Action {
 private:
-    vector<LightTrail*>* lightTrails;
-    vector<GravityPoint*>* gravityPoints;
+    LightTrailRepository* lightTrails;
+    GravityPointRepository* gravityPoints;
     Vector2 calculateForce(LightTrail trail);
 public:
-    UpdateLightTrailsAction(vector<LightTrail*>* &lightTrails, vector<GravityPoint*>* &gravityPoints);
+    UpdateLightTrailsAction();
 
     bool isDone(Action *&followUp) override;
     void execute(float dt) override;

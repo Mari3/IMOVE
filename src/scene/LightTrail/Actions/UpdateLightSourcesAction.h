@@ -10,16 +10,18 @@
 #include "../LightTrail.h"
 #include "../LightSource.h"
 #include "../../../shared/Timer.h"
+#include "../Repositories/LightSourceRepository.h"
+#include "../Repositories/LightTrailRepository.h"
 
 using namespace std;
 
 class UpdateLightSourcesAction : public Action {
 private:
-    vector<LightSource*>* sources;
-    vector<LightTrail*>* trails;
+    LightSourceRepository* sources;
+    LightTrailRepository* trails;
     Timer timer;
 public:
-    UpdateLightSourcesAction(vector<LightSource*>* &sources, vector<LightTrail*>* &trails);
+    UpdateLightSourcesAction();
     bool isDone(Action *&followUp) override;
     void execute(float dt) override;
 };

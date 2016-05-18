@@ -5,21 +5,20 @@
 #ifndef IMOVE_REPOSITORY_H
 #define IMOVE_REPOSITORY_H
 
+#include <iterator>
 
-template<class T>
+template<typename T>
 class Repository {
 public:
-    virtual void add(const T& item) = 0;
-    virtual void remove(const T& item) = 0;
-    virtual void update(const T& item) = 0;
-    virtual const T get(int id) = 0;
-    const T operator[](int id) {
-            return get(id);
+    virtual void add(T* item) = 0;
+    virtual void add(T* item, unsigned long id) = 0;
+    virtual void scheduleForRemoval(T* item) = 0;
+    virtual void removeAll() = 0;
+    virtual unsigned long size() = 0;
+    virtual T* get(unsigned long id) = 0;
+    T* operator[](unsigned long id) {
+        return get(id);
     }
-
-    //For iteration, TODO replace with safer system later
-    virtual T* begin() = 0;
-    virtual T* end() = 0;
 };
 
 

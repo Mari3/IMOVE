@@ -10,19 +10,20 @@
 #include "../../Action.h"
 #include "../GravityPoint.h"
 #include "../../../shared/Timer.h"
+#include "../Repositories/GravityPointRepository.h"
 
 using namespace std;
 
 class AlternatingGravityPointAction : public Action{
 private:
-    vector<GravityPoint*>* gravityPoints;
+    GravityPointRepository* gravityPoints;
     Timer timer;
     GravityPoint myGravityPoint;
     Range xRange;
     Range yRange;
 public:
 
-    AlternatingGravityPointAction(vector<GravityPoint *> *gravityPoints);
+    AlternatingGravityPointAction();
 
     bool isDone(Action *&followUp);
     void execute(float dt);

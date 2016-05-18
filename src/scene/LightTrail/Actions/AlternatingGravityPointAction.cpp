@@ -15,13 +15,12 @@ void AlternatingGravityPointAction::execute(float dt) {
     }
 }
 
-AlternatingGravityPointAction::AlternatingGravityPointAction(vector<GravityPoint *> *gravityPoints)
-        : gravityPoints(
-        gravityPoints), timer(5.f,true), xRange(0,2560), yRange(0,1600),
+AlternatingGravityPointAction::AlternatingGravityPointAction()
+        : gravityPoints(GravityPointRepository::getInstance()), timer(5.f,true), xRange(0,2560), yRange(0,1600),
         myGravityPoint(Vector2(0,0),Range(0,360,true),300000)
 {
     GravityPoint* ptr = &myGravityPoint;
-    gravityPoints->push_back(ptr);
+    gravityPoints->add(ptr);
     myGravityPoint.location.x = xRange.drawRandom();
     myGravityPoint.location.y = yRange.drawRandom();
 }

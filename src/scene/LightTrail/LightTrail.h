@@ -12,10 +12,10 @@ class LightTrail {
 private:
     Vector2 location, speed;
 public:
-    LightTrail(Vector2 location, Vector2 speed, float hue);
-    void update(Vector2 force, float dt);
-    Vector2 getLocation();
     float hue;
+    LightTrail(Vector2 location, Vector2 speed, float hue);
+    void applyForce(Vector2 force, float dt);
+    Vector2 getLocation();
     Vector2 getSpeed();
 };
 

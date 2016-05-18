@@ -4,8 +4,8 @@
 
 #include "UpdateLightSourcesAction.h"
 
-UpdateLightSourcesAction::UpdateLightSourcesAction(vector<LightSource*>* &sources, vector<LightTrail*>* &trails)
-        :   sources(sources), trails(trails), timer(Timer(3.f,true))
+UpdateLightSourcesAction::UpdateLightSourcesAction()
+        :   sources(LightSourceRepository::getInstance()), trails(LightTrailRepository::getInstance()), timer(Timer(3.f,true))
 {
 }
 
@@ -16,7 +16,7 @@ bool UpdateLightSourcesAction::isDone(Action *&followUp) {
 void UpdateLightSourcesAction::execute(float dt) {
     if(timer.update(dt)){
         for(auto &lightSource : *sources){
-            trails->push_back(lightSource->sendOut());
+            trails->add(lightSource->sendOut());
         }
     }
 }

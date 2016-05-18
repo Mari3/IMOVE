@@ -14,7 +14,7 @@ LightTrail::LightTrail(Vector2 location, Vector2 speed, float hue) :
 {
 }
 
-void LightTrail::update(Vector2 force, float dt) {
+void LightTrail::applyForce(Vector2 force, float dt) {
     speed += force*dt;
 
     if(speed.size() > 500){
