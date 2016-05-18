@@ -1,15 +1,24 @@
 #include <opencv2/imgproc/imgproc.hpp>
 
 #include <vector>
+#include <queue>
 
 class Calibration {
 	public:
-		Calibration(cv::Size& resolution_projector, cv::Mat& camera_projector_transformation);
+		Calibration(const cv::Size& resolution_projector, cv::Mat& camera_projector_transformation, unsigned int frames_projector_camera_delay, double projector_background_light);
 
-		void createPointsProjectorFrameFromPointsCameraFrame(std::vector<cv::Point2f>& points_projector_frame, const std::vector<cv::Point2f>& points_camera_frame) const;
-		void createProjectionFrameFromCameraFrame(cv::Mat& projection_frame, const cv::Mat& camera_frame) const;
+		void feedFrameProjector(const cv::Mat& frame_projector);
+		void eliminateProjectionFeedbackFromFrameCamera(cv::Mat& frame_projectioneliminated, const cv::Mat& frame_camera);
+		void createPointsFrameProjectorFromPointsFrameCamera(std::vector<cv::Point2f>& points_frame_projector, const std::vector<cv::Point2f>& points_frame_camera) const;
+		void createFrameProjectionFromFrameCamera(cv::Mat& frame_projection, const cv::Mat& frame_camera) const;
+
+		void setFramesProjectorCameraDelay(unsigned int frames_projector_camera_delay);
+		void setProjectorBackgroundLight(double projector_background_light);
 
 	private:
 		cv::Size resolution_projector;
 		cv::Mat camera_projector_transformation;
+		std::queue<cv::Mat> frames_delay_projector;
+		unsigned int frames_projector_camera_delay;
+		double projector_background_light;
 };

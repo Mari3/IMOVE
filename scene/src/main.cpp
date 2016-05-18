@@ -26,15 +26,21 @@ int main(int argc, char* argv[]) {
 	fs["Resolution_projector"] >> resolution_projector;
 	cv::Mat camera_projector_transformation;
 	fs["Camera_projector_transformation"] >> camera_projector_transformation;
-	int frames_projector_camera_delay;
-	fs["Frames_projector_camera_delay"] >> frames_projector_camera_delay;
-	int percentage_projector_background_light;
+	unsigned int frames_projector_camera_delay;
+	signed int int_frames_projector_camera_delay;
+	fs["Frames_projector_camera_delay"] >> int_frames_projector_camera_delay;
+	if (int_frames_projector_camera_delay < 0) {
+		frames_projector_camera_delay = 0;
+	} else {
+		frames_projector_camera_delay = (unsigned int) int_frames_projector_camera_delay;
+	}
+	double percentage_projector_background_light;
 	fs["Percentage_projector_background_light"] >> percentage_projector_background_light;
 	float meter;
 	fs["Meter"] >> meter;
 	fs.release();
 
-	const Calibration calibration = Calibration(resolution_projector, camera_projector_transformation);
+	const Calibration calibration = Calibration(resolution_projector, camera_projector_transformation, frames_projector_camera_delay, percentage_projector_background_light);
 	
 	cv::Mat frame_projector = cv::Mat::ones(resolution_projector.width, resolution_projector.height, CV_8UC3) * U8_WHITE;
 	cv::namedWindow("Projector", cv::WINDOW_NORMAL);
@@ -56,7 +62,7 @@ int main(int argc, char* argv[]) {
 			return EXIT_FAILURE;
 		}
 		cv::imshow("Camera", frame_camera);
-		calibration.createProjectionFrameFromCameraFrame(
+		calibration.createFrameProjectionFromFrameCamera(
 			frame_projection,
 			frame_camera
 		);
