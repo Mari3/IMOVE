@@ -172,6 +172,7 @@ int main(int argc, char* argv[]) {
 	cv::Mat frame_camera;
 	int cameradevice = std::stoi(argv[CAMERADEVICE_ARGN]);
 	cv::VideoCapture camera_videoreader(cameradevice);
+	camera_videoreader.set(CV_CAP_PROP_AUTOFOCUS, 0);
 	
 	cv::Mat frame_calibrateprojection;
 	cv::namedWindow("Calibrate projection", cv::WINDOW_NORMAL);
