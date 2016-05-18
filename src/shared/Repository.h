@@ -16,6 +16,7 @@ public:
     virtual void removeAll() = 0;
     virtual unsigned long size() = 0;
     virtual T* get(unsigned long id) = 0;
+    virtual bool has(unsigned long id) = 0;
     T* operator[](unsigned long id) {
         return get(id);
     }

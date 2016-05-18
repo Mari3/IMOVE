@@ -17,7 +17,7 @@ protected:
     vector<Condition*> conditions; //Idem
 public:
     Scene();
-    void updatePeople(vector<Person> newPeople);
+    virtual void updatePeople(vector<Person> newPeople) = 0;
     void update(float dt);
     virtual void draw(sf::RenderTarget &target) = 0;
 };

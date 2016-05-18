@@ -39,7 +39,8 @@ LightTrailScene::LightTrailScene() : Scene(),
                                      lightSources(LightSourceRepository::getInstance()),
                                      lightTrails(LightTrailRepository::getInstance()),
                                      gravityPoints(GravityPointRepository::getInstance()),
-                                     colorHoles(ColorHoleRepository::getInstance())
+                                     colorHoles(ColorHoleRepository::getInstance()),
+                                     lightPeople(LightPersonRepository::getInstance())
                                              {
     //Initialize lists
     lightSources->add(new LightSource(Vector2(0,0),Range(0,90,true),Range(0,90,true),Range(0,400)));
@@ -52,6 +53,27 @@ LightTrailScene::LightTrailScene() : Scene(),
     actions.push_back(new AlternatingGravityPointAction());
     actions.push_back(new AlternatingGravityPointAction());
 }
+
+void LightTrailScene::updatePeople(vector<Person> newPeople) {
+    Range hueDraw(0,360,true);
+    for(int i=0;i<newPeople.size();++i){
+        Person person = newPeople[i];
+        int id = person.getId();
+        if(lightPeople->has(id)){
+            LightPerson* lPerson = lightPeople->get(id);
+            lPerson->setLocation(person.getLocation());
+            lPerson->type = person.type;
+        }else{
+            float startHue = hueDraw.drawRandom();
+            float endHue = startHue+90;
+            lightPeople->add(new LightPerson(person.getLocation(),id,person.type,Range(startHue,endHue,true)));
+        }
+    }
+
+    //TODO remove people when they're gone
+}
+
+
 
 
 

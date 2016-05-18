@@ -46,6 +46,10 @@ public:
         return items.size();
     }
 
+    bool has(unsigned long id) override {
+        return id > 0 && id <= items.size();
+    }
+
     T* get(unsigned long id) override {
         return items[id];
     }

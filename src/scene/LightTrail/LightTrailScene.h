@@ -14,6 +14,7 @@
 #include "Repositories/LightTrailRepository.h"
 #include "Repositories/GravityPointRepository.h"
 #include "Repositories/ColorHoleRepository.h"
+#include "Repositories/LightPersonRepository.h"
 
 class LightTrailScene : public Scene{
 private:
@@ -21,9 +22,11 @@ private:
     LightTrailRepository* lightTrails;
     GravityPointRepository* gravityPoints;
     ColorHoleRepository* colorHoles;
+    LightPersonRepository* lightPeople;
 public:
     LightTrailScene();
     virtual void draw(sf::RenderTarget &target) override;
+    void updatePeople(vector<Person> newPeople) override;
 };
 
 

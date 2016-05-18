@@ -6,17 +6,8 @@
 
 Scene::Scene() {
     //Initialize vectors
-    people = vector<Person>();
     actions = vector<Action*>();
     conditions = vector<Condition*>();
-}
-
-void Scene::updatePeople(vector <Person> newPeople) {
-    //Since conditions and actions may keep a reference to 'people', update it instead of replacing it
-    people.clear();
-    for(int i=0;i<newPeople.size();++i){
-        people.push_back(newPeople[i]);
-    }
 }
 
 void Scene::update(float dt) {
