@@ -56,7 +56,24 @@ void drawCrossOnImage(cv::Mat& image, cv::Point2f& point, cv::Scalar& color) {
 	);
 }
 
-void drawCornersOnImage(cv::Mat& image) {
+void drawProjectionBoundariesOnImage(cv::Mat& image) {
+	cv::Point polypoints[REQUIRED_CORNERS];
+	polypoints[0] = coordinate_corners_camera[0];
+	polypoints[1] = coordinate_corners_camera[1];
+	polypoints[2] = coordinate_corners_camera[3];
+	polypoints[3] = coordinate_corners_camera[2];
+	const cv::Point* ppt[1] = { polypoints };
+	int npt[] = {REQUIRED_CORNERS};
+	cv::polylines(
+		image,
+		ppt,
+		npt,
+		1,
+		true,
+		cv::Scalar(255, 255, 255),
+		CROSS_THICKNESS,
+		cv::LINE_AA
+	);
 	for (unsigned int i = 0; i < REQUIRED_CORNERS; ++i) {
 		drawCrossOnImage(image, coordinate_corners_camera[i], color_corners[i]);
 	}
@@ -151,10 +168,10 @@ int main(int argc, char* argv[]) {
 	} else {
 		read_config["Camera_projector_transformation"] >> camera_projector_transformation;
 		std::vector<cv::Point2f> points_projector = std::vector<cv::Point2f>(REQUIRED_CORNERS);
-		points_projector.push_back(cv::Point2f(                    ORIGIN2D.x,                      ORIGIN2D.y));
-		points_projector.push_back(cv::Point2f(resolution_projector.width - 1,                      ORIGIN2D.y));
-		points_projector.push_back(cv::Point2f(									   ORIGIN2D.x, resolution_projector.height - 1));
-		points_projector.push_back(cv::Point2f(resolution_projector.width - 1, resolution_projector.height - 1));
+		points_projector.at(0) = cv::Point2f(                    ORIGIN2D.x,                      ORIGIN2D.y);
+		points_projector.at(1) = cv::Point2f(resolution_projector.width - 1,                      ORIGIN2D.y);
+		points_projector.at(2) = cv::Point2f(									   ORIGIN2D.x, resolution_projector.height - 1);
+		points_projector.at(3) = cv::Point2f(resolution_projector.width - 1, resolution_projector.height - 1);
 		std::vector<cv::Point2f> points_projection = std::vector<cv::Point2f>(REQUIRED_CORNERS);
 		cv::perspectiveTransform(
 			points_projector,
@@ -162,20 +179,16 @@ int main(int argc, char* argv[]) {
 			camera_projector_transformation.inv()
 		);
 		
-		coordinate_corners_camera[0] = points_projection[0];
-		coordinate_corners_camera[1] = points_projection[1];
-		coordinate_corners_camera[2] = points_projection[2];
-		coordinate_corners_camera[3] = points_projection[3];
+		coordinate_corners_camera[0] = points_projection.at(0);
+		coordinate_corners_camera[1] = points_projection.at(1);
+		coordinate_corners_camera[2] = points_projection.at(2);
+		coordinate_corners_camera[3] = points_projection.at(3);
 	}
 	read_config.release();
 	
 	std::queue<cv::Mat> frames_delay_projector;
 	while (cv::waitKey(1) == NOKEY_ANYKEY && projector_videoreader.read(frame_projector) && camera_videoreader.read(frame_camera)) {
-		drawCornersOnImage(frame_camera);
-
 		cv::imshow("Projector", frame_projector);
-		cv::imshow("Camera", frame_camera);
-		
 		frames_delay_projector.push(frame_projector.clone());
 		while (frames_delay_projector.size() > ((unsigned int) frames_projector_camera_delay)) {
 			frames_delay_projector.pop();
@@ -207,6 +220,8 @@ int main(int argc, char* argv[]) {
 			cv::imshow("Projection elimination", frame_projectionelimination);
 			cv::imshow("Projection", frame_projection);
 		}
+		drawProjectionBoundariesOnImage(frame_camera);
+		cv::imshow("Camera", frame_camera);
 	}
 
 	projector_videoreader.release();
