@@ -29,6 +29,7 @@ public:
     Vector2 getLocation();
     void setLocation(Vector2 location);
     int getId();
+    bool closeToEdge(int width, int height);
 };
 
 

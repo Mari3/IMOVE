@@ -75,13 +75,14 @@ void PeopleDetector::detectPeople(VideoCapture capture) {
 
       absdiff(new_frame, frame, diff_frame);
       Scalar sumElems = sum(diff_frame);
-      if (sumElems[0] + sumElems[1] + sumElems[2] > 15000000) {
+      if (sumElems[0] + sumElems[1] + sumElems[2] > 14000000) {
         cout << "renew" << endl;
         renew();
       }
 
       frame = new_frame;
       detect();
+      match();
 
       keyboard = waitKey(30);
   }
@@ -95,7 +96,7 @@ void PeopleDetector::detect() {
   new_locations.clear();
 
   Mat bg_sub_frame;
-  Mat thresh;
+  // Mat thresh;
   Mat keypoints_frame;
   Person* closestPerson;
 
@@ -132,7 +133,7 @@ void PeopleDetector::detect() {
     new_locations.push_back(new_location);
   }
 
-  imshow("Frame", keypoints_frame);
+  // imshow("Frame", keypoints_frame);
 }
 
 void PeopleDetector::renew() {
@@ -140,27 +141,43 @@ void PeopleDetector::renew() {
 }
 
 void PeopleDetector::match() {
-  for (Person p : detected_people) {
-    int index_closest = getClosest(p);
+  for (int i = 0; i < detected_people.size(); i++) {
+    int index_closest = getClosest(detected_people[i]);
     if (index_closest < 0) {
-      // Person new_person = Person(new_location, Participant);
-      // detected_people.push_back(new_person);
-      // id = new_person.getId();
+    //if (detected_people[i].closeToEdge(960,540)) {
+        detected_people.erase(detected_people.begin() + i);
+        i--;
+      //}
     }
     else {
-      // detected_people[index_closest].setLocation(new_location);
-      // id = detected_people[index_closest].getId();
+      Vector2 new_loc = new_locations[index_closest];
+      // if (close to edge) { // check closer to edge than location
+      //  delete person
+      // }
+      detected_people[i].setLocation(new_loc);
+      putText(thresh, std::to_string(detected_people[i].getId()), Point(new_loc.x, new_loc.y), FONT_HERSHEY_SIMPLEX, 1, Scalar(255,0,0));
+      new_locations.erase(new_locations.begin() + index_closest);
     }
-
-    // putText(keypoints_frame, std::to_string(id), Point(new_location.x, new_location.y), FONT_HERSHEY_SIMPLEX, 1, Scalar(0,255,0));
   }
+  for (int j = 0; j < new_locations.size(); j++) {
+    Person new_person = Person(new_locations[j], Participant);
+    //if (!new_person.closeToEdge(960, 540)) {
+      //new_locations.erase(new_locations.begin() + j);
+      //j--;
+    //}
+    //else {
+      detected_people.push_back(new_person);
+      putText(thresh, std::to_string(new_person.getId()), Point(new_locations[j].x, new_locations[j].y), FONT_HERSHEY_SIMPLEX, 1, Scalar(255,0,0));
+    //}
+  }
+  imshow("Frame", thresh);
 }
 
-int PeopleDetector::getClosest(Vector2 location) {
+int PeopleDetector::getClosest(Person person) {
   float min_distance = std::numeric_limits<float>::max();
   int min_index = -1;
-  for (int i = 0; i < detected_people.size(); i++) {
-    float distance = location.distance(detected_people[i].getLocation());
+  for (int i = 0; i < new_locations.size(); i++) {
+    float distance = person.getLocation().distance(new_locations[i]);
     if (distance < min_distance && distance < 100) {
       min_distance = distance;
       min_index = i;

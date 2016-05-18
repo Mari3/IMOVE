@@ -45,6 +45,7 @@ private:
 
   //Current frame
   Mat frame;
+  Mat thresh;
 
 public:
   PeopleDetector();
@@ -69,8 +70,11 @@ public:
   //Renew background subtractor
   void renew();
 
+  //Match people to new locations
+  void match();
+
   //Get closest location to a Person
-  int getClosest(Vector2 location);
+  int getClosest(Person person);
 
 };
 
