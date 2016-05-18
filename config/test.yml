@@ -12,3 +12,4 @@ Camera_projector_transformation: !!opencv-matrix
        1.9059788341126778e-04, -2.0154653415526691e-03, 1. ]
 Frames_projector_camera_delay: 5
 Percentage_projector_background_light: 39
+Meter: 100.

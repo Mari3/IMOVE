@@ -8,9 +8,13 @@
 
 int DEFAULT_FRAMES_PROJECTOR_CAMERA_DELAY = 5;
 int DEFAULT_PERCENTAGE_PROJECTOR_BACKGROUND_LIGHT = 39;
+float DEFAULT_METER = 100.f;
 
 const int CROSS_SIZE = 10;
 const int CROSS_THICKNESS = 1;
+
+const cv::Scalar COLOR_A_METER(255, 255,  0);
+const cv::Scalar COLOR_B_METER(  0, 255, 255);
 
 
 unsigned int CONFIGPATH_ARGN = 1;
@@ -31,15 +35,21 @@ unsigned int current_corner = 0;
 cv::Point2f* coordinate_corners_camera = new cv::Point2f[REQUIRED_CORNERS];
 cv::Point2f* coordinate_corners_projector = new cv::Point2f[REQUIRED_CORNERS];
 cv::Scalar* color_corners = new cv::Scalar[REQUIRED_CORNERS];
+bool entered_mouse_projection = false;
+cv::Point2f coordinate_mouse_projection;
 
-bool mouse_entered = false;
-cv::Point2f coordinate_mouse;
+enum METER { METER_A, METER_B };
+METER current_meter;
+cv::Point2f a_meter;
+cv::Point2f b_meter;
+bool entered_mouse_meter = false;
+cv::Point2f coordinate_mouse_meter;
 
 const int CROSS_HSIZE = CROSS_SIZE / 2;
 
 cv::Mat camera_projector_transformation;
 
-void drawCrossOnImage(cv::Mat& image, cv::Point2f& point, cv::Scalar& color) {
+void drawCrossOnImage(cv::Mat& image, const cv::Point2f& point, const cv::Scalar& color) {
 	cv::line(
 		image,
 		cv::Point(point.x - CROSS_HSIZE, point.y),
@@ -77,22 +87,40 @@ void drawProjectionBoundariesOnImage(cv::Mat& image) {
 	for (unsigned int i = 0; i < REQUIRED_CORNERS; ++i) {
 		drawCrossOnImage(image, coordinate_corners_camera[i], color_corners[i]);
 	}
-	if (mouse_entered) {
-		drawCrossOnImage(image, coordinate_mouse, color_corners[current_corner]);
+	if (entered_mouse_projection) {
+		drawCrossOnImage(image, coordinate_mouse_projection, color_corners[current_corner]);
 	}
 }
 
-void cameraWindowMouseEvent(int event, int x, int y, int flags, void* userdata) {
-	coordinate_mouse = cv::Point2f(x, y);
-	mouse_entered = true;
+void onMouseCalibrateProjection(int event, int x, int y, int flags, void* userdata) {
+	coordinate_mouse_projection = cv::Point2f(x, y);
+	entered_mouse_projection = true;
 
-	if (flags & cv::EVENT_FLAG_LBUTTON && REQUIRED_CORNERS) {
-		coordinate_corners_camera[current_corner] = coordinate_mouse;
+	if (event == cv::EVENT_LBUTTONUP) {
+		coordinate_corners_camera[current_corner] = coordinate_mouse_projection;
 		current_corner = (current_corner + 1) % REQUIRED_CORNERS;
 		camera_projector_transformation = cv::getPerspectiveTransform(
 			coordinate_corners_camera,
 			coordinate_corners_projector
 		);
+	}
+}
+
+void onMouseCalibrateMeter(int event, int x, int y, int flags, void* userdata) {
+	coordinate_mouse_meter = cv::Point2f(x, y);
+	entered_mouse_meter = true;
+
+	if (event == cv::EVENT_LBUTTONUP) {
+		switch (current_meter) {
+			case METER_A:
+				a_meter = coordinate_mouse_meter;
+				current_meter = METER_B;
+				break;
+			case METER_B:
+				b_meter = coordinate_mouse_meter;
+				current_meter = METER_A;
+				break;
+		}
 	}
 }
 
@@ -117,6 +145,15 @@ int main(int argc, char* argv[]) {
 	} else {
 		read_config["Percentage_projector_background_light"] >> percentage_projector_background_light;
 	}
+	if (read_config["Meter"].isNone()) {
+		a_meter = cv::Point2f(10, 10);
+		b_meter = cv::Point2f(10 + DEFAULT_METER, 10);
+	} else {
+		float meter;
+		read_config["Meter"] >> meter;
+		a_meter = cv::Point2f(10, 10);
+		b_meter = cv::Point2f(10 + meter, 10);
+	}
 	
 	color_corners[0] = cv::Scalar(U8_NONE, U8_HALF, U8_FULL);
 	color_corners[1] = cv::Scalar(U8_NONE, U8_FULL, U8_HALF);
@@ -135,9 +172,16 @@ int main(int argc, char* argv[]) {
 	cv::Mat frame_camera;
 	int cameradevice = std::stoi(argv[CAMERADEVICE_ARGN]);
 	cv::VideoCapture camera_videoreader(cameradevice);
-	cv::namedWindow("Camera", cv::WINDOW_NORMAL);
-	cv::moveWindow("Camera", 600, 0);
-	cv::setMouseCallback("Camera", cameraWindowMouseEvent, NULL);
+	
+	cv::Mat frame_calibrateprojection;
+	cv::namedWindow("Calibrate projection", cv::WINDOW_NORMAL);
+	cv::moveWindow("Calibrate projection", 600, 0);
+	cv::setMouseCallback("Calibrate projection", onMouseCalibrateProjection, NULL);
+	
+	cv::Mat frame_calibratemeter;
+	cv::namedWindow("Calibrate meter", cv::WINDOW_NORMAL);
+	cv::moveWindow("Calibrate meter", 600, 300);
+	cv::setMouseCallback("Calibrate meter", onMouseCalibrateMeter, NULL);
 	
 	cv::Mat frame_projectionelimination;
 	cv::namedWindow("Projection elimination", cv::WINDOW_NORMAL);
@@ -220,8 +264,24 @@ int main(int argc, char* argv[]) {
 			cv::imshow("Projection elimination", frame_projectionelimination);
 			cv::imshow("Projection", frame_projection);
 		}
-		drawProjectionBoundariesOnImage(frame_camera);
-		cv::imshow("Camera", frame_camera);
+		frame_calibrateprojection = frame_camera.clone();
+		frame_calibratemeter = frame_camera.clone();
+		drawProjectionBoundariesOnImage(frame_calibrateprojection);
+		cv::imshow("Calibrate projection", frame_calibrateprojection);
+		cv::line(frame_calibratemeter, a_meter, b_meter, cv::Scalar(255, 255, 255));
+		drawCrossOnImage(frame_calibratemeter, a_meter, COLOR_A_METER);
+		drawCrossOnImage(frame_calibratemeter, b_meter, COLOR_B_METER);
+		if (entered_mouse_meter) {
+			switch (current_meter) {
+				case METER_A:
+					drawCrossOnImage(frame_calibratemeter, coordinate_mouse_meter, COLOR_A_METER);
+					break;
+				case METER_B:
+					drawCrossOnImage(frame_calibratemeter, coordinate_mouse_meter, COLOR_B_METER);
+					break;
+			}
+		}
+		cv::imshow("Calibrate meter", frame_calibratemeter);
 	}
 
 	projector_videoreader.release();
@@ -234,6 +294,8 @@ int main(int argc, char* argv[]) {
 	write_config << "Camera_projector_transformation" << camera_projector_transformation;
 	write_config << "Frames_projector_camera_delay" << frames_projector_camera_delay;
 	write_config << "Percentage_projector_background_light" << percentage_projector_background_light;
+	const cv::Point2f diff_meter = b_meter - a_meter;
+	write_config << "Meter" << sqrt(abs(diff_meter.x * diff_meter.x + diff_meter.y * diff_meter.y));
 	write_config.release();
 	
 	return EXIT_SUCCESS;
