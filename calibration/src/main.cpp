@@ -6,6 +6,17 @@
 #include <string>
 #include <queue>
 
+int DEFAULT_FRAMES_PROJECTOR_CAMERA_DELAY = 5;
+int DEFAULT_PERCENTAGE_PROJECTOR_BACKGROUND_LIGHT = 39;
+
+const int CROSS_SIZE = 10;
+const int CROSS_THICKNESS = 1;
+
+
+unsigned int CONFIGPATH_ARGN = 1;
+unsigned int CAMERADEVICE_ARGN = 2;
+unsigned int CALIBRATIONPATH_ARGN = 3;
+
 const unsigned char U8_FULL  = 255;
 const unsigned char U8_HALF  = 127;
 const unsigned char U8_NONE  =   0;
@@ -16,17 +27,15 @@ const int FULL_PERCENTAGE = 100;
 const cv::Point2f ORIGIN2D = cv::Point2f(0, 0);
 
 const unsigned char REQUIRED_CORNERS = 4;
-cv::Point2f* coordinate_corners_camera = new cv::Point2f[REQUIRED_CORNERS];
-cv::Scalar* scalar_corners = new cv::Scalar[REQUIRED_CORNERS];
 unsigned int current_corner = 0;
+cv::Point2f* coordinate_corners_camera = new cv::Point2f[REQUIRED_CORNERS];
 cv::Point2f* coordinate_corners_projector = new cv::Point2f[REQUIRED_CORNERS];
+cv::Scalar* color_corners = new cv::Scalar[REQUIRED_CORNERS];
 
 bool mouse_entered = false;
 cv::Point2f coordinate_mouse;
 
-const int CROSS_SIZE = 10;
 const int CROSS_HSIZE = CROSS_SIZE / 2;
-const int CROSS_THICKNESS = 2;
 
 cv::Mat camera_projector_transformation;
 
@@ -49,10 +58,10 @@ void drawCrossOnImage(cv::Mat& image, cv::Point2f& point, cv::Scalar& color) {
 
 void drawCornersOnImage(cv::Mat& image) {
 	for (unsigned int i = 0; i < REQUIRED_CORNERS; ++i) {
-		drawCrossOnImage(image, coordinate_corners_camera[i], scalar_corners[i]);
+		drawCrossOnImage(image, coordinate_corners_camera[i], color_corners[i]);
 	}
 	if (mouse_entered) {
-		drawCrossOnImage(image, coordinate_mouse, scalar_corners[current_corner]);
+		drawCrossOnImage(image, coordinate_mouse, color_corners[current_corner]);
 	}
 }
 
@@ -72,32 +81,33 @@ void cameraWindowMouseEvent(int event, int x, int y, int flags, void* userdata) 
 
 int main(int argc, char* argv[]) {
 	if (argc != 4) {
-		std::cout << "Usage: <path to configuration file> <int video device> <path to calibration projection video file>" << std::endl;
+		std::cout << "Usage: <path to configuration file> <int camera device> <path to calibration projection video file>" << std::endl;
 		return EXIT_SUCCESS;
 	}
 
 	cv::FileStorage read_config;
-	read_config.open(argv[1], cv::FileStorage::READ);
+	char* configpath = argv[CONFIGPATH_ARGN];
+	read_config.open(configpath, cv::FileStorage::READ);
 	int frames_projector_camera_delay;
 	if (read_config["Frames_projector_camera_delay"].isNone()) {
-		frames_projector_camera_delay = 5;
+		frames_projector_camera_delay = DEFAULT_FRAMES_PROJECTOR_CAMERA_DELAY;
 	} else {
 		read_config["Frames_projector_camera_delay"] >> frames_projector_camera_delay;
 	}
 	int percentage_projector_background_light;
 	if (read_config["Percentage_projector_background_light"].isNone()) {
-		percentage_projector_background_light = 39;
+		percentage_projector_background_light = DEFAULT_PERCENTAGE_PROJECTOR_BACKGROUND_LIGHT;
 	} else {
 		read_config["Percentage_projector_background_light"] >> percentage_projector_background_light;
 	}
 	
-	scalar_corners[0] = cv::Scalar(U8_NONE, U8_HALF, U8_FULL);
-	scalar_corners[1] = cv::Scalar(U8_NONE, U8_FULL, U8_HALF);
-	scalar_corners[2] = cv::Scalar(U8_HALF, U8_NONE, U8_NONE);
-	scalar_corners[3] = cv::Scalar(U8_HALF, U8_FULL, U8_NONE);
+	color_corners[0] = cv::Scalar(U8_NONE, U8_HALF, U8_FULL);
+	color_corners[1] = cv::Scalar(U8_NONE, U8_FULL, U8_HALF);
+	color_corners[2] = cv::Scalar(U8_HALF, U8_NONE, U8_NONE);
+	color_corners[3] = cv::Scalar(U8_HALF, U8_FULL, U8_NONE);
  
 	cv::Mat frame_projector;
-	cv::VideoCapture projector_videoreader(argv[3]);
+	cv::VideoCapture projector_videoreader(argv[CALIBRATIONPATH_ARGN]);
 	cv::namedWindow("Projector", cv::WINDOW_NORMAL);
 	cv::moveWindow("Projector", 0, 0);
 	
@@ -106,7 +116,8 @@ int main(int argc, char* argv[]) {
 	cv::moveWindow("Projector delay", 300, 0);
 	
 	cv::Mat frame_camera;
-	cv::VideoCapture camera_videoreader(std::stoi(argv[2]));
+	int cameradevice = std::stoi(argv[CAMERADEVICE_ARGN]);
+	cv::VideoCapture camera_videoreader(cameradevice);
 	cv::namedWindow("Camera", cv::WINDOW_NORMAL);
 	cv::moveWindow("Camera", 600, 0);
 	cv::setMouseCallback("Camera", cameraWindowMouseEvent, NULL);
@@ -139,12 +150,12 @@ int main(int argc, char* argv[]) {
 		);
 	} else {
 		read_config["Camera_projector_transformation"] >> camera_projector_transformation;
-		std::vector<cv::Point2f> points_projector = std::vector<cv::Point2f>(4);
+		std::vector<cv::Point2f> points_projector = std::vector<cv::Point2f>(REQUIRED_CORNERS);
 		points_projector.push_back(cv::Point2f(                    ORIGIN2D.x,                      ORIGIN2D.y));
 		points_projector.push_back(cv::Point2f(resolution_projector.width - 1,                      ORIGIN2D.y));
 		points_projector.push_back(cv::Point2f(									   ORIGIN2D.x, resolution_projector.height - 1));
 		points_projector.push_back(cv::Point2f(resolution_projector.width - 1, resolution_projector.height - 1));
-		std::vector<cv::Point2f> points_projection = std::vector<cv::Point2f>(4);
+		std::vector<cv::Point2f> points_projection = std::vector<cv::Point2f>(REQUIRED_CORNERS);
 		cv::perspectiveTransform(
 			points_projector,
 			points_projection,
@@ -201,8 +212,8 @@ int main(int argc, char* argv[]) {
 	projector_videoreader.release();
 	camera_videoreader.release();
 
-	cv::FileStorage write_config(argv[1], cv::FileStorage::WRITE);
-	write_config << "Camera_device" << std::stoi(argv[2]);
+	cv::FileStorage write_config(configpath, cv::FileStorage::WRITE);
+	write_config << "Camera_device" << cameradevice;
 	write_config << "Resolution_camera" << resolution_camera;
 	write_config << "Resolution_projector" << resolution_projector;
 	write_config << "Camera_projector_transformation" << camera_projector_transformation;
