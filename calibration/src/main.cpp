@@ -6,14 +6,14 @@
 #include <string>
 #include <queue>
 
-const unsigned char U8_WHITE = 255;
-const unsigned char U8_BLACK = 0;
-const signed int NOKEY_ANYKEY = -1;
+const unsigned char U8_FULL  = 255;
+const unsigned char U8_HALF  = 127;
+const unsigned char U8_NONE  =   0;
 
-const cv::Point2f ORIGIN2D = cv::Point2f(
-	0,
-	0
-);
+const signed int NOKEY_ANYKEY = -1;
+const int FULL_PERCENTAGE = 100;
+
+const cv::Point2f ORIGIN2D = cv::Point2f(0, 0);
 
 const unsigned char REQUIRED_CORNERS = 4;
 cv::Point2f* coordinate_corners_camera = new cv::Point2f[REQUIRED_CORNERS];
@@ -91,10 +91,10 @@ int main(int argc, char* argv[]) {
 		read_config["Percentage_projector_background_light"] >> percentage_projector_background_light;
 	}
 	
-	scalar_corners[0] = cv::Scalar(  0, 127, 255);
-	scalar_corners[1] = cv::Scalar(  0, 255, 127);
-	scalar_corners[2] = cv::Scalar(127,   0, 255);
-	scalar_corners[3] = cv::Scalar(127, 255,   0);
+	scalar_corners[0] = cv::Scalar(U8_NONE, U8_HALF, U8_FULL);
+	scalar_corners[1] = cv::Scalar(U8_NONE, U8_FULL, U8_HALF);
+	scalar_corners[2] = cv::Scalar(U8_HALF, U8_NONE, U8_NONE);
+	scalar_corners[3] = cv::Scalar(U8_HALF, U8_FULL, U8_NONE);
  
 	cv::Mat frame_projector;
 	cv::VideoCapture projector_videoreader(argv[3]);
@@ -114,8 +114,8 @@ int main(int argc, char* argv[]) {
 	cv::Mat frame_projectionelimination;
 	cv::namedWindow("Projection elimination", cv::WINDOW_NORMAL);
 	cv::moveWindow("Projection elimination", 900, 0);
-	cv::createTrackbar("Ratio projector - background light", "Projection elimination", &percentage_projector_background_light, 100, NULL);
-	cv::createTrackbar("Frames projector - camera delay", "Projection elimination", &frames_projector_camera_delay, 100, NULL);
+	cv::createTrackbar("Ratio projector - background light", "Projection elimination", &percentage_projector_background_light, FULL_PERCENTAGE, NULL);
+	cv::createTrackbar("Frames projector - camera delay", "Projection elimination", &frames_projector_camera_delay, FULL_PERCENTAGE, NULL);
 
 	cv::Mat frame_projection;
 	cv::namedWindow("Projection", cv::WINDOW_NORMAL);
@@ -148,7 +148,7 @@ int main(int argc, char* argv[]) {
 		cv::perspectiveTransform(
 			points_projector,
 			points_projection,
-			camera_projector_transformation.inv() //TODO inv flag?
+			camera_projector_transformation.inv()
 		);
 		
 		coordinate_corners_camera[0] = points_projection[0];
@@ -179,10 +179,10 @@ int main(int argc, char* argv[]) {
 				frame_camera.size(),
 				cv::INTER_LINEAR | cv::WARP_INVERSE_MAP,
 				cv::BORDER_CONSTANT,
-				cv::Scalar(U8_BLACK, U8_BLACK, U8_BLACK)
+				cv::Scalar(U8_NONE, U8_NONE, U8_NONE)
 			);
 			
-			frame_projectionelimination = frame_camera - (frame_projectionelimination * ((double) percentage_projector_background_light) / 100.0);
+			frame_projectionelimination = frame_camera - (frame_projectionelimination * ((double) percentage_projector_background_light) / (double) FULL_PERCENTAGE);
 			
 			cv::warpPerspective(
 				frame_projectionelimination,
@@ -191,7 +191,7 @@ int main(int argc, char* argv[]) {
 				resolution_projector,
 				cv::INTER_LINEAR,
 				cv::BORDER_CONSTANT,
-				cv::Scalar(U8_BLACK, U8_BLACK, U8_BLACK)
+				cv::Scalar(U8_NONE, U8_NONE, U8_NONE)
 			);
 			cv::imshow("Projection elimination", frame_projectionelimination);
 			cv::imshow("Projection", frame_projection);
