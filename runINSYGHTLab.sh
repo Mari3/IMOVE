@@ -1,3 +1,3 @@
 #!/bin/bash
 set -e
-./dist/scene ./config/INSYGHTLab.yml
+./dist/imove ./config/INSYGHTLab.yml

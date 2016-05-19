@@ -71,7 +71,7 @@ int main(int argc, char* argv[]) {
 			frame_projection,
 			frame_camera
 		);
-		cv::imshow("Projection", frame_projection);
+		//cv::imshow("Projection", frame_projection);
 	 	people_detector.detectPeople(frame_camera);
 		vector<Person> detected_people = people_detector.getDetectedPeople();
 	}

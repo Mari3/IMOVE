@@ -8,4 +8,4 @@ popd >> /dev/null
 
 mkdir -p dist
 mv build/calibration dist/calibration
-mv build/scene dist/scene
+mv build/imove dist/imove
