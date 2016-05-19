@@ -15,28 +15,32 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
     //TODO do drawing here
     sf::RectangleShape rect(sf::Vector2f(2560,1600));
     rect.setFillColor(sf::Color(0,0,0,3));
-    target.draw(rect);
+    texture.draw(rect);
 
     for(auto &trail : *lightTrails){
         sf::RectangleShape circle(sf::Vector2f(3,3) );
         circle.setPosition(trail->getLocation().x,trail->getLocation().y);
         circle.setFillColor(HueConverter::ToColor(trail->hue));
-        target.draw(circle);
+        texture.draw(circle);
     }
 
     for(auto &pair : *lightPeople){
         sf::CircleShape circle(10);
         circle.setFillColor(sf::Color::Cyan);
         circle.setPosition(sf::Vector2f(pair.second->getLocation().x,pair.second->getLocation().y));
-        target.draw(circle);
+        texture.draw(circle);
     }
 
     for(auto &point : *gravityPoints){
         sf::CircleShape gCircle(8);
         gCircle.setFillColor(sf::Color::Red);
         gCircle.setPosition(point->location.x,point->location.y);
-        target.draw(gCircle);
+        texture.draw(gCircle);
     }
+
+    texture.display();
+
+    target.draw(sf::Sprite(texture.getTexture()));
 
     //sf::Mouse mouse;
     //sf::Vector2i pos = mouse.getPosition();
@@ -51,6 +55,7 @@ LightTrailScene::LightTrailScene() : Scene(),
                                      colorHoles(ColorHoleRepository::getInstance()),
                                      lightPeople(LightPersonRepository::getInstance())
 {
+    texture.create(2560,1600);
     //Initialize lists
     lightSources->add(new LightSource(Vector2(0,0),Range(0,90,true),Range(0,90,true),Range(0,400)));
     lightSources->add(new LightSource(Vector2(2560,0),Range(90,180,true),Range(90,180,true),Range(0,400)));
@@ -62,8 +67,9 @@ LightTrailScene::LightTrailScene() : Scene(),
     actions.push_back(new UpdateLightSourcesAction());
     actions.push_back(new AlternatingGravityPointAction());
     actions.push_back(new AlternatingGravityPointAction());
+    actions.push_back(new AlternatingGravityPointAction());
 
-    conditions.push_back(new PersonTurnedBystanderCondition());
+    //conditions.push_back(new PersonTurnedBystanderCondition());
 }
 
 void LightTrailScene::updatePeople(vector<Person> newPeople) {

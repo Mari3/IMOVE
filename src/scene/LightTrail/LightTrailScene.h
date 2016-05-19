@@ -23,6 +23,7 @@ private:
     GravityPointRepository* gravityPoints;
     ColorHoleRepository* colorHoles;
     LightPersonRepository* lightPeople;
+    sf::RenderTexture texture;
 public:
     LightTrailScene();
     virtual void draw(sf::RenderTarget &target) override;
