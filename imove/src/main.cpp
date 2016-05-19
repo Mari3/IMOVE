@@ -59,9 +59,9 @@ int main(int argc, char* argv[]) {
 	cv::Mat frame_camera;
 	cv::moveWindow("Camera", 500, 0);
 
-	//cv::namedWindow("Projection", cv::WINDOW_NORMAL);
+	cv::namedWindow("Projection", cv::WINDOW_NORMAL);
 	cv::Mat frame_projection;
-	//cv::moveWindow("Projection", 1000, 0);
+	cv::moveWindow("Projection", 1000, 0);
 	cv::namedWindow("Frame", cv::WINDOW_NORMAL);
 
 	sf::RenderWindow window(sf::VideoMode(resolution_projector.width, resolution_projector.height),"Projection");
@@ -82,7 +82,7 @@ int main(int argc, char* argv[]) {
 			frame_projection,
 			frame_camera
 		);
-		//cv::imshow("Projection", frame_projection);
+		cv::imshow("Projection", frame_projection);
 	 	people_detector.detectPeople(frame_camera);
 		vector<Person> detected_people = people_detector.getDetectedPeople();
 		calibration.changeProjectorFromCameraLocationPerson(detected_people);
