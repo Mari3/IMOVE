@@ -7,7 +7,7 @@
 #include "../Util/HueConverter.h"
 #include "Actions/UpdateLightSourcesAction.h"
 #include "Actions/AlternatingGravityPointAction.h"
-#include "Conditions/PersonTurnedBystanderCondition.h"
+#include "Conditions/PersonChangedTypeCondition.h"
 #include "Actions/DeleteAllAction.h"
 
 void LightTrailScene::draw(sf::RenderTarget &target) {
@@ -25,14 +25,14 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
     }
 
     for(auto &pair : *lightPeople){
-        sf::CircleShape circle(10);
+        sf::CircleShape circle(5);
         circle.setFillColor(sf::Color::Cyan);
         circle.setPosition(sf::Vector2f(pair.second->getLocation().x,pair.second->getLocation().y));
         target.draw(circle);
     }
 
     for(auto &point : *gravityPoints){
-        sf::CircleShape gCircle(8);
+        sf::CircleShape gCircle(4);
         gCircle.setFillColor(sf::Color::Red);
         gCircle.setPosition(point->location.x,point->location.y);
         target.draw(gCircle);
@@ -52,10 +52,10 @@ LightTrailScene::LightTrailScene() : Scene(),
                                      lightPeople(LightPersonRepository::getInstance())
 {
     //Initialize lists
-    lightSources->add(new LightSource(Vector2(0,0),util::Range(0,90,true),util::Range(0,90,true),util::Range(0,400)));
-    lightSources->add(new LightSource(Vector2(800,0),util::Range(90,180,true),util::Range(90,180,true),util::Range(0,400)));
-    lightSources->add(new LightSource(Vector2(0,600),util::Range(180,270,true),util::Range(270,0,true),util::Range(0,400)));
-    lightSources->add(new LightSource(Vector2(800,600),util::Range(270,360,true),util::Range(180,270,true),util::Range(0,400)));
+    lightSources->add(new LightSource(Vector2(0,0),util::Range(0,90,true),util::Range(0,90,true),util::Range(0,100)));
+    lightSources->add(new LightSource(Vector2(800,0),util::Range(90,180,true),util::Range(90,180,true),util::Range(0,100)));
+    lightSources->add(new LightSource(Vector2(0,600),util::Range(180,270,true),util::Range(270,0,true),util::Range(0,100)));
+    lightSources->add(new LightSource(Vector2(800,600),util::Range(270,360,true),util::Range(180,270,true),util::Range(0,100)));
 
     actions.push_back(new DeleteAllAction());
     actions.push_back(new UpdateLightTrailsAction());
@@ -63,7 +63,7 @@ LightTrailScene::LightTrailScene() : Scene(),
     actions.push_back(new AlternatingGravityPointAction());
     actions.push_back(new AlternatingGravityPointAction());
 
-    conditions.push_back(new PersonTurnedBystanderCondition());
+    conditions.push_back(new PersonChangedTypeCondition());
 }
 
 void LightTrailScene::processPeople() {

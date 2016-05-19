@@ -9,12 +9,12 @@
 #include "../Repositories/LightPersonRepository.h"
 #include "../../Condition.h"
 
-class PersonTurnedBystanderCondition : public Condition {
+class PersonChangedTypeCondition : public Condition {
 private:
     LightPersonRepository* lightPeople;
     std::map<int,PersonType> oldType;
 public:
-    PersonTurnedBystanderCondition();
+    PersonChangedTypeCondition();
     int check(float dt, Action **&actions) override;
 
 public:
