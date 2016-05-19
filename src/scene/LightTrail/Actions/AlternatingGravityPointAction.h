@@ -25,7 +25,7 @@ private:
     Range yRange;
 public:
 
-    AlternatingGravityPointAction();
+    AlternatingGravityPointAction(Range hue = Range(0,360,true));
 
     bool isDone(Action *&followUp);
     void execute(float dt);

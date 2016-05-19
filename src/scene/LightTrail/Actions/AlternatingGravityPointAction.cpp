@@ -20,10 +20,10 @@ void AlternatingGravityPointAction::execute(float dt) {
     }
 }
 
-AlternatingGravityPointAction::AlternatingGravityPointAction()
+AlternatingGravityPointAction::AlternatingGravityPointAction(Range hue)
         : gravityPoints(GravityPointRepository::getInstance()), lightPeople(LightPersonRepository::getInstance()),
-          timer(5.f,true), xRange(0,2560), yRange(0,1600),
-        myGravityPoint(Vector2(0,0),Range(0,360,true),300000)
+          timer(8.f,true), xRange(0,2560), yRange(0,1600),
+        myGravityPoint(Vector2(0,0),hue,300000)
 {
     GravityPoint* ptr = &myGravityPoint;
     gravityPoints->add(ptr);

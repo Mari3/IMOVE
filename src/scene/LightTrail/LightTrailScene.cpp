@@ -65,9 +65,9 @@ LightTrailScene::LightTrailScene() : Scene(),
     actions.push_back(new DeleteAllAction());
     actions.push_back(new UpdateLightTrailsAction());
     actions.push_back(new UpdateLightSourcesAction());
-    actions.push_back(new AlternatingGravityPointAction());
-    actions.push_back(new AlternatingGravityPointAction());
-    actions.push_back(new AlternatingGravityPointAction());
+    actions.push_back(new AlternatingGravityPointAction(Range(0,120,true)));
+    actions.push_back(new AlternatingGravityPointAction(Range(120,240,true)));
+    actions.push_back(new AlternatingGravityPointAction(Range(240,0,true)));
 
     //conditions.push_back(new PersonTurnedBystanderCondition());
 }
