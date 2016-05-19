@@ -38,11 +38,36 @@ void Calibration::eliminateProjectionFeedbackFromFrameCamera(cv::Mat& frame_proj
 }
 
 void Calibration::createPointsFrameProjectorFromPointsFrameCamera(std::vector<cv::Point2f>& points_frame_projector, const std::vector<cv::Point2f>& points_frame_camera) const {
-	cv::perspectiveTransform(
-		points_frame_camera,
-		points_frame_projector,
-		this->camera_projector_transformation
+	if (!points_frame_camera.empty()) {
+		cv::perspectiveTransform(
+			points_frame_camera,
+			points_frame_projector,
+			this->camera_projector_transformation
+		);
+	}
+}
+
+void Calibration::changeProjectorFromCameraLocationPerson(std::vector<Person>& persons) const {
+	std::vector<cv::Point2f> points_camera = std::vector<cv::Point2f>(persons.size());
+	for (unsigned int i = 0; i < persons.size(); i++) {
+		Vector2 location_person = persons.at(i).getLocation();
+		points_camera.at(i) = cv::Point2f(
+			location_person.x,
+			location_person.y
+		);
+	}
+	std::vector<cv::Point2f> points_projector;
+	this->createPointsFrameProjectorFromPointsFrameCamera(
+		points_projector,
+		points_camera
 	);
+	for (unsigned int i = 0; i < persons.size(); i++) {
+		cv::Point2f point_projector = points_projector.at(i);
+		persons.at(i).setLocation(Vector2(
+			point_projector.x,
+			point_projector.y
+		));
+	}
 }
 
 void Calibration::createFrameProjectionFromFrameCamera(cv::Mat& frame_projection, const cv::Mat& frame_camera) const {

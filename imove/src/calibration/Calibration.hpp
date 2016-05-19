@@ -3,6 +3,8 @@
 #include <vector>
 #include <queue>
 
+#include "../interface/Person.h"
+
 class Calibration {
 	public:
 		Calibration(const cv::Size& resolution_projector, cv::Mat& camera_projector_transformation, unsigned int frames_projector_camera_delay, double projector_background_light);
@@ -10,6 +12,7 @@ class Calibration {
 		void feedFrameProjector(const cv::Mat& frame_projector);
 		void eliminateProjectionFeedbackFromFrameCamera(cv::Mat& frame_projectioneliminated, const cv::Mat& frame_camera);
 		void createPointsFrameProjectorFromPointsFrameCamera(std::vector<cv::Point2f>& points_frame_projector, const std::vector<cv::Point2f>& points_frame_camera) const;
+		void changeProjectorFromCameraLocationPerson(std::vector<Person>& persons) const;
 		void createFrameProjectionFromFrameCamera(cv::Mat& frame_projection, const cv::Mat& frame_camera) const;
 
 		void setFramesProjectorCameraDelay(unsigned int frames_projector_camera_delay);

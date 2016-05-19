@@ -86,6 +86,7 @@ int main(int argc, char* argv[]) {
 		//cv::imshow("Projection", frame_projection);
 	 	people_detector.detectPeople(frame_camera);
 		vector<Person> detected_people = people_detector.getDetectedPeople();
+		calibration.changeProjectorFromCameraLocationPerson(detected_people);
 
 
 		float dt = clock.restart().asSeconds();
@@ -95,7 +96,6 @@ int main(int argc, char* argv[]) {
 
 
 		window.display();
-
 	}
  
 	return EXIT_SUCCESS;
