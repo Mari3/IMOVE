@@ -5,7 +5,7 @@
 #include <random>
 #include "Range.h"
 
-Range::Range(float start, float end, bool bounds, float lowerBound, float upperBound) :
+util::Range::Range(float start, float end, bool bounds, float lowerBound, float upperBound) :
     start(start),end(end),bounds(bounds),lowerBound(lowerBound),upperBound(upperBound)
 {
     if(bounds){
@@ -13,20 +13,20 @@ Range::Range(float start, float end, bool bounds, float lowerBound, float upperB
     }
 }
 
-void Range::fixBounds() {
+void util::Range::fixBounds() {
     while(start < lowerBound)start += upperBound-lowerBound;
     while(end < lowerBound)end += upperBound-lowerBound;
     while(start > upperBound)start -= upperBound-lowerBound;
     while(end > upperBound)end -= upperBound-lowerBound;
 }
 
-void Range::operator+=(const float &f) {
+void util::Range::operator+=(const float &f) {
     start += f;
     end += f;
     if(bounds)fixBounds();
 }
 
-float Range::drawRandom() {
+float util::Range::drawRandom() {
     if(start < end) {
         return start + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (end - start)));
     }else if(start == end){
@@ -42,7 +42,7 @@ float Range::drawRandom() {
     }
 }
 
-bool Range::contains(float f) {
+bool util::Range::contains(float f) {
     if(end > start)
         return f > start && f < end;
     if(start == end)

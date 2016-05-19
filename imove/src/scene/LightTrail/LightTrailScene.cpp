@@ -13,7 +13,7 @@
 void LightTrailScene::draw(sf::RenderTarget &target) {
 
     //TODO do drawing here
-    sf::RectangleShape rect(sf::Vector2f(2560,1600));
+    sf::RectangleShape rect(sf::Vector2f(800,600));
     rect.setFillColor(sf::Color(0,0,0,3));
     target.draw(rect);
 
@@ -52,10 +52,10 @@ LightTrailScene::LightTrailScene() : Scene(),
                                      lightPeople(LightPersonRepository::getInstance())
 {
     //Initialize lists
-    lightSources->add(new LightSource(Vector2(0,0),Range(0,90,true),Range(0,90,true),Range(0,400)));
-    lightSources->add(new LightSource(Vector2(2560,0),Range(90,180,true),Range(90,180,true),Range(0,400)));
-    lightSources->add(new LightSource(Vector2(0,1600),Range(180,270,true),Range(270,0,true),Range(0,400)));
-    lightSources->add(new LightSource(Vector2(2560,1600),Range(270,360,true),Range(180,270,true),Range(0,400)));
+    lightSources->add(new LightSource(Vector2(0,0),util::Range(0,90,true),util::Range(0,90,true),util::Range(0,400)));
+    lightSources->add(new LightSource(Vector2(800,0),util::Range(90,180,true),util::Range(90,180,true),util::Range(0,400)));
+    lightSources->add(new LightSource(Vector2(0,600),util::Range(180,270,true),util::Range(270,0,true),util::Range(0,400)));
+    lightSources->add(new LightSource(Vector2(800,600),util::Range(270,360,true),util::Range(180,270,true),util::Range(0,400)));
 
     actions.push_back(new DeleteAllAction());
     actions.push_back(new UpdateLightTrailsAction());
@@ -67,7 +67,7 @@ LightTrailScene::LightTrailScene() : Scene(),
 }
 
 void LightTrailScene::updatePeople(vector<Person> newPeople) {
-    Range hueDraw(0,360,true);
+    util::Range hueDraw(0,360,true);
     for(int i=0;i<newPeople.size();++i){
         Person person = newPeople[i];
         unsigned int id = person.getId();
@@ -78,7 +78,7 @@ void LightTrailScene::updatePeople(vector<Person> newPeople) {
         }else{
             float startHue = hueDraw.drawRandom();
             float endHue = startHue+90;
-            lightPeople->add(new LightPerson(person.getLocation(),id,person.type,Range(startHue,endHue,true)));
+            lightPeople->add(new LightPerson(person.getLocation(),id,person.type,util::Range(startHue,endHue,true)));
         }
     }
 

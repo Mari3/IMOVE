@@ -7,7 +7,7 @@
 
 #define PI 3.14159265358979323846
 
-LightSource::LightSource(Vector2 location, Range hue, Range angle, Range speed) :
+LightSource::LightSource(Vector2 location, util::Range hue, util::Range angle, util::Range speed) :
     location(location), hue(hue), angle(angle), speed(speed)
 {
 
@@ -26,7 +26,7 @@ Vector2 LightSource::getLocation() {
     return location;
 }
 
-Range LightSource::getHue() {
+util::Range LightSource::getHue() {
     return hue;
 }
 

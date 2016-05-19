@@ -14,9 +14,9 @@ private:
     bool existing = true;
 public:
     Vector2 location;
-    Range hue;
+    util::Range hue;
     float gravity;
-    GravityPoint(Vector2 location, Range hue, float gravity);
+    GravityPoint(Vector2 location, util::Range hue, float gravity);
     void destroy();
     bool exists();
 };

@@ -17,12 +17,12 @@ private:
     unsigned int id;
 public:
     PersonType type;
-    LightPerson(const Vector2 &location, unsigned int id, PersonType type, Range hue);
+    LightPerson(const Vector2 &location, unsigned int id, PersonType type, util::Range hue);
     void shiftHue(float shift);
     void setLocation(Vector2 newLocation);
     Vector2 getLocation();
     unsigned int getId();
-    Range hue;
+    util::Range hue;
 };
 
 

@@ -4,10 +4,13 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <SFML/Graphics.hpp>
 
 #include "calibration/Calibration.hpp"
 #include "image_processing/PeopleDetector.h"
 #include "interface/Person.h"
+#include "scene/Scene.h"
+#include "scene/LightTrail/LightTrailScene.h"
 
 const unsigned char U8_WHITE = 255;
 const signed int NOKEY_ANYKEY = -1;
@@ -52,15 +55,24 @@ int main(int argc, char* argv[]) {
 
 	cv::namedWindow("Camera", cv::WINDOW_NORMAL);
 	//cv::VideoCapture video_capture(camera_device);
-	cv::VideoCapture video_capture("./imove/test/image_processing/IMG_0638.MOV");
+	cv::VideoCapture video_capture("./imove/test/image_processing/IMG_0639.mp4");
 	cv::Mat frame_camera;
 	cv::moveWindow("Camera", 500, 0);
 
-	cv::namedWindow("Projection", cv::WINDOW_NORMAL);
+	//cv::namedWindow("Projection", cv::WINDOW_NORMAL);
 	cv::Mat frame_projection;
-	cv::moveWindow("Projection", 1000, 0);
+	//cv::moveWindow("Projection", 1000, 0);
 	cv::namedWindow("Frame", cv::WINDOW_NORMAL);
+
+	sf::RenderWindow window(sf::VideoMode(800,600),"Projection");
+
+	sf::Clock clock;
+
+	Scene* scene = new LightTrailScene();
+
 	while (cv::waitKey(1) == NOKEY_ANYKEY) {
+		for(int i=0;i<2;++i)
+			video_capture.grab();
 		if (!video_capture.read(frame_camera)) {
 			std::cerr << "Unable to read next frame." << std::endl;
 			std::cerr << "Exiting..." << std::endl;
@@ -74,6 +86,16 @@ int main(int argc, char* argv[]) {
 		//cv::imshow("Projection", frame_projection);
 	 	people_detector.detectPeople(frame_camera);
 		vector<Person> detected_people = people_detector.getDetectedPeople();
+
+
+		float dt = clock.restart().asSeconds();
+		scene->updatePeople(detected_people);
+		scene->update(dt);
+		scene->draw(window);
+
+
+		window.display();
+
 	}
  
 	return EXIT_SUCCESS;

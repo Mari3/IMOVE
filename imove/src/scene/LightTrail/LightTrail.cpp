@@ -4,8 +4,8 @@
 
 #include "LightTrail.h"
 
-#define SW 2500
-#define SH 1600
+#define SW 800
+#define SH 600
 
 LightTrail::LightTrail(Vector2 location, Vector2 speed, float hue) :
     location(location),

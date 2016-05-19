@@ -5,8 +5,11 @@
 #ifndef IMOVE_RANGE_H
 #define IMOVE_RANGE_H
 
+namespace util{
+    class Range;
+}
 
-class Range {
+class util::Range {
 private:
     float start, end, lowerBound, upperBound;
     bool bounds;

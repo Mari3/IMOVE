@@ -4,8 +4,8 @@
 
 #include "BystanderGravityPointAction.h"
 
-#define WIDTH 2560
-#define HEIGHT 1600
+#define WIDTH 800
+#define HEIGHT 600
 
 BystanderGravityPointAction::BystanderGravityPointAction(LightPerson* person) : person(person),
     gravityPoints(GravityPointRepository::getInstance()), timer(Timer(5,true))

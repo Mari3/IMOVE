@@ -4,7 +4,7 @@
 
 #include "LightPerson.h"
 
-LightPerson::LightPerson(const Vector2 &location, unsigned int id, PersonType type, Range hue) : location(location),
+LightPerson::LightPerson(const Vector2 &location, unsigned int id, PersonType type, util::Range hue) : location(location),
                                                                                                  id(id),
                                                                                                  type(type),
     hue(hue)

@@ -4,7 +4,7 @@
 
 #include "GravityPoint.h"
 
-GravityPoint::GravityPoint(Vector2 location, Range hue, float gravity) :
+GravityPoint::GravityPoint(Vector2 location, util::Range hue, float gravity) :
     location(location), hue(hue), gravity(gravity)
 {
 

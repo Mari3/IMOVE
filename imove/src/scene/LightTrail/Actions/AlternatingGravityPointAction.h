@@ -21,8 +21,8 @@ private:
     LightPersonRepository* lightPeople;
     Timer timer;
     GravityPoint myGravityPoint;
-    Range xRange;
-    Range yRange;
+    util::Range xRange;
+    util::Range yRange;
 public:
 
     AlternatingGravityPointAction();
