@@ -66,19 +66,24 @@ LightTrailScene::LightTrailScene() : Scene(),
     conditions.push_back(new PersonTurnedBystanderCondition());
 }
 
-void LightTrailScene::updatePeople(vector<Person> newPeople) {
-    util::Range hueDraw(0,360,true);
-    for(int i=0;i<newPeople.size();++i){
-        Person person = newPeople[i];
-        unsigned int id = person.getId();
-        if(lightPeople->has(id)){
-            LightPerson* lPerson = lightPeople->get(id);
-            lPerson->setLocation(person.getLocation());
-            lPerson->type = person.type;
-        }else{
-            float startHue = hueDraw.drawRandom();
-            float endHue = startHue+90;
-            lightPeople->add(new LightPerson(person.getLocation(),id,person.type,util::Range(startHue,endHue,true)));
+void LightTrailScene::processPeople() {
+    if(!peopleQueue.empty()) {
+        vector<Person> newPeople = peopleQueue.front();
+        peopleQueue.pop();
+        util::Range hueDraw(0, 360, true);
+        for (int i = 0; i < newPeople.size(); ++i) {
+            Person person = newPeople[i];
+            unsigned int id = person.getId();
+            if (lightPeople->has(id)) {
+                LightPerson *lPerson = lightPeople->get(id);
+                lPerson->setLocation(person.getLocation());
+                lPerson->type = person.type;
+            } else {
+                float startHue = hueDraw.drawRandom();
+                float endHue = startHue + 90;
+                lightPeople->add(
+                        new LightPerson(person.getLocation(), id, person.type, util::Range(startHue, endHue, true)));
+            }
         }
     }
 

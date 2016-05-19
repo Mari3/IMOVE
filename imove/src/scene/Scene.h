@@ -6,18 +6,20 @@
 #define IMOVE_SCENE_H
 
 #include <SFML/Graphics.hpp>
+#include <queue>
 #include "../interface/Person.h"
 #include "Action.h"
 #include "Condition.h"
 
 class Scene {
 protected:
-    vector<Person> people;
+    queue<vector<Person>> peopleQueue;
     vector<Action*> actions; //Vector of pointers for polymorphism
     vector<Condition*> conditions; //Idem
+    virtual void processPeople() = 0;
 public:
     Scene();
-    virtual void updatePeople(vector<Person> newPeople) = 0;
+    void updatePeople(vector<Person> newPeople);
     void update(float dt);
     virtual void draw(sf::RenderTarget &target) = 0;
 };

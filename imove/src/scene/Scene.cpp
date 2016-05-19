@@ -12,6 +12,8 @@ Scene::Scene() {
 
 void Scene::update(float dt) {
 
+    processPeople();
+
     //Check all conditions
     for(auto &condition : conditions){
         Action** newActions;
@@ -47,6 +49,12 @@ void Scene::update(float dt) {
         modifier++;
     }
 }
+
+void Scene::updatePeople(vector<Person> newPeople) {
+    peopleQueue.push(newPeople);
+}
+
+
 
 
 

@@ -26,7 +26,7 @@ private:
 public:
     LightTrailScene();
     virtual void draw(sf::RenderTarget &target) override;
-    void updatePeople(vector<Person> newPeople) override;
+    void processPeople() override;
 };
 
 
