@@ -15,28 +15,32 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
     //TODO do drawing here
     sf::RectangleShape rect(sf::Vector2f(800,600));
     rect.setFillColor(sf::Color(0,0,0,10));
-    target.draw(rect);
+    texture.draw(rect);
 
     for(auto &trail : *lightTrails){
         sf::RectangleShape circle(sf::Vector2f(3,3) );
         circle.setPosition(trail->getLocation().x,trail->getLocation().y);
         circle.setFillColor(HueConverter::ToColor(trail->hue));
-        target.draw(circle);
+        texture.draw(circle);
     }
 
     for(auto &pair : *lightPeople){
         sf::CircleShape circle(5);
         circle.setFillColor(sf::Color::Cyan);
         circle.setPosition(sf::Vector2f(pair.second->getLocation().x,pair.second->getLocation().y));
-        target.draw(circle);
+        texture.draw(circle);
     }
 
     for(auto &point : *gravityPoints){
         sf::CircleShape gCircle(4);
         gCircle.setFillColor(sf::Color::Red);
         gCircle.setPosition(point->location.x,point->location.y);
-        target.draw(gCircle);
+        texture.draw(gCircle);
     }
+
+    texture.display();
+
+    target.draw(sf::Sprite(texture.getTexture()));
 
     //sf::Mouse mouse;
     //sf::Vector2i pos = mouse.getPosition();
@@ -51,6 +55,8 @@ LightTrailScene::LightTrailScene() : Scene(),
                                      colorHoles(ColorHoleRepository::getInstance()),
                                      lightPeople(LightPersonRepository::getInstance())
 {
+    texture.create(800,600);
+
     //Initialize lists
     lightSources->add(new LightSource(Vector2(0,0),util::Range(0,90,true),util::Range(0,90,true),util::Range(0,100)));
     lightSources->add(new LightSource(Vector2(800,0),util::Range(90,180,true),util::Range(90,180,true),util::Range(0,100)));

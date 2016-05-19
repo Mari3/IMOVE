@@ -64,7 +64,7 @@ int main(int argc, char* argv[]) {
 	cv::moveWindow("Projection", 1000, 0);
 	cv::namedWindow("Frame", cv::WINDOW_NORMAL);
 
-	sf::RenderWindow window(sf::VideoMode(resolution_projector.width, resolution_projector.height),"Projection");
+	sf::RenderWindow window(sf::VideoMode(resolution_projector.width, resolution_projector.height),"Projection",sf::Style::Fullscreen);
 	window.clear(sf::Color::Black);
 	window.display();
 	sf::Clock clock;
@@ -94,6 +94,8 @@ int main(int argc, char* argv[]) {
 		float dt = 1.f/24.f;
 		scene->updatePeople(detected_people);
 		scene->update(dt);
+
+		window.clear(sf::Color::Black);
 		scene->draw(window);
 
 
