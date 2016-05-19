@@ -56,20 +56,19 @@ void PeopleDetector::detectionTest() {
 }
 
 //Main detection method
-void PeopleDetector::detectPeople(VideoCapture capture) {
+void PeopleDetector::detectPeople(Mat new_frame) {
 
   namedWindow("Frame");
   int keyboard;
-  Mat new_frame;
   Mat diff_frame;
 
-  while((char)keyboard != 'q'){
-      for (int i=0; i<2; i++) {
-        if(!capture.read(new_frame)) {
-            cerr << "Unable to read next frame" << endl;
-            exit(EXIT_FAILURE);
-        }
-      }
+  // while((char)keyboard != 'q'){
+  //     for (int i=0; i<2; i++) {
+  //       if(!capture.read(new_frame)) {
+  //           cerr << "Unable to read next frame" << endl;
+  //           exit(EXIT_FAILURE);
+  //       }
+  //     }
 
       resize(new_frame, new_frame, Size(960, 540));
 
@@ -84,8 +83,8 @@ void PeopleDetector::detectPeople(VideoCapture capture) {
       detect();
       match();
 
-      keyboard = waitKey(30);
-  }
+  //     keyboard = waitKey(30);
+  // }
 
   capture.release();
 }
@@ -195,4 +194,8 @@ int PeopleDetector::getClosest(Person person) {
     }
   }
   return min_index;
+}
+
+vector<Person> PeopleDetector::getDetectedPeople() {
+  return detected_people;
 }

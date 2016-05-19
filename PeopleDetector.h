@@ -62,7 +62,7 @@ public:
   VideoCapture readVideoFile();
 
   //Main detection method
-  void detectPeople(VideoCapture capture);
+  void detectPeople(Mat new_frame);
 
   //Detect people in frame
   void detect();
@@ -75,6 +75,9 @@ public:
 
   //Get closest location to a Person
   int getClosest(Person person);
+
+  //Get vector containing detected people
+  vector<Person> getDetectedPeople();
 
 };
 
