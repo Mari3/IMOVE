@@ -69,7 +69,7 @@ LightTrailScene::LightTrailScene() : Scene(),
     actions.push_back(new AlternatingGravityPointAction(Range(120,240,true)));
     actions.push_back(new AlternatingGravityPointAction(Range(240,0,true)));
 
-    //conditions.push_back(new PersonTurnedBystanderCondition());
+    conditions.push_back(new PersonTurnedBystanderCondition());
 }
 
 void LightTrailScene::updatePeople(vector<Person> newPeople) {

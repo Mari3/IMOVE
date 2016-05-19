@@ -16,8 +16,8 @@ void LightsManager::run() {
     sf::Clock clock;
 
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-    //Person person(Vector2(mousePos.x,mousePos.y),0,Bystander);
-    //vector<Person> people;
+    Person person(Vector2(mousePos.x,mousePos.y),0,Bystander);
+    vector<Person> people;
 
     while(window.isOpen()){
 
@@ -31,13 +31,13 @@ void LightsManager::run() {
 
         //window.clear(sf::Color::Black);
 
-        //mousePos = sf::Mouse::getPosition(window);
-        //person.setLocation(Vector2(mousePos.x,mousePos.y));
-        //people.clear();
-        //people.push_back(person);
+        mousePos = sf::Mouse::getPosition(window);
+        person.setLocation(Vector2(mousePos.x,mousePos.y));
+        people.clear();
+        people.push_back(person);
 
         float dt = clock.restart().asSeconds();
-        //scene->updatePeople(people);
+        scene->updatePeople(people);
         scene->update(dt);
         window.clear(sf::Color::Black);
         scene->draw(window);

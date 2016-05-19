@@ -21,7 +21,7 @@ void BystanderGravityPointAction::setLocation() {
     float y = person->getLocation().y;
     float gX = x;
     float gY = y;
-    if(x < 200){
+    /*if(x < 200){
         gX = 200;
     }else if(x > WIDTH-200){
         gX = WIDTH-200;
@@ -30,7 +30,7 @@ void BystanderGravityPointAction::setLocation() {
         gY = 200;
     }else if(y > HEIGHT-200){
         gY = HEIGHT-200;
-    }
+    }*/
     gravityPoint->location.x = gX;
     gravityPoint->location.y = gY;
 }
@@ -46,7 +46,7 @@ bool BystanderGravityPointAction::isDone(Action *&followUp) {
 
 void BystanderGravityPointAction::execute(float dt) {
     setLocation();
-    if(timer.update(dt)){
+    /*if(timer.update(dt)){
         if(gravityPointActive){
             gravityPoints->scheduleForRemoval(gravityPoint);
             gravityPointActive = false;
@@ -54,5 +54,5 @@ void BystanderGravityPointAction::execute(float dt) {
             gravityPoints->add(gravityPoint);
             gravityPointActive = true;
         }
-    }
+    }*/
 }
