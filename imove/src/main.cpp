@@ -7,7 +7,7 @@
 
 #include "calibration/Calibration.hpp"
 #include "image_processing/PeopleDetector.h"
-#include "image_processing/Person.h"
+#include "interface/Person.h"
 
 const unsigned char U8_WHITE = 255;
 const signed int NOKEY_ANYKEY = -1;
@@ -52,7 +52,7 @@ int main(int argc, char* argv[]) {
 
 	cv::namedWindow("Camera", cv::WINDOW_NORMAL);
 	//cv::VideoCapture video_capture(camera_device);
-	cv::VideoCapture video_capture("./scene/test/image_processing/IMG_0638.MOV");
+	cv::VideoCapture video_capture("./imove/test/image_processing/IMG_0638.MOV");
 	cv::Mat frame_camera;
 	cv::moveWindow("Camera", 500, 0);
 

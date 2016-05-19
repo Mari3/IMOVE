@@ -2,7 +2,7 @@
 // Created by Wouter Posdijk on 11/05/16.
 //
 
-#include "Manager.h"
+#include "manager.h"
 #include "imageprocessing/PeopleExtractor.h"
 #include "scene/Scene.h"
 

@@ -6,7 +6,7 @@
 #define IMOVE_PERSON_H
 
 #include <list>
-#include "Vector2.h"
+#include "../util/Vector2.h"
 
 using namespace std;
 
@@ -20,15 +20,15 @@ class Person {
 private:
     list<Vector2> previousLocations;
     Vector2 location;
-    int id;
-    static int count;
+    unsigned int id;
+    static unsigned int count;
 public:
     PersonType type;
     Person(Vector2 location, PersonType type);
     //Getters and setters
     Vector2 getLocation();
     void setLocation(Vector2 location);
-    int getId();
+    unsigned int getId();
     bool closeToEdge(int width, int height);
 };
 

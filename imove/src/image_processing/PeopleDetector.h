@@ -14,7 +14,7 @@
 #include <opencv2/video.hpp>
 #include <cv.hpp>
 
-#include "Person.h"
+#include "../interface/Person.h"
 
 #include <stdio.h>
 #include <vector>
