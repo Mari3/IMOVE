@@ -15,11 +15,11 @@ void LightPerson::shiftHue(float shift) {
 }
 
 void LightPerson::setLocation(Vector2 newLocation) {
-    if(previousLocations.size() > 10){
+    if (previousLocations.size() > 10) {
         previousLocations.pop_front();
     }
-    previousLocations.push_back(this->location);
-    this->location = location;
+    previousLocations.push_back(location);
+    location = newLocation;
 }
 
 Vector2 LightPerson::getLocation() {

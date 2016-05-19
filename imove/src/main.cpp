@@ -72,8 +72,8 @@ int main(int argc, char* argv[]) {
 	Scene* scene = new LightTrailScene();
 
 	while (cv::waitKey(1) == NOKEY_ANYKEY) {
-		for(int i=0;i<2;++i)
-			video_capture.grab();
+		//for(int i=0;i<2;++i)
+		//	video_capture.grab();
 		if (!video_capture.read(frame_camera)) {
 			std::cerr << "Unable to read next frame." << std::endl;
 			std::cerr << "Exiting..." << std::endl;
@@ -90,7 +90,8 @@ int main(int argc, char* argv[]) {
 		calibration.changeProjectorFromCameraLocationPerson(detected_people);
 
 
-		float dt = clock.restart().asSeconds();
+		//float dt = clock.restart().asSeconds();
+		float dt = 1.f/24.f;
 		scene->updatePeople(detected_people);
 		scene->update(dt);
 		scene->draw(window);

@@ -14,7 +14,7 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
 
     //TODO do drawing here
     sf::RectangleShape rect(sf::Vector2f(800,600));
-    rect.setFillColor(sf::Color(0,0,0,3));
+    rect.setFillColor(sf::Color(0,0,0,10));
     target.draw(rect);
 
     for(auto &trail : *lightTrails){
@@ -70,10 +70,12 @@ void LightTrailScene::processPeople() {
     if(!peopleQueue.empty()) {
         vector<Person> newPeople = peopleQueue.front();
         peopleQueue.pop();
+        map<unsigned int,bool> existingPeople;
         util::Range hueDraw(0, 360, true);
         for (int i = 0; i < newPeople.size(); ++i) {
             Person person = newPeople[i];
             unsigned int id = person.getId();
+            existingPeople[id] = true;
             if (lightPeople->has(id)) {
                 LightPerson *lPerson = lightPeople->get(id);
                 lPerson->setLocation(person.getLocation());
@@ -83,6 +85,11 @@ void LightTrailScene::processPeople() {
                 float endHue = startHue + 90;
                 lightPeople->add(
                         new LightPerson(person.getLocation(), id, person.type, util::Range(startHue, endHue, true)));
+            }
+        }
+        for(auto &pair : *lightPeople){
+            if(!existingPeople[pair.first]){
+                pair.second->type = None;
             }
         }
     }

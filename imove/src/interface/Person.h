@@ -13,7 +13,8 @@ using namespace std;
 enum PersonType{
     Bystander,
     Passerthrough,
-    Participant
+    Participant,
+    None
 };
 
 class Person {
