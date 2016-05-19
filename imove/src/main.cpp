@@ -64,8 +64,7 @@ int main(int argc, char* argv[]) {
 	//cv::moveWindow("Projection", 1000, 0);
 	cv::namedWindow("Frame", cv::WINDOW_NORMAL);
 
-	sf::RenderWindow window(sf::VideoMode(800,600),"Projection");
-
+	sf::RenderWindow window(sf::VideoMode(resolution_projector.width, resolution_projector.height),"Projection");
 	sf::Clock clock;
 
 	Scene* scene = new LightTrailScene();
