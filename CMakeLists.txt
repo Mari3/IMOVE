@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.2.2)
  
-PROJECT(application)
+PROJECT(imove)
  
 FIND_PACKAGE(OpenCV REQUIRED )
 INCLUDE_DIRECTORIES( ${OPENCV_INCLUDE_DIR} )
@@ -26,8 +26,17 @@ elseif(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
   # Update if necessary
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic")
 endif()
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/modules/")
+find_package(SFML REQUIRED system window graphics network audio)
+include_directories(${SFML_INCLUDE_DIR})
+find_package(OpenCV REQUIRED HINTS ${OpenCV_DIR})
+include_directories( ${OpenCV_INCLUDE_DIRS} )
  
-ADD_EXECUTABLE(calibration calibration/src/main.cpp scene/src/calibration/Calibration.cpp)
-ADD_EXECUTABLE(scene scene/src/main.cpp scene/src/calibration/Calibration.cpp scene/src/image_processing/PeopleDetector.h scene/src/image_processing/PeopleDetector.cpp scene/src/image_processing/Person.h scene/src/image_processing/Person.cpp scene/src/image_processing/Vector2.h scene/src/image_processing/Vector2.cpp)
+file(GLOB_RECURSE SOURCE_FILES "imove/src/scene/*.h" "imove/src/scene/*.cpp")
+#set(SOURCE_FILES imove/src/scene/main.cpp imove/src/scene/scene/Scene.cpp imove/src/scene/scene/Scene.h)
+ADD_EXECUTABLE(calibration calibration/src/main.cpp imove/src/calibration/Calibration.cpp)
+ADD_EXECUTABLE(imove imove/src/main.cpp imove/src/calibration/Calibration.cpp imove/src/image_processing/PeopleDetector.h imove/src/image_processing/PeopleDetector.cpp imove/src/image_processing/Person.h imove/src/image_processing/Person.cpp imove/src/image_processing/Vector2.h imove/src/image_processing/Vector2.cpp ${SOURCE_FILES})
 TARGET_LINK_LIBRARIES(calibration ${OpenCV_LIBS})
-TARGET_LINK_LIBRARIES(scene ${OpenCV_LIBS})
+TARGET_LINK_LIBRARIES(imove ${OpenCV_LIBS})
+#add_executable(imove ${SOURCE_FILES})
+TARGET_LINK_LIBRARIES(imove ${SFML_LIBRARIES})

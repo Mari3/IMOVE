@@ -1,0 +1,22 @@
+//
+// Created by Wouter Posdijk on 12/05/16.
+//
+
+#include "GravityPoint.h"
+
+GravityPoint::GravityPoint(Vector2 location, Range hue, float gravity) :
+    location(location), hue(hue), gravity(gravity)
+{
+
+}
+
+void GravityPoint::destroy() {
+    existing = false;
+}
+
+bool GravityPoint::exists() {
+    return existing;
+}
+
+
+
