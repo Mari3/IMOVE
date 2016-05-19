@@ -86,7 +86,7 @@ void PeopleDetector::detectPeople(Mat new_frame) {
   //     keyboard = waitKey(30);
   // }
 
-  capture.release();
+  // capture.release();
 }
 
 //Detect people in frame
