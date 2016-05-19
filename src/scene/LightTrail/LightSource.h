@@ -6,8 +6,8 @@
 #define IMOVE_LIGHTSOURCE_H
 
 
-#include "../../shared/Vector2.h"
-#include "../../shared/Range.h"
+#include "../../util/Vector2.h"
+#include "../../util/Range.h"
 #include "LightTrail.h"
 
 class LightSource {

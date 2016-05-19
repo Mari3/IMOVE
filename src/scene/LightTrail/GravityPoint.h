@@ -6,8 +6,8 @@
 #define IMOVE_GRAVITYPOINT_H
 
 
-#include "../../shared/Range.h"
-#include "../../shared/Vector2.h"
+#include "../../util/Range.h"
+#include "../../util/Vector2.h"
 
 class GravityPoint {
 private:

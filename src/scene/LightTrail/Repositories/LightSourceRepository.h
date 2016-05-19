@@ -7,7 +7,7 @@
 
 
 #include "../LightSource.h"
-#include "../../../shared/VectorRepository.h"
+#include "../../../util/VectorRepository.h"
 
 class LightSourceRepository : public VectorRepository<LightSource> {
 private:

@@ -10,7 +10,7 @@
 #include "cameraprojectionmapper/CameraProjectionMapper.h"
 #include "detector/PeopleDetector.h"
 #include "identifier/PeopleIdentifier.h"
-#include "../shared/Person.h"
+#include "../interface/Person.h"
 
 class PeopleExtractor {
 private:

@@ -6,7 +6,7 @@
 #define IMOVE_SCENE_H
 
 #include <SFML/Graphics.hpp>
-#include "../shared/Person.h"
+#include "../interface/Person.h"
 #include "Action.h"
 #include "Condition.h"
 

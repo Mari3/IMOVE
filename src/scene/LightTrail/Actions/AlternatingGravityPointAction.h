@@ -9,7 +9,7 @@
 #include <vector>
 #include "../../Action.h"
 #include "../GravityPoint.h"
-#include "../../../shared/Timer.h"
+#include "../../../util/Timer.h"
 #include "../Repositories/GravityPointRepository.h"
 #include "../Repositories/LightPersonRepository.h"
 

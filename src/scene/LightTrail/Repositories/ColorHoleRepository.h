@@ -7,7 +7,7 @@
 
 
 #include "../ColorHole.h"
-#include "../../../shared/VectorRepository.h"
+#include "../../../util/VectorRepository.h"
 
 class ColorHoleRepository : public VectorRepository<ColorHole> {
 private:

@@ -7,7 +7,7 @@
 
 
 #include "../LightTrail.h"
-#include "../../../shared/VectorRepository.h"
+#include "../../../util/VectorRepository.h"
 
 class LightTrailRepository : public VectorRepository<LightTrail> {
 private:

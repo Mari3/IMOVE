@@ -6,7 +6,7 @@
 #define IMOVE_GRAVITYPOINTREPOSITORY_H
 
 
-#include "../../../shared/VectorRepository.h"
+#include "../../../util/VectorRepository.h"
 #include "../GravityPoint.h"
 
 class GravityPointRepository : public VectorRepository<GravityPoint> {

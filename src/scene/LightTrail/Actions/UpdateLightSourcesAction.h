@@ -9,7 +9,7 @@
 #include "../../Action.h"
 #include "../LightTrail.h"
 #include "../LightSource.h"
-#include "../../../shared/Timer.h"
+#include "../../../util/Timer.h"
 #include "../Repositories/LightSourceRepository.h"
 #include "../Repositories/LightTrailRepository.h"
 

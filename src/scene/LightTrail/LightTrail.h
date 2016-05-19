@@ -6,7 +6,7 @@
 #define IMOVE_LIGHTTRAIL_H
 
 
-#include "../../shared/Vector2.h"
+#include "../../util/Vector2.h"
 
 class LightTrail {
 private:

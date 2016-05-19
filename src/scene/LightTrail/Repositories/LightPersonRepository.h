@@ -9,7 +9,7 @@
 #include <map>
 #include <vector>
 #include "../LightPerson.h"
-#include "../../../shared/Repository.h"
+#include "../../../util/Repository.h"
 
 class LightPersonRepository : Repository<LightPerson> {
 private:

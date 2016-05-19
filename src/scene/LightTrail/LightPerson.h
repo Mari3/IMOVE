@@ -6,9 +6,9 @@
 #define IMOVE_LIGHTPERSON_H
 
 
-#include "../../shared/Vector2.h"
-#include "../../shared/Person.h"
-#include "../../shared/Range.h"
+#include "../../util/Vector2.h"
+#include "../../interface/Person.h"
+#include "../../util/Range.h"
 
 class LightPerson : public Person{
 public:

@@ -9,7 +9,7 @@
 #include "../../Action.h"
 #include "../Repositories/GravityPointRepository.h"
 #include "../LightPerson.h"
-#include "../../../shared/Timer.h"
+#include "../../../util/Timer.h"
 
 class BystanderGravityPointAction : public Action {
 private:
