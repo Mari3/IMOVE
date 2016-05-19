@@ -1,3 +1,3 @@
 #!/bin/bash
 set -e
-./dist/scene ./config/test.yml
+./dist/imove ./config/test.yml
