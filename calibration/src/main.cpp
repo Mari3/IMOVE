@@ -6,7 +6,7 @@
 #include <string>
 #include <queue>
 
-#include "../../scene/src/Calibration.hpp"
+#include "../../scene/src/calibration/Calibration.hpp"
 
 unsigned DEFAULT_FRAMES_PROJECTOR_CAMERA_DELAY = 5;
 double DEFAULT_PROJECTOR_BACKGROUND_LIGHT = 39;

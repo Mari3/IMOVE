@@ -5,7 +5,9 @@
 #include <vector>
 #include <string>
 
-#include "Calibration.hpp"
+#include "calibration/Calibration.hpp"
+#include "image_processing/PeopleDetector.h"
+#include "image_processing/Person.h"
 
 const unsigned char U8_WHITE = 255;
 const signed int NOKEY_ANYKEY = -1;
@@ -41,6 +43,7 @@ int main(int argc, char* argv[]) {
 	fs.release();
 
 	const Calibration calibration = Calibration(resolution_projector, camera_projector_transformation, frames_projector_camera_delay, percentage_projector_background_light);
+	PeopleDetector people_detector = PeopleDetector();
 	
 	cv::Mat frame_projector = cv::Mat::ones(resolution_projector.width, resolution_projector.height, CV_8UC3) * U8_WHITE;
 	cv::namedWindow("Projector", cv::WINDOW_NORMAL);
@@ -48,13 +51,15 @@ int main(int argc, char* argv[]) {
 	cv::imshow("Projector", frame_projector);
 
 	cv::namedWindow("Camera", cv::WINDOW_NORMAL);
-	cv::VideoCapture video_capture(camera_device);
+	//cv::VideoCapture video_capture(camera_device);
+	cv::VideoCapture video_capture("./scene/test/image_processing/IMG_0638.MOV");
 	cv::Mat frame_camera;
 	cv::moveWindow("Camera", 500, 0);
 
 	cv::namedWindow("Projection", cv::WINDOW_NORMAL);
 	cv::Mat frame_projection;
 	cv::moveWindow("Projection", 1000, 0);
+	cv::namedWindow("Frame", cv::WINDOW_NORMAL);
 	while (cv::waitKey(1) == NOKEY_ANYKEY) {
 		if (!video_capture.read(frame_camera)) {
 			std::cerr << "Unable to read next frame." << std::endl;
@@ -67,6 +72,8 @@ int main(int argc, char* argv[]) {
 			frame_camera
 		);
 		cv::imshow("Projection", frame_projection);
+	 	people_detector.detectPeople(frame_camera);
+		vector<Person> detected_people = people_detector.getDetectedPeople();
 	}
  
 	return EXIT_SUCCESS;

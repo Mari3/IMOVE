@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 3.2.2)
  
 PROJECT(application)
  
@@ -27,7 +27,7 @@ elseif(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic")
 endif()
  
-ADD_EXECUTABLE(calibration calibration/src/main.cpp scene/src/Calibration.cpp)
-ADD_EXECUTABLE(scene scene/src/main.cpp scene/src/Calibration.cpp)
+ADD_EXECUTABLE(calibration calibration/src/main.cpp scene/src/calibration/Calibration.cpp)
+ADD_EXECUTABLE(scene scene/src/main.cpp scene/src/calibration/Calibration.cpp scene/src/image_processing/PeopleDetector.h scene/src/image_processing/PeopleDetector.cpp scene/src/image_processing/Person.h scene/src/image_processing/Person.cpp scene/src/image_processing/Vector2.h scene/src/image_processing/Vector2.cpp)
 TARGET_LINK_LIBRARIES(calibration ${OpenCV_LIBS})
 TARGET_LINK_LIBRARIES(scene ${OpenCV_LIBS})
