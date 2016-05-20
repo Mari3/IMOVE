@@ -29,7 +29,13 @@ vector<Person> PeopleExtractor::extractPeople(Mat new_frame) {
   }
 
   frame = new_frame;
-  return identifier.match(detector.detect(frame));
+  vector<Person> people = identifier.match(detector.detect(frame));
+  for (Person& p : people) {
+    Vector2 old_loc = p.getLocation();
+    p.setLocation(Vector2(old_loc.x*3.375, old_loc.y*3.375));
+  }
+
+  return people;
 
 
 

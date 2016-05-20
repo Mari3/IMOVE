@@ -19,6 +19,7 @@
 #include "detector/PeopleDetector.h"
 #include "identifier/PeopleIdentifier.h"
 #include "../interface/Person.h"
+#include "../util/Vector2.h"
 
 class PeopleExtractor {
 private:
