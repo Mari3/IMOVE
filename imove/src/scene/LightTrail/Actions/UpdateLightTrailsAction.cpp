@@ -5,7 +5,7 @@
 #include "UpdateLightTrailsAction.h"
 
 #define FORCE_CONSTANT 1
-#define PROXIMITY_CONSTANT 200
+#define PROXIMITY_CONSTANT 30
 #define PROXIMITY_MODIFIER .5f
 
 bool UpdateLightTrailsAction::isDone(Action *&followUp) {

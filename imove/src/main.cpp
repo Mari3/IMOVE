@@ -49,13 +49,9 @@ int main(int argc, char* argv[]) {
 	PeopleExtractor people_extractor = PeopleExtractor();
 	
 	cv::Mat frame_projector = cv::Mat::ones(resolution_projector.width, resolution_projector.height, CV_8UC3) * U8_WHITE;
-	cv::namedWindow("Projector", cv::WINDOW_NORMAL);
-	cv::moveWindow("Projector", 0, 0);
-	cv::imshow("Projector", frame_projector);
-
 	cv::namedWindow("Camera", cv::WINDOW_NORMAL);
-	//cv::VideoCapture video_capture(camera_device);
-	cv::VideoCapture video_capture("./imove/test/image_processing/IMG_0639.mp4");
+	cv::VideoCapture video_capture(camera_device);
+	//cv::VideoCapture video_capture("./imove/test/image_processing/IMG_0639.mp4");
 	cv::Mat frame_camera;
 	cv::moveWindow("Camera", 500, 0);
 
@@ -79,14 +75,51 @@ int main(int argc, char* argv[]) {
 			std::cerr << "Exiting..." << std::endl;
 			return EXIT_FAILURE;
 		}
-		cv::imshow("Camera", frame_camera);
 		calibration.createFrameProjectionFromFrameCamera(
 			frame_projection,
 			frame_camera
 		);
-		cv::imshow("Projection", frame_projection);
 	 	vector<Person> detected_people = people_extractor.extractPeople(frame_camera);
+		//detected_people.push_back(Person(Vector2(resolution_camera.width / 2, 2 * (resolution_camera.height / 3)), Participant));
+		for (unsigned int i = 0; i < detected_people.size(); ++i) {
+			cv::circle(
+				frame_camera,
+				cv::Point2f(
+					detected_people.at(i).getLocation().x,
+					detected_people.at(i).getLocation().y
+				),
+				20,
+				cv::Scalar(255, 0, 0),
+				2
+			);
+		}
+		cv::imshow("Camera", frame_camera);
 		calibration.changeProjectorFromCameraLocationPerson(detected_people);
+		for (unsigned int i = 0; i < detected_people.size(); ++i) {
+			cv::circle(
+				frame_projection,
+				cv::Point2f(
+					detected_people.at(i).getLocation().x,
+					detected_people.at(i).getLocation().y
+				),
+				80,
+				cv::Scalar(255, 244, 0),
+				8
+			);
+			cv::putText(
+				frame_projection,
+				//std::to_string(detected_people.at(i).getId()),
+				"12",
+				cv::Point2f(
+					detected_people.at(i).getLocation().x,
+					detected_people.at(i).getLocation().y
+				),
+				FONT_HERSHEY_SIMPLEX,
+				1,
+				Scalar(255, 0, 0)
+			);
+		}
+		cv::imshow("Projection", frame_projection);
 
 
 		//float dt = clock.restart().asSeconds();
