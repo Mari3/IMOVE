@@ -6,23 +6,19 @@
 #include "../Actions/BystanderGravityPointAction.h"
 #include "../Actions/ParticipantGravityPointAction.h"
 
-int PersonChangedTypeCondition::check(float dt, Action **&actions) {
-    vector<Action*> newActions;
+int PersonChangedTypeCondition::check(float dt, vector<Action*> &actions) {
     int i = 0;
     for(auto &pair : *lightPeople){
         if((oldType.count(pair.first) == 0 || oldType[pair.first] != Bystander) && pair.second->type == Bystander){
             //Create a new action
             i++;
-            newActions.push_back(new BystanderGravityPointAction(pair.second));
+            actions.push_back(new BystanderGravityPointAction(pair.second));
         }
         else if((oldType.count(pair.first) == 0 || oldType[pair.first] != Participant && pair.second->type == Participant)){
             i++;
-            newActions.push_back(new ParticipantGravityPointAction(pair.second));
+            actions.push_back(new ParticipantGravityPointAction(pair.second));
         }
         oldType[pair.first] = pair.second->type;
-    }
-    if(i>0) {
-        actions = &newActions[0];
     }
     return i;
 }

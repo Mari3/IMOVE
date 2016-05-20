@@ -16,7 +16,7 @@ void Scene::update(float dt) {
 
     //Check all conditions
     for(auto &condition : conditions){
-        Action** newActions;
+        vector<Action*> newActions;
         int amount = condition->check(dt,newActions);
 
         //Add the actions to the list

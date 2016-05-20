@@ -15,7 +15,7 @@ private:
     std::map<int,PersonType> oldType;
 public:
     PersonChangedTypeCondition();
-    int check(float dt, Action **&actions) override;
+    int check(float dt, vector<Action*> &actions) override;
 
 public:
 

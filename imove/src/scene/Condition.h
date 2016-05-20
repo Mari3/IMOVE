@@ -9,7 +9,7 @@
 
 class Condition{
 public:
-    virtual int check(float dt, Action**& actions) = 0;
+    virtual int check(float dt, vector<Action*>& actions) = 0;
 };
 
 #endif //IMOVE_CONDITION_H
