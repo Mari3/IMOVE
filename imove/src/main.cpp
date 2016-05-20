@@ -7,7 +7,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "calibration/Calibration.hpp"
-#include "image_processing/PeopleDetector.h"
+#include "image_processing/PeopleExtractor.h"
 #include "interface/Person.h"
 #include "scene/Scene.h"
 #include "scene/LightTrail/LightTrailScene.h"
@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
 	fs.release();
 
 	const Calibration calibration = Calibration(resolution_projector, camera_projector_transformation, frames_projector_camera_delay, percentage_projector_background_light);
-	PeopleDetector people_detector = PeopleDetector();
+	PeopleExtractor people_extractor = PeopleExtractor();
 	
 	cv::Mat frame_projector = cv::Mat::ones(resolution_projector.width, resolution_projector.height, CV_8UC3) * U8_WHITE;
 	cv::namedWindow("Projector", cv::WINDOW_NORMAL);
@@ -85,8 +85,7 @@ int main(int argc, char* argv[]) {
 			frame_camera
 		);
 		cv::imshow("Projection", frame_projection);
-	 	people_detector.detectPeople(frame_camera);
-		vector<Person> detected_people = people_detector.getDetectedPeople();
+	 	vector<Person> detected_people = people_extractor.extractPeople(frame_camera);
 		calibration.changeProjectorFromCameraLocationPerson(detected_people);
 
 
