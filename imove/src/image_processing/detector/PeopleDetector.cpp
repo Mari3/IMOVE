@@ -16,7 +16,7 @@ PeopleDetector::PeopleDetector() {
   params.filterByArea = true;
   params.minArea = 50;
   params.maxArea = 333333;
-  params.minDistBetweenBlobs = 10;
+  params.minDistBetweenBlobs = 20;
 
   // Create SimpleBlobDetector
   blob_detector = SimpleBlobDetector::create(params);
