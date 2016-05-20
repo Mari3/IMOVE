@@ -96,6 +96,7 @@ void LightTrailScene::processPeople() {
         for(auto &pair : *lightPeople){
             if(!existingPeople[pair.first]){
                 pair.second->type = None;
+                lightPeople->scheduleForRemoval(pair.second);
             }
         }
     }
