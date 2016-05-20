@@ -20,7 +20,7 @@ vector<Person> PeopleExtractor::extractPeople(Mat new_frame) {
   Mat diff_frame;
 
   cvtColor(new_frame, new_frame, CV_RGB2GRAY);
-  resize(new_frame, new_frame, Size(320, 180));
+  resize(new_frame, new_frame, Size(320, 240));
   absdiff(new_frame, frame, diff_frame);
   Scalar sumElems = sum(diff_frame);
   if (sumElems[0] + sumElems[1] + sumElems[2] > 7000000) {
@@ -32,7 +32,7 @@ vector<Person> PeopleExtractor::extractPeople(Mat new_frame) {
   vector<Person> people = identifier.match(detector.detect(frame));
   for (Person& p : people) {
     Vector2 old_loc = p.getLocation();
-    p.setLocation(Vector2(old_loc.x*3.375, old_loc.y*3.375));
+    p.setLocation(Vector2(old_loc.x*2, old_loc.y*2));
   }
 
   return people;
