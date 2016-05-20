@@ -7,7 +7,7 @@
 PeopleExtractor::PeopleExtractor() {
 
   //Initialize empty frame
-  frame = Mat::zeros(180, 320, CV_8UC1);
+  frame = Mat::zeros(240, 320, CV_8UC1);
 
   detector = PeopleDetector();
   identifier = PeopleIdentifier();
