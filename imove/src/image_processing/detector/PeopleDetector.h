@@ -2,54 +2,45 @@
 // Created by Wouter Posdijk on 11/05/16.
 //
 
-#ifndef IMOVE_PEOPLEDETECTOR_H
-#define IMOVE_PEOPLEDETECTOR_H
+#ifndef IMOVE_SRC_IMAGE_PROCESSING_DETECTOR_PEOPLEDETECTOR_H_
+#define IMOVE_SRC_IMAGE_PROCESSING_DETECTOR_PEOPLEDETECTOR_H_
 
-#include <opencv2/core.hpp>
 #include <opencv2/opencv.hpp>
-#include "opencv2/imgcodecs.hpp"
-#include "opencv2/imgproc.hpp"
-#include "opencv2/videoio.hpp"
+#include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/video.hpp>
 #include <cv.hpp>
-
-#include "../../interface/Person.h"
-
 #include <stdio.h>
 #include <vector>
 #include <sstream>
 #include <iostream>
+#include "opencv2/imgcodecs.hpp"
+#include "opencv2/imgproc.hpp"
+#include "opencv2/videoio.hpp"
 
-using namespace cv;
+#include "../../interface/Person.h"
 
 class PeopleDetector {
+ private:
+  // Parameters for SimpleBlobDetector
+  cv::SimpleBlobDetector::Params params;
 
-private:
+  // KNN background subtractor
+  cv::Ptr<cv::BackgroundSubtractorKNN> background_subtractor;
 
-  //Parameters for SimpleBlobDetector
-  SimpleBlobDetector::Params params;
+  // Blob detector
+  cv::Ptr<cv::SimpleBlobDetector> blob_detector;
 
-  //KNN background subtractor
-  Ptr<BackgroundSubtractorKNN> bg_sub;
+ public:
+   PeopleDetector();
+   ~PeopleDetector();
 
-  //Blob detector
-  Ptr<SimpleBlobDetector> blob_detector;
+  // Detect people in frame
+  vector<Vector2> detect(cv::Mat frame);
 
-  //Frame to visualize test
-  Mat test_frame;
-
-public:
-  PeopleDetector();
-  ~PeopleDetector();
-
-  //Detect people in frame
-  vector<Vector2> detect(Mat frame);
-
-  //Renew background subtractor
+  // Renew background subtractor
   void renew();
-
 };
 
 
-#endif //IMOVE_PEOPLEDETECTOR_H
+#endif  // IMOVE_SRC_IMAGE_PROCESSING_DETECTOR_PEOPLEDETECTOR_H_

@@ -28,6 +28,7 @@ cv::Size resolution_projector;
 void main_peopleextractor() {
 	PeopleExtractor people_extractor = PeopleExtractor();
 	
+	cv::namedWindow("Camera", cv::WINDOW_NORMAL);
 	cv::VideoCapture video_capture(camera_device);
 	//cv::VideoCapture video_capture("./imove/test/image_processing/IMG_0639.mp4");
 	cv::Mat frame_camera;
@@ -80,9 +81,9 @@ void main_peopleextractor() {
 					detected_people.at(i).getLocation().x,
 					detected_people.at(i).getLocation().y
 				),
-				FONT_HERSHEY_SIMPLEX,
+				cv::FONT_HERSHEY_SIMPLEX,
 				1,
-				Scalar(255, 0, 0)
+				cv::Scalar(255, 0, 0)
 			);
 		}
 		cv::imshow("Projection", frame_projection);
