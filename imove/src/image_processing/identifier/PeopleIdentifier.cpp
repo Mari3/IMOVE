@@ -8,7 +8,7 @@ PeopleIdentifier::PeopleIdentifier() {}
 PeopleIdentifier::~PeopleIdentifier() {}
 
 vector<Person> PeopleIdentifier::match(std::vector<Vector2> locations) {
-  // Go over all people in the previous frame and determine their new location or delete them
+  // Go over all people detected in the previous frame and determine their new location or delete them
   for (int i = 0; i < detected_people.size(); i++) {
     // Get closest location to a person
     int index_closest = getClosest(i, locations);
@@ -20,17 +20,17 @@ vector<Person> PeopleIdentifier::match(std::vector<Vector2> locations) {
     // }
     } else {
       //Set location of person to new location
-      Vector2 new_loc = locations[index_closest];
+      Vector2 new_locaction = locations[index_closest];
       // if (close to edge) { // check closer to edge than location
       //  delete person
       // }
-      detected_people[i].setLocation(new_loc);
+      detected_people[i].setLocation(new_location);
       // putText(thresh, std::to_string(detected_people[i].getId()), Point(new_loc.x, new_loc.y), FONT_HERSHEY_SIMPLEX, 1, Scalar(255,0,0));
       // Delete locations that have been taken
       locations.erase(locations.begin() + index_closest);
     }
   }
-  // Go over all remaining locations and turn them into a person
+  // Go over all remaining locations and turn them into a new person
   for (int j = 0; j < locations.size(); j++) {
     Person new_person = Person(locations[j], Participant);
     // if (!new_person.closeToEdge(480, 270)) {

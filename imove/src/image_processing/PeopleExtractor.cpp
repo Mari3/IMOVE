@@ -27,9 +27,9 @@ vector<Person> PeopleExtractor::extractPeople(Mat new_frame) {
   // Claculate difference
   absdiff(new_frame, frame, difference_frame);
   // Sum pixelvalues of difference frame
-  Scalar sumElems = sum(difference_frame);
+  Scalar sumPixels = sum(difference_frame);
   // If the sum of all pixelvalues is too big, the background subtractor has to be renewed
-  if (sumElems[0] + sumElems[1] + sumElems[2] > 7000000) {
+  if (sumPixels[0] + sumPixels[1] + sumPixels[2] > 7000000) {
     detector.renew();
   }
 
@@ -39,8 +39,8 @@ vector<Person> PeopleExtractor::extractPeople(Mat new_frame) {
   vector<Person> people = identifier.match(detector.detect(frame));
   // Rescale location of every person based on downscaling
   for (Person& p : people) {
-    Vector2 old_loc = p.getLocation();
-    p.setLocation(Vector2(old_loc.x*2, old_loc.y*2));
+    Vector2 location = p.getLocation();
+    p.setLocation(Vector2(location.x*2,location.y*2));
   }
 
   // Return vector containing all people in the scene
