@@ -11,12 +11,11 @@ vector<Person> PeopleIdentifier::match(std::vector<Vector2> locations) {
   for (int i = 0; i < detected_people.size(); i++) {
     int index_closest = getClosest(i, locations);
     if (index_closest < 0) {
-    //if (detected_people[i].closeToEdge(960,540)) {
+    // if (detected_people[i].closeToEdge(960,540)) {
         detected_people.erase(detected_people.begin() + i);
         --i;
-    //}
-    }
-    else {
+    // }
+    } else {
       Vector2 new_loc = locations[index_closest];
       // if (close to edge) { // check closer to edge than location
       //  delete person
@@ -28,16 +27,16 @@ vector<Person> PeopleIdentifier::match(std::vector<Vector2> locations) {
   }
   for (int j = 0; j < locations.size(); j++) {
     Person new_person = Person(locations[j], Participant);
-    //if (!new_person.closeToEdge(480, 270)) {
-      //new_locations.erase(locations.begin() + j);
-      //--j;
-    //}
-    //else {
+    // if (!new_person.closeToEdge(480, 270)) {
+      // new_locations.erase(locations.begin() + j);
+      // --j;
+    // }
+    // else {
       detected_people.push_back(new_person);
       // putText(thresh, std::to_string(new_person.getId()), Point(new_locations[j].x, new_locations[j].y), FONT_HERSHEY_SIMPLEX, 1, Scalar(255,0,0));
-    //}
+    // }
   }
-  //imshow("Frame", thresh);
+  // imshow("Frame", thresh);
   return detected_people;
 }
 

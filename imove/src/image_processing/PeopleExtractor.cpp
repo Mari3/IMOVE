@@ -5,8 +5,7 @@
 #include "PeopleExtractor.h"
 
 PeopleExtractor::PeopleExtractor() {
-
-  //Initialize empty frame
+  // Initialize empty frame
   frame = Mat::zeros(240, 320, CV_8UC1);
 
   detector = PeopleDetector();
@@ -16,7 +15,7 @@ PeopleExtractor::PeopleExtractor() {
 PeopleExtractor::~PeopleExtractor() {}
 
 vector<Person> PeopleExtractor::extractPeople(Mat new_frame) {
-
+  // Initialize empty frame for difference
   Mat diff_frame;
 
   cvtColor(new_frame, new_frame, CV_RGB2GRAY);
@@ -36,7 +35,4 @@ vector<Person> PeopleExtractor::extractPeople(Mat new_frame) {
   }
 
   return people;
-
-
-
 }

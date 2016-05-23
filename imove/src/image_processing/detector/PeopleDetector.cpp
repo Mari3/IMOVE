@@ -5,7 +5,6 @@
 #include "PeopleDetector.h"
 
 PeopleDetector::PeopleDetector() {
-
   bg_sub = createBackgroundSubtractorKNN();
 
   // Set parameters for SimpleBlobDetector
@@ -24,9 +23,9 @@ PeopleDetector::PeopleDetector() {
 
 PeopleDetector::~PeopleDetector() {}
 
-//Detect people in frame
+// Detect people in frame
 vector<Vector2> PeopleDetector::detect(Mat frame) {
-
+  // Vector to store newly detected locations
   vector<Vector2> new_locations;
 
   Mat bg_sub_frame;
@@ -37,8 +36,9 @@ vector<Vector2> PeopleDetector::detect(Mat frame) {
   threshold(bg_sub_frame, thresh_frame, 200, 255, 0);
 
   vector<KeyPoint> keypoints;
-  blob_detector->detect(thresh_frame,keypoints);
-  drawKeypoints(thresh_frame, keypoints, keypoints_frame, Scalar(0,0,255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+  blob_detector->detect(thresh_frame, keypoints);
+  Scalar kp_color = Scalar(0, 0, 255);
+  drawKeypoints(thresh_frame, keypoints, keypoints_frame, kp_color, DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 
   // vector< vector<Point> > contours;
   // findContours(thresh, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
@@ -56,20 +56,16 @@ vector<Vector2> PeopleDetector::detect(Mat frame) {
     int yco;
     if (kp.pt.y < 60) {
       yco = kp.pt.y+6;
-    }
-    else if (kp.pt.y < 120) {
+    } else if (kp.pt.y < 120) {
       yco = kp.pt.y;
-    }
-    else {
+    } else {
       yco = kp.pt.y-6;
     }
     if (kp.pt.x < 107) {
       xco = kp.pt.x +6;
-    }
-    else if (kp.pt.x < 214) {
+    } else if (kp.pt.x < 214) {
       xco = kp.pt.x;
-    }
-    else {
+    } else {
       xco = kp.pt.x-6;
     }
     Vector2 new_location = Vector2(xco, yco);
