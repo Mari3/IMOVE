@@ -6,7 +6,7 @@
 
 PeopleExtractor::PeopleExtractor() {
   // Initialize empty frame
-  frame = Mat::zeros(240, 320, CV_8UC1);
+  frame = cv::Mat::zeros(240, 320, CV_8UC1);
 
   // Initialize detector
   detector = PeopleDetector();
@@ -16,18 +16,18 @@ PeopleExtractor::PeopleExtractor() {
 
 PeopleExtractor::~PeopleExtractor() {}
 
-vector<Person> PeopleExtractor::extractPeople(Mat new_frame) {
+vector<Person> PeopleExtractor::extractPeople(cv::Mat new_frame) {
   // Initialize empty frame for difference
-  Mat difference_frame;
+  cv::Mat difference_frame;
 
   // Convert frame to grayscale
   cvtColor(new_frame, new_frame, CV_RGB2GRAY);
   // Downscale frame
-  resize(new_frame, new_frame, Size(320, 240));
+  resize(new_frame, new_frame, cv::Size(320, 240));
   // Claculate difference
   absdiff(new_frame, frame, difference_frame);
   // Sum pixelvalues of difference frame
-  Scalar sumPixels = sum(difference_frame);
+  cv::Scalar sumPixels = sum(difference_frame);
   // If the sum of all pixelvalues is too big, the background subtractor has to be renewed
   if (sumPixels[0] + sumPixels[1] + sumPixels[2] > 7000000) {
     detector.renew();

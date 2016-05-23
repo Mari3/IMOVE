@@ -20,25 +20,23 @@
 
 #include "../../interface/Person.h"
 
-using namespace cv;
-
 class PeopleDetector {
  private:
   // Parameters for SimpleBlobDetector
-  SimpleBlobDetector::Params params;
+  cv::SimpleBlobDetector::Params params;
 
   // KNN background subtractor
-  Ptr<BackgroundSubtractorKNN> background_subtractor;
+  cv::Ptr<cv::BackgroundSubtractorKNN> background_subtractor;
 
   // Blob detector
-  Ptr<SimpleBlobDetector> blob_detector;
+  cv::Ptr<cv::SimpleBlobDetector> blob_detector;
 
  public:
    PeopleDetector();
    ~PeopleDetector();
 
   // Detect people in frame
-  vector<Vector2> detect(Mat frame);
+  vector<Vector2> detect(cv::Mat frame);
 
   // Renew background subtractor
   void renew();

@@ -11,8 +11,6 @@
 #include "../../interface/Person.h"
 #include "../../util/Vector2.h"
 
-using namespace std;
-
 class PeopleIdentifier {
  private:
   // Vector containing detected people in the frame

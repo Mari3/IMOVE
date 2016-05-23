@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
 
 	const Calibration calibration = Calibration(resolution_projector, camera_projector_transformation, frames_projector_camera_delay, percentage_projector_background_light);
 	PeopleExtractor people_extractor = PeopleExtractor();
-	
+
 	cv::Mat frame_projector = cv::Mat::ones(resolution_projector.width, resolution_projector.height, CV_8UC3) * U8_WHITE;
 	cv::namedWindow("Camera", cv::WINDOW_NORMAL);
 	cv::VideoCapture video_capture(camera_device);
@@ -114,9 +114,9 @@ int main(int argc, char* argv[]) {
 					detected_people.at(i).getLocation().x,
 					detected_people.at(i).getLocation().y
 				),
-				FONT_HERSHEY_SIMPLEX,
+				cv::FONT_HERSHEY_SIMPLEX,
 				1,
-				Scalar(255, 0, 0)
+				cv::Scalar(255, 0, 0)
 			);
 		}
 		cv::imshow("Projection", frame_projection);
@@ -133,6 +133,6 @@ int main(int argc, char* argv[]) {
 
 		window.display();
 	}
- 
+
 	return EXIT_SUCCESS;
 }

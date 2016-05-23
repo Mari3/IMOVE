@@ -27,20 +27,21 @@ class PeopleExtractor {
  private:
   // Detector to detect locations of people in a frame
   PeopleDetector detector;
+  
   // CameraProjectionMapper mapper;
 
   // Identifier to identify people with locations
   PeopleIdentifier identifier;
 
   // Current frame
-  Mat frame;
+  cv::Mat frame;
 
  public:
   PeopleExtractor();
   ~PeopleExtractor();
 
   // Main extraction function to extract people from a frame
-  vector<Person> extractPeople(Mat new_frame);
+  vector<Person> extractPeople(cv::Mat new_frame);
 };
 
 #endif  // IMOVE_SRC_IMAGE_PROCESSING_PEOPLEEXTRACTOR_H_

@@ -6,7 +6,7 @@
 
 PeopleDetector::PeopleDetector() {
   // Initialize background subtractor
-  background_subtractor = createBackgroundSubtractorKNN();
+  background_subtractor = cv::createBackgroundSubtractorKNN();
 
   // Set parameters for SimpleBlobDetector
   params.filterByCircularity = false;
@@ -19,20 +19,20 @@ PeopleDetector::PeopleDetector() {
   params.minDistBetweenBlobs = 20;
 
   // Create SimpleBlobDetector
-  blob_detector = SimpleBlobDetector::create(params);
+  blob_detector = cv::SimpleBlobDetector::create(params);
 }
 
 PeopleDetector::~PeopleDetector() {}
 
 // Detect people in frame
-vector<Vector2> PeopleDetector::detect(Mat frame) {
+vector<Vector2> PeopleDetector::detect(cv::Mat frame) {
   // Vector to store newly detected locations
   vector<Vector2> new_locations;
 
   // Initialize frames for operations
-  Mat background_subtr_frame;
-  Mat thresh_frame;
-  Mat keypoints_frame;
+  cv::Mat background_subtr_frame;
+  cv::Mat thresh_frame;
+  cv::Mat keypoints_frame;
 
   // Apply background subtractor to frame
   background_subtractor->apply(frame, background_subtr_frame);
@@ -40,11 +40,11 @@ vector<Vector2> PeopleDetector::detect(Mat frame) {
   threshold(background_subtr_frame, thresh_frame, 200, 255, 0);
 
   // Vector to store keypoints
-  vector<KeyPoint> keypoints;
+  vector<cv::KeyPoint> keypoints;
   // Detect blobs as keypoints
   blob_detector->detect(thresh_frame, keypoints);
   // Draw circle around keypoints
-  drawKeypoints(thresh_frame, keypoints, keypoints_frame, Scalar(0, 0, 255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+  cv::drawKeypoints(thresh_frame, keypoints, keypoints_frame, cv::Scalar(0, 0, 255), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 
   // vector< vector<Point> > contours;
   // findContours(thresh, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
@@ -82,12 +82,12 @@ vector<Vector2> PeopleDetector::detect(Mat frame) {
   }
 
   // Show tresholded background subtraction with drawn keypoints
-  imshow("Frame", keypoints_frame);
+  cv::imshow("Frame", keypoints_frame);
   // Return all new locations
   return new_locations;
 }
 
 void PeopleDetector::renew() {
   // Reset background subtractor to adapt to changes in lighting
-  background_subtractor = createBackgroundSubtractorKNN();
+  background_subtractor = cv::createBackgroundSubtractorKNN();
 }
