@@ -22,19 +22,19 @@ private:
 public:
     static LightPersonRepository * getInstance();
 
-    virtual void add(LightPerson *item) override {
+    void add(LightPerson *item) override {
         map[item->getId()] = item;
     }
 
-    virtual void add(LightPerson *item, unsigned long id) override {
+    void add(LightPerson *item, unsigned long id) override {
         add(item);
     }
 
-    virtual void scheduleForRemoval(LightPerson *item) override {
+    void scheduleForRemoval(LightPerson *item) override {
         scheduledForRemoval.push_back(item->getId());
     }
 
-    virtual void removeAll() override {
+    void removeAll() override {
         for(auto &i : scheduledForRemoval){
             if(map.count(i) > 0){
                 map.erase(i);
@@ -42,7 +42,7 @@ public:
         }
     }
 
-    virtual unsigned long size() override {
+    unsigned long size() override {
         return map.size();
     }
 
@@ -50,17 +50,17 @@ public:
         return map.count(id) > 0;
     }
 
-    virtual LightPerson *get(unsigned long id) override {
+    LightPerson *get(unsigned long id) override {
         return map[id];
     }
 
     std::map<int,LightPerson*>::iterator begin(){
         return map.begin();
-    };
+    }
 
     std::map<int,LightPerson*>::iterator end(){
         return map.end();
-    };
+    }
 };
 
 

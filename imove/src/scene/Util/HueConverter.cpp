@@ -24,5 +24,4 @@ namespace HueConverter {
 
         return sf::Color(255, 0, xval);
     }
-}
-
+} // namespace HueConverter

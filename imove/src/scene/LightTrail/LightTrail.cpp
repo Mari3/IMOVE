@@ -37,8 +37,7 @@ void LightTrail::applyForce(Vector2 force, float dt) {
     if(location.y < 0){
         location.y = 0;
         speed.y *= -1;
-    }
-    else if(location.y > SH){
+    }else if(location.y > SH){
         location.y = SH;
         speed.y *= -1;
     }

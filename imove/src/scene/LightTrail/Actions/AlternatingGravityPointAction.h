@@ -6,14 +6,11 @@
 #define IMOVE_ALTERNATINGGRAVITYPOINTACTION_H
 
 
-#include <vector>
 #include "../../Action.h"
 #include "../GravityPoint.h"
 #include "../../../util/Timer.h"
 #include "../Repositories/GravityPointRepository.h"
 #include "../Repositories/LightPersonRepository.h"
-
-using namespace std;
 
 class AlternatingGravityPointAction : public Action{
 private:

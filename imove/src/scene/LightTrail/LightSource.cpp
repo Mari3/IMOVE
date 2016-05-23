@@ -19,7 +19,7 @@ LightTrail* LightSource::sendOut() {
     float trailAngle = angle.drawRandom();
 
     //Create speed vector from speed and angle
-    Vector2 trailSpeedVector(trailSpeed*(float)cos(trailAngle/180.f*PI),trailSpeed*(float)sin(trailAngle/180.f*PI));
+    Vector2 trailSpeedVector(trailSpeed*static_cast<float>(cos(trailAngle/180.f*PI)),trailSpeed*static_cast<float>(sin(trailAngle/180.f*PI)));
 
     return new LightTrail(location,trailSpeedVector,trailHue);
 }

@@ -15,7 +15,8 @@ int PersonChangedTypeCondition::check(float dt, vector<Action*> &actions) {
             i++;
             actions.push_back(new BystanderGravityPointAction(pair.second));
         } // Else if the person turned particpant
-        else if((oldType.count(pair.first) == 0 || oldType[pair.first] != Participant && pair.second->type == Participant)){
+        else if((oldType.count(pair.first) == 0 || oldType[pair.first] != Participant && pair.second->type == Participant))
+        {
             // Create a new participant action
             i++;
             actions.push_back(new ParticipantGravityPointAction(pair.second));

@@ -8,32 +8,42 @@
 util::Range::Range(float start, float end, bool bounds, float lowerBound, float upperBound) :
     start(start),end(end),bounds(bounds),lowerBound(lowerBound),upperBound(upperBound)
 {
-    if(bounds){
+    if(bounds)
+    {
         fixBounds();
     }
 }
 
-void util::Range::fixBounds() {
+void util::Range::fixBounds()
+{
     while(start < lowerBound)start += upperBound-lowerBound;
     while(end < lowerBound)end += upperBound-lowerBound;
     while(start > upperBound)start -= upperBound-lowerBound;
     while(end > upperBound)end -= upperBound-lowerBound;
 }
 
-void util::Range::operator+=(const float &f) {
+void util::Range::operator+=(const float &f)
+{
     start += f;
     end += f;
     if(bounds)fixBounds();
 }
 
-float util::Range::drawRandom() {
-    if(start < end) {
+float util::Range::drawRandom()
+{
+    if(start < end)
+    {
         return start + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (end - start)));
-    }else if(start == end){
+    }
+    else if(start == end)
+    {
         return start;
-    }else{
+    }
+    else
+    {
         if(!bounds)return start;//TODO throw error
-        else{
+        else
+        {
             float hi = upperBound+end-lowerBound;
             float val = start + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (hi - start)));
             if(val > upperBound)val -= upperBound-lowerBound;
@@ -42,7 +52,8 @@ float util::Range::drawRandom() {
     }
 }
 
-bool util::Range::contains(float f) {
+bool util::Range::contains(float f)
+{
     if(end > start)
         return f > start && f < end;
     if(start == end)
