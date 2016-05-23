@@ -28,17 +28,14 @@ class PeopleDetector {
   SimpleBlobDetector::Params params;
 
   // KNN background subtractor
-  Ptr<BackgroundSubtractorKNN> bg_sub;
+  Ptr<BackgroundSubtractorKNN> background_subtractor;
 
   // Blob detector
   Ptr<SimpleBlobDetector> blob_detector;
 
-  // Frame to visualize test
-  Mat test_frame;
-
  public:
-  PeopleDetector();
-  ~PeopleDetector();
+   PeopleDetector();
+   ~PeopleDetector();
 
   // Detect people in frame
   vector<Vector2> detect(Mat frame);
