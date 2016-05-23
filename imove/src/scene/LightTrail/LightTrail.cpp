@@ -15,14 +15,18 @@ LightTrail::LightTrail(Vector2 location, Vector2 speed, float hue) :
 }
 
 void LightTrail::applyForce(Vector2 force, float dt) {
+    //Increase the speed based on the force and delta time
     speed += force*dt;
 
+    //Cap the speed at 500
     if(speed.size() > 500){
         speed = speed/speed.size()*500;
     }
 
+    //Increase the location based on the speed and delta time
     location += speed*dt;
-    //TODO check for edges of scene
+
+    //Bounce off the edges of the screen
     if(location.x < 0){
         location.x=0;
         speed.x *= -1;

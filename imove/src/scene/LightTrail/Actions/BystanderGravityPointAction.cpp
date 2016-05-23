@@ -12,6 +12,8 @@ BystanderGravityPointAction::BystanderGravityPointAction(LightPerson* person) : 
 {
     gravityPoint = new GravityPoint(Vector2(0,0),person->hue,300000);
     setLocation();
+
+    // Register the gravity point
     gravityPoints->add(gravityPoint);
     gravityPointActive = true;
 }
@@ -21,22 +23,26 @@ void BystanderGravityPointAction::setLocation() {
     float y = person->getLocation().y;
     float gX = x;
     float gY = y;
-    if(x < 200){
-        gX = 200;
-    }else if(x > WIDTH-200){
-        gX = WIDTH-200;
+
+    //Keep the x and y within the screen
+    if(x < 0){
+        gX = 0;
+    }else if(x > WIDTH){
+        gX = WIDTH;
     }
-    if(y < 200){
-        gY = 200;
-    }else if(y > HEIGHT-200){
-        gY = HEIGHT-200;
+    if(y < 0){
+        gY = 0;
+    }else if(y > HEIGHT){
+        gY = HEIGHT;
     }
+
     gravityPoint->location.x = gX;
     gravityPoint->location.y = gY;
 }
 
 
 bool BystanderGravityPointAction::isDone(Action *&followUp) {
+    //This action is done when the person it tracks is not a bystander anymore
     if(person->type != Bystander){
         gravityPoints->scheduleForRemoval(gravityPoint);
         return true;
@@ -46,7 +52,9 @@ bool BystanderGravityPointAction::isDone(Action *&followUp) {
 
 void BystanderGravityPointAction::execute(float dt) {
     setLocation();
-    if(timer.update(dt)){
+
+    if(timer.update(dt)){ //If the timer is done
+        //Switch the gravity point on or off
         if(gravityPointActive){
             gravityPoints->scheduleForRemoval(gravityPoint);
             gravityPointActive = false;

@@ -10,11 +10,14 @@ UpdateLightSourcesAction::UpdateLightSourcesAction()
 }
 
 bool UpdateLightSourcesAction::isDone(Action *&followUp) {
+    // This action is never done
     return false;
 }
 
 void UpdateLightSourcesAction::execute(float dt) {
     if(timer.update(dt)){
+        // TODO cap based on the amount of light trails
+
         for(auto &lightSource : *sources){
             trails->add(lightSource->sendOut());
         }

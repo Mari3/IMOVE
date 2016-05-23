@@ -14,7 +14,6 @@ void ColorHole::consume(LightTrail &trail) {
 }
 
 vector<LightTrail> ColorHole::explode() {
-    destroy();
     return consumedTrails;
 }
 
