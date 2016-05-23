@@ -18,7 +18,7 @@ const unsigned char U8_WHITE = 255;
 const signed int NOKEY_ANYKEY = -1;
 
 std::mutex mutex_scene;
-bool running = false;
+bool running = true;
 
 Calibration* calibration;
 int camera_device;
@@ -28,17 +28,10 @@ cv::Size resolution_projector;
 void main_peopleextractor() {
 	PeopleExtractor people_extractor = PeopleExtractor();
 	
-	cv::Mat frame_projector = cv::Mat::ones(resolution_projector.width, resolution_projector.height, CV_8UC3) * U8_WHITE;
-	cv::namedWindow("Camera", cv::WINDOW_NORMAL);
-	//cv::VideoCapture video_capture(camera_device);
-	cv::VideoCapture video_capture("./imove/test/image_processing/IMG_0639.mp4");
+	cv::VideoCapture video_capture(camera_device);
+	//cv::VideoCapture video_capture("./imove/test/image_processing/IMG_0639.mp4");
 	cv::Mat frame_camera;
-	cv::moveWindow("Camera", 500, 0);
-
-	cv::namedWindow("Projection", cv::WINDOW_NORMAL);
 	cv::Mat frame_projection;
-	cv::moveWindow("Projection", 1000, 0);
-	cv::namedWindow("Frame", cv::WINDOW_NORMAL);
 
 	while (running) {
 		//for(int i=0;i<2;++i)
@@ -108,11 +101,10 @@ int main(int argc, char* argv[]) {
 
 	cv::FileStorage fs;
 	fs.open(argv[1], cv::FileStorage::READ);
-	//int camera_device;
 	fs["Camera_device"] >> camera_device;
 	cv::Size resolution_camera;
 	fs["Resolution_camera"] >> resolution_camera;
-	//cv::Size resolution_projector;
+	cv::Size resolution_projector;
 	fs["Resolution_projector"] >> resolution_projector;
 	cv::Mat camera_projector_transformation;
 	fs["Camera_projector_transformation"] >> camera_projector_transformation;
@@ -131,13 +123,21 @@ int main(int argc, char* argv[]) {
 	fs.release();
 
 	calibration = new Calibration(resolution_projector, camera_projector_transformation, frames_projector_camera_delay, percentage_projector_background_light);
+	
+	cv::namedWindow("Camera", cv::WINDOW_NORMAL);
+	cv::moveWindow("Camera", 500, 0);
 
-	sf::RenderWindow window(sf::VideoMode(resolution_projector.width, resolution_projector.height),"Projection");
+	cv::namedWindow("Projection", cv::WINDOW_NORMAL);
+	cv::moveWindow("Projection", 1000, 0);
+	
+	cv::namedWindow("Frame", cv::WINDOW_NORMAL);
+
+	sf::RenderWindow window(sf::VideoMode(resolution_projector.width, resolution_projector.height),"Scene");
 	window.clear(sf::Color::Black);
 	window.display();
 	sf::Clock clock;
 
-	Scene* scene = new LightTrailScene();
+	scene = new LightTrailScene();
 
 	std::thread thread_peopleextractor(main_peopleextractor);
 
@@ -150,8 +150,8 @@ int main(int argc, char* argv[]) {
 		window.clear(sf::Color::Black);
 		scene->draw(window);
 
-		window.display();
 		mutex_scene.unlock();
+		window.display();
 	}
 
 	running = false;
