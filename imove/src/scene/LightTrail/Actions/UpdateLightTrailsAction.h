@@ -6,14 +6,12 @@
 #define IMOVE_UPDATELIGHTTRAILSACTION_H
 
 
-#include <vector>
 #include "../../Action.h"
 #include "../LightTrail.h"
 #include "../GravityPoint.h"
 #include "../Repositories/LightTrailRepository.h"
 #include "../Repositories/GravityPointRepository.h"
 
-using namespace std;
 
 class UpdateLightTrailsAction : public Action {
 private:

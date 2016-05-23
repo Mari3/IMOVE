@@ -26,18 +26,19 @@ UpdateLightTrailsAction::UpdateLightTrailsAction() :
 
 Vector2 UpdateLightTrailsAction::calculateForce(LightTrail trail) {
     Vector2 totalForce(0,0);
-    //Range slowDownRange(20,160);
 
     for(auto &gravityPoint : *gravityPoints){
-        if(gravityPoint->hue.contains(trail.hue)) {
+        if(gravityPoint->hue.contains(trail.hue)) { // If the hue of the light trail is in the hue-range of the gravity point
             Vector2 diff = gravityPoint->location - trail.getLocation();
             float dist = diff.size();
             float proximityModifier = 1;
-            if (dist < PROXIMITY_CONSTANT) {
-                //float angle = diff.angle(trail.getSpeed());
-                //if (slowDownRange.contains(angle))
+
+            if (dist < PROXIMITY_CONSTANT) { // If the light trail is in a certain proximity to the gravity point
+                // Decrease instead of increase the gravity the closer the trail gets
+                // in order to cause orbit
                 proximityModifier = PROXIMITY_MODIFIER * (dist/PROXIMITY_CONSTANT) * (dist/PROXIMITY_CONSTANT);
             }
+            // Add force that is inversely proportional to distance, like real gravity.
             totalForce += diff / dist / dist * FORCE_CONSTANT * proximityModifier * gravityPoint->gravity;
         }
     }

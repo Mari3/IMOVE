@@ -5,7 +5,8 @@
 #ifndef IMOVE_VECTOR2_H
 #define IMOVE_VECTOR2_H
 
-class Vector2 {
+class Vector2
+{
 public:
     float x,y;
     Vector2(float x, float y);

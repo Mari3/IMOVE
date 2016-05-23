@@ -8,7 +8,8 @@
 #include <iterator>
 
 template<typename T>
-class Repository {
+class Repository
+{
 public:
     virtual void add(T* item) = 0;
     virtual void add(T* item, unsigned long id) = 0;
@@ -17,7 +18,8 @@ public:
     virtual unsigned long size() = 0;
     virtual T* get(unsigned long id) = 0;
     virtual bool has(unsigned long id) = 0;
-    T* operator[](unsigned long id) {
+    T* operator[](unsigned long id)
+    {
         return get(id);
     }
 };

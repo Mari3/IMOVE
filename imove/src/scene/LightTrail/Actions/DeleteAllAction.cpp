@@ -13,6 +13,7 @@ DeleteAllAction::DeleteAllAction() : colorHoles(ColorHoleRepository::getInstance
 }
 
 bool DeleteAllAction::isDone(Action *&followUp) {
+    // This action is never done
     return false;
 }
 

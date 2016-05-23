@@ -5,15 +5,12 @@
 #ifndef IMOVE_UPDATELIGHTSOURCESACTION_H
 #define IMOVE_UPDATELIGHTSOURCESACTION_H
 
-#include <vector>
 #include "../../Action.h"
 #include "../LightTrail.h"
 #include "../LightSource.h"
 #include "../../../util/Timer.h"
 #include "../Repositories/LightSourceRepository.h"
 #include "../Repositories/LightTrailRepository.h"
-
-using namespace std;
 
 class UpdateLightSourcesAction : public Action {
 private:

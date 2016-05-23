@@ -10,13 +10,4 @@ GravityPoint::GravityPoint(Vector2 location, util::Range hue, float gravity) :
 
 }
 
-void GravityPoint::destroy() {
-    existing = false;
-}
-
-bool GravityPoint::exists() {
-    return existing;
-}
-
-
 

@@ -7,6 +7,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <queue>
+#include <vector>
 #include "../interface/Person.h"
 #include "Action.h"
 #include "Condition.h"

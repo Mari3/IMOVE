@@ -6,10 +6,11 @@
 #define IMOVE_CONDITION_H
 
 #include "Action.h"
+#include <vector>
 
 class Condition{
 public:
-    virtual int check(float dt, vector<Action*>& actions) = 0;
+    virtual int check(float dt, std::vector<Action*>& actions) = 0;
 };
 
 #endif //IMOVE_CONDITION_H
