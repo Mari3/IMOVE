@@ -25,6 +25,10 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
         texture.draw(circle);
     }
 
+    //Draw the texture onto the target
+    texture.display();
+    target.draw(sf::Sprite(texture.getTexture()));
+
     //Draw all people on the target (for debugging purposes)
     for(auto &pair : *lightPeople){
         sf::CircleShape circle(5);
@@ -40,10 +44,6 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
         gCircle.setPosition(point->location.x,point->location.y);
         target.draw(gCircle);
     }
-
-    //Draw the texture onto the target
-    texture.display();
-    target.draw(sf::Sprite(texture.getTexture()));
 
 }
 
