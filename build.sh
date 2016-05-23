@@ -2,8 +2,8 @@
 set -e
 mkdir -p build
 pushd build >> /dev/null
-	cmake ..
-	make
+	cmake -DCMAKE_BUILD_TYPE=Debug ..
+	make -j
 popd >> /dev/null
 
 mkdir -p dist
