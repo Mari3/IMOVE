@@ -1,13 +1,4 @@
-set(gtest_SOURCE_DIR ./lib/googletest)
+#set(gtest_SOURCE_DIR ./lib/googletest)
 
-include_directories(${gtest_SOURCE_DIR}/include, ${gtest_SOURCE_DIR})
-
-add_executable(runTests test1.cpp)
-
-if (APPLE)
-add_definitions(-DGTEST_USE_OWN_TR1_TUPLE)
-add_definitions(-D__GLIBCXX__)
-endif (APPLE)
-
-target_link_libraries(runTests gtest gtest_main)
-target_link_libraries(runTests imove)
+add_subdirectory(lib)
+add_subdirectory(test)
