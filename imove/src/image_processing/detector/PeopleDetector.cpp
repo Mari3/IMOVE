@@ -5,8 +5,8 @@
 #include "PeopleDetector.h"
 
 PeopleDetector::PeopleDetector() {
-
-  bg_sub = createBackgroundSubtractorKNN();
+  // Initialize background subtractor
+  background_subtractor = cv::createBackgroundSubtractorKNN();
 
   // Set parameters for SimpleBlobDetector
   params.filterByCircularity = false;
@@ -19,26 +19,32 @@ PeopleDetector::PeopleDetector() {
   params.minDistBetweenBlobs = 20;
 
   // Create SimpleBlobDetector
-  blob_detector = SimpleBlobDetector::create(params);
+  blob_detector = cv::SimpleBlobDetector::create(params);
 }
 
 PeopleDetector::~PeopleDetector() {}
 
-//Detect people in frame
-vector<Vector2> PeopleDetector::detect(Mat frame) {
-
+// Detect people in frame
+vector<Vector2> PeopleDetector::detect(cv::Mat frame) {
+  // Vector to store newly detected locations
   vector<Vector2> new_locations;
 
-  Mat bg_sub_frame;
-  Mat thresh_frame;
-  Mat keypoints_frame;
+  // Initialize frames for operations
+  cv::Mat background_subtr_frame;
+  cv::Mat thresh_frame;
+  cv::Mat keypoints_frame;
 
-  bg_sub->apply(frame, bg_sub_frame);
-  threshold(bg_sub_frame, thresh_frame, 200, 255, 0);
+  // Apply background subtractor to frame
+  background_subtractor->apply(frame, background_subtr_frame);
+  // Filter out shadows
+  threshold(background_subtr_frame, thresh_frame, 200, 255, 0);
 
-  vector<KeyPoint> keypoints;
-  blob_detector->detect(thresh_frame,keypoints);
-  drawKeypoints(thresh_frame, keypoints, keypoints_frame, Scalar(0,0,255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+  // Vector to store keypoints
+  vector<cv::KeyPoint> keypoints;
+  // Detect blobs as keypoints
+  blob_detector->detect(thresh_frame, keypoints);
+  // Draw circle around keypoints
+  cv::drawKeypoints(thresh_frame, keypoints, keypoints_frame, cv::Scalar(0, 0, 255), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 
   // vector< vector<Point> > contours;
   // findContours(thresh, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
@@ -51,35 +57,37 @@ vector<Vector2> PeopleDetector::detect(Mat frame) {
   // contours.clear();
   // drawContours(keypoints_frame, contours_thresholded, -1, Scalar(0,0,255));
 
-  for (auto &kp : keypoints) {
+  // Change keypoint locations according to perspective
+  for (auto &keypoint : keypoints) {
     int xco;
     int yco;
-    if (kp.pt.y < 60) {
-      yco = kp.pt.y+6;
+    if (keypoint.pt.y < 60) {
+      yco = keypoint.pt.y+6;
+    } else if (keypoint.pt.y < 120) {
+      yco = keypoint.pt.y;
+    } else {
+      yco = keypoint.pt.y-6;
     }
-    else if (kp.pt.y < 120) {
-      yco = kp.pt.y;
+    if (keypoint.pt.x < 107) {
+      xco = keypoint.pt.x +6;
+    } else if (keypoint.pt.x < 214) {
+      xco = keypoint.pt.x;
+    } else {
+      xco = keypoint.pt.x-6;
     }
-    else {
-      yco = kp.pt.y-6;
-    }
-    if (kp.pt.x < 107) {
-      xco = kp.pt.x +6;
-    }
-    else if (kp.pt.x < 214) {
-      xco = kp.pt.x;
-    }
-    else {
-      xco = kp.pt.x-6;
-    }
+
+    // Add location to locations vector
     Vector2 new_location = Vector2(xco, yco);
     new_locations.push_back(new_location);
   }
 
-  imshow("Frame", keypoints_frame);
+  // Show tresholded background subtraction with drawn keypoints
+  cv::imshow("Frame", keypoints_frame);
+  // Return all new locations
   return new_locations;
 }
 
 void PeopleDetector::renew() {
-  bg_sub = createBackgroundSubtractorKNN();
+  // Reset background subtractor to adapt to changes in lighting
+  background_subtractor = cv::createBackgroundSubtractorKNN();
 }
