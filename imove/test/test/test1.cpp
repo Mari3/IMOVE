@@ -10,3 +10,9 @@ TEST (SquareRootTest, PositiveNos) {
     EXPECT_EQ (25.4, sqrt (645.16));
     EXPECT_EQ (50.332, sqrt (2533.310224));
 }
+
+TEST (AlternatingGPointTest, ChangeLocationAfterFive){
+
+    //AlternatingGravityPointAction action();
+
+}
