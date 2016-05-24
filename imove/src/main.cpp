@@ -34,7 +34,7 @@ void main_peopleextractor() {
 	cv::Mat frame_camera;
 	cv::Mat frame_projection;
 
-	while (running) {
+	while (cv::waitKey(1) == NOKEY_ANYKEY) {
 		//for(int i=0;i<2;++i)
 		//	video_capture.grab();
 		if (!video_capture.read(frame_camera)) {
@@ -92,6 +92,9 @@ void main_peopleextractor() {
 		scene->updatePeople(detected_people);
 		mutex_scene.unlock();
 	}
+	running = false;
+
+	pthread_exit(NULL);
 }
 
 int main(int argc, char* argv[]) {
@@ -142,7 +145,7 @@ int main(int argc, char* argv[]) {
 
 	std::thread thread_peopleextractor(main_peopleextractor);
 
-	while (cv::waitKey(1) == NOKEY_ANYKEY) {
+	while (running) {
 		mutex_scene.lock();
 		float dt = clock.restart().asSeconds();
 		//float dt = 1.f/24.f;
@@ -155,7 +158,6 @@ int main(int argc, char* argv[]) {
 		window.display();
 	}
 
-	running = false;
 	thread_peopleextractor.join();
  
 	return EXIT_SUCCESS;
