@@ -22,7 +22,9 @@ private:
     LightSourceRepository* lightSources;
     LightTrailRepository* lightTrails;
 public:
-    DeleteAllAction();
+    DeleteAllAction(ColorHoleRepository *colorHoles, GravityPointRepository *gravityPoints,
+                    LightPersonRepository *lightPeople, LightSourceRepository *lightSources,
+                    LightTrailRepository *lightTrails);
 
     bool isDone(Action *&followUp) override;
 

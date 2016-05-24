@@ -13,9 +13,11 @@
 class PersonChangedTypeCondition : public Condition {
 private:
     LightPersonRepository* lightPeople;
+    GravityPointRepository* gravityPoints;
     std::map<int,PersonType> oldType;
 public:
-    PersonChangedTypeCondition();
+    PersonChangedTypeCondition(LightPersonRepository* lightPeople,
+                               GravityPointRepository* gravityPoints);
     int check(float dt, vector<Action*> &actions) override;
 
 public:

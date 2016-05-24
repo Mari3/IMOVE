@@ -65,14 +65,14 @@ LightTrailScene::LightTrailScene() : Scene(),
 
 
     //Add all the basic actions
-    actions.push_back(new DeleteAllAction());
-    actions.push_back(new UpdateLightTrailsAction());
-    actions.push_back(new UpdateLightSourcesAction());
-    actions.push_back(new AlternatingGravityPointAction());
-    actions.push_back(new AlternatingGravityPointAction());
+    actions.push_back(new DeleteAllAction(colorHoles,gravityPoints,lightPeople,lightSources,lightTrails));
+    actions.push_back(new UpdateLightTrailsAction(lightTrails,gravityPoints));
+    actions.push_back(new UpdateLightSourcesAction(lightSources,lightTrails));
+    actions.push_back(new AlternatingGravityPointAction(gravityPoints,lightPeople));
+    actions.push_back(new AlternatingGravityPointAction(gravityPoints,lightPeople));
 
     //Add all conditions
-    conditions.push_back(new PersonChangedTypeCondition());
+    conditions.push_back(new PersonChangedTypeCondition(lightPeople,gravityPoints));
 }
 
 void LightTrailScene::processPeople() {

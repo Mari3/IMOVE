@@ -7,8 +7,8 @@
 #define WIDTH 800
 #define HEIGHT 600
 
-BystanderGravityPointAction::BystanderGravityPointAction(std::shared_ptr<LightPerson> person) : person(person),
-    gravityPoints(GravityPointVectorRepository::getInstance()), timer(Timer(5,true))
+BystanderGravityPointAction::BystanderGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints) : person(person),
+    gravityPoints(gravityPoints), timer(Timer(5,true))
 {
     gravityPoint = std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(0,0),person->hue,300000));
     setLocation();

@@ -21,8 +21,8 @@ void AlternatingGravityPointAction::execute(float dt) {
     }
 }
 
-AlternatingGravityPointAction::AlternatingGravityPointAction()
-        : gravityPoints(GravityPointVectorRepository::getInstance()), lightPeople(LightPersonMapRepository::getInstance()),
+AlternatingGravityPointAction::AlternatingGravityPointAction(GravityPointRepository* gravityPoints, LightPersonRepository* lightPeople)
+        : gravityPoints(gravityPoints), lightPeople(lightPeople),
           timer(5.f,true), xRange(0,800), yRange(0,600),
         myGravityPoint(std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(0,0),util::Range(0,360,true),300000)))
 {

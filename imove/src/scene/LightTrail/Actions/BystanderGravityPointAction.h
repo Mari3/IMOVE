@@ -21,7 +21,7 @@ private:
     bool gravityPointActive;
     void setLocation();
 public:
-    explicit BystanderGravityPointAction(std::shared_ptr<LightPerson> person);
+    explicit BystanderGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints);
 
     bool isDone(Action *&followUp) override;
 

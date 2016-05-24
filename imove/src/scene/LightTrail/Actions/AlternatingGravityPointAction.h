@@ -23,7 +23,7 @@ private:
     util::Range yRange;
 public:
 
-    AlternatingGravityPointAction();
+    AlternatingGravityPointAction(GravityPointRepository* gravityPoints, LightPersonRepository* lightPeople);
 
     bool isDone(Action *&followUp);
     void execute(float dt);

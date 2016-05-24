@@ -19,8 +19,8 @@ void UpdateLightTrailsAction::execute(float dt) {
     }
 }
 
-UpdateLightTrailsAction::UpdateLightTrailsAction() :
-    lightTrails(LightTrailVectorRepository::getInstance()), gravityPoints(GravityPointVectorRepository::getInstance())
+UpdateLightTrailsAction::UpdateLightTrailsAction(LightTrailRepository* lightTrails, GravityPointRepository* gravityPoints) :
+    lightTrails(lightTrails), gravityPoints(gravityPoints)
 {
 }
 

@@ -4,8 +4,8 @@
 
 #include "ParticipantGravityPointAction.h"
 
-ParticipantGravityPointAction::ParticipantGravityPointAction(std::shared_ptr<LightPerson> person) : person(person),
-                                                                                gravityPoints(GravityPointVectorRepository::getInstance())
+ParticipantGravityPointAction::ParticipantGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints) : person(person),
+                                                                                gravityPoints(gravityPoints)
 {
     gravityPoint = std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(0,0),person->hue,100000));
     setLocation();

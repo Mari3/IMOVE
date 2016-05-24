@@ -18,7 +18,7 @@ private:
     std::shared_ptr<LightPerson> person;
     void setLocation();
 public:
-    explicit ParticipantGravityPointAction(std::shared_ptr<LightPerson> person);
+    explicit ParticipantGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints);
 
     bool isDone(Action *&followUp) override;
 

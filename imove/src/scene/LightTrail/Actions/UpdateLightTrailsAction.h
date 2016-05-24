@@ -20,7 +20,7 @@ private:
     GravityPointRepository* gravityPoints;
     Vector2 calculateForce(LightTrail trail);
 public:
-    UpdateLightTrailsAction();
+    UpdateLightTrailsAction(LightTrailRepository* lightTrails, GravityPointRepository* gravityPoints);
 
     bool isDone(Action *&followUp) override;
     void execute(float dt) override;

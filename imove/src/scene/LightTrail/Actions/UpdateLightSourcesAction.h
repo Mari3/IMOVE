@@ -16,10 +16,10 @@
 class UpdateLightSourcesAction : public Action {
 private:
     LightSourceRepository* sources;
-    LightTrailVectorRepository* trails;
+    LightTrailRepository* trails;
     Timer timer;
 public:
-    UpdateLightSourcesAction();
+    UpdateLightSourcesAction(LightSourceRepository* lightSources, LightTrailRepository* lightTrails);
     bool isDone(Action *&followUp) override;
     void execute(float dt) override;
 };
