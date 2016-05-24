@@ -7,3 +7,12 @@ OpenCVWindow::OpenCVWindow(const char* name_window, cv::Point2i position) {
 	cv::namedWindow(this->name_window, cv::WINDOW_NORMAL);
 	cv::moveWindow(this->name_window, position.x, position.y);
 }
+
+cv::Mat OpenCVWindow::getClonedImage() const {
+	return this->image.clone();
+}
+
+void OpenCVWindow::drawImage(cv::Mat image) {
+	this->image = image;
+	cv::imshow(this->name_window, this->image);
+}

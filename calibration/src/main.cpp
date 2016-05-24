@@ -6,31 +6,26 @@
 #include <string>
 #include <queue>
 
+#include "./OpenCVUtil.hpp"
 #include "../../imove/src/calibration/Calibration.hpp"
 #include "./ProjectionWindow.hpp"
+#include "./CalibrationProjectionWindow.hpp"
 
-const unsigned char U8_FULL  = 255;
-const unsigned char U8_HALF  = 127;
-const unsigned char U8_NONE  =   0;
+
 
 // Default configuration parameters if not given
 unsigned DEFAULT_FRAMES_PROJECTOR_CAMERA_DELAY = 5;
 double DEFAULT_PROJECTOR_BACKGROUND_LIGHT = 39;
 float DEFAULT_METER = 100.f;
 
-// UI calibration cross parameters
-const int CROSS_SIZE = 10;
-const int CROSS_THICKNESS = 1;
-
 // UI calibration meter parameters
-const cv::Scalar COLOR_A_METER	(U8_FULL, U8_FULL, U8_NONE);
-const cv::Scalar COLOR_B_METER	(U8_NONE, U8_FULL, U8_FULL);
+const cv::Scalar COLOR_A_METER = OpenCVUtil::Color::ORANGE;
+const cv::Scalar COLOR_B_METER = OpenCVUtil::Color::GREEN;
 
-// UI calibration projection cross colors
-const cv::Scalar COLOR_ORANGE		(U8_NONE, U8_HALF, U8_FULL);
-const cv::Scalar COLOR_GREEN		(U8_NONE, U8_FULL, U8_HALF);
-const cv::Scalar COLOR_DARKBLUE	(U8_HALF, U8_NONE, U8_NONE);
-const cv::Scalar COLOR_LIGHTBLUE(U8_HALF, U8_FULL, U8_NONE);
+// UI calibration cross visualization
+const unsigned int SIZE_CROSS = 10;
+const unsigned int THICKNESS_CROSS = 1;
+
 
 // arguments
 unsigned int CONFIGPATH_ARGN = 1;
@@ -41,16 +36,6 @@ const signed int NOKEY_ANYKEY = -1;
 const int INT_FULL_PERCENTAGE = 100;
 const double DOUBLE_FULL_PERCENTAGE = 100.0;
 
-const cv::Point2f ORIGIN2D = cv::Point2f(0, 0);
-
-const unsigned char REQUIRED_CORNERS = 4;
-unsigned int current_corner = 0;
-cv::Point2f* coordinate_corners_camera = new cv::Point2f[REQUIRED_CORNERS];
-cv::Point2f* coordinate_corners_projector = new cv::Point2f[REQUIRED_CORNERS];
-cv::Scalar* color_corners = new cv::Scalar[REQUIRED_CORNERS];
-bool entered_mouse_projection = false;
-cv::Point2f coordinate_mouse_projection;
-
 enum METER { METER_A, METER_B };
 METER current_meter;
 cv::Point2f a_meter;
@@ -58,69 +43,9 @@ cv::Point2f b_meter;
 bool entered_mouse_meter = false;
 cv::Point2f coordinate_mouse_meter;
 
-const int CROSS_HSIZE = CROSS_SIZE / 2;
-
 Calibration* calibration = NULL;
 cv::Mat camera_projector_transformation;
 
-
-/**
- * Draws a cross on the image on location with color
- * 
- * @param image Image to be drawing cross on
- * @param point Point on the image of the center of the cross
- * @param color Color of the cross
- **/
-void drawCrossOnImage(cv::Mat& image, const cv::Point2f& point, const cv::Scalar& color) {
-	cv::line(
-		image,
-		cv::Point(point.x - CROSS_HSIZE, point.y),
-		cv::Point(point.x + CROSS_HSIZE, point.y),
-		color,
-		CROSS_THICKNESS
-	);
-	cv::line(
-		image,
-		cv::Point(point.x, point.y - CROSS_HSIZE),
-		cv::Point(point.x, point.y + CROSS_HSIZE),
-		color,
-		CROSS_THICKNESS
-	);
-}
-
-/**
- * Draws projection boundaries on image as polylines between corners, draw crosses on corners and draw last mouse position
- * 
- * @param image The image to draw polylines on
- **/
-void drawProjectionBoundariesOnImage(cv::Mat& image) {
-	// draw polylines on image to indicate boundaries
-	cv::Point polypoints[REQUIRED_CORNERS];
-	polypoints[0] = coordinate_corners_camera[0];
-	polypoints[1] = coordinate_corners_camera[1];
-	polypoints[2] = coordinate_corners_camera[3];
-	polypoints[3] = coordinate_corners_camera[2];
-	const cv::Point* ppt[1] = { polypoints };
-	int npt[] = {REQUIRED_CORNERS};
-	cv::polylines(
-		image,
-		ppt,
-		npt,
-		1,
-		true,
-		cv::Scalar(255, 255, 255),
-		CROSS_THICKNESS,
-		cv::LINE_AA
-	);
-	// draw cross on corner projection boundaries
-	for (unsigned int i = 0; i < REQUIRED_CORNERS; ++i) {
-		drawCrossOnImage(image, coordinate_corners_camera[i], color_corners[i]);
-	}
-	// draw mouse on image if ever entered
-	if (entered_mouse_projection) {
-		drawCrossOnImage(image, coordinate_mouse_projection, color_corners[current_corner]);
-	}
-}
 
 /**
  * Draws meter and last mouse position on image using line and crosses
@@ -131,40 +56,22 @@ void drawMeterOnImage(cv::Mat& image) {
 	// draw line between first and second point
 	cv::line(image, a_meter, b_meter, cv::Scalar(255, 255, 255));
 	// draw meter cross first point
-	drawCrossOnImage(image, a_meter, COLOR_A_METER);
+	OpenCVUtil::drawCrossOnImage(image, a_meter, COLOR_A_METER, SIZE_CROSS, THICKNESS_CROSS);
 	// draw meter cross second point
-	drawCrossOnImage(image, b_meter, COLOR_B_METER);
+	OpenCVUtil::drawCrossOnImage(image, b_meter, COLOR_B_METER, SIZE_CROSS, THICKNESS_CROSS);
 	// draw last mouse position as current setting meter point if ever entered
 	if (entered_mouse_meter) {
 		switch (current_meter) {
 			case METER_A:
-				drawCrossOnImage(image, coordinate_mouse_meter, COLOR_A_METER);
+				OpenCVUtil::drawCrossOnImage(image, coordinate_mouse_meter, COLOR_A_METER, SIZE_CROSS, THICKNESS_CROSS);
 				break;
 			case METER_B:
-				drawCrossOnImage(image, coordinate_mouse_meter, COLOR_B_METER);
+				OpenCVUtil::drawCrossOnImage(image, coordinate_mouse_meter, COLOR_B_METER, SIZE_CROSS, THICKNESS_CROSS);
 				break;
 		}
 	}
 }
 
-// Calibrate projection mouse callback
-void onMouseCalibrateProjection(int event, int x, int y, int flags, void* userdata) {
-	coordinate_mouse_projection = cv::Point2f(x, y);
-	entered_mouse_projection = true;
-
-	if (event == cv::EVENT_LBUTTONUP) {
-		// set new corner based on last mouse position
-		coordinate_corners_camera[current_corner] = coordinate_mouse_projection;
-		// set new current corner to set
-		current_corner = (current_corner + 1) % REQUIRED_CORNERS;
-		// calculate and set new perspective map
-		camera_projector_transformation = cv::getPerspectiveTransform(
-			coordinate_corners_camera,
-			coordinate_corners_projector
-		);
-		calibration->setCameraProjectorTransformation(camera_projector_transformation);
-	}
-}
 
 // Calibrate meter mouse callback
 void onMouseCalibrateMeter(int event, int x, int y, int flags, void* userdata) {
@@ -204,12 +111,6 @@ void onFramesProjectorCameraDelay(int tracked_int, void *user_data) {
 
 // create calibration configuration based on arguments and configuration and user input in projection, meter and projection elimination windows
 int main(int argc, char* argv[]) {
-	color_corners[0] = COLOR_ORANGE;
-	color_corners[1] = COLOR_GREEN;
-	color_corners[2] = COLOR_DARKBLUE;
-	color_corners[3] = COLOR_LIGHTBLUE;
-	
-
 	if (argc != 4) {
 		std::cout << "Usage: <path to configuration file> <int camera device> <path to calibration projection video file>" << std::endl;
 		return EXIT_SUCCESS;
@@ -257,16 +158,19 @@ int main(int argc, char* argv[]) {
 	camera_videoreader.set(CV_CAP_PROP_AUTOFOCUS, 0);
 	
 	const cv::Size resolution_projector(projector_videoreader.get(cv::CAP_PROP_FRAME_WIDTH), projector_videoreader.get(cv::CAP_PROP_FRAME_HEIGHT));
-	coordinate_corners_projector[0] = cv::Point2f(                    ORIGIN2D.x,                      ORIGIN2D.y);
-	coordinate_corners_projector[1] = cv::Point2f(resolution_projector.width - 1,                      ORIGIN2D.y);
-	coordinate_corners_projector[2] = cv::Point2f(										ORIGIN2D.x, resolution_projector.height - 1);
-	coordinate_corners_projector[3] = cv::Point2f(resolution_projector.width - 1, resolution_projector.height - 1);
-	cv::Size resolution_camera(camera_videoreader.get(cv::CAP_PROP_FRAME_WIDTH), camera_videoreader.get(cv::CAP_PROP_FRAME_HEIGHT));
+	const cv::Size resolution_camera(camera_videoreader.get(cv::CAP_PROP_FRAME_WIDTH), camera_videoreader.get(cv::CAP_PROP_FRAME_HEIGHT));
 	if (read_config["Camera_projector_transformation"].isNone()) {
-		coordinate_corners_camera[0] = cv::Point2f(                 ORIGIN2D.x,                   ORIGIN2D.y);
-		coordinate_corners_camera[1] = cv::Point2f(resolution_camera.width - 1,                   ORIGIN2D.y);
-		coordinate_corners_camera[2] = cv::Point2f(									ORIGIN2D.x, resolution_camera.height - 1);
-		coordinate_corners_camera[3] = cv::Point2f(resolution_camera.width - 1, resolution_camera.height - 1);
+		cv::Point2f* coordinate_corners_projector = new cv::Point2f[CalibrationProjectionWindow::REQUIRED_CORNERS];
+		coordinate_corners_projector[0] = cv::Point2f(        OpenCVUtil::ORIGIN2D.x,          OpenCVUtil::ORIGIN2D.y);
+		coordinate_corners_projector[1] = cv::Point2f(resolution_projector.width - 1,          OpenCVUtil::ORIGIN2D.y);
+		coordinate_corners_projector[2] = cv::Point2f(		  	OpenCVUtil::ORIGIN2D.x, resolution_projector.height - 1);
+		coordinate_corners_projector[3] = cv::Point2f(resolution_projector.width - 1, resolution_projector.height - 1);
+		cv::Size resolution_camera(camera_videoreader.get(cv::CAP_PROP_FRAME_WIDTH), camera_videoreader.get(cv::CAP_PROP_FRAME_HEIGHT));
+		cv::Point2f* coordinate_corners_camera = new cv::Point2f[CalibrationProjectionWindow::REQUIRED_CORNERS];
+		coordinate_corners_camera[0]   = cv::Point2f(     OpenCVUtil::ORIGIN2D.x,       OpenCVUtil::ORIGIN2D.y);
+		coordinate_corners_camera[1]   = cv::Point2f(resolution_camera.width - 1,       OpenCVUtil::ORIGIN2D.y);
+		coordinate_corners_camera[2]   = cv::Point2f(			OpenCVUtil::ORIGIN2D.x, resolution_camera.height - 1);
+		coordinate_corners_camera[3]   = cv::Point2f(resolution_camera.width - 1, resolution_camera.height - 1);
 		
 		camera_projector_transformation = cv::getPerspectiveTransform(
 			coordinate_corners_camera,
@@ -274,22 +178,6 @@ int main(int argc, char* argv[]) {
 		);
 	} else {
 		read_config["Camera_projector_transformation"] >> camera_projector_transformation;
-		std::vector<cv::Point2f> points_projector = std::vector<cv::Point2f>(REQUIRED_CORNERS);
-		points_projector.at(0) = cv::Point2f(                    ORIGIN2D.x,                      ORIGIN2D.y);
-		points_projector.at(1) = cv::Point2f(resolution_projector.width - 1,                      ORIGIN2D.y);
-		points_projector.at(2) = cv::Point2f(									   ORIGIN2D.x, resolution_projector.height - 1);
-		points_projector.at(3) = cv::Point2f(resolution_projector.width - 1, resolution_projector.height - 1);
-		std::vector<cv::Point2f> points_projection = std::vector<cv::Point2f>(REQUIRED_CORNERS);
-		cv::perspectiveTransform(
-			points_projector,
-			points_projection,
-			camera_projector_transformation.inv()
-		);
-		
-		coordinate_corners_camera[0] = points_projection.at(0);
-		coordinate_corners_camera[1] = points_projection.at(1);
-		coordinate_corners_camera[2] = points_projection.at(2);
-		coordinate_corners_camera[3] = points_projection.at(3);
 	}
 	read_config.release();
 	
@@ -300,10 +188,7 @@ int main(int argc, char* argv[]) {
 	cv::namedWindow("Projector", cv::WINDOW_NORMAL);
 	cv::moveWindow("Projector", 0, 0);
 	
-	cv::Mat frame_calibrateprojection;
-	cv::namedWindow("Calibrate projection", cv::WINDOW_NORMAL);
-	cv::moveWindow("Calibrate projection", 300, 0);
-	cv::setMouseCallback("Calibrate projection", onMouseCalibrateProjection, NULL);
+	CalibrationProjectionWindow calibrationprojection_window(cv::Point2i(300, 0), calibration, resolution_projector);
 	
 	cv::Mat frame_calibratemeter;
 	cv::namedWindow("Calibrate meter", cv::WINDOW_NORMAL);
@@ -329,14 +214,11 @@ int main(int argc, char* argv[]) {
 		calibration->eliminateProjectionFeedbackFromFrameCamera(frame_projectionelimination, frame_camera);
 		cv::imshow("Projection elimination", frame_projectionelimination);
 
-		projection_window.processCameraFrame(frame_projectionelimination);
-		projection_window.draw();
+		projection_window.drawImage(frame_projectionelimination);
 		
-		frame_calibrateprojection = frame_camera.clone();
-		frame_calibratemeter = frame_camera.clone();
-		drawProjectionBoundariesOnImage(frame_calibrateprojection);
-		cv::imshow("Calibrate projection", frame_calibrateprojection);
+		calibrationprojection_window.drawImage(frame_camera.clone());
 
+		frame_calibratemeter = frame_camera.clone();
 		drawMeterOnImage(frame_calibratemeter);
 		cv::imshow("Calibrate meter", frame_calibratemeter);
 	}

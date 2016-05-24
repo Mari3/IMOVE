@@ -97,6 +97,9 @@ void Calibration::setFramesProjectorCameraDelay(unsigned int frames_projector_ca
 void Calibration::setProjectorBackgroundLight(double projector_background_light) {
 	this->projector_background_light = projector_background_light;
 }
+cv::Mat Calibration::getCameraProjectorTransformation() const {
+	return this->camera_projector_transformation;
+}
 void Calibration::setCameraProjectorTransformation(cv::Mat& camera_projector_transformation) {
 	this->camera_projector_transformation = camera_projector_transformation;
 }

@@ -81,6 +81,11 @@ class Calibration {
 		 **/
 		void setCameraProjectorTransformation(cv::Mat& camera_projector_transformation);
 
+		/**
+		 * Gets the projection transformation matrix between the camera and the projection.
+		 **/
+		cv::Mat getCameraProjectorTransformation() const;
+
 	private:
 		// The projector resolution
 		cv::Size resolution_projector;
