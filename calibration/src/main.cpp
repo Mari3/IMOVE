@@ -204,7 +204,7 @@ void onFramesProjectorCameraDelay(int tracked_int, void *user_data) {
 
 int main(int argc, char* argv[]) {
 	color_corners[0] = COLOR_ORANGE;
-	color_corners[1] = COLOR_GREENcv:
+	color_corners[1] = COLOR_GREEN;
 	color_corners[2] = COLOR_DARKBLUE;
 	color_corners[3] = COLOR_LIGHTBLUE;
 	
