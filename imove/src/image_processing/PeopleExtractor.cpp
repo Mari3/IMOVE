@@ -4,9 +4,12 @@
 
 #include "PeopleExtractor.h"
 
-PeopleExtractor::PeopleExtractor() {
+PeopleExtractor::PeopleExtractor(cv::Size frame_size, float pixels_per_meter) : frame_size(frame_size), pixels_per_meter(pixels_per_meter) {
+  // Calculate resize ratio
+  resize_ratio = frame_size.width/320;
+
   // Initialize empty frame
-  frame = cv::Mat::zeros(240, 320, CV_8UC1);
+  frame = cv::Mat::zeros(frame_size.height/resize_ratio, 320, CV_8UC1);
 
   // Initialize detector
   detector = PeopleDetector();
@@ -23,15 +26,15 @@ vector<Person> PeopleExtractor::extractPeople(cv::Mat new_frame) {
   // Convert frame to grayscale
   cvtColor(new_frame, new_frame, CV_RGB2GRAY);
   // Downscale frame
-  resize(new_frame, new_frame, cv::Size(320, 240));
+  resize(new_frame, new_frame, cv::Size(320, frame_size.height/resize_ratio));
   // Claculate difference
   absdiff(new_frame, frame, difference_frame);
   // Sum pixelvalues of difference frame
   cv::Scalar sumPixels = sum(difference_frame);
   // If the sum of all pixelvalues is too big, the background subtractor has to be renewed
-  if (sumPixels[0] + sumPixels[1] + sumPixels[2] > 7000000) {
-    detector.renew();
-  }
+  // if (sumPixels[0] + sumPixels[1] + sumPixels[2] > 7000000) {
+  //   detector.renew();
+  // }
 
   // Start working with new frame
   frame = new_frame;
@@ -40,7 +43,7 @@ vector<Person> PeopleExtractor::extractPeople(cv::Mat new_frame) {
   // Rescale location of every person based on downscaling
   for (Person& p : people) {
     Vector2 location = p.getLocation();
-    p.setLocation(Vector2(location.x*2,location.y*2));
+    p.setLocation(Vector2(location.x*resize_ratio,location.y*resize_ratio));
   }
 
   // Return vector containing all people in the scene

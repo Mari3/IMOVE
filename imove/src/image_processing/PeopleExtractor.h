@@ -27,7 +27,7 @@ class PeopleExtractor {
  private:
   // Detector to detect locations of people in a frame
   PeopleDetector detector;
-  
+
   // CameraProjectionMapper mapper;
 
   // Identifier to identify people with locations
@@ -36,8 +36,17 @@ class PeopleExtractor {
   // Current frame
   cv::Mat frame;
 
+  // Size of the frame
+  cv::Size frame_size;
+
+  // Ratio with which the frame is resized
+  float resize_ratio;
+
+  // Nr of pixels equal to one meter on the scene
+  float pixels_per_meter;
+
  public:
-  PeopleExtractor();
+  PeopleExtractor(cv:: Size frame_size, float pixels_per_meter);
   ~PeopleExtractor();
 
   // Main extraction function to extract people from a frame

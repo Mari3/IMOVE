@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
 	fs.release();
 
 	const Calibration calibration = Calibration(resolution_projector, camera_projector_transformation, frames_projector_camera_delay, percentage_projector_background_light);
-	PeopleExtractor people_extractor = PeopleExtractor();
+	PeopleExtractor people_extractor = PeopleExtractor(resolution_camera, meter);
 
 	cv::Mat frame_projector = cv::Mat::ones(resolution_projector.width, resolution_projector.height, CV_8UC3) * U8_WHITE;
 	cv::namedWindow("Camera", cv::WINDOW_NORMAL);
