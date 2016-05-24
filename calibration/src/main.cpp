@@ -201,7 +201,7 @@ void onFramesProjectorCameraDelay(int tracked_int, void *user_data) {
 	}
 }
 
-
+// create calibration configuration based on arguments and configuration and user input in projection, meter and projection elimination windows
 int main(int argc, char* argv[]) {
 	color_corners[0] = COLOR_ORANGE;
 	color_corners[1] = COLOR_GREEN;

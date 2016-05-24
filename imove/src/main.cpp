@@ -14,7 +14,6 @@
 #include "scene/Scene.h"
 #include "scene/LightTrail/LightTrailScene.h"
 
-const unsigned char U8_WHITE = 255;
 const signed int NOKEY_ANYKEY = -1;
 
 std::mutex mutex_scene;
@@ -25,9 +24,11 @@ int camera_device;
 Scene* scene;
 cv::Size resolution_projector;
 
+// Sets up people extracting and loop extracting people for scene input while running
 void main_peopleextractor() {
 	PeopleExtractor people_extractor = PeopleExtractor();
 	
+	// debug camera window
 	cv::namedWindow("Camera", cv::WINDOW_NORMAL);
 	cv::VideoCapture video_capture(camera_device);
 	//cv::VideoCapture video_capture("./imove/test/image_processing/IMG_0639.mp4");
@@ -42,12 +43,15 @@ void main_peopleextractor() {
 			std::cerr << "Exiting..." << std::endl;
 			exit(EXIT_FAILURE);
 		}
+		// debug projection frame
 		calibration->createFrameProjectionFromFrameCamera(
 			frame_projection,
 			frame_camera
 		);
+		// extract people from camera frame
 	 	vector<Person> detected_people = people_extractor.extractPeople(frame_camera);
-		//detected_people.push_back(Person(Vector2(resolution_camera.width / 2, 2 * (resolution_camera.height / 3)), Participant));
+		// detected_people.push_back(Person(Vector2(resolution_camera.width / 2, 2 * (resolution_camera.height / 3)), Participant));
+		// debug people drawing on camera frame
 		for (unsigned int i = 0; i < detected_people.size(); ++i) {
 			cv::circle(
 				frame_camera,
@@ -60,8 +64,11 @@ void main_peopleextractor() {
 				2
 			);
 		}
+		// debug camera frame
 		cv::imshow("Camera", frame_camera);
+		// change extrated people to projector location from camera location
 		calibration->changeProjectorFromCameraLocationPerson(detected_people);
+		// debug extracted perspective mapped people on projection
 		for (unsigned int i = 0; i < detected_people.size(); ++i) {
 			cv::circle(
 				frame_projection,
@@ -86,20 +93,25 @@ void main_peopleextractor() {
 				cv::Scalar(255, 0, 0)
 			);
 		}
+		// debug projection window
 		cv::imshow("Projection", frame_projection);
 
+		// update scene with location of people
 		mutex_scene.lock();
 		scene->updatePeople(detected_people);
 		mutex_scene.unlock();
 	}
 }
 
+// setup and run scene with continous people extraction as input based on configuration given in parameter otherwise show parameters
 int main(int argc, char* argv[]) {
+	// show parameters if not given 1 parameter
 	if (argc != 2) {
 		std::cerr << "Usage: <path to configuration file>" << std::endl;
 		return EXIT_SUCCESS;
 	}
-
+	
+	// read calibration config
 	cv::FileStorage fs;
 	fs.open(argv[1], cv::FileStorage::READ);
 	fs["Camera_device"] >> camera_device;
@@ -125,6 +137,7 @@ int main(int argc, char* argv[]) {
 
 	calibration = new Calibration(resolution_projector, camera_projector_transformation, frames_projector_camera_delay, percentage_projector_background_light);
 	
+	// debug windows
 	cv::namedWindow("Camera", cv::WINDOW_NORMAL);
 	cv::moveWindow("Camera", 500, 0);
 
@@ -133,16 +146,21 @@ int main(int argc, char* argv[]) {
 	
 	cv::namedWindow("Frame", cv::WINDOW_NORMAL);
 
+	// setup scene
 	sf::RenderWindow window(sf::VideoMode(resolution_projector.width, resolution_projector.height),"Scene");
 	window.clear(sf::Color::Black);
 	window.display();
-	sf::Clock clock;
-
 	scene = new LightTrailScene();
 
+	// setup clock
+	sf::Clock clock;
+	
+	// setup people extracting in seperate thread
 	std::thread thread_peopleextractor(main_peopleextractor);
 
+	// while no key pressed
 	while (cv::waitKey(1) == NOKEY_ANYKEY) {
+		// draw next scene frame based on clock difference
 		mutex_scene.lock();
 		float dt = clock.restart().asSeconds();
 		//float dt = 1.f/24.f;
@@ -155,6 +173,7 @@ int main(int argc, char* argv[]) {
 		window.display();
 	}
 
+	// normally exit program by stopping people extractor thread
 	running = false;
 	thread_peopleextractor.join();
  
