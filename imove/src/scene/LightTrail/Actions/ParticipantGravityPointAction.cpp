@@ -5,7 +5,7 @@
 #include "ParticipantGravityPointAction.h"
 
 ParticipantGravityPointAction::ParticipantGravityPointAction(LightPerson* person) : person(person),
-                                                                                gravityPoints(GravityPointRepository::getInstance())
+                                                                                gravityPoints(GravityPointVectorRepository::getInstance())
 {
     gravityPoint = new GravityPoint(Vector2(0,0),person->hue,100000);
     setLocation();

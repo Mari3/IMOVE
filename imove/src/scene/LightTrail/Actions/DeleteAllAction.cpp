@@ -4,11 +4,11 @@
 
 #include "DeleteAllAction.h"
 
-DeleteAllAction::DeleteAllAction() : colorHoles(ColorHoleRepository::getInstance()),
-            gravityPoints(GravityPointRepository::getInstance()),
-                                     lightPeople(LightPersonRepository::getInstance()),
-                                     lightSources(LightSourceRepository::getInstance()),
-                                     lightTrails(LightTrailRepository::getInstance())
+DeleteAllAction::DeleteAllAction() : colorHoles(ColorHoleVectorRepository::getInstance()),
+            gravityPoints(GravityPointVectorRepository::getInstance()),
+                                     lightPeople(LightPersonMapRepository::getInstance()),
+                                     lightSources(LightSourceVectorRepository::getInstance()),
+                                     lightTrails(LightTrailVectorRepository::getInstance())
 {
 }
 

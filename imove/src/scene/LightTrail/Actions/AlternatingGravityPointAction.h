@@ -9,8 +9,9 @@
 #include "../../Action.h"
 #include "../GravityPoint.h"
 #include "../../../util/Timer.h"
-#include "../Repositories/GravityPointRepository.h"
-#include "../Repositories/LightPersonRepository.h"
+#include "../Repositories/GravityPointVectorRepository.h"
+#include "../Repositories/LightPersonMapRepository.h"
+#include "../Repositories/LightsSceneRepositories.h"
 
 class AlternatingGravityPointAction : public Action{
 private:

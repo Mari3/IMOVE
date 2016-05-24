@@ -6,9 +6,10 @@
 #define IMOVE_PARTICIPANTGRAVITYPOINTACTION_H
 
 
-#include "../Repositories/GravityPointRepository.h"
+#include "../Repositories/GravityPointVectorRepository.h"
 #include "../../Action.h"
 #include "../LightPerson.h"
+#include "../Repositories/LightsSceneRepositories.h"
 
 class ParticipantGravityPointAction : public Action {
 private:

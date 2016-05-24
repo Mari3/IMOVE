@@ -22,7 +22,8 @@ public:
     {
         return get(id);
     }
+    virtual typename std::vector<T*>::iterator begin() = 0;
+    virtual typename std::vector<T*>::iterator end() = 0;
 };
-
 
 #endif //IMOVE_REPOSITORY_H

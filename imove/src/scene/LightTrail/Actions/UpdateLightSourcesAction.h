@@ -9,13 +9,14 @@
 #include "../LightTrail.h"
 #include "../LightSource.h"
 #include "../../../util/Timer.h"
-#include "../Repositories/LightSourceRepository.h"
-#include "../Repositories/LightTrailRepository.h"
+#include "../Repositories/LightSourceVectorRepository.h"
+#include "../Repositories/LightTrailVectorRepository.h"
+#include "../Repositories/LightsSceneRepositories.h"
 
 class UpdateLightSourcesAction : public Action {
 private:
     LightSourceRepository* sources;
-    LightTrailRepository* trails;
+    LightTrailVectorRepository* trails;
     Timer timer;
 public:
     UpdateLightSourcesAction();

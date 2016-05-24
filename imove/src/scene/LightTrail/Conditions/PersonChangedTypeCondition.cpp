@@ -8,25 +8,25 @@
 
 int PersonChangedTypeCondition::check(float dt, vector<Action*> &actions) {
     int i = 0;
-    for(auto &pair : *lightPeople){
+    for(auto &person : *lightPeople){
         // If the person turned bystander
-        if((oldType.count(pair.first) == 0 || oldType[pair.first] != Bystander) && pair.second->type == Bystander){
+        if((oldType.count(person->getId()) == 0 || oldType[person->getId()] != Bystander) && person->type == Bystander){
             // Create a new bystander action
             i++;
-            actions.push_back(new BystanderGravityPointAction(pair.second));
+            actions.push_back(new BystanderGravityPointAction(person));
         } // Else if the person turned particpant
-        else if((oldType.count(pair.first) == 0 || oldType[pair.first] != Participant && pair.second->type == Participant))
+        else if((oldType.count(person->getId()) == 0 || oldType[person->getId()] != Participant && person->type == Participant))
         {
             // Create a new participant action
             i++;
-            actions.push_back(new ParticipantGravityPointAction(pair.second));
+            actions.push_back(new ParticipantGravityPointAction(person));
         }
-        oldType[pair.first] = pair.second->type;
+        oldType[person->getId()] = person->type;
     }
     return i;
 }
 
-PersonChangedTypeCondition::PersonChangedTypeCondition() : lightPeople(LightPersonRepository::getInstance()) {
+PersonChangedTypeCondition::PersonChangedTypeCondition() : lightPeople(LightPersonMapRepository::getInstance()) {
 
 }
 

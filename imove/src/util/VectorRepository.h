@@ -10,7 +10,7 @@
 #include <algorithm>
 
 template<typename T>
-class VectorRepository : Repository<T>
+class VectorRepository : public Repository<T>
 {
 private:
     typename std::vector<T*> items;
@@ -65,12 +65,12 @@ public:
         return items[id];
     }
 
-    typename std::vector<T*>::iterator begin()
+    typename std::vector<T*>::iterator begin() override
     {
         return items.begin();
     }
 
-    typename std::vector<T*>::iterator end()
+    typename std::vector<T*>::iterator end() override
     {
         return items.end();
     }

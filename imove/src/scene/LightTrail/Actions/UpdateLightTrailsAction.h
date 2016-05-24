@@ -9,8 +9,9 @@
 #include "../../Action.h"
 #include "../LightTrail.h"
 #include "../GravityPoint.h"
-#include "../Repositories/LightTrailRepository.h"
-#include "../Repositories/GravityPointRepository.h"
+#include "../Repositories/LightTrailVectorRepository.h"
+#include "../Repositories/GravityPointVectorRepository.h"
+#include "../Repositories/LightsSceneRepositories.h"
 
 
 class UpdateLightTrailsAction : public Action {

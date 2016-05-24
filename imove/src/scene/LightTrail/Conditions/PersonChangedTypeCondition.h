@@ -6,8 +6,9 @@
 #define IMOVE_PERSONTURNEDBYSTANDERCONDITION_H
 
 
-#include "../Repositories/LightPersonRepository.h"
+#include "../Repositories/LightPersonMapRepository.h"
 #include "../../Condition.h"
+#include "../Repositories/LightsSceneRepositories.h"
 
 class PersonChangedTypeCondition : public Condition {
 private:

@@ -10,11 +10,12 @@
 #include "LightSource.h"
 #include "GravityPoint.h"
 #include "ColorHole.h"
-#include "Repositories/LightSourceRepository.h"
-#include "Repositories/LightTrailRepository.h"
-#include "Repositories/GravityPointRepository.h"
-#include "Repositories/ColorHoleRepository.h"
-#include "Repositories/LightPersonRepository.h"
+#include "Repositories/LightSourceVectorRepository.h"
+#include "Repositories/LightTrailVectorRepository.h"
+#include "Repositories/GravityPointVectorRepository.h"
+#include "Repositories/ColorHoleVectorRepository.h"
+#include "Repositories/LightPersonMapRepository.h"
+#include "Repositories/LightsSceneRepositories.h"
 
 class LightTrailScene : public Scene{
 private:

@@ -5,7 +5,7 @@
 #include "UpdateLightSourcesAction.h"
 
 UpdateLightSourcesAction::UpdateLightSourcesAction()
-        :   sources(LightSourceRepository::getInstance()), trails(LightTrailRepository::getInstance()), timer(Timer(3.f,true))
+        :   sources(LightSourceVectorRepository::getInstance()), trails(LightTrailVectorRepository::getInstance()), timer(Timer(3.f,true))
 {
 }
 

@@ -8,7 +8,7 @@
 #define HEIGHT 600
 
 BystanderGravityPointAction::BystanderGravityPointAction(LightPerson* person) : person(person),
-    gravityPoints(GravityPointRepository::getInstance()), timer(Timer(5,true))
+    gravityPoints(GravityPointVectorRepository::getInstance()), timer(Timer(5,true))
 {
     gravityPoint = new GravityPoint(Vector2(0,0),person->hue,300000);
     setLocation();

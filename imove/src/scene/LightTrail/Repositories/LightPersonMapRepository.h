@@ -2,8 +2,8 @@
 // Created by Wouter Posdijk on 18/05/16.
 //
 
-#ifndef IMOVE_LIGHTPERSONREPOSITORY_H
-#define IMOVE_LIGHTPERSONREPOSITORY_H
+#ifndef IMOVE_LIGHTPERSONMAPREPOSITORY_H
+#define IMOVE_LIGHTPERSONMAPREPOSITORY_H
 
 
 #include <map>
@@ -11,16 +11,16 @@
 #include "../LightPerson.h"
 #include "../../../util/Repository.h"
 
-class LightPersonRepository : Repository<LightPerson> {
+class LightPersonMapRepository : public Repository<LightPerson> {
 private:
-    std::map<int,LightPerson*> map;
+    std::map<int,LightPerson> map;
     vector<int> scheduledForRemoval;
 
-    static LightPersonRepository *_instance;
-    LightPersonRepository(){}
+    static LightPersonMapRepository *_instance;
+    LightPersonMapRepository(){}
 
 public:
-    static LightPersonRepository * getInstance();
+    static LightPersonMapRepository * getInstance();
 
     void add(LightPerson *item) override {
         map[item->getId()] = item;
@@ -54,14 +54,24 @@ public:
         return map[id];
     }
 
-    std::map<int,LightPerson*>::iterator begin(){
-        return map.begin();
+    std::vector<LightPerson*>::iterator begin() override{
+        std::vector<LightPerson*> items;
+        //items.reserve(map.size());
+        for(auto pair : map){
+            items.push_back(pair.second);
+        }
+        return items.begin();
     }
 
-    std::map<int,LightPerson*>::iterator end(){
-        return map.end();
+    std::vector<LightPerson*>::iterator end() override{
+        std::vector<LightPerson*> items;
+        //items.reserve(map.size());
+        for(auto &pair : map){
+            items.push_back(pair.second);
+        }
+        return items.end();
     }
 };
 
 
-#endif //IMOVE_LIGHTPERSONREPOSITORY_H
+#endif //IMOVE_LIGHTPERSONMAPREPOSITORY_H

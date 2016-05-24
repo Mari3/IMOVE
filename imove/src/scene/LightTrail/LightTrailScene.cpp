@@ -30,10 +30,10 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
     target.draw(sf::Sprite(texture.getTexture()));
 
     //Draw all people on the target (for debugging purposes)
-    for(auto &pair : *lightPeople){
+    for(auto &person : *lightPeople){
         sf::CircleShape circle(5);
         circle.setFillColor(sf::Color::Cyan);
-        circle.setPosition(sf::Vector2f(pair.second->getLocation().x,pair.second->getLocation().y));
+        circle.setPosition(sf::Vector2f(person->getLocation().x,person->getLocation().y));
         target.draw(circle);
     }
 
@@ -48,11 +48,11 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
 }
 
 LightTrailScene::LightTrailScene() : Scene(),
-                                     lightSources(LightSourceRepository::getInstance()),
-                                     lightTrails(LightTrailRepository::getInstance()),
-                                     gravityPoints(GravityPointRepository::getInstance()),
-                                     colorHoles(ColorHoleRepository::getInstance()),
-                                     lightPeople(LightPersonRepository::getInstance())
+                                     lightSources(LightSourceVectorRepository::getInstance()),
+                                     lightTrails(LightTrailVectorRepository::getInstance()),
+                                     gravityPoints(GravityPointVectorRepository::getInstance()),
+                                     colorHoles(ColorHoleVectorRepository::getInstance()),
+                                     lightPeople(LightPersonMapRepository::getInstance())
 {
     //Initialize the light trail texture
     texture.create(800,600);
@@ -111,13 +111,13 @@ void LightTrailScene::processPeople() {
 
             }
         }
-        for(auto &pair : *lightPeople){
+        for(auto &person : *lightPeople){
 
-            if(!existingPeople[pair.first]){ //If this person does not exist anymore
-                pair.second->type = None;
+            if(!existingPeople[person->getId()]){ //If this person does not exist anymore
+                person->type = None;
 
                 //Remove it from the list
-                lightPeople->scheduleForRemoval(pair.second);
+                lightPeople->scheduleForRemoval(person);
             }
         }
     }
