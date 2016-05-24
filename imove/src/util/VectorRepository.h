@@ -74,6 +74,14 @@ public:
     {
         return items.end();
     }
+
+    void for_each(const std::function<void(std::shared_ptr<T>)> &f) override {
+        for(auto &item : items){
+            f(item);
+        }
+    }
+
+
 };
 
 

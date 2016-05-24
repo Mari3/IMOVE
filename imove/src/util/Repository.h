@@ -6,6 +6,7 @@
 #define IMOVE_REPOSITORY_H
 
 #include <iterator>
+#include <functional>
 
 template<typename T>
 class Repository
@@ -24,6 +25,7 @@ public:
     }
     virtual typename std::vector<std::shared_ptr<T>>::iterator begin() = 0;
     virtual typename std::vector<std::shared_ptr<T>>::iterator end() = 0;
+    virtual void for_each(const std::function<void(std::shared_ptr<T>)>& f) = 0;
 };
 
 #endif //IMOVE_REPOSITORY_H

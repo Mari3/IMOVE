@@ -8,7 +8,7 @@
 
 int PersonChangedTypeCondition::check(float dt, vector<Action*> &actions) {
     int i = 0;
-    for(auto &person : *lightPeople){
+    lightPeople->for_each([&](std::shared_ptr<LightPerson> person){
         // If the person turned bystander
         if((oldType.count(person->getId()) == 0 || oldType[person->getId()] != Bystander) && person->type == Bystander){
             // Create a new bystander action
@@ -22,7 +22,7 @@ int PersonChangedTypeCondition::check(float dt, vector<Action*> &actions) {
             actions.push_back(new ParticipantGravityPointAction(person));
         }
         oldType[person->getId()] = person->type;
-    }
+    });
     return i;
 }
 

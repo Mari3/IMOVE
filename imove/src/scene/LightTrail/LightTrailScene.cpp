@@ -30,12 +30,12 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
     target.draw(sf::Sprite(texture.getTexture()));
 
     //Draw all people on the target (for debugging purposes)
-    for(auto &person : *lightPeople){
+    lightPeople->for_each([&](std::shared_ptr<LightPerson> person){
         sf::CircleShape circle(5);
         circle.setFillColor(sf::Color::Cyan);
         circle.setPosition(sf::Vector2f(person->getLocation().x,person->getLocation().y));
         target.draw(circle);
-    }
+    });
 
     //Draw all gravitypoints on the target (for debugging purposes)
     for(auto &point : *gravityPoints){
@@ -111,15 +111,14 @@ void LightTrailScene::processPeople() {
 
             }
         }
-        for(auto &person : *lightPeople){
-
-            if(!existingPeople[person->getId()]){ //If this person does not exist anymore
+        lightPeople->for_each([&](std::shared_ptr<LightPerson> person){
+            if(existingPeople.count(person->getId()) == 0){ //If this person does not exist anymore
                 person->type = None;
 
                 //Remove it from the list
                 lightPeople->scheduleForRemoval(person);
             }
-        }
+        });
     }
 
     //TODO remove people when they're gone

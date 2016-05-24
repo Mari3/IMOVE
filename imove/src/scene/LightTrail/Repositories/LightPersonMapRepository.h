@@ -72,6 +72,14 @@ public:
         }
         return items.end();
     }
+
+    virtual void for_each(const std::function<void(std::shared_ptr<LightPerson>)> &f) override {
+        for(auto &pair : map){
+            f(pair.second);
+        }
+    }
+
+
 };
 
 
