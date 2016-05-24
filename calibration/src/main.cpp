@@ -7,6 +7,7 @@
 #include <queue>
 
 #include "../../imove/src/calibration/Calibration.hpp"
+#include "./ProjectionWindow.hpp"
 
 const unsigned char U8_FULL  = 255;
 const unsigned char U8_HALF  = 127;
@@ -318,17 +319,18 @@ int main(int argc, char* argv[]) {
 	cv::createTrackbar("Frames projector - camera delay", "Projection elimination", &track_frames_projector_camera_delay, INT_FULL_PERCENTAGE, onFramesProjectorCameraDelay);
 
 	cv::Mat frame_projection;
-	cv::namedWindow("Projection", cv::WINDOW_NORMAL);
-	cv::moveWindow("Projection", 1200, 0);
+
+	ProjectionWindow projection_window(cv::Size(1200, 0), calibration);
 	
 	while (cv::waitKey(1) == NOKEY_ANYKEY && projector_videoreader.read(frame_projector) && camera_videoreader.read(frame_camera)) {
 		cv::imshow("Projector", frame_projector);
 
 		calibration->feedFrameProjector(frame_projector);
 		calibration->eliminateProjectionFeedbackFromFrameCamera(frame_projectionelimination, frame_camera);
-		calibration->createFrameProjectionFromFrameCamera(frame_projection, frame_projectionelimination);
 		cv::imshow("Projection elimination", frame_projectionelimination);
-		cv::imshow("Projection", frame_projection);
+
+		projection_window.processCameraFrame(frame_projectionelimination);
+		projection_window.draw();
 		
 		frame_calibrateprojection = frame_camera.clone();
 		frame_calibratemeter = frame_camera.clone();

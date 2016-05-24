@@ -1,3 +1,6 @@
+#ifndef CALIBRATION_H
+#define CALIBRATION_H
+
 #include <opencv2/imgproc/imgproc.hpp>
 
 #include <vector>
@@ -90,3 +93,5 @@ class Calibration {
 		// The light level difference between the projectors projection light level and background level
 		double projector_background_light;
 };
+
+#endif // CALIBRATION_H
