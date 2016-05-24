@@ -15,13 +15,13 @@
 class BystanderGravityPointAction : public Action {
 private:
     GravityPointRepository* gravityPoints;
-    GravityPoint* gravityPoint;
-    LightPerson* person;
+    std::shared_ptr<GravityPoint> gravityPoint;
+    std::shared_ptr<LightPerson> person;
     Timer timer;
     bool gravityPointActive;
     void setLocation();
 public:
-    explicit BystanderGravityPointAction(LightPerson* person);
+    explicit BystanderGravityPointAction(std::shared_ptr<LightPerson> person);
 
     bool isDone(Action *&followUp) override;
 

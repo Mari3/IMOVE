@@ -58,10 +58,10 @@ LightTrailScene::LightTrailScene() : Scene(),
     texture.create(800,600);
 
     //Add Light sources on every corner
-    lightSources->add(new LightSource(Vector2(0, 0),util::Range(0, 90,true),util::Range(0, 90,true),util::Range(0,100)));
-    lightSources->add(new LightSource(Vector2(800,0),util::Range(90,180,true),util::Range(90, 180,true),util::Range(0,100)));
-    lightSources->add(new LightSource(Vector2(0, 600),util::Range(180, 270,true),util::Range(270, 0,true),util::Range(0,100)));
-    lightSources->add(new LightSource(Vector2(800, 600),util::Range(270, 360,true),util::Range(180, 270,true),util::Range(0,100)));
+    lightSources->add(std::shared_ptr<LightSource>(new LightSource(Vector2(0, 0),util::Range(0, 90,true),util::Range(0, 90,true),util::Range(0,100))));
+    lightSources->add(std::shared_ptr<LightSource>(new LightSource(Vector2(800,0),util::Range(90,180,true),util::Range(90, 180,true),util::Range(0,100))));
+    lightSources->add(std::shared_ptr<LightSource>(new LightSource(Vector2(0, 600),util::Range(180, 270,true),util::Range(270, 0,true),util::Range(0,100))));
+    lightSources->add(std::shared_ptr<LightSource>(new LightSource(Vector2(800, 600),util::Range(270, 360,true),util::Range(180, 270,true),util::Range(0,100))));
 
 
     //Add all the basic actions
@@ -97,7 +97,7 @@ void LightTrailScene::processPeople() {
             if (lightPeople->has(id)) { //If the person currently exists
 
                 //Update the person
-                LightPerson *lPerson = lightPeople->get(id);
+                std::shared_ptr<LightPerson> lPerson = lightPeople->get(id);
                 lPerson->setLocation(person.getLocation());
                 lPerson->type = person.type;
 
@@ -107,7 +107,7 @@ void LightTrailScene::processPeople() {
                 float startHue = hueDraw.drawRandom();
                 float endHue = startHue + 90;
                 lightPeople->add(
-                        new LightPerson(person.getLocation(), id, person.type, util::Range(startHue, endHue, true)));
+                        std::shared_ptr<LightPerson>(new LightPerson(person.getLocation(), id, person.type, util::Range(startHue, endHue, true))));
 
             }
         }

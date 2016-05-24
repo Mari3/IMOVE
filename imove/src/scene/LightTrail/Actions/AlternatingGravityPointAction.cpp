@@ -7,7 +7,7 @@
 bool AlternatingGravityPointAction::isDone(Action *&followUp) {
     // This action is done when a person gets close to the scene.
     if(lightPeople->size()>0) {
-        gravityPoints->scheduleForRemoval(&myGravityPoint);
+        gravityPoints->scheduleForRemoval(myGravityPoint);
         return true;
     }
     return false;
@@ -16,21 +16,20 @@ bool AlternatingGravityPointAction::isDone(Action *&followUp) {
 void AlternatingGravityPointAction::execute(float dt) {
     if(timer.update(dt)){ //If the timer has finished
         // Draw a new random location for the gravity point
-        myGravityPoint.location.x = xRange.drawRandom();
-        myGravityPoint.location.y = yRange.drawRandom();
+        myGravityPoint->location.x = xRange.drawRandom();
+        myGravityPoint->location.y = yRange.drawRandom();
     }
 }
 
 AlternatingGravityPointAction::AlternatingGravityPointAction()
         : gravityPoints(GravityPointVectorRepository::getInstance()), lightPeople(LightPersonMapRepository::getInstance()),
           timer(5.f,true), xRange(0,800), yRange(0,600),
-        myGravityPoint(Vector2(0,0),util::Range(0,360,true),300000)
+        myGravityPoint(std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(0,0),util::Range(0,360,true),300000)))
 {
     // Register the gravity point
-    GravityPoint* ptr = &myGravityPoint;
-    gravityPoints->add(ptr);
+    gravityPoints->add(myGravityPoint);
 
     // Set a new random location for the gravity point
-    myGravityPoint.location.x = xRange.drawRandom();
-    myGravityPoint.location.y = yRange.drawRandom();
+    myGravityPoint->location.x = xRange.drawRandom();
+    myGravityPoint->location.y = yRange.drawRandom();
 }

@@ -14,11 +14,11 @@
 class ParticipantGravityPointAction : public Action {
 private:
     GravityPointRepository* gravityPoints;
-    GravityPoint* gravityPoint;
-    LightPerson* person;
+    std::shared_ptr<GravityPoint> gravityPoint;
+    std::shared_ptr<LightPerson> person;
     void setLocation();
 public:
-    explicit ParticipantGravityPointAction(LightPerson* person);
+    explicit ParticipantGravityPointAction(std::shared_ptr<LightPerson> person);
 
     bool isDone(Action *&followUp) override;
 

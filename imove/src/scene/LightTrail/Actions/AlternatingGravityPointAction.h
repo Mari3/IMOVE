@@ -18,7 +18,7 @@ private:
     GravityPointRepository* gravityPoints;
     LightPersonRepository* lightPeople;
     Timer timer;
-    GravityPoint myGravityPoint;
+    std::shared_ptr<GravityPoint> myGravityPoint;
     util::Range xRange;
     util::Range yRange;
 public:

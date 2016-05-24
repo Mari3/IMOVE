@@ -19,7 +19,7 @@ void UpdateLightSourcesAction::execute(float dt) {
         // TODO cap based on the amount of light trails
 
         for(auto &lightSource : *sources){
-            trails->add(lightSource->sendOut());
+            trails->add(shared_ptr<LightTrail>(lightSource->sendOut()));
         }
     }
 }

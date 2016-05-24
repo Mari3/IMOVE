@@ -13,24 +13,25 @@
 
 class LightPersonMapRepository : public Repository<LightPerson> {
 private:
-    std::map<int,LightPerson> map;
+    std::map<int,std::shared_ptr<LightPerson>> map;
     vector<int> scheduledForRemoval;
 
     static LightPersonMapRepository *_instance;
-    LightPersonMapRepository(){}
+    LightPersonMapRepository(){
+    }
 
 public:
     static LightPersonMapRepository * getInstance();
 
-    void add(LightPerson *item) override {
+    void add(const std::shared_ptr<LightPerson>& item) override {
         map[item->getId()] = item;
     }
 
-    void add(LightPerson *item, unsigned long id) override {
+    void add(const std::shared_ptr<LightPerson>& item, unsigned long id) override {
         add(item);
     }
 
-    void scheduleForRemoval(LightPerson *item) override {
+    void scheduleForRemoval(const std::shared_ptr<LightPerson>& item) override {
         scheduledForRemoval.push_back(item->getId());
     }
 
@@ -50,21 +51,21 @@ public:
         return map.count(id) > 0;
     }
 
-    LightPerson *get(unsigned long id) override {
+    std::shared_ptr<LightPerson> &get(unsigned long id) override {
         return map[id];
     }
 
-    std::vector<LightPerson*>::iterator begin() override{
-        std::vector<LightPerson*> items;
+    std::vector<std::shared_ptr<LightPerson>>::iterator begin() override{
+        std::vector<shared_ptr<LightPerson>> items;
         //items.reserve(map.size());
-        for(auto pair : map){
+        for(auto &pair : map){
             items.push_back(pair.second);
         }
         return items.begin();
     }
 
-    std::vector<LightPerson*>::iterator end() override{
-        std::vector<LightPerson*> items;
+    std::vector<std::shared_ptr<LightPerson>>::iterator end() override{
+        std::vector<shared_ptr<LightPerson>> items;
         //items.reserve(map.size());
         for(auto &pair : map){
             items.push_back(pair.second);
