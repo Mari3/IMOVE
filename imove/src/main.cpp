@@ -114,7 +114,7 @@ void main_peopleextractor() {
 int main(int argc, char* argv[]) {
 	// show parameters if not given 1 parameter
 	if (argc != 3) {
-		std::cerr << "Usage: <path to configuration file>" << std::endl;
+		std::cerr << "Usage: <path to configuration file> <path to configuration scene>" << std::endl;
 		return EXIT_SUCCESS;
 	}
 
