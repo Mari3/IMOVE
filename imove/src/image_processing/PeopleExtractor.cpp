@@ -4,15 +4,27 @@
 
 #include "PeopleExtractor.h"
 
-PeopleExtractor::PeopleExtractor(cv::Size frame_size, float pixels_per_meter) : frame_size(frame_size), pixels_per_meter(pixels_per_meter) {
+PeopleExtractor::PeopleExtractor(cv::Size frame_size, float pixels_per_meter, float fixed_height) : frame_size(frame_size), pixels_per_meter(pixels_per_meter), fixed_height(fixed_height) {
   // Calculate resize ratio
-  resize_ratio = frame_size.width/320;
+  resize_ratio = frame_size.height/fixed_height;
+
+  std::cout << "meter to height = " + std::to_string(frame_size.height/pixels_per_meter) << std::endl;
+  std::cout << "meter to width = " + std::to_string(frame_size.width/pixels_per_meter) << std::endl;
+
+  std::cout << "resize ratio = " + std::to_string(resize_ratio) << std::endl;
 
   // Initialize empty frame
-  frame = cv::Mat::zeros(frame_size.height/resize_ratio, 320, CV_8UC1);
+  frame = cv::Mat::zeros(fixed_height, frame_size.width/resize_ratio, CV_8UC1);
+
+  std::cout << "resized meter = " + std::to_string(pixels_per_meter/resize_ratio) << std::endl;
 
   // Initialize detector
-  detector = PeopleDetector();
+  if (pixels_per_meter > 400) {
+    detector = PeopleDetector(pixels_per_meter/resize_ratio, true);
+  } else {
+    detector = PeopleDetector(pixels_per_meter/resize_ratio, false);
+  }
+
   // Initialize identifier
   identifier = PeopleIdentifier();
 }
@@ -26,7 +38,7 @@ vector<Person> PeopleExtractor::extractPeople(cv::Mat new_frame) {
   // Convert frame to grayscale
   cvtColor(new_frame, new_frame, CV_RGB2GRAY);
   // Downscale frame
-  resize(new_frame, new_frame, cv::Size(320, frame_size.height/resize_ratio));
+  resize(new_frame, new_frame, cv::Size(frame_size.width/resize_ratio, fixed_height));
   // Claculate difference
   absdiff(new_frame, frame, difference_frame);
   // Sum pixelvalues of difference frame

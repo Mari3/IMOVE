@@ -31,8 +31,12 @@ class PeopleDetector {
   // Blob detector
   cv::Ptr<cv::SimpleBlobDetector> blob_detector;
 
+  // Nr of pixels equal to one meter on the scene
+  float pixels_per_meter;
+
  public:
    PeopleDetector();
+   PeopleDetector(float pixels_per_meter, bool low_camera);
    ~PeopleDetector();
 
   // Detect people in frame

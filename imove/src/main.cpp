@@ -43,15 +43,17 @@ int main(int argc, char* argv[]) {
 	fs["Percentage_projector_background_light"] >> percentage_projector_background_light;
 	float meter;
 	fs["Meter"] >> meter;
+	std::cout << "Meter = " +  std::to_string(meter) << std::endl;
 	fs.release();
 
 	const Calibration calibration = Calibration(resolution_projector, camera_projector_transformation, frames_projector_camera_delay, percentage_projector_background_light);
-	PeopleExtractor people_extractor = PeopleExtractor(resolution_camera, meter);
+	PeopleExtractor people_extractor = PeopleExtractor(resolution_camera, meter, 216);
 
 	cv::Mat frame_projector = cv::Mat::ones(resolution_projector.width, resolution_projector.height, CV_8UC3) * U8_WHITE;
 	cv::namedWindow("Camera", cv::WINDOW_NORMAL);
 	cv::VideoCapture video_capture(camera_device);
-	//cv::VideoCapture video_capture("./imove/test/image_processing/IMG_0639.mp4");
+	//cv::VideoCapture video_capture("./imove/test/image_processing/aulaTest.mp4");
+	//cv::VideoCapture video_capture("./imove/test/image_processing/labTest.webm");
 	cv::Mat frame_camera;
 	cv::moveWindow("Camera", 500, 0);
 
