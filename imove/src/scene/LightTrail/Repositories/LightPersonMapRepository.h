@@ -16,12 +16,9 @@ private:
     std::map<int,std::shared_ptr<LightPerson>> map;
     vector<int> scheduledForRemoval;
 
-    static LightPersonMapRepository *_instance;
+public:
     LightPersonMapRepository(){
     }
-
-public:
-    static LightPersonMapRepository * getInstance();
 
     void add(const std::shared_ptr<LightPerson>& item) override {
         map[item->getId()] = item;

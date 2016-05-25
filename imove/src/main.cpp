@@ -13,6 +13,7 @@
 #include "interface/Person.h"
 #include "scene/Scene.h"
 #include "scene/LightTrail/LightTrailScene.h"
+#include "scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 
 const signed int NOKEY_ANYKEY = -1;
 
@@ -156,12 +157,19 @@ int main(int argc, char* argv[]) {
     window.clear(sf::Color::Black);
     window.display();
     
+    
     LightTrailConfiguration config(800,600,util::Range(0,90,true),util::Range(90,180,true),util::Range(180,240,true),util::Range(240,0,true),
                                    3.f,40,30000,-1,30000,30000,5.f,50,.5f,true,2000,2);
-    Scene* scene = new LightTrailScene(config);
+    Scene* scene = new LightTrailScene(config,
+                                       new LightSourceVectorRepository(),
+                                       new LightTrailVectorRepository(),
+                                       new GravityPointVectorRepository(),
+                                       new ColorHoleVectorRepository(),
+                                       new LightPersonMapRepository()
+                                       );
 
 	// setup clock
-	sf::Clock clock;
+    sf::Clock clock;
 
 	// setup people extracting in seperate thread
 	std::thread thread_peopleextractor(main_peopleextractor);

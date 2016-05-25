@@ -47,12 +47,15 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
 
 }
 
-LightTrailScene::LightTrailScene(LightTrailConfiguration config) : Scene(),
-                                     lightSources(LightSourceVectorRepository::getInstance()),
-                                     lightTrails(LightTrailVectorRepository::getInstance()),
-                                     gravityPoints(GravityPointVectorRepository::getInstance()),
-                                     colorHoles(ColorHoleVectorRepository::getInstance()),
-                                     lightPeople(LightPersonMapRepository::getInstance()),
+LightTrailScene::LightTrailScene(LightTrailConfiguration config,
+LightSourceRepository* lightSources, LightTrailRepository* lightTrails,
+GravityPointRepository* gravityPoints, ColorHoleRepository* colorHoles,
+LightPersonRepository* lightPeople) : Scene(),
+                                     lightSources(lightSources),
+                                     lightTrails(lightTrails),
+                                     gravityPoints(gravityPoints),
+                                     colorHoles(colorHoles),
+                                     lightPeople(lightPeople),
                                      config(config)
 {
     //Initialize the light trail texture

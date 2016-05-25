@@ -9,8 +9,6 @@
 #include "../../Action.h"
 #include "../LightTrail.h"
 #include "../GravityPoint.h"
-#include "../Repositories/LightTrailVectorRepository.h"
-#include "../Repositories/GravityPointVectorRepository.h"
 #include "../Repositories/LightsSceneRepositories.h"
 #include "../LightTrailConfiguration.h"
 

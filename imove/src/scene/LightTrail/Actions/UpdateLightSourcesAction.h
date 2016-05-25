@@ -9,8 +9,6 @@
 #include "../LightTrail.h"
 #include "../LightSource.h"
 #include "../../../util/Timer.h"
-#include "../Repositories/LightSourceVectorRepository.h"
-#include "../Repositories/LightTrailVectorRepository.h"
 #include "../Repositories/LightsSceneRepositories.h"
 #include "../LightTrailConfiguration.h"
 

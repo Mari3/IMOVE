@@ -7,7 +7,6 @@
 
 
 #include "../../Action.h"
-#include "../Repositories/GravityPointVectorRepository.h"
 #include "../LightPerson.h"
 #include "../../../util/Timer.h"
 #include "../Repositories/LightsSceneRepositories.h"

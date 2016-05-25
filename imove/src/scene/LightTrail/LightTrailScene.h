@@ -10,10 +10,6 @@
 #include "LightSource.h"
 #include "GravityPoint.h"
 #include "ColorHole.h"
-#include "Repositories/LightSourceVectorRepository.h"
-#include "Repositories/LightTrailVectorRepository.h"
-#include "Repositories/GravityPointVectorRepository.h"
-#include "Repositories/ColorHoleVectorRepository.h"
 #include "Repositories/LightPersonMapRepository.h"
 #include "Repositories/LightsSceneRepositories.h"
 #include "LightTrailConfiguration.h"
@@ -28,7 +24,10 @@ private:
     LightTrailConfiguration config;
     sf::RenderTexture texture;
 public:
-    LightTrailScene(LightTrailConfiguration config);
+    LightTrailScene(LightTrailConfiguration config,
+                    LightSourceRepository* lightSources, LightTrailRepository* lightTrails,
+                    GravityPointRepository* gravityPoints, ColorHoleRepository* colorHoles,
+                    LightPersonRepository* lightPeople);
     void draw(sf::RenderTarget &target) override;
     void processPeople() override;
 };

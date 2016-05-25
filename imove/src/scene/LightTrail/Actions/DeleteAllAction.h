@@ -7,11 +7,7 @@
 
 
 #include "../../Action.h"
-#include "../Repositories/ColorHoleVectorRepository.h"
-#include "../Repositories/GravityPointVectorRepository.h"
 #include "../Repositories/LightPersonMapRepository.h"
-#include "../Repositories/LightSourceVectorRepository.h"
-#include "../Repositories/LightTrailVectorRepository.h"
 #include "../Repositories/LightsSceneRepositories.h"
 
 class DeleteAllAction : public Action {
