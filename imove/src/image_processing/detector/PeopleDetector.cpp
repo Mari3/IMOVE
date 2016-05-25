@@ -53,17 +53,6 @@ vector<Vector2> PeopleDetector::detect(cv::Mat frame) {
   // Draw circle around keypoints
   cv::drawKeypoints(thresh_frame, keypoints, keypoints_frame, cv::Scalar(0, 0, 255), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 
-  // vector< vector<Point> > contours;
-  // findContours(thresh, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
-  // vector< vector<Point> > contours_thresholded;
-  // for (auto contour : contours) {
-  //   if (contourArea(contour) > 500) {
-  //     contours_thresholded.push_back(contour);
-  //   }
-  // }
-  // contours.clear();
-  // drawContours(keypoints_frame, contours_thresholded, -1, Scalar(0,0,255));
-
   float frame_height = frame.rows;
   float frame_width = frame.cols;
 

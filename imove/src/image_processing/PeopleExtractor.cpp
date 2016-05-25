@@ -8,15 +8,8 @@ PeopleExtractor::PeopleExtractor(cv::Size frame_size, float pixels_per_meter, fl
   // Calculate resize ratio
   resize_ratio = frame_size.height/fixed_height;
 
-  std::cout << "meter to height = " + std::to_string(frame_size.height/pixels_per_meter) << std::endl;
-  std::cout << "meter to width = " + std::to_string(frame_size.width/pixels_per_meter) << std::endl;
-
-  std::cout << "resize ratio = " + std::to_string(resize_ratio) << std::endl;
-
   // Initialize empty frame
   frame = cv::Mat::zeros(fixed_height, frame_size.width/resize_ratio, CV_8UC1);
-
-  std::cout << "resized meter = " + std::to_string(pixels_per_meter/resize_ratio) << std::endl;
 
   // Initialize detector
   if (pixels_per_meter > 400) {
@@ -32,21 +25,10 @@ PeopleExtractor::PeopleExtractor(cv::Size frame_size, float pixels_per_meter, fl
 PeopleExtractor::~PeopleExtractor() {}
 
 vector<Person> PeopleExtractor::extractPeople(cv::Mat new_frame) {
-  // Initialize empty frame for difference
-  cv::Mat difference_frame;
-
   // Convert frame to grayscale
   cvtColor(new_frame, new_frame, CV_RGB2GRAY);
   // Downscale frame
   resize(new_frame, new_frame, cv::Size(frame_size.width/resize_ratio, fixed_height));
-  // Claculate difference
-  absdiff(new_frame, frame, difference_frame);
-  // Sum pixelvalues of difference frame
-  cv::Scalar sumPixels = sum(difference_frame);
-  // If the sum of all pixelvalues is too big, the background subtractor has to be renewed
-  // if (sumPixels[0] + sumPixels[1] + sumPixels[2] > 7000000) {
-  //   detector.renew();
-  // }
 
   // Start working with new frame
   frame = new_frame;
