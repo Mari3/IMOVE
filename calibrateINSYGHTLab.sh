@@ -1,4 +1,4 @@
 #!/bin/bash
 set -e
 mkdir -p ./config/
-./dist/calibration ./config/INSYGHTLab.yml 1 "./test/scene.mp4"
+./dist/calibration ./config/INSYGHTLab.yml 1 800 800 

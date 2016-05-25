@@ -21,7 +21,8 @@ const cv::Scalar COLOR_B_METER(  0, 255, 255);
 
 unsigned int CONFIGPATH_ARGN = 1;
 unsigned int CAMERADEVICE_ARGN = 2;
-unsigned int CALIBRATIONPATH_ARGN = 3;
+unsigned int WIDTH_RESOLUTION_ARGN = 3;
+unsigned int HEIGHT_RESOLUTION_ARGN = 4;
 
 const unsigned char U8_FULL  = 255;
 const unsigned char U8_HALF  = 127;
@@ -165,8 +166,8 @@ int main(int argc, char* argv[]) {
 	color_corners[3] = cv::Scalar(U8_HALF, U8_FULL, U8_NONE);
 	
 
-	if (argc != 4) {
-		std::cout << "Usage: <path to configuration file> <int camera device> <path to calibration projection video file>" << std::endl;
+	if (argc != 5) {
+		std::cout << "Usage: <path to configuration file> <int camera device> <resolution projector width> <resolution projector height>" << std::endl;
 		return EXIT_SUCCESS;
 	}
 
@@ -202,15 +203,12 @@ int main(int argc, char* argv[]) {
 		b_meter = cv::Point2f(10 + meter, 10);
 	}
  
-	cv::Mat frame_projector;
-	cv::VideoCapture projector_videoreader(argv[CALIBRATIONPATH_ARGN]);
-	
 	cv::Mat frame_camera;
 	int cameradevice = std::stoi(argv[CAMERADEVICE_ARGN]);
 	cv::VideoCapture camera_videoreader(cameradevice);
-	camera_videoreader.set(CV_CAP_PROP_AUTOFOCUS, 0);
+	camera_videoreader.set(cv::CAP_PROP_AUTOFOCUS, 0);
 	
-	const cv::Size resolution_projector(projector_videoreader.get(cv::CAP_PROP_FRAME_WIDTH), projector_videoreader.get(cv::CAP_PROP_FRAME_HEIGHT));
+	const cv::Size resolution_projector(std::stoi(argv[WIDTH_RESOLUTION_ARGN]), std::stoi(argv[HEIGHT_RESOLUTION_ARGN]));
 	coordinate_corners_projector[0] = cv::Point2f(                    ORIGIN2D.x,                      ORIGIN2D.y);
 	coordinate_corners_projector[1] = cv::Point2f(resolution_projector.width - 1,                      ORIGIN2D.y);
 	coordinate_corners_projector[2] = cv::Point2f(										ORIGIN2D.x, resolution_projector.height - 1);
@@ -252,6 +250,8 @@ int main(int argc, char* argv[]) {
 	
 	cv::namedWindow("Projector", cv::WINDOW_NORMAL);
 	cv::moveWindow("Projector", 0, 0);
+	cv::resizeWindow("Projector", resolution_projector.width, resolution_projector.height);
+	cv::Mat frame_projector = cv::Mat::zeros(resolution_projector, CV_8UC3);
 	
 	cv::Mat frame_calibrateprojection;
 	cv::namedWindow("Calibrate projection", cv::WINDOW_NORMAL);
@@ -275,8 +275,20 @@ int main(int argc, char* argv[]) {
 	cv::namedWindow("Projection", cv::WINDOW_NORMAL);
 	cv::moveWindow("Projection", 1200, 0);
 	
-	while (cv::waitKey(1) == NOKEY_ANYKEY && projector_videoreader.read(frame_projector) && camera_videoreader.read(frame_camera)) {
+	while (cv::waitKey(1) == NOKEY_ANYKEY && camera_videoreader.read(frame_camera)) {
 		cv::imshow("Projector", frame_projector);
+		const unsigned int lanes = 24;
+		const cv::Size size_lane(resolution_projector.width / lanes, resolution_projector.height / lanes);
+		for (unsigned int x = 0; x < (unsigned int) resolution_projector.width; ++x) {
+			for (unsigned int y = 0; y < (unsigned int) resolution_projector.height; ++y) {
+				frame_projector.at<cv::Vec3b>(y, x) = cv::Vec3b(
+					0,
+					(unsigned char) ((U8_FULL * (x / size_lane.width)) / size_lane.width),
+					(unsigned char) ((U8_FULL * ((resolution_projector.height - y) / size_lane.height)) / size_lane.height)
+				);
+			}
+		}
+
 
 		calibration->feedFrameProjector(frame_projector);
 		calibration->eliminateProjectionFeedbackFromFrameCamera(frame_projectionelimination, frame_camera);
@@ -293,7 +305,6 @@ int main(int argc, char* argv[]) {
 		cv::imshow("Calibrate meter", frame_calibratemeter);
 	}
 
-	projector_videoreader.release();
 	camera_videoreader.release();
 
 	cv::FileStorage write_config(configpath, cv::FileStorage::WRITE);
