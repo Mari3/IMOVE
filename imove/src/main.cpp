@@ -171,6 +171,8 @@ int main(int argc, char* argv[]) {
 	// setup clock
     sf::Clock clock;
 
+	cv::waitKey(50);
+
 	// setup people extracting in seperate thread
 	std::thread thread_peopleextractor(main_peopleextractor);
 

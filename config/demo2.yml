@@ -17,5 +17,5 @@ ProximityRange: 300
 ProximityModifier: .7
 SidesEnabled: 1
 SpeedCap: 400
-Fade: 2
+Fade: 1
 TrailThickness: 12
