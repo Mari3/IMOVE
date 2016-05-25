@@ -40,7 +40,7 @@ class PeopleExtractor {
   cv::Size frame_size;
 
   // Fixed height to resize frames to
-  float fixed_height;
+  float resolution_resize_height;
 
   // Ratio with which the frame is resized
   float resize_ratio;
@@ -49,7 +49,7 @@ class PeopleExtractor {
   float pixels_per_meter;
 
  public:
-  PeopleExtractor(cv:: Size frame_size, float pixels_per_meter, float fixed_height);
+  PeopleExtractor(cv:: Size frame_size, float pixels_per_meter, float resolution_resize_height);
   ~PeopleExtractor();
 
   // Main extraction function to extract people from a frame

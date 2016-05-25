@@ -18,6 +18,7 @@ PeopleDetector::PeopleDetector(float pixels_per_meter, bool low_camera) : pixels
   params.filterByArea = true;
   params.maxArea = 1000000;
 
+  // Set parameters for SimpleBlobDetector according wether the camera height is low or not
   if (low_camera) {
     params.minArea = pixels_per_meter*5;
     params.minDistBetweenBlobs = params.minArea*0.20;
