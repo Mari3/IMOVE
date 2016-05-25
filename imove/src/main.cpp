@@ -18,6 +18,7 @@
 const signed int NOKEY_ANYKEY = -1;
 
 std::mutex mutex_scene;
+std::mutex mutex_frame;
 bool running = true;
 
 Calibration* calibration;
@@ -25,6 +26,7 @@ int camera_device;
 Scene* scene;
 cv::Size resolution_camera;
 cv::Size resolution_projector;
+cv::Mat current_frame_camera;
 float meter;
 
 // Sets up people extracting and loop extracting people for scene input while running
@@ -33,7 +35,6 @@ void main_peopleextractor() {
 
 	// debug camera window
 	cv::namedWindow("Camera", cv::WINDOW_NORMAL);
-	cv::VideoCapture video_capture(camera_device);
 	cv::Mat frame_camera;
 	cv::Mat frame_projection;
 
@@ -41,11 +42,11 @@ void main_peopleextractor() {
 	while (cv::waitKey(1) == NOKEY_ANYKEY) {
 		//for(int i=0;i<2;++i)
 		//	video_capture.grab();
-		if (!video_capture.read(frame_camera)) {
-			std::cerr << "Unable to read next frame." << std::endl;
-			std::cerr << "Exiting..." << std::endl;
-			exit(EXIT_FAILURE);
-		}
+
+		mutex_frame.lock();
+		frame_camera = current_frame_camera;
+		mutex_frame.unlock();
+
 		// debug projection frame
 		calibration->createFrameProjectionFromFrameCamera(
 			frame_projection,
@@ -159,7 +160,7 @@ int main(int argc, char* argv[]) {
     
     
     LightTrailConfiguration config = LightTrailConfiguration::readFromFile(argv[2]);
-    Scene* scene = new LightTrailScene(config,
+    scene = new LightTrailScene(config,
                                        new LightSourceVectorRepository(),
                                        new LightTrailVectorRepository(),
                                        new GravityPointVectorRepository(),
@@ -171,10 +172,19 @@ int main(int argc, char* argv[]) {
     sf::Clock clock;
 
 	// setup people extracting in seperate thread
+	cv::VideoCapture video_capture(camera_device);
 	std::thread thread_peopleextractor(main_peopleextractor);
 
 	// while no key pressed on other thread
 	while (running) {
+		mutex_frame.lock();
+		if (!video_capture.read(current_frame_camera)) {
+			std::cerr << "Unable to read next frame." << std::endl;
+			std::cerr << "Exiting..." << std::endl;
+			exit(EXIT_FAILURE);
+		}
+		mutex_frame.unlock();
+
 		// draw next scene frame based on clock difference
 		mutex_scene.lock();
 		float dt = clock.restart().asSeconds();
