@@ -34,8 +34,9 @@ private:
     // Sides
     bool _sidesEnabled;
 
-    // Speed
+    // Trail properties
     float _speedCap;
+    int _trailThickness;
 
     // Display
     uint8_t _fade;
@@ -48,7 +49,7 @@ public:
                             const util::Range &_corner4Hue, float _sendOutDelay, int _trailCap, const util::Range &_sendOutSpeed,
                             float _participantGravity, float _participantAntigravity, float _bystanderGravity,
                             float _alternatingGravity, float _gravityPointDelay, float _proximityRange,
-                            float _proximityModifier, bool _sidesEnabled, float _speedCap, uint8_t _fade);
+                            float _proximityModifier, bool _sidesEnabled, float _speedCap, int _trailThickness, uint8_t _fade);
 
     static LightTrailConfiguration readFromFile(char* fileName);
 
@@ -91,6 +92,8 @@ public:
     uint8_t fade() const;
 
     const util::Range & sendOutSpeed() const;
+
+    int trailThickness() const;
 };
 
 

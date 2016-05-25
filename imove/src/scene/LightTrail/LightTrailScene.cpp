@@ -20,7 +20,7 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
 
     //Draw all light trails on the texture
     for(auto &trail : *lightTrails){
-        sf::RectangleShape circle(sf::Vector2f(3, 3) );
+        sf::RectangleShape circle(sf::Vector2f(config.trailThickness(), config.trailThickness()) );
         circle.setPosition(trail->getLocation().x,trail->getLocation().y);
         circle.setFillColor(HueConverter::ToColor(trail->hue));
         texture.draw(circle);

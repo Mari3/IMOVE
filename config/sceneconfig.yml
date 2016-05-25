@@ -7,9 +7,9 @@ BottomLeftHue: [ 240, 0 ]
 SendOutDelay: 3.
 SendOutSpeed: [ 0, 100 ]
 TrailCap: 40
-ParticipantGravity: 30000
+ParticipantGravity: 300000
 ParticipantAntiGravity: 10000
-BystanderGravity: 30000
+BystanderGravity: 300000
 BystanderGravityDelay: 2.
 AlternatingGravity: 300000
 AlternatingGravityDelay: 5.
@@ -18,3 +18,4 @@ ProximityModifier: .7
 SidesEnabled: 0
 SpeedCap: 400
 Fade: 4
+TrailThickness: 6

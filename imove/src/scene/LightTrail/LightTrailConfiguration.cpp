@@ -82,14 +82,14 @@ LightTrailConfiguration::LightTrailConfiguration(unsigned int _screenWidth, unsi
                                                  const util::Range &_corner4Hue, float _sendOutDelay, int _trailCap, const util::Range &_sendOutSpeed,
                                                  float _participantGravity, float _participantAntigravity, float _bystanderGravity,
                                                  float _alternatingGravity, float _gravityPointDelay, float _proximityRange,
-                                                 float _proximityModifier, bool _sidesEnabled, float _speedCap, uint8_t _fade)
+                                                 float _proximityModifier, bool _sidesEnabled, float _speedCap, int _trailThickness, uint8_t _fade)
         : _screenWidth(_screenWidth), _screenHeight(_screenHeight), _corner1Hue(_corner1Hue),
           _corner2Hue(_corner2Hue), _corner3Hue(_corner3Hue), _corner4Hue(_corner4Hue),
           _sendOutDelay(_sendOutDelay), _trailCap(_trailCap), _sendOutSpeed(_sendOutSpeed), _participantGravity(_participantGravity),
           _participantAntigravity(_participantAntigravity), _bystanderGravity(_bystanderGravity),
           _alternatingGravity(_alternatingGravity), _gravityPointDelay(_gravityPointDelay),
           _proximityRange(_proximityRange), _proximityModifier(_proximityModifier), _sidesEnabled(_sidesEnabled),
-          _speedCap(_speedCap), _fade(_fade) { }
+          _speedCap(_speedCap), _trailThickness(_trailThickness), _fade(_fade) { }
 
 float LightTrailConfiguration::bystanderGravityDelay() const {
     return _bystanderGravityDelay;
@@ -115,7 +115,7 @@ LightTrailConfiguration LightTrailConfiguration::readFromFile(char *fileName) {
             bystanderGravityDelay, alternatingGravity, alternatingGravityDelay,
             proximityRange, proximityModifier, speedCap;
     bool sidesEnabled;
-    int fadeint;
+    int fadeint, trailThickness;
 
     fs["Resolution"] >> resolution;
     fs["TopLeftHue"] >> topLeftRange;
@@ -136,6 +136,7 @@ LightTrailConfiguration LightTrailConfiguration::readFromFile(char *fileName) {
     fs["SidesEnabled"] >> sidesEnabled;
     fs["SpeedCap"] >> speedCap;
     fs["Fade"] >> fadeint;
+    fs["TrailThickness"] >> trailThickness;
 
     uint8_t fade = static_cast<uint8_t>(fadeint > 255 ? 255 : fadeint);
 
@@ -152,7 +153,10 @@ LightTrailConfiguration LightTrailConfiguration::readFromFile(char *fileName) {
                                    participantGravity,participantAntiGravity,
                                    bystanderGravity,alternatingGravity,
                                    alternatingGravityDelay,proximityRange,proximityModifier,
-                                   sidesEnabled,speedCap,fade
+                                   sidesEnabled,speedCap,trailThickness,fade
     );
 }
 
+int LightTrailConfiguration::trailThickness() const {
+    return _trailThickness;
+}
