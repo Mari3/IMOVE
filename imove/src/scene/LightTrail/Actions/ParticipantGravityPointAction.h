@@ -10,6 +10,7 @@
 #include "../../Action.h"
 #include "../LightPerson.h"
 #include "../Repositories/LightsSceneRepositories.h"
+#include "../LightTrailConfiguration.h"
 
 class ParticipantGravityPointAction : public Action {
 private:
@@ -18,7 +19,8 @@ private:
     std::shared_ptr<LightPerson> person;
     void setLocation();
 public:
-    explicit ParticipantGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints);
+    explicit ParticipantGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints,
+    const LightTrailConfiguration& config);
 
     bool isDone(Action *&followUp) override;
 

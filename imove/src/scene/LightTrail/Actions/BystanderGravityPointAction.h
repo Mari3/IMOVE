@@ -11,6 +11,7 @@
 #include "../LightPerson.h"
 #include "../../../util/Timer.h"
 #include "../Repositories/LightsSceneRepositories.h"
+#include "../LightTrailConfiguration.h"
 
 class BystanderGravityPointAction : public Action {
 private:
@@ -21,7 +22,8 @@ private:
     bool gravityPointActive;
     void setLocation();
 public:
-    explicit BystanderGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints);
+    explicit BystanderGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints,
+    LightTrailConfiguration config);
 
     bool isDone(Action *&followUp) override;
 

@@ -12,14 +12,17 @@
 #include "../Repositories/LightSourceVectorRepository.h"
 #include "../Repositories/LightTrailVectorRepository.h"
 #include "../Repositories/LightsSceneRepositories.h"
+#include "../LightTrailConfiguration.h"
 
 class UpdateLightSourcesAction : public Action {
 private:
     LightSourceRepository* sources;
     LightTrailRepository* trails;
     Timer timer;
+    int cap;
 public:
-    UpdateLightSourcesAction(LightSourceRepository* lightSources, LightTrailRepository* lightTrails);
+    UpdateLightSourcesAction(LightSourceRepository* lightSources, LightTrailRepository* lightTrails,
+        const LightTrailConfiguration& config);
     bool isDone(Action *&followUp) override;
     void execute(float dt) override;
 };

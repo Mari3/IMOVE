@@ -3,14 +3,16 @@
 //
 
 #include "BystanderGravityPointAction.h"
+#include "../LightTrailConfiguration.h"
 
 #define WIDTH 800
 #define HEIGHT 600
 
-BystanderGravityPointAction::BystanderGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints) : person(person),
-    gravityPoints(gravityPoints), timer(Timer(5,true))
+BystanderGravityPointAction::BystanderGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints,
+LightTrailConfiguration config) : person(person),
+    gravityPoints(gravityPoints), timer(Timer(config.bystanderGravityDelay(),true))
 {
-    gravityPoint = std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(0,0),person->hue,300000));
+    gravityPoint = std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(0,0),person->hue,config.bystanderGravity()));
     setLocation();
 
     // Register the gravity point

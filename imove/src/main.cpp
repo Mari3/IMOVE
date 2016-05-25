@@ -152,10 +152,13 @@ int main(int argc, char* argv[]) {
 	cv::namedWindow("Frame", cv::WINDOW_NORMAL);
 
 	// setup scene
-	sf::RenderWindow window(sf::VideoMode(resolution_projector.width, resolution_projector.height),"Scene");
-	window.clear(sf::Color::Black);
-	window.display();
-	scene = new LightTrailScene();
+    sf::RenderWindow window(sf::VideoMode(resolution_projector.width, resolution_projector.height),"Projection");
+    window.clear(sf::Color::Black);
+    window.display();
+    
+    LightTrailConfiguration config(800,600,util::Range(0,90,true),util::Range(90,180,true),util::Range(180,240,true),util::Range(240,0,true),
+                                   3.f,40,30000,-1,30000,30000,5.f,50,.5f,true,2000,2);
+    Scene* scene = new LightTrailScene(config);
 
 	// setup clock
 	sf::Clock clock;

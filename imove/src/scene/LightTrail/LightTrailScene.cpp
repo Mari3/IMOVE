@@ -47,32 +47,41 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
 
 }
 
-LightTrailScene::LightTrailScene() : Scene(),
+LightTrailScene::LightTrailScene(LightTrailConfiguration config) : Scene(),
                                      lightSources(LightSourceVectorRepository::getInstance()),
                                      lightTrails(LightTrailVectorRepository::getInstance()),
                                      gravityPoints(GravityPointVectorRepository::getInstance()),
                                      colorHoles(ColorHoleVectorRepository::getInstance()),
-                                     lightPeople(LightPersonMapRepository::getInstance())
+                                     lightPeople(LightPersonMapRepository::getInstance()),
+                                     config(config)
 {
     //Initialize the light trail texture
-    texture.create(800,600);
+    texture.create(config.screenWidth(),config.screenHeight());
 
     //Add Light sources on every corner
-    lightSources->add(std::shared_ptr<LightSource>(new LightSource(Vector2(0, 0),util::Range(0, 90,true),util::Range(0, 90,true),util::Range(0,100))));
-    lightSources->add(std::shared_ptr<LightSource>(new LightSource(Vector2(800,0),util::Range(90,180,true),util::Range(90, 180,true),util::Range(0,100))));
-    lightSources->add(std::shared_ptr<LightSource>(new LightSource(Vector2(0, 600),util::Range(180, 270,true),util::Range(270, 0,true),util::Range(0,100))));
-    lightSources->add(std::shared_ptr<LightSource>(new LightSource(Vector2(800, 600),util::Range(270, 360,true),util::Range(180, 270,true),util::Range(0,100))));
+    lightSources->add(std::shared_ptr<LightSource>(
+            new LightSource(Vector2(0, 0),config.corner1Hue(),
+                            util::Range(0, 90,true),util::Range(0,100))));
+    lightSources->add(std::shared_ptr<LightSource>(
+            new LightSource(Vector2(config.screenWidth(),0),config.corner2Hue(),
+                            util::Range(90, 180,true),util::Range(0,100))));
+    lightSources->add(std::shared_ptr<LightSource>(
+            new LightSource(Vector2(0, config.screenHeight()),config.corner3Hue(),
+                            util::Range(270, 0,true),util::Range(0,100))));
+    lightSources->add(std::shared_ptr<LightSource>(
+            new LightSource(Vector2(config.screenWidth(), config.screenHeight()),config.corner4Hue(),
+                            util::Range(180, 270,true),util::Range(0,100))));
 
 
     //Add all the basic actions
     actions.push_back(new DeleteAllAction(colorHoles,gravityPoints,lightPeople,lightSources,lightTrails));
-    actions.push_back(new UpdateLightTrailsAction(lightTrails,gravityPoints));
-    actions.push_back(new UpdateLightSourcesAction(lightSources,lightTrails));
-    actions.push_back(new AlternatingGravityPointAction(gravityPoints,lightPeople));
-    actions.push_back(new AlternatingGravityPointAction(gravityPoints,lightPeople));
+    actions.push_back(new UpdateLightTrailsAction(lightTrails,gravityPoints,config));
+    actions.push_back(new UpdateLightSourcesAction(lightSources,lightTrails,config));
+    actions.push_back(new AlternatingGravityPointAction(gravityPoints,lightPeople,config));
+    actions.push_back(new AlternatingGravityPointAction(gravityPoints,lightPeople,config));
 
     //Add all conditions
-    conditions.push_back(new PersonChangedTypeCondition(lightPeople,gravityPoints));
+    conditions.push_back(new PersonChangedTypeCondition(lightPeople,gravityPoints,config));
 }
 
 void LightTrailScene::processPeople() {

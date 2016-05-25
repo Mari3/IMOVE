@@ -13,13 +13,13 @@ int PersonChangedTypeCondition::check(float dt, vector<Action*> &actions) {
         if((oldType.count(person->getId()) == 0 || oldType[person->getId()] != Bystander) && person->type == Bystander){
             // Create a new bystander action
             i++;
-            actions.push_back(new BystanderGravityPointAction(person,gravityPoints));
+            actions.push_back(new BystanderGravityPointAction(person,gravityPoints,config));
         } // Else if the person turned particpant
         else if((oldType.count(person->getId()) == 0 || oldType[person->getId()] != Participant && person->type == Participant))
         {
             // Create a new participant action
             i++;
-            actions.push_back(new ParticipantGravityPointAction(person,gravityPoints));
+            actions.push_back(new ParticipantGravityPointAction(person,gravityPoints,config));
         }
         oldType[person->getId()] = person->type;
     });
@@ -27,9 +27,11 @@ int PersonChangedTypeCondition::check(float dt, vector<Action*> &actions) {
 }
 
 PersonChangedTypeCondition::PersonChangedTypeCondition(LightPersonRepository* lightPeople,
-    GravityPointRepository* gravityPoints) :
+    GravityPointRepository* gravityPoints,
+    const LightTrailConfiguration& config) :
         lightPeople(lightPeople),
-        gravityPoints(gravityPoints)
+        gravityPoints(gravityPoints),
+        config(config)
 {
 
 }

@@ -1,0 +1,91 @@
+//
+// Created by Wouter Posdijk on 24/05/16.
+//
+
+#ifndef IMOVE_LIGHTTRAILCONFIGURATION_H
+#define IMOVE_LIGHTTRAILCONFIGURATION_H
+
+#include <cstdint>
+#include <string>
+#include "../../util/Range.h"
+
+class LightTrailConfiguration {
+private:
+    // Screen size
+    unsigned int _screenWidth, _screenHeight;
+
+    // Light source hues
+    util::Range _corner1Hue, _corner2Hue, _corner3Hue, _corner4Hue;
+
+    // Light sources
+    float _sendOutDelay;
+    int _trailCap;
+
+// Player gravitation
+    float _participantGravity, _participantAntigravity, _bystanderGravity, _bystanderGravityDelay;
+
+    // Other gravitation
+    float _alternatingGravity, _gravityPointDelay;
+
+    // Orbiting
+    float _proximityRange, _proximityModifier;
+
+    // Sides
+    bool _sidesEnabled;
+
+    // Speed
+    float _speedCap;
+
+    // Display
+    uint8_t _fade;
+
+public:
+
+
+    LightTrailConfiguration(unsigned int _screenWidth, unsigned int _screenHeight, const util::Range &_corner1Hue,
+                            const util::Range &_corner2Hue, const util::Range &_corner3Hue,
+                            const util::Range &_corner4Hue, float _sendOutDelay, int _trailCap,
+                            float _participantGravity, float _participantAntigravity, float _bystanderGravity,
+                            float _alternatingGravity, float _gravityPointDelay, float _proximityRange,
+                            float _proximityModifier, bool _sidesEnabled, float _speedCap, uint8_t _fade);
+    unsigned int screenWidth() const;
+
+    unsigned int screenHeight() const;
+
+    const util::Range & corner1Hue() const;
+
+    const util::Range & corner2Hue() const;
+
+    const util::Range & corner3Hue() const;
+
+    const util::Range & corner4Hue() const;
+
+    float sendOutDelay() const;
+
+    int trailCap() const;
+
+    float participantGravity() const;
+
+    float participantAntigravity() const;
+
+    float bystanderGravity() const;
+
+    float bystanderGravityDelay() const;
+
+    float alternatingGravity() const;
+
+    float gravityPointDelay() const;
+
+    float proximityRange() const;
+
+    float proximityModifier() const;
+
+    bool sidesEnabled() const;
+
+    float speedCap() const;
+
+    uint8_t fade() const;
+};
+
+
+#endif //IMOVE_LIGHTTRAILCONFIGURATION_H

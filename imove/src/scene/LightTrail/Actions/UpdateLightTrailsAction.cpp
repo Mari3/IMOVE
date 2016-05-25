@@ -4,10 +4,6 @@
 
 #include "UpdateLightTrailsAction.h"
 
-#define FORCE_CONSTANT 1
-#define PROXIMITY_CONSTANT 30
-#define PROXIMITY_MODIFIER .5f
-
 bool UpdateLightTrailsAction::isDone(Action *&followUp) {
     return false;
 }
@@ -15,12 +11,13 @@ bool UpdateLightTrailsAction::isDone(Action *&followUp) {
 void UpdateLightTrailsAction::execute(float dt) {
     for(auto &lightTrail : *lightTrails){
         Vector2 force = calculateForce(*lightTrail);
-        lightTrail->applyForce(force,dt);
+        lightTrail->applyForce(force,dt,config.speedCap(),config.sidesEnabled());
     }
 }
 
-UpdateLightTrailsAction::UpdateLightTrailsAction(LightTrailRepository* lightTrails, GravityPointRepository* gravityPoints) :
-    lightTrails(lightTrails), gravityPoints(gravityPoints)
+UpdateLightTrailsAction::UpdateLightTrailsAction(LightTrailRepository* lightTrails, GravityPointRepository* gravityPoints,
+                                                 const LightTrailConfiguration& config) :
+    lightTrails(lightTrails), gravityPoints(gravityPoints), config(config)
 {
 }
 
@@ -33,13 +30,13 @@ Vector2 UpdateLightTrailsAction::calculateForce(LightTrail trail) {
             float dist = diff.size();
             float proximityModifier = 1;
 
-            if (dist < PROXIMITY_CONSTANT) { // If the light trail is in a certain proximity to the gravity point
+            if (dist < config.proximityRange()) { // If the light trail is in a certain proximity to the gravity point
                 // Decrease instead of increase the gravity the closer the trail gets
                 // in order to cause orbit
-                proximityModifier = PROXIMITY_MODIFIER * (dist/PROXIMITY_CONSTANT) * (dist/PROXIMITY_CONSTANT);
+                proximityModifier = config.proximityModifier() * (dist/config.proximityRange()) * (dist/config.proximityRange());
             }
             // Add force that is inversely proportional to distance, like real gravity.
-            totalForce += diff / dist / dist * FORCE_CONSTANT * proximityModifier * gravityPoint->gravity;
+            totalForce += diff / dist / dist * proximityModifier * gravityPoint->gravity;
         }
     }
     return totalForce;

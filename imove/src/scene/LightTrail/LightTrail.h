@@ -14,7 +14,7 @@ private:
 public:
     float hue;
     LightTrail(Vector2 location, Vector2 speed, float hue);
-    void applyForce(Vector2 force, float dt);
+    void applyForce(Vector2 force, float dt, float speedCap, bool sidesEnabled);
     Vector2 getLocation();
     Vector2 getSpeed();
 };

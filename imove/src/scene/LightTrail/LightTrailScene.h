@@ -16,6 +16,7 @@
 #include "Repositories/ColorHoleVectorRepository.h"
 #include "Repositories/LightPersonMapRepository.h"
 #include "Repositories/LightsSceneRepositories.h"
+#include "LightTrailConfiguration.h"
 
 class LightTrailScene : public Scene{
 private:
@@ -24,9 +25,10 @@ private:
     GravityPointRepository* gravityPoints;
     ColorHoleRepository* colorHoles;
     LightPersonRepository* lightPeople;
+    LightTrailConfiguration config;
     sf::RenderTexture texture;
 public:
-    LightTrailScene();
+    LightTrailScene(LightTrailConfiguration config);
     void draw(sf::RenderTarget &target) override;
     void processPeople() override;
 };

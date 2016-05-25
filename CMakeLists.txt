@@ -36,3 +36,4 @@ include_directories( ${OpenCV_INCLUDE_DIRS} )
 
 add_subdirectory(imove)
 add_subdirectory(calibration)
+add_subdirectory(sceneconfig)

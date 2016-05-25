@@ -12,6 +12,7 @@
 #include "../Repositories/GravityPointVectorRepository.h"
 #include "../Repositories/LightPersonMapRepository.h"
 #include "../Repositories/LightsSceneRepositories.h"
+#include "../LightTrailConfiguration.h"
 
 class AlternatingGravityPointAction : public Action{
 private:
@@ -23,7 +24,8 @@ private:
     util::Range yRange;
 public:
 
-    AlternatingGravityPointAction(GravityPointRepository* gravityPoints, LightPersonRepository* lightPeople);
+    AlternatingGravityPointAction(GravityPointRepository* gravityPoints, LightPersonRepository* lightPeople,
+    LightTrailConfiguration config);
 
     bool isDone(Action *&followUp);
     void execute(float dt);
