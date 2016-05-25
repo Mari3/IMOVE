@@ -1,0 +1,20 @@
+%YAML:1.0
+Resolution: [ 800, 600 ]
+TopLeftHue: [ 0, 90 ]
+TopRightHue: [ 90, 180 ]
+BottomRightHue : [ 180, 240 ]
+BottomLeftHue: [ 240, 0 ]
+SendOutDelay: 3.
+SendOutSpeed: [ 0, 100 ]
+TrailCap: 40
+ParticipantGravity: 30000
+ParticipantAntiGravity: 10000
+BystanderGravity: 30000
+BystanderGravityDelay: 2.
+AlternatingGravity: 300000
+AlternatingGravityDelay: 5.
+ProximityRange: 300
+ProximityModifier: .7
+SidesEnabled: 0
+SpeedCap: 400
+Fade: 4
