@@ -6,6 +6,7 @@
 #define IMOVE_BYSTANDERGRAVITYPOINTACTION_H
 
 
+#include <memory>
 #include "../../Action.h"
 #include "../LightPerson.h"
 #include "../../../util/Timer.h"

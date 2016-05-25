@@ -8,6 +8,7 @@
 
 #include <map>
 #include <vector>
+#include <memory>
 #include "../LightPerson.h"
 #include "../../../util/Repository.h"
 

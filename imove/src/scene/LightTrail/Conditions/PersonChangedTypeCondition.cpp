@@ -3,6 +3,7 @@
 //
 
 #include "PersonChangedTypeCondition.h"
+#include <memory>
 #include "../Actions/BystanderGravityPointAction.h"
 #include "../Actions/ParticipantGravityPointAction.h"
 

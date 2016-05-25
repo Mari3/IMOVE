@@ -6,6 +6,7 @@
 #define IMOVE_PARTICIPANTGRAVITYPOINTACTION_H
 
 
+#include <memory>
 #include "../../Action.h"
 #include "../LightPerson.h"
 #include "../Repositories/LightsSceneRepositories.h"

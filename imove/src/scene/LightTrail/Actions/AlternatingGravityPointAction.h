@@ -6,6 +6,7 @@
 #define IMOVE_ALTERNATINGGRAVITYPOINTACTION_H
 
 
+#include <memory>
 #include "../../Action.h"
 #include "../GravityPoint.h"
 #include "../../../util/Timer.h"

@@ -8,6 +8,7 @@
 #include <vector>
 #include "Repository.h"
 #include <algorithm>
+#include <memory>
 
 template<typename T>
 class VectorRepository : public Repository<T>

@@ -7,6 +7,7 @@
 
 #include <iterator>
 #include <functional>
+#include <memory>
 
 template<typename T>
 class Repository

@@ -2,6 +2,7 @@
 // Created by Wouter Posdijk on 11/05/16.
 //
 
+#include <memory>
 #include "LightTrailScene.h"
 #include "Actions/UpdateLightTrailsAction.h"
 #include "../Util/HueConverter.h"
