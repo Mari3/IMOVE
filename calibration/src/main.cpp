@@ -275,19 +275,21 @@ int main(int argc, char* argv[]) {
 	cv::namedWindow("Projection", cv::WINDOW_NORMAL);
 	cv::moveWindow("Projection", 1200, 0);
 	
+	unsigned int frame_offset = 0;
+	const unsigned int lanes = 24;
+	const cv::Size size_lane(resolution_projector.width / lanes, resolution_projector.height / lanes);
 	while (cv::waitKey(1) == NOKEY_ANYKEY && camera_videoreader.read(frame_camera)) {
-		cv::imshow("Projector", frame_projector);
-		const unsigned int lanes = 24;
-		const cv::Size size_lane(resolution_projector.width / lanes, resolution_projector.height / lanes);
 		for (unsigned int x = 0; x < (unsigned int) resolution_projector.width; ++x) {
 			for (unsigned int y = 0; y < (unsigned int) resolution_projector.height; ++y) {
 				frame_projector.at<cv::Vec3b>(y, x) = cv::Vec3b(
 					0,
-					(unsigned char) ((U8_FULL * (x / size_lane.width)) / size_lane.width),
-					(unsigned char) ((U8_FULL * ((resolution_projector.height - y) / size_lane.height)) / size_lane.height)
+					(unsigned char) ((U8_FULL * ((x + frame_offset * size_lane.width) / size_lane.width)) / size_lane.width),
+					(unsigned char) ((U8_FULL * ((resolution_projector.height - (y + frame_offset * size_lane.height)) / size_lane.height)) / size_lane.height)
 				);
 			}
 		}
+		frame_offset = (frame_offset + 1) % lanes;
+		cv::imshow("Projector", frame_projector);
 
 
 		calibration->feedFrameProjector(frame_projector);
