@@ -1,8 +1,6 @@
-.DS_Store
-
 /opencv
 /build
 /dist
-/config
+
 .DS_Store
-/.idea/
+.idea/
