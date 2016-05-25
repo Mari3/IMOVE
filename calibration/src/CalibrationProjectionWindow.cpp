@@ -12,11 +12,17 @@ CalibrationProjectionWindow::CalibrationProjectionWindow(cv::Point2i position, C
 	this->color_corners[1] = OpenCVUtil::Color::GREEN;
 	this->color_corners[2] = OpenCVUtil::Color::DARKBLUE;
 	this->color_corners[3] = OpenCVUtil::Color::LIGHTBLUE;
+	coordinate_corners_projector[0] = cv::Point2f(        OpenCVUtil::ORIGIN2D.x,          OpenCVUtil::ORIGIN2D.y);
+	coordinate_corners_projector[1] = cv::Point2f(resolution_projector.width - 1,          OpenCVUtil::ORIGIN2D.y);
+	coordinate_corners_projector[2] = cv::Point2f(        OpenCVUtil::ORIGIN2D.x, resolution_projector.height - 1);
+	coordinate_corners_projector[3] = cv::Point2f(resolution_projector.width - 1, resolution_projector.height - 1);
+	
+	// reconstruct points camera
 	std::vector<cv::Point2f> points_projector = std::vector<cv::Point2f>(this->CalibrationProjectionWindow::REQUIRED_CORNERS);
-	points_projector.at(0) = cv::Point2f(        OpenCVUtil::ORIGIN2D.x,          OpenCVUtil::ORIGIN2D.y);
-	points_projector.at(1) = cv::Point2f(resolution_projector.width - 1,          OpenCVUtil::ORIGIN2D.y);
-	points_projector.at(2) = cv::Point2f(	  	   OpenCVUtil::ORIGIN2D.x, resolution_projector.height - 1);
-	points_projector.at(3) = cv::Point2f(resolution_projector.width - 1, resolution_projector.height - 1);
+	points_projector.at(0) = coordinate_corners_projector[0];
+	points_projector.at(1) = coordinate_corners_projector[1];
+	points_projector.at(2) = coordinate_corners_projector[2];
+	points_projector.at(3) = coordinate_corners_projector[3];
 	std::vector<cv::Point2f> points_projection = std::vector<cv::Point2f>(CalibrationProjectionWindow::REQUIRED_CORNERS);
 	cv::perspectiveTransform(
 		points_projector,

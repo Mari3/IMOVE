@@ -231,7 +231,7 @@ int main(int argc, char* argv[]) {
 	write_config << "Camera_device" << cameradevice;
 	write_config << "Resolution_camera" << resolution_camera;
 	write_config << "Resolution_projector" << resolution_projector;
-	write_config << "Camera_projector_transformation" << camera_projector_transformation;
+	write_config << "Camera_projector_transformation" << calibration->getCameraProjectorTransformation();
 	write_config << "Frames_projector_camera_delay" << (int) frames_projector_camera_delay;
 	write_config << "Projector_background_light" << projector_background_light;
 	const cv::Point2f diff_meter = b_meter - a_meter;
