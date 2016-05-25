@@ -22,16 +22,17 @@ bool running = true;
 Calibration* calibration;
 int camera_device;
 Scene* scene;
+cv::Size resolution_camera;
 cv::Size resolution_projector;
+float meter;
 
 // Sets up people extracting and loop extracting people for scene input while running
 void main_peopleextractor() {
-	PeopleExtractor people_extractor = PeopleExtractor();
-	
+	PeopleExtractor people_extractor = PeopleExtractor(resolution_camera, meter, 216);
+
 	// debug camera window
 	cv::namedWindow("Camera", cv::WINDOW_NORMAL);
 	cv::VideoCapture video_capture(camera_device);
-	//cv::VideoCapture video_capture("./imove/test/image_processing/IMG_0639.mp4");
 	cv::Mat frame_camera;
 	cv::Mat frame_projection;
 
@@ -114,12 +115,12 @@ int main(int argc, char* argv[]) {
 		std::cerr << "Usage: <path to configuration file>" << std::endl;
 		return EXIT_SUCCESS;
 	}
-	
+
 	// read calibration config
 	cv::FileStorage fs;
 	fs.open(argv[1], cv::FileStorage::READ);
 	fs["Camera_device"] >> camera_device;
-	cv::Size resolution_camera;
+	//cv::Size resolution_camera;
 	fs["Resolution_camera"] >> resolution_camera;
 	cv::Size resolution_projector;
 	fs["Resolution_projector"] >> resolution_projector;
@@ -135,19 +136,19 @@ int main(int argc, char* argv[]) {
 	}
 	double percentage_projector_background_light;
 	fs["Percentage_projector_background_light"] >> percentage_projector_background_light;
-	float meter;
+	//float meter;
 	fs["Meter"] >> meter;
 	fs.release();
 
 	calibration = new Calibration(resolution_projector, camera_projector_transformation, frames_projector_camera_delay, percentage_projector_background_light);
-	
+
 	// debug windows
 	cv::namedWindow("Camera", cv::WINDOW_NORMAL);
 	cv::moveWindow("Camera", 500, 0);
 
 	cv::namedWindow("Projection", cv::WINDOW_NORMAL);
 	cv::moveWindow("Projection", 1000, 0);
-	
+
 	cv::namedWindow("Frame", cv::WINDOW_NORMAL);
 
 	// setup scene
@@ -158,10 +159,10 @@ int main(int argc, char* argv[]) {
 
 	// setup clock
 	sf::Clock clock;
-	
+
 	// setup people extracting in seperate thread
 	std::thread thread_peopleextractor(main_peopleextractor);
-	
+
 	// while no key pressed on other thread
 	while (running) {
 		// draw next scene frame based on clock difference
@@ -179,6 +180,6 @@ int main(int argc, char* argv[]) {
 
 	// normally exit program by stopping people extractor thread
 	thread_peopleextractor.join();
- 
+
 	return EXIT_SUCCESS;
 }
