@@ -112,7 +112,7 @@ void main_peopleextractor() {
 // setup and run scene with continous people extraction as input based on configuration given in parameter otherwise show parameters
 int main(int argc, char* argv[]) {
 	// show parameters if not given 1 parameter
-	if (argc != 2) {
+	if (argc != 3) {
 		std::cerr << "Usage: <path to configuration file>" << std::endl;
 		return EXIT_SUCCESS;
 	}
@@ -158,8 +158,7 @@ int main(int argc, char* argv[]) {
     window.display();
     
     
-    LightTrailConfiguration config(800,600,util::Range(0,90,true),util::Range(90,180,true),util::Range(180,240,true),util::Range(240,0,true),
-                                   3.f,40,30000,-1,30000,30000,5.f,50,.5f,true,2000,2);
+    LightTrailConfiguration config = LightTrailConfiguration::readFromFile(argv[2]);
     Scene* scene = new LightTrailScene(config,
                                        new LightSourceVectorRepository(),
                                        new LightTrailVectorRepository(),

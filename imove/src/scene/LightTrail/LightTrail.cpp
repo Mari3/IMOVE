@@ -4,9 +4,6 @@
 
 #include "LightTrail.h"
 
-#define SW 800
-#define SH 600
-
 LightTrail::LightTrail(Vector2 location, Vector2 speed, float hue) :
     location(location),
     speed(speed),
@@ -14,7 +11,8 @@ LightTrail::LightTrail(Vector2 location, Vector2 speed, float hue) :
 {
 }
 
-void LightTrail::applyForce(Vector2 force, float dt, float speedCap, bool sidesEnabled) {
+void LightTrail::applyForce(Vector2 force, float dt, float speedCap, bool sidesEnabled,
+    unsigned int screenWidth, unsigned int screenHeight) {
     //Increase the speed based on the force and delta time
     speed += force*dt;
 
@@ -31,15 +29,15 @@ void LightTrail::applyForce(Vector2 force, float dt, float speedCap, bool sidesE
         if (location.x < 0) {
             location.x = 0;
             speed.x *= -1;
-        } else if (location.x > SW) {
-            location.x = SW;
+        } else if (location.x > screenWidth) {
+            location.x = screenWidth;
             speed.x *= -1;
         }
         if (location.y < 0) {
             location.y = 0;
             speed.y *= -1;
-        } else if (location.y > SH) {
-            location.y = SH;
+        } else if (location.y > screenHeight) {
+            location.y = screenHeight;
             speed.y *= -1;
         }
     }

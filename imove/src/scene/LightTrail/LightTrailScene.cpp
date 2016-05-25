@@ -13,8 +13,8 @@
 void LightTrailScene::draw(sf::RenderTarget &target) {
 
     //Slightly fade the current texture
-    sf::RectangleShape rect(sf::Vector2f(800, 600));
-    rect.setFillColor(sf::Color(0, 0, 0, 10));
+    sf::RectangleShape rect(sf::Vector2f(config.screenWidth(), config.screenHeight()));
+    rect.setFillColor(sf::Color(0, 0, 0, config.fade()));
     texture.draw(rect);
 
     //Draw all light trails on the texture
@@ -47,7 +47,7 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
 
 }
 
-LightTrailScene::LightTrailScene(LightTrailConfiguration config,
+LightTrailScene::LightTrailScene(const LightTrailConfiguration &config,
 LightSourceRepository* lightSources, LightTrailRepository* lightTrails,
 GravityPointRepository* gravityPoints, ColorHoleRepository* colorHoles,
 LightPersonRepository* lightPeople) : Scene(),
@@ -64,24 +64,24 @@ LightPersonRepository* lightPeople) : Scene(),
     //Add Light sources on every corner
     lightSources->add(std::shared_ptr<LightSource>(
             new LightSource(Vector2(0, 0),config.corner1Hue(),
-                            util::Range(0, 90,true),util::Range(0,100))));
+                            util::Range(0, 90,true),config.sendOutSpeed())));
     lightSources->add(std::shared_ptr<LightSource>(
             new LightSource(Vector2(config.screenWidth(),0),config.corner2Hue(),
-                            util::Range(90, 180,true),util::Range(0,100))));
+                            util::Range(90, 180,true),config.sendOutSpeed())));
     lightSources->add(std::shared_ptr<LightSource>(
             new LightSource(Vector2(0, config.screenHeight()),config.corner3Hue(),
-                            util::Range(270, 0,true),util::Range(0,100))));
+                            util::Range(270, 0,true),config.sendOutSpeed())));
     lightSources->add(std::shared_ptr<LightSource>(
             new LightSource(Vector2(config.screenWidth(), config.screenHeight()),config.corner4Hue(),
-                            util::Range(180, 270,true),util::Range(0,100))));
+                            util::Range(180, 270,true),config.sendOutSpeed())));
 
 
     //Add all the basic actions
     actions.push_back(new DeleteAllAction(colorHoles,gravityPoints,lightPeople,lightSources,lightTrails));
     actions.push_back(new UpdateLightTrailsAction(lightTrails,gravityPoints,config));
     actions.push_back(new UpdateLightSourcesAction(lightSources,lightTrails,config));
-    actions.push_back(new AlternatingGravityPointAction(gravityPoints,lightPeople,config));
-    actions.push_back(new AlternatingGravityPointAction(gravityPoints,lightPeople,config));
+    actions.push_back(new AlternatingGravityPointAction(util::Range(0,180,true),gravityPoints,lightPeople,config));
+    actions.push_back(new AlternatingGravityPointAction(util::Range(180,0,true),gravityPoints,lightPeople,config));
 
     //Add all conditions
     conditions.push_back(new PersonChangedTypeCondition(lightPeople,gravityPoints,config));

@@ -23,8 +23,8 @@ private:
     util::Range yRange;
 public:
 
-    AlternatingGravityPointAction(GravityPointRepository* gravityPoints, LightPersonRepository* lightPeople,
-    LightTrailConfiguration config);
+    AlternatingGravityPointAction(util::Range hue, GravityPointRepository* gravityPoints, LightPersonRepository* lightPeople,
+    const LightTrailConfiguration &config);
 
     bool isDone(Action *&followUp);
     void execute(float dt);

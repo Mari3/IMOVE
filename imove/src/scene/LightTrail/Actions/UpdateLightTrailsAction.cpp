@@ -10,8 +10,8 @@ bool UpdateLightTrailsAction::isDone(Action *&followUp) {
 
 void UpdateLightTrailsAction::execute(float dt) {
     for(auto &lightTrail : *lightTrails){
-        Vector2 force = calculateForce(*lightTrail);
-        lightTrail->applyForce(force,dt,config.speedCap(),config.sidesEnabled());
+        Vector2 force = calculateForce(*(lightTrail.get()));
+        lightTrail->applyForce(force,dt,config.speedCap(),config.sidesEnabled(),config.screenWidth(),config.screenHeight());
     }
 }
 

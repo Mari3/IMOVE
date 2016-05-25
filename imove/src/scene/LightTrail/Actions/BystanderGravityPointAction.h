@@ -19,10 +19,11 @@ private:
     std::shared_ptr<LightPerson> person;
     Timer timer;
     bool gravityPointActive;
+    LightTrailConfiguration config;
     void setLocation();
 public:
     explicit BystanderGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints,
-    LightTrailConfiguration config);
+    const LightTrailConfiguration &config);
 
     bool isDone(Action *&followUp) override;
 

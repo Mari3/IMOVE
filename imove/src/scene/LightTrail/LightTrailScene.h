@@ -24,7 +24,7 @@ private:
     LightTrailConfiguration config;
     sf::RenderTexture texture;
 public:
-    LightTrailScene(LightTrailConfiguration config,
+    LightTrailScene(const LightTrailConfiguration &config,
                     LightSourceRepository* lightSources, LightTrailRepository* lightTrails,
                     GravityPointRepository* gravityPoints, ColorHoleRepository* colorHoles,
                     LightPersonRepository* lightPeople);
