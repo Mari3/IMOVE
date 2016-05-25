@@ -17,8 +17,6 @@ public:
     util::Range hue;
     float gravity;
     GravityPoint(Vector2 location, util::Range hue, float gravity);
-    void destroy();
-    bool exists();
 };
 
 

@@ -20,7 +20,7 @@ private:
     bool gravityPointActive;
     void setLocation();
 public:
-    BystanderGravityPointAction(LightPerson* person);
+    explicit BystanderGravityPointAction(LightPerson* person);
 
     bool isDone(Action *&followUp) override;
 

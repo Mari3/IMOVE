@@ -17,7 +17,7 @@ private:
     LightPerson* person;
     void setLocation();
 public:
-    ParticipantGravityPointAction(LightPerson* person);
+    explicit ParticipantGravityPointAction(LightPerson* person);
 
     bool isDone(Action *&followUp) override;
 

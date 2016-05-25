@@ -9,6 +9,7 @@ ParticipantGravityPointAction::ParticipantGravityPointAction(LightPerson* person
 {
     gravityPoint = new GravityPoint(Vector2(0,0),person->hue,100000);
     setLocation();
+    // Register the gravity point
     gravityPoints->add(gravityPoint);
 }
 
@@ -19,6 +20,7 @@ void ParticipantGravityPointAction::setLocation() {
 
 
 bool ParticipantGravityPointAction::isDone(Action *&followUp) {
+    // This action is done when the person it tracks is no longer a participant
     if(person->type != Participant){
         gravityPoints->scheduleForRemoval(gravityPoint);
         return true;

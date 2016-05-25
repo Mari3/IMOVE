@@ -10,15 +10,13 @@
 #include "GravityPoint.h"
 #include "LightTrail.h"
 
-using namespace std;
-
 class ColorHole : public GravityPoint {
 private:
-    vector<LightTrail> consumedTrails;
+    std::vector<LightTrail> consumedTrails;
 public:
     ColorHole(Vector2 location, util::Range hue, float gravity);
     void consume(LightTrail &trail);
-    vector<LightTrail> explode();
+    std::vector<LightTrail> explode();
 };
 
 

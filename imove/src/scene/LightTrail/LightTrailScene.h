@@ -26,7 +26,7 @@ private:
     sf::RenderTexture texture;
 public:
     LightTrailScene();
-    virtual void draw(sf::RenderTarget &target) override;
+    void draw(sf::RenderTarget &target) override;
     void processPeople() override;
 };
 

@@ -8,24 +8,34 @@
 
 #include "../../imove/src/calibration/Calibration.hpp"
 
+const unsigned char U8_FULL  = 255;
+const unsigned char U8_HALF  = 127;
+const unsigned char U8_NONE  =   0;
+
+// Default configuration parameters if not given
 unsigned DEFAULT_FRAMES_PROJECTOR_CAMERA_DELAY = 5;
 double DEFAULT_PROJECTOR_BACKGROUND_LIGHT = 39;
 float DEFAULT_METER = 100.f;
 
+// UI calibration cross parameters
 const int CROSS_SIZE = 10;
 const int CROSS_THICKNESS = 1;
 
-const cv::Scalar COLOR_A_METER(255, 255,  0);
-const cv::Scalar COLOR_B_METER(  0, 255, 255);
+// UI calibration meter parameters
+const cv::Scalar COLOR_A_METER	(U8_FULL, U8_FULL, U8_NONE);
+const cv::Scalar COLOR_B_METER	(U8_NONE, U8_FULL, U8_FULL);
 
+// UI calibration projection cross colors
+const cv::Scalar COLOR_ORANGE		(U8_NONE, U8_HALF, U8_FULL);
+const cv::Scalar COLOR_GREEN		(U8_NONE, U8_FULL, U8_HALF);
+const cv::Scalar COLOR_DARKBLUE	(U8_HALF, U8_NONE, U8_NONE);
+const cv::Scalar COLOR_LIGHTBLUE(U8_HALF, U8_FULL, U8_NONE);
 
+// arguments
 unsigned int CONFIGPATH_ARGN = 1;
 unsigned int CAMERADEVICE_ARGN = 2;
-unsigned int CALIBRATIONPATH_ARGN = 3;
-
-const unsigned char U8_FULL  = 255;
-const unsigned char U8_HALF  = 127;
-const unsigned char U8_NONE  =   0;
+unsigned int WIDTH_RESOLUTION_ARGN = 3;
+unsigned int HEIGHT_RESOLUTION_ARGN = 4;
 
 const signed int NOKEY_ANYKEY = -1;
 const int INT_FULL_PERCENTAGE = 100;
@@ -53,6 +63,14 @@ const int CROSS_HSIZE = CROSS_SIZE / 2;
 Calibration* calibration = NULL;
 cv::Mat camera_projector_transformation;
 
+
+/**
+ * Draws a cross on the image on location with color
+ * 
+ * @param image Image to be drawing cross on
+ * @param point Point on the image of the center of the cross
+ * @param color Color of the cross
+ **/
 void drawCrossOnImage(cv::Mat& image, const cv::Point2f& point, const cv::Scalar& color) {
 	cv::line(
 		image,
@@ -70,7 +88,13 @@ void drawCrossOnImage(cv::Mat& image, const cv::Point2f& point, const cv::Scalar
 	);
 }
 
+/**
+ * Draws projection boundaries on image as polylines between corners, draw crosses on corners and draw last mouse position
+ * 
+ * @param image The image to draw polylines on
+ **/
 void drawProjectionBoundariesOnImage(cv::Mat& image) {
+	// draw polylines on image to indicate boundaries
 	cv::Point polypoints[REQUIRED_CORNERS];
 	polypoints[0] = coordinate_corners_camera[0];
 	polypoints[1] = coordinate_corners_camera[1];
@@ -88,18 +112,29 @@ void drawProjectionBoundariesOnImage(cv::Mat& image) {
 		CROSS_THICKNESS,
 		cv::LINE_AA
 	);
+	// draw cross on corner projection boundaries
 	for (unsigned int i = 0; i < REQUIRED_CORNERS; ++i) {
 		drawCrossOnImage(image, coordinate_corners_camera[i], color_corners[i]);
 	}
+	// draw mouse on image if ever entered
 	if (entered_mouse_projection) {
 		drawCrossOnImage(image, coordinate_mouse_projection, color_corners[current_corner]);
 	}
 }
 
+/**
+ * Draws meter and last mouse position on image using line and crosses
+ * 
+ * @param image Image to draw meter and last mouse position on
+ **/
 void drawMeterOnImage(cv::Mat& image) {
+	// draw line between first and second point
 	cv::line(image, a_meter, b_meter, cv::Scalar(255, 255, 255));
+	// draw meter cross first point
 	drawCrossOnImage(image, a_meter, COLOR_A_METER);
+	// draw meter cross second point
 	drawCrossOnImage(image, b_meter, COLOR_B_METER);
+	// draw last mouse position as current setting meter point if ever entered
 	if (entered_mouse_meter) {
 		switch (current_meter) {
 			case METER_A:
@@ -112,13 +147,17 @@ void drawMeterOnImage(cv::Mat& image) {
 	}
 }
 
+// Calibrate projection mouse callback
 void onMouseCalibrateProjection(int event, int x, int y, int flags, void* userdata) {
 	coordinate_mouse_projection = cv::Point2f(x, y);
 	entered_mouse_projection = true;
 
 	if (event == cv::EVENT_LBUTTONUP) {
+		// set new corner based on last mouse position
 		coordinate_corners_camera[current_corner] = coordinate_mouse_projection;
+		// set new current corner to set
 		current_corner = (current_corner + 1) % REQUIRED_CORNERS;
+		// calculate and set new perspective map
 		camera_projector_transformation = cv::getPerspectiveTransform(
 			coordinate_corners_camera,
 			coordinate_corners_projector
@@ -127,6 +166,7 @@ void onMouseCalibrateProjection(int event, int x, int y, int flags, void* userda
 	}
 }
 
+// Calibrate meter mouse callback
 void onMouseCalibrateMeter(int event, int x, int y, int flags, void* userdata) {
 	coordinate_mouse_meter = cv::Point2f(x, y);
 	entered_mouse_meter = true;
@@ -134,10 +174,12 @@ void onMouseCalibrateMeter(int event, int x, int y, int flags, void* userdata) {
 	if (event == cv::EVENT_LBUTTONUP) {
 		switch (current_meter) {
 			case METER_A:
+				// set meter first position and set right as current position
 				a_meter = coordinate_mouse_meter;
 				current_meter = METER_B;
 				break;
 			case METER_B:
+				// set meter second position and set left as current position
 				b_meter = coordinate_mouse_meter;
 				current_meter = METER_A;
 				break;
@@ -145,10 +187,13 @@ void onMouseCalibrateMeter(int event, int x, int y, int flags, void* userdata) {
 	}
 }
 
+// Projector background light trackbar callback
 void onProjectorBackgroundLight(int tracked_int, void *user_data) {
+	// set as double from percentage
 	calibration->setProjectorBackgroundLight((double) tracked_int / DOUBLE_FULL_PERCENTAGE);
 }
 
+// Amount of frames delay between projection and camera trackbar callback
 void onFramesProjectorCameraDelay(int tracked_int, void *user_data) {
 	if (tracked_int < 0) {
 		calibration->setFramesProjectorCameraDelay(0);
@@ -157,19 +202,20 @@ void onFramesProjectorCameraDelay(int tracked_int, void *user_data) {
 	}
 }
 
-
+// create calibration configuration based on arguments and configuration and user input in projection, meter and projection elimination windows
 int main(int argc, char* argv[]) {
-	color_corners[0] = cv::Scalar(U8_NONE, U8_HALF, U8_FULL);
-	color_corners[1] = cv::Scalar(U8_NONE, U8_FULL, U8_HALF);
-	color_corners[2] = cv::Scalar(U8_HALF, U8_NONE, U8_NONE);
-	color_corners[3] = cv::Scalar(U8_HALF, U8_FULL, U8_NONE);
+	color_corners[0] = COLOR_ORANGE;
+	color_corners[1] = COLOR_GREEN;
+	color_corners[2] = COLOR_DARKBLUE;
+	color_corners[3] = COLOR_LIGHTBLUE;
 	
 
-	if (argc != 4) {
-		std::cout << "Usage: <path to configuration file> <int camera device> <path to calibration projection video file>" << std::endl;
+	if (argc != 5) {
+		std::cout << "Usage: <path to configuration file> <int camera device> <resolution projector width> <resolution projector height>" << std::endl;
 		return EXIT_SUCCESS;
 	}
-
+	
+	// read config if property is not set, use default
 	cv::FileStorage read_config;
 	char* configpath = argv[CONFIGPATH_ARGN];
 	read_config.open(configpath, cv::FileStorage::READ);
@@ -202,15 +248,12 @@ int main(int argc, char* argv[]) {
 		b_meter = cv::Point2f(10 + meter, 10);
 	}
  
-	cv::Mat frame_projector;
-	cv::VideoCapture projector_videoreader(argv[CALIBRATIONPATH_ARGN]);
-	
 	cv::Mat frame_camera;
 	int cameradevice = std::stoi(argv[CAMERADEVICE_ARGN]);
 	cv::VideoCapture camera_videoreader(cameradevice);
-	camera_videoreader.set(CV_CAP_PROP_AUTOFOCUS, 0);
+	camera_videoreader.set(cv::CAP_PROP_AUTOFOCUS, 0);
 	
-	const cv::Size resolution_projector(projector_videoreader.get(cv::CAP_PROP_FRAME_WIDTH), projector_videoreader.get(cv::CAP_PROP_FRAME_HEIGHT));
+	const cv::Size resolution_projector(std::stoi(argv[WIDTH_RESOLUTION_ARGN]), std::stoi(argv[HEIGHT_RESOLUTION_ARGN]));
 	coordinate_corners_projector[0] = cv::Point2f(                    ORIGIN2D.x,                      ORIGIN2D.y);
 	coordinate_corners_projector[1] = cv::Point2f(resolution_projector.width - 1,                      ORIGIN2D.y);
 	coordinate_corners_projector[2] = cv::Point2f(										ORIGIN2D.x, resolution_projector.height - 1);
@@ -247,11 +290,14 @@ int main(int argc, char* argv[]) {
 	}
 	read_config.release();
 	
-
+ 	// create initial calibration based on configuration, arguments and defaults
 	calibration = new Calibration(resolution_projector, camera_projector_transformation, frames_projector_camera_delay, projector_background_light);
 	
+	// setup calibration windows
 	cv::namedWindow("Projector", cv::WINDOW_NORMAL);
 	cv::moveWindow("Projector", 0, 0);
+	cv::resizeWindow("Projector", resolution_projector.width, resolution_projector.height);
+	cv::Mat frame_projector = cv::Mat::zeros(resolution_projector, CV_8UC3);
 	
 	cv::Mat frame_calibrateprojection;
 	cv::namedWindow("Calibrate projection", cv::WINDOW_NORMAL);
@@ -275,8 +321,22 @@ int main(int argc, char* argv[]) {
 	cv::namedWindow("Projection", cv::WINDOW_NORMAL);
 	cv::moveWindow("Projection", 1200, 0);
 	
-	while (cv::waitKey(1) == NOKEY_ANYKEY && projector_videoreader.read(frame_projector) && camera_videoreader.read(frame_camera)) {
+	unsigned int frame_offset = 0;
+	const unsigned int lanes = 24;
+	const cv::Size size_lane(resolution_projector.width / lanes, resolution_projector.height / lanes);
+	while (cv::waitKey(1) == NOKEY_ANYKEY && camera_videoreader.read(frame_camera)) {
+		for (unsigned int x = 0; x < (unsigned int) resolution_projector.width; ++x) {
+			for (unsigned int y = 0; y < (unsigned int) resolution_projector.height; ++y) {
+				frame_projector.at<cv::Vec3b>(y, x) = cv::Vec3b(
+					0,
+					(unsigned char) ((U8_FULL * ((x + frame_offset * size_lane.width) / size_lane.width)) / size_lane.width),
+					(unsigned char) ((U8_FULL * ((resolution_projector.height - (y + frame_offset * size_lane.height)) / size_lane.height)) / size_lane.height)
+				);
+			}
+		}
+		frame_offset = (frame_offset + 1) % lanes;
 		cv::imshow("Projector", frame_projector);
+
 
 		calibration->feedFrameProjector(frame_projector);
 		calibration->eliminateProjectionFeedbackFromFrameCamera(frame_projectionelimination, frame_camera);
@@ -293,9 +353,9 @@ int main(int argc, char* argv[]) {
 		cv::imshow("Calibrate meter", frame_calibratemeter);
 	}
 
-	projector_videoreader.release();
 	camera_videoreader.release();
-
+	
+	// write configuration based on calibration
 	cv::FileStorage write_config(configpath, cv::FileStorage::WRITE);
 	write_config << "Camera_device" << cameradevice;
 	write_config << "Resolution_camera" << resolution_camera;
