@@ -6,6 +6,8 @@
 class EliminateProjectionWindow : public OpenCVWindow {
 	public:
 		EliminateProjectionWindow(cv::Point2i position, Calibration* calibration, double projector_background_light, unsigned int frames_projector_camera_delay);
+		const char* name_trackbar_ratio_projector_background_light = "Ratio projector - background light";
+		const char* name_trackbar_frames_projector_camera_delay = "Frames projector - camera delay";
 		
 		void drawImage(cv::Mat image_camera);
 
@@ -14,12 +16,10 @@ class EliminateProjectionWindow : public OpenCVWindow {
 
 		const int INT_FULL_PERCENTAGE = 100;
 		const double DOUBLE_FULL_PERCENTAGE = 100.0;
-	
-		int track_projector_background_light;
-		int track_frames_projector_camera_delay;
-		const char* name_trackbar_ratio_projector_background_light = "Ratio projector - background light";
-		const char* name_trackbar_frames_projector_camera_delay = "Frames projector - camera delay";
 
 	protected:
 		Calibration* calibration;
+	
+		int track_projector_background_light;
+		int track_frames_projector_camera_delay;
 };
