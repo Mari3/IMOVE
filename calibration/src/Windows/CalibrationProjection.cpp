@@ -8,16 +8,18 @@
 
 CalibrationProjectionWindow::CalibrationProjectionWindow(cv::Point2i position, Calibration* calibration, cv::Size resolution_projector) : OpenCVWindow("Calibrate projection", position) {
 	this->calibration = calibration;
+	// set ui color of corners
 	this->color_corners[0] = OpenCVUtil::Color::ORANGE;
 	this->color_corners[1] = OpenCVUtil::Color::GREEN;
 	this->color_corners[2] = OpenCVUtil::Color::DARKBLUE;
 	this->color_corners[3] = OpenCVUtil::Color::LIGHTBLUE;
+	// set projector coordinates
 	coordinate_corners_projector[0] = cv::Point2f(        OpenCVUtil::ORIGIN2D.x,          OpenCVUtil::ORIGIN2D.y);
 	coordinate_corners_projector[1] = cv::Point2f(resolution_projector.width - 1,          OpenCVUtil::ORIGIN2D.y);
 	coordinate_corners_projector[2] = cv::Point2f(        OpenCVUtil::ORIGIN2D.x, resolution_projector.height - 1);
 	coordinate_corners_projector[3] = cv::Point2f(resolution_projector.width - 1, resolution_projector.height - 1);
 	
-	// reconstruct points camera
+	// reconstruct points camera from projector points and perspective transformation
 	std::vector<cv::Point2f> points_projector = std::vector<cv::Point2f>(this->CalibrationProjectionWindow::REQUIRED_CORNERS);
 	points_projector.at(0) = coordinate_corners_projector[0];
 	points_projector.at(1) = coordinate_corners_projector[1];
@@ -29,11 +31,11 @@ CalibrationProjectionWindow::CalibrationProjectionWindow(cv::Point2i position, C
 		points_projection,
 		calibration->getCameraProjectorTransformation().inv()
 	);
-	
 	coordinate_corners_camera[0] = points_projection.at(0);
 	coordinate_corners_camera[1] = points_projection.at(1);
 	coordinate_corners_camera[2] = points_projection.at(2);
 	coordinate_corners_camera[3] = points_projection.at(3);
+	
 	cv::setMouseCallback(this->name_window, CalibrationProjectionWindow::onMouse, (void*) &*this);
 }
 
@@ -82,6 +84,7 @@ void CalibrationProjectionWindow::drawImage(cv::Mat image) {
 		this->THICKNESS_LINE,
 		cv::LINE_AA
 	);
+
 	// draw cross on corner projection boundaries
 	for (unsigned int i = 0; i < CalibrationProjectionWindow::REQUIRED_CORNERS; ++i) {
 		OpenCVUtil::drawCrossOnImage(
@@ -92,6 +95,7 @@ void CalibrationProjectionWindow::drawImage(cv::Mat image) {
 			this->THICKNESS_CROSS
 		);
 	}
+	
 	// draw mouse on image if ever entered
 	if (this->entered_mouse_projection) {
 		OpenCVUtil::drawCrossOnImage(
