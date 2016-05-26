@@ -21,10 +21,10 @@ class PeopleIdentifier {
   ~PeopleIdentifier();
 
   // Match people to new locations
-  vector<Person> match(std::vector<Vector2> locations);
+  vector<Person> match(std::vector<Vector2>& locations);
 
   // Get closest location to a Person
-  int getClosest(int index, vector<Vector2> new_locations);
+  int getClosest(unsigned int index, vector<Vector2>& new_locations);
 };
 
 

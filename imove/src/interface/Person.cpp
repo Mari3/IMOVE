@@ -30,15 +30,3 @@ unsigned int Person::count = 0;
 unsigned int Person::getId() {
     return id;
 }
-
-bool Person::closeToEdge(int width, int height) {
-  float edge_width = (width/100)*4;
-  float edge_height = (height/100)*4;
-  if (this->location.x < edge_width || this->location.x > width - edge_width) {
-    return true;
-  }
-  if (this->location.y < edge_height || this->location.y > height - edge_height) {
-    return true;
-  }
-  return false;
-}

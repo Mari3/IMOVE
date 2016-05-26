@@ -33,7 +33,7 @@ PeopleDetector::PeopleDetector(float pixels_per_meter, bool low_camera) : pixels
 PeopleDetector::~PeopleDetector() {}
 
 // Detect people in frame
-vector<Vector2> PeopleDetector::detect(cv::Mat frame) {
+vector<Vector2> PeopleDetector::detect(cv::Mat& frame) {
   // Vector to store newly detected locations
   vector<Vector2> new_locations;
 

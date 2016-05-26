@@ -7,7 +7,7 @@
 PeopleIdentifier::PeopleIdentifier() {}
 PeopleIdentifier::~PeopleIdentifier() {}
 
-vector<Person> PeopleIdentifier::match(std::vector<Vector2> locations) {
+vector<Person> PeopleIdentifier::match(std::vector<Vector2>& locations) {
   // Go over all people detected in the previous frame and determine their new location or delete them
   for (unsigned int i = 0; i < detected_people.size(); i++) {
     // Get closest location to a person
@@ -32,7 +32,7 @@ vector<Person> PeopleIdentifier::match(std::vector<Vector2> locations) {
   return detected_people;
 }
 
-int PeopleIdentifier::getClosest(int index, vector<Vector2> new_locations) {
+int PeopleIdentifier::getClosest(unsigned int index, vector<Vector2>& new_locations) {
   Person person = detected_people[index];
   // Initialize minimum distance
   float min_distance = std::numeric_limits<float>::max();
