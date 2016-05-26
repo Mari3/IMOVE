@@ -3,6 +3,7 @@
 //
 
 #include <memory>
+#include <assert.h>
 #include "LightTrailScene.h"
 #include "Actions/UpdateLightTrailsAction.h"
 #include "../Util/HueConverter.h"

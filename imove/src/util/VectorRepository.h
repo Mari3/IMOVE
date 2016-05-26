@@ -9,7 +9,7 @@
 #include "Repository.h"
 #include <algorithm>
 #include <memory>
-#include "assert.h"
+#include <assert.h>
 
 template<typename T>
 class VectorRepository : public Repository<T>
