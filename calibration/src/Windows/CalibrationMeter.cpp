@@ -5,12 +5,12 @@
 #include "./CalibrationMeter.hpp"
 
 
-CalibrationMeterWindow::CalibrationMeterWindow(cv::Point2i position, Calibration* calibration, float meter) : OpenCVWindow("Calibrate meter", position) {
+CalibrationMeterWindow::CalibrationMeterWindow(cv::Point2i position, Calibration* calibration) : OpenCVWindow("Calibrate meter", position) {
 	this->calibration = calibration;
 
 	// Initialize meter on top left with offset 10
 	this->a_meter = cv::Point2f(10, 10);
-	this->b_meter = cv::Point2f(10 + meter, 10);
+	this->b_meter = cv::Point2f(10 + this->calibration->getMeter(), 10);
 	
 	cv::setMouseCallback(this->name_window, CalibrationMeterWindow::onMouse, (void*) &*this);
 }
@@ -37,6 +37,10 @@ void CalibrationMeterWindow::onMouse(int event, int x, int y, int flags) {
 				this->current_meter = METER::A;
 				break;
 		}
+		
+		// set meter in calibration
+		cv::Point2f diff_meter = this->b_meter - a_meter;
+		this->calibration->setMeter(sqrt(abs(diff_meter.x * diff_meter.x + diff_meter.y * diff_meter.y)));
 	}
 }
 
@@ -60,9 +64,4 @@ void CalibrationMeterWindow::drawImage(cv::Mat image) {
 	}
 
 	OpenCVWindow::drawImage(image);
-}
-
-float CalibrationMeterWindow::getMeter() const {
-	cv::Point2f diff_meter = this->b_meter - a_meter;
-	return sqrt(abs(diff_meter.x * diff_meter.x + diff_meter.y * diff_meter.y));
 }

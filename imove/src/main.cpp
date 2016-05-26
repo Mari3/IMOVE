@@ -54,7 +54,7 @@ int main(int argc, char* argv[]) {
 	fs["Meter"] >> meter;
 	fs.release();
 
-	calibration = new Calibration(resolution_projector, camera_projector_transformation, frames_projector_camera_delay, percentage_projector_background_light);
+	calibration = new Calibration(resolution_projector, camera_projector_transformation, frames_projector_camera_delay, percentage_projector_background_light, meter);
 
 	// debug windows
 	cv::namedWindow("Camera", cv::WINDOW_NORMAL);
@@ -84,7 +84,7 @@ int main(int argc, char* argv[]) {
   sf::Clock clock;
 	
 	// setup people extractor
-	PeopleExtractor people_extractor = PeopleExtractor(resolution_camera, meter, 216);
+	PeopleExtractor people_extractor = PeopleExtractor(resolution_camera, calibration->getMeter(), 216);
 
 	// debug camera window
 	cv::namedWindow("Camera", cv::WINDOW_NORMAL);

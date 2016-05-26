@@ -103,12 +103,12 @@ int main(int argc, char* argv[]) {
 	read_config.release();
 	
  	// create initial calibration based on configuration, arguments and defaults
-	calibration = new Calibration(resolution_projector, camera_projector_transformation, frames_projector_camera_delay, projector_background_light);
+	calibration = new Calibration(resolution_projector, camera_projector_transformation, frames_projector_camera_delay, projector_background_light, meter);
 	
 	// setup calibration windows
 	ProjectorWindow projector_window(cv::Size(0, 0));
 	CalibrationProjectionWindow calibrationprojection_window(cv::Point2i(300, 0), calibration, resolution_projector);
-	CalibrationMeterWindow calibrationmeter_window(cv::Point2i(600, 0), calibration, meter);
+	CalibrationMeterWindow calibrationmeter_window(cv::Point2i(600, 0), calibration);
 	EliminateProjectionWindow eliminateprojection_window(cv::Size(900, 0), calibration, projector_background_light, frames_projector_camera_delay);
 	ProjectionWindow projection_window(cv::Size(1200, 0), calibration);
 
@@ -135,7 +135,7 @@ int main(int argc, char* argv[]) {
 	write_config << "Camera_projector_transformation" << calibration->getCameraProjectorTransformation();
 	write_config << "Frames_projector_camera_delay" << (int) frames_projector_camera_delay;
 	write_config << "Projector_background_light" << projector_background_light;
-	write_config << "Meter" << calibrationmeter_window.getMeter();
+	write_config << "Meter" << calibration->getMeter();
 	write_config.release();
 	
 	return EXIT_SUCCESS;

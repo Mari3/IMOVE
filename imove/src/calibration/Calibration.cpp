@@ -6,11 +6,12 @@
 
 const unsigned char U8_NONE = 0;
 
-Calibration::Calibration(const cv::Size& resolution_projector, cv::Mat& camera_projector_transformation, unsigned int frames_projector_camera_delay, double projector_background_light) {
+Calibration::Calibration(const cv::Size& resolution_projector, cv::Mat& camera_projector_transformation, unsigned int frames_projector_camera_delay, double projector_background_light, float meter) {
 	this->resolution_projector = resolution_projector;
 	this->camera_projector_transformation = camera_projector_transformation;
 	this->frames_projector_camera_delay = frames_projector_camera_delay;
 	this->projector_background_light = projector_background_light;
+	this->meter = meter;
 }
 
 void Calibration::feedFrameProjector(const cv::Mat& frame_projector) {
@@ -102,4 +103,10 @@ cv::Mat Calibration::getCameraProjectorTransformation() const {
 }
 void Calibration::setCameraProjectorTransformation(cv::Mat& camera_projector_transformation) {
 	this->camera_projector_transformation = camera_projector_transformation;
+}
+void Calibration::setMeter(float meter) {
+	this->meter = meter;
+}
+float Calibration::getMeter() const {
+	return this->meter;
 }

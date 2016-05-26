@@ -19,7 +19,7 @@ class Calibration {
 		 * @param frames_projector_camera_delay The amount of frames delay between the projectors projection captured by the camera
 		 * @param projector_background_light The light level difference between the projectors projection light level and background level
 		 **/
-		Calibration(const cv::Size& resolution_projector, cv::Mat& camera_projector_transformation, unsigned int frames_projector_camera_delay, double projector_background_light);
+		Calibration(const cv::Size& resolution_projector, cv::Mat& camera_projector_transformation, unsigned int frames_projector_camera_delay, double projector_background_light, float meter);
 
 		/**
 		 * Adds a projector frame which is used for eliminating the projection
@@ -86,6 +86,18 @@ class Calibration {
 		 **/
 		cv::Mat getCameraProjectorTransformation() const;
 
+		/**
+		 * Sets the one meter in pixels on a camera image.
+		 * 
+		 * @param meter The one meter in pixel on a camera image
+		 **/
+		void setMeter(float meter);
+
+		/**
+		 * Gets the one meter in pixels on a camera image.
+		 **/
+		float getMeter() const;
+
 	private:
 		// The projector resolution
 		cv::Size resolution_projector;
@@ -97,6 +109,8 @@ class Calibration {
 		unsigned int frames_projector_camera_delay;
 		// The light level difference between the projectors projection light level and background level
 		double projector_background_light;
+		// 1 meter in pixels on camera image
+		float meter;
 };
 
 #endif // CALIBRATION_H
