@@ -59,6 +59,11 @@ LightPersonRepository* lightPeople) : Scene(),
                                      lightPeople(lightPeople),
                                      config(config)
 {
+    if(!lightSources || !lightTrails || !gravityPoints || !colorHoles || !lightPeople){
+        cout << "Repositories must not be null" << endl << "Exiting..." << endl;
+        exit(EXIT_FAILURE);
+    }
+
     //Initialize the light trail texture
     texture.create(config.screenWidth(),config.screenHeight());
 
