@@ -2,7 +2,7 @@
 
 #include <functional>
 
-#include "./CalibrationMeterWindow.hpp"
+#include "./CalibrationMeter.hpp"
 
 
 CalibrationMeterWindow::CalibrationMeterWindow(cv::Point2i position, Calibration* calibration, float meter) : OpenCVWindow("Calibrate meter", position) {

@@ -1,8 +1,8 @@
 #include <opencv2/core/core.hpp>
 
-#include "./OpenCVWindow.hpp"
-#include "./OpenCVUtil.hpp"
-#include "../../imove/src/calibration/Calibration.hpp"
+#include "../OpenCVWindow.hpp"
+#include "../OpenCVUtil.hpp"
+#include "../../../imove/src/calibration/Calibration.hpp"
 
 class CalibrationMeterWindow : public OpenCVWindow {
 	public:

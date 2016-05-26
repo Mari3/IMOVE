@@ -8,9 +8,9 @@
 
 #include "./OpenCVUtil.hpp"
 #include "../../imove/src/calibration/Calibration.hpp"
-#include "./ProjectionWindow.hpp"
-#include "./CalibrationProjectionWindow.hpp"
-#include "./CalibrationMeterWindow.hpp"
+#include "./Windows/Projection.hpp"
+#include "./Windows/CalibrationProjection.hpp"
+#include "./Windows/CalibrationMeter.hpp"
 
 
 
@@ -32,8 +32,6 @@ const double DOUBLE_FULL_PERCENTAGE = 100.0;
 Calibration* calibration = NULL;
 cv::Mat camera_projector_transformation;
 
-
-// Calibrate meter mouse callback
 
 // Projector background light trackbar callback
 void onProjectorBackgroundLight(int tracked_int, void *user_data) {

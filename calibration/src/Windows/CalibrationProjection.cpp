@@ -2,8 +2,8 @@
 
 #include <functional>
 
-#include "./OpenCVUtil.hpp"
-#include "./CalibrationProjectionWindow.hpp"
+#include "../OpenCVUtil.hpp"
+#include "./CalibrationProjection.hpp"
 
 
 CalibrationProjectionWindow::CalibrationProjectionWindow(cv::Point2i position, Calibration* calibration, cv::Size resolution_projector) : OpenCVWindow("Calibrate projection", position) {
