@@ -4,8 +4,10 @@
 
 #include "UpdateLightSourcesAction.h"
 
-UpdateLightSourcesAction::UpdateLightSourcesAction()
-        :   sources(LightSourceRepository::getInstance()), trails(LightTrailRepository::getInstance()), timer(Timer(3.f,true))
+UpdateLightSourcesAction::UpdateLightSourcesAction(LightSourceRepository* lightSources, LightTrailRepository* lightTrails,
+                                                   const LightTrailConfiguration& config)
+        :   sources(lightSources), trails(lightTrails), timer(Timer(config.sendOutDelay(),true)),
+            cap(config.trailCap())
 {
 }
 
@@ -15,11 +17,9 @@ bool UpdateLightSourcesAction::isDone(Action *&followUp) {
 }
 
 void UpdateLightSourcesAction::execute(float dt) {
-    if(timer.update(dt)){
-        // TODO cap based on the amount of light trails
-
+    if(trails->size() < cap && timer.update(dt)){
         for(auto &lightSource : *sources){
-            trails->add(lightSource->sendOut());
+            trails->add(std::shared_ptr<LightTrail>(lightSource->sendOut()));
         }
     }
 }

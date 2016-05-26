@@ -6,21 +6,25 @@
 #define IMOVE_BYSTANDERGRAVITYPOINTACTION_H
 
 
+#include <memory>
 #include "../../Action.h"
-#include "../Repositories/GravityPointRepository.h"
 #include "../LightPerson.h"
 #include "../../../util/Timer.h"
+#include "../Repositories/LightsSceneRepositories.h"
+#include "../LightTrailConfiguration.h"
 
 class BystanderGravityPointAction : public Action {
 private:
     GravityPointRepository* gravityPoints;
-    GravityPoint* gravityPoint;
-    LightPerson* person;
+    std::shared_ptr<GravityPoint> gravityPoint;
+    std::shared_ptr<LightPerson> person;
     Timer timer;
     bool gravityPointActive;
+    LightTrailConfiguration config;
     void setLocation();
 public:
-    explicit BystanderGravityPointAction(LightPerson* person);
+    explicit BystanderGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints,
+    const LightTrailConfiguration &config);
 
     bool isDone(Action *&followUp) override;
 

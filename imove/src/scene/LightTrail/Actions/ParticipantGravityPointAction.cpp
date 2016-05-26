@@ -4,10 +4,11 @@
 
 #include "ParticipantGravityPointAction.h"
 
-ParticipantGravityPointAction::ParticipantGravityPointAction(LightPerson* person) : person(person),
-                                                                                gravityPoints(GravityPointRepository::getInstance())
+ParticipantGravityPointAction::ParticipantGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints,
+                                                             const LightTrailConfiguration& config) : person(person),
+                                                                                gravityPoints(gravityPoints)
 {
-    gravityPoint = new GravityPoint(Vector2(0,0),person->hue,100000);
+    gravityPoint = std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(0,0),person->hue,config.participantGravity()));
     setLocation();
     // Register the gravity point
     gravityPoints->add(gravityPoint);

@@ -7,11 +7,8 @@
 
 
 #include "../../Action.h"
-#include "../Repositories/ColorHoleRepository.h"
-#include "../Repositories/GravityPointRepository.h"
-#include "../Repositories/LightPersonRepository.h"
-#include "../Repositories/LightSourceRepository.h"
-#include "../Repositories/LightTrailRepository.h"
+#include "../Repositories/LightPersonMapRepository.h"
+#include "../Repositories/LightsSceneRepositories.h"
 
 class DeleteAllAction : public Action {
 private:
@@ -21,7 +18,9 @@ private:
     LightSourceRepository* lightSources;
     LightTrailRepository* lightTrails;
 public:
-    DeleteAllAction();
+    DeleteAllAction(ColorHoleRepository *colorHoles, GravityPointRepository *gravityPoints,
+                    LightPersonRepository *lightPeople, LightSourceRepository *lightSources,
+                    LightTrailRepository *lightTrails);
 
     bool isDone(Action *&followUp) override;
 

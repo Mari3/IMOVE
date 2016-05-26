@@ -4,14 +4,6 @@
 
 #include "DeleteAllAction.h"
 
-DeleteAllAction::DeleteAllAction() : colorHoles(ColorHoleRepository::getInstance()),
-            gravityPoints(GravityPointRepository::getInstance()),
-                                     lightPeople(LightPersonRepository::getInstance()),
-                                     lightSources(LightSourceRepository::getInstance()),
-                                     lightTrails(LightTrailRepository::getInstance())
-{
-}
-
 bool DeleteAllAction::isDone(Action *&followUp) {
     // This action is never done
     return false;
@@ -24,3 +16,10 @@ void DeleteAllAction::execute(float dt) {
     lightSources->removeAll();
     lightTrails->removeAll();
 }
+
+DeleteAllAction::DeleteAllAction(ColorHoleRepository *colorHoles, GravityPointRepository *gravityPoints,
+                                 LightPersonRepository *lightPeople, LightSourceRepository *lightSources,
+                                 LightTrailRepository *lightTrails)
+        : colorHoles(colorHoles), gravityPoints(gravityPoints),
+          lightPeople(lightPeople), lightSources(lightSources),
+          lightTrails(lightTrails) { }

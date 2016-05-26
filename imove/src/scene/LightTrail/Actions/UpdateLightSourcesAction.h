@@ -9,16 +9,18 @@
 #include "../LightTrail.h"
 #include "../LightSource.h"
 #include "../../../util/Timer.h"
-#include "../Repositories/LightSourceRepository.h"
-#include "../Repositories/LightTrailRepository.h"
+#include "../Repositories/LightsSceneRepositories.h"
+#include "../LightTrailConfiguration.h"
 
 class UpdateLightSourcesAction : public Action {
 private:
     LightSourceRepository* sources;
     LightTrailRepository* trails;
     Timer timer;
+    int cap;
 public:
-    UpdateLightSourcesAction();
+    UpdateLightSourcesAction(LightSourceRepository* lightSources, LightTrailRepository* lightTrails,
+        const LightTrailConfiguration& config);
     bool isDone(Action *&followUp) override;
     void execute(float dt) override;
 };

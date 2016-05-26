@@ -13,6 +13,7 @@
 #include "interface/Person.h"
 #include "scene/Scene.h"
 #include "scene/LightTrail/LightTrailScene.h"
+#include "scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 
 const signed int NOKEY_ANYKEY = -1;
 
@@ -32,9 +33,9 @@ void main_peopleextractor() {
 
 	// debug camera window
 	cv::namedWindow("Camera", cv::WINDOW_NORMAL);
-	cv::VideoCapture video_capture(camera_device);
 	cv::Mat frame_camera;
 	cv::Mat frame_projection;
+	cv::VideoCapture video_capture(camera_device);
 
 	// while no key pressed
 	while (cv::waitKey(1) == NOKEY_ANYKEY) {
@@ -45,6 +46,7 @@ void main_peopleextractor() {
 			std::cerr << "Exiting..." << std::endl;
 			exit(EXIT_FAILURE);
 		}
+
 		// debug projection frame
 		calibration->createFrameProjectionFromFrameCamera(
 			frame_projection,
@@ -111,8 +113,8 @@ void main_peopleextractor() {
 // setup and run scene with continous people extraction as input based on configuration given in parameter otherwise show parameters
 int main(int argc, char* argv[]) {
 	// show parameters if not given 1 parameter
-	if (argc != 2) {
-		std::cerr << "Usage: <path to configuration file>" << std::endl;
+	if (argc != 3) {
+		std::cerr << "Usage: <path to configuration file> <path to configuration scene>" << std::endl;
 		return EXIT_SUCCESS;
 	}
 
@@ -152,19 +154,31 @@ int main(int argc, char* argv[]) {
 	cv::namedWindow("Frame", cv::WINDOW_NORMAL);
 
 	// setup scene
-	sf::RenderWindow window(sf::VideoMode(resolution_projector.width, resolution_projector.height),"Scene");
-	window.clear(sf::Color::Black);
-	window.display();
-	scene = new LightTrailScene();
+    sf::RenderWindow window(sf::VideoMode(resolution_projector.width, resolution_projector.height),"Projection");
+    window.clear(sf::Color::Black);
+    window.display();
+    
+    
+    LightTrailConfiguration config = LightTrailConfiguration::readFromFile(argv[2]);
+    scene = new LightTrailScene(config,
+                                       new LightSourceVectorRepository(),
+                                       new LightTrailVectorRepository(),
+                                       new GravityPointVectorRepository(),
+                                       new ColorHoleVectorRepository(),
+                                       new LightPersonMapRepository()
+                                       );
 
 	// setup clock
-	sf::Clock clock;
+    sf::Clock clock;
+
+	cv::waitKey(50);
 
 	// setup people extracting in seperate thread
 	std::thread thread_peopleextractor(main_peopleextractor);
 
 	// while no key pressed on other thread
 	while (running) {
+
 		// draw next scene frame based on clock difference
 		mutex_scene.lock();
 		float dt = clock.restart().asSeconds();
