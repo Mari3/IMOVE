@@ -12,7 +12,7 @@ cv::Mat OpenCVWindow::getClonedImage() const {
 	return this->image.clone();
 }
 
-void OpenCVWindow::drawImage(cv::Mat image) {
+void OpenCVWindow::drawImage(cv::Mat& image) {
 	this->image = image;
 	cv::imshow(this->name_window, this->image);
 }

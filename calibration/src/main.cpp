@@ -9,6 +9,7 @@
 #include "./OpenCVUtil.hpp"
 #include "../../imove/src/calibration/Calibration.hpp"
 #include "./Windows/Projection.hpp"
+#include "./Windows/Projector.hpp"
 #include "./Windows/CalibrationProjection.hpp"
 #include "./Windows/CalibrationMeter.hpp"
 
@@ -121,9 +122,7 @@ int main(int argc, char* argv[]) {
 	calibration = new Calibration(resolution_projector, camera_projector_transformation, frames_projector_camera_delay, projector_background_light);
 	
 	// setup calibration windows
-	cv::namedWindow("Projector", cv::WINDOW_NORMAL);
-	cv::moveWindow("Projector", 0, 0);
-	
+	ProjectorWindow projector_window(cv::Size(0, 0));
 	CalibrationProjectionWindow calibrationprojection_window(cv::Point2i(300, 0), calibration, resolution_projector);
 	CalibrationMeterWindow calibrationmeter_window(cv::Point2i(600, 0), calibration, meter);
 	ProjectionWindow projection_window(cv::Size(1200, 0), calibration);
@@ -140,12 +139,12 @@ int main(int argc, char* argv[]) {
 
 	
 	while (cv::waitKey(1) == NOKEY_ANYKEY && projector_videoreader.read(frame_projector) && camera_videoreader.read(frame_camera)) {
-		cv::imshow("Projector", frame_projector);
 
 		calibration->feedFrameProjector(frame_projector);
 		calibration->eliminateProjectionFeedbackFromFrameCamera(frame_projectionelimination, frame_camera);
 		cv::imshow("Projection elimination", frame_projectionelimination);
 
+		projector_window.drawImage(frame_projector);
 		projection_window.drawImage(frame_projectionelimination);
 		
 		calibrationprojection_window.drawImage(frame_camera.clone());
