@@ -18,19 +18,27 @@ enum PersonType{
 };
 
 class Person {
-private:
+ private:
+    // List of previous locations
     list<Vector2> previousLocations;
+
+    // Current location
     Vector2 location;
+
+    // Id
     unsigned int id;
+
+    // Object counter to create unique ids
     static unsigned int count;
-public:
+
+ public:
     PersonType type;
     Person(Vector2 location, PersonType type);
+
     //Getters and setters
     Vector2 getLocation();
     void setLocation(Vector2 location);
     unsigned int getId();
-    bool closeToEdge(int width, int height);
 };
 
 

@@ -35,19 +35,19 @@ class PeopleExtractor {
   cv::Mat frame;
 
   // Size of the frame
-  const cv::Size frame_size;
+  cv::Size frame_size;
 
   // Nr of pixels equal to one meter on the scene
-  const float pixels_per_meter;
+  float pixels_per_meter;
 
   // Fixed height to resize frames to
-  const float resolution_resize_height;
+  float resolution_resize_height;
 
   // Ratio with which the frame is resized
   float resize_ratio;
 
  public:
-  PeopleExtractor(const cv:: Size frame_size, const float pixels_per_meter, const float resolution_resize_height);
+  PeopleExtractor(cv:: Size frame_size, float pixels_per_meter, float resolution_resize_height);
   ~PeopleExtractor();
 
   // Main extraction function to extract people from a frame
