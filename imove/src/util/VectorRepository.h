@@ -9,6 +9,7 @@
 #include "Repository.h"
 #include <algorithm>
 #include <memory>
+#include "assert.h"
 
 template<typename T>
 class VectorRepository : public Repository<T>
@@ -20,10 +21,8 @@ private:
 public:
     void add(const std::shared_ptr<T>& item) override
     {
-        if(item)
-            items.push_back(item);
-        else
-            cout << "Warning: Tried to add null pointer to " << this << endl;
+        assert(item);
+        items.push_back(item);
     }
 
     void scheduleForRemoval(const std::shared_ptr<T> &item) override
