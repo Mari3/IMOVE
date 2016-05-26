@@ -10,6 +10,7 @@
 #include "../../imove/src/calibration/Calibration.hpp"
 #include "./ProjectionWindow.hpp"
 #include "./CalibrationProjectionWindow.hpp"
+#include "./CalibrationMeterWindow.hpp"
 
 
 
@@ -17,14 +18,6 @@
 unsigned DEFAULT_FRAMES_PROJECTOR_CAMERA_DELAY = 5;
 double DEFAULT_PROJECTOR_BACKGROUND_LIGHT = 39;
 float DEFAULT_METER = 100.f;
-
-// UI calibration meter parameters
-const cv::Scalar COLOR_A_METER = OpenCVUtil::Color::ORANGE;
-const cv::Scalar COLOR_B_METER = OpenCVUtil::Color::GREEN;
-
-// UI calibration cross visualization
-const unsigned int SIZE_CROSS = 10;
-const unsigned int THICKNESS_CROSS = 1;
 
 
 // arguments
@@ -36,63 +29,11 @@ const signed int NOKEY_ANYKEY = -1;
 const int INT_FULL_PERCENTAGE = 100;
 const double DOUBLE_FULL_PERCENTAGE = 100.0;
 
-enum METER { METER_A, METER_B };
-METER current_meter;
-cv::Point2f a_meter;
-cv::Point2f b_meter;
-bool entered_mouse_meter = false;
-cv::Point2f coordinate_mouse_meter;
-
 Calibration* calibration = NULL;
 cv::Mat camera_projector_transformation;
 
 
-/**
- * Draws meter and last mouse position on image using line and crosses
- * 
- * @param image Image to draw meter and last mouse position on
- **/
-void drawMeterOnImage(cv::Mat& image) {
-	// draw line between first and second point
-	cv::line(image, a_meter, b_meter, cv::Scalar(255, 255, 255));
-	// draw meter cross first point
-	OpenCVUtil::drawCrossOnImage(image, a_meter, COLOR_A_METER, SIZE_CROSS, THICKNESS_CROSS);
-	// draw meter cross second point
-	OpenCVUtil::drawCrossOnImage(image, b_meter, COLOR_B_METER, SIZE_CROSS, THICKNESS_CROSS);
-	// draw last mouse position as current setting meter point if ever entered
-	if (entered_mouse_meter) {
-		switch (current_meter) {
-			case METER_A:
-				OpenCVUtil::drawCrossOnImage(image, coordinate_mouse_meter, COLOR_A_METER, SIZE_CROSS, THICKNESS_CROSS);
-				break;
-			case METER_B:
-				OpenCVUtil::drawCrossOnImage(image, coordinate_mouse_meter, COLOR_B_METER, SIZE_CROSS, THICKNESS_CROSS);
-				break;
-		}
-	}
-}
-
-
 // Calibrate meter mouse callback
-void onMouseCalibrateMeter(int event, int x, int y, int flags, void* userdata) {
-	coordinate_mouse_meter = cv::Point2f(x, y);
-	entered_mouse_meter = true;
-
-	if (event == cv::EVENT_LBUTTONUP) {
-		switch (current_meter) {
-			case METER_A:
-				// set meter first position and set right as current position
-				a_meter = coordinate_mouse_meter;
-				current_meter = METER_B;
-				break;
-			case METER_B:
-				// set meter second position and set left as current position
-				b_meter = coordinate_mouse_meter;
-				current_meter = METER_A;
-				break;
-		}
-	}
-}
 
 // Projector background light trackbar callback
 void onProjectorBackgroundLight(int tracked_int, void *user_data) {
@@ -139,14 +80,11 @@ int main(int argc, char* argv[]) {
 	} else {
 		read_config["Projector_background_light"] >> projector_background_light;
 	}
+	float meter;
 	if (read_config["Meter"].isNone()) {
-		a_meter = cv::Point2f(10, 10);
-		b_meter = cv::Point2f(10 + DEFAULT_METER, 10);
+		meter = DEFAULT_METER;
 	} else {
-		float meter;
 		read_config["Meter"] >> meter;
-		a_meter = cv::Point2f(10, 10);
-		b_meter = cv::Point2f(10 + meter, 10);
 	}
  
 	cv::Mat frame_projector;
@@ -189,11 +127,8 @@ int main(int argc, char* argv[]) {
 	cv::moveWindow("Projector", 0, 0);
 	
 	CalibrationProjectionWindow calibrationprojection_window(cv::Point2i(300, 0), calibration, resolution_projector);
-	
-	cv::Mat frame_calibratemeter;
-	cv::namedWindow("Calibrate meter", cv::WINDOW_NORMAL);
-	cv::moveWindow("Calibrate meter", 600, 0);
-	cv::setMouseCallback("Calibrate meter", onMouseCalibrateMeter, NULL);
+	CalibrationMeterWindow calibrationmeter_window(cv::Point2i(600, 0), calibration, meter);
+	ProjectionWindow projection_window(cv::Size(1200, 0), calibration);
 	
 	cv::Mat frame_projectionelimination;
 	cv::namedWindow("Projection elimination", cv::WINDOW_NORMAL);
@@ -205,7 +140,6 @@ int main(int argc, char* argv[]) {
 
 	cv::Mat frame_projection;
 
-	ProjectionWindow projection_window(cv::Size(1200, 0), calibration);
 	
 	while (cv::waitKey(1) == NOKEY_ANYKEY && projector_videoreader.read(frame_projector) && camera_videoreader.read(frame_camera)) {
 		cv::imshow("Projector", frame_projector);
@@ -217,10 +151,7 @@ int main(int argc, char* argv[]) {
 		projection_window.drawImage(frame_projectionelimination);
 		
 		calibrationprojection_window.drawImage(frame_camera.clone());
-
-		frame_calibratemeter = frame_camera.clone();
-		drawMeterOnImage(frame_calibratemeter);
-		cv::imshow("Calibrate meter", frame_calibratemeter);
+		calibrationmeter_window.drawImage(frame_camera.clone());
 	}
 
 	projector_videoreader.release();
@@ -234,8 +165,7 @@ int main(int argc, char* argv[]) {
 	write_config << "Camera_projector_transformation" << calibration->getCameraProjectorTransformation();
 	write_config << "Frames_projector_camera_delay" << (int) frames_projector_camera_delay;
 	write_config << "Projector_background_light" << projector_background_light;
-	const cv::Point2f diff_meter = b_meter - a_meter;
-	write_config << "Meter" << sqrt(abs(diff_meter.x * diff_meter.x + diff_meter.y * diff_meter.y));
+	write_config << "Meter" << calibrationmeter_window.getMeter();
 	write_config.release();
 	
 	return EXIT_SUCCESS;

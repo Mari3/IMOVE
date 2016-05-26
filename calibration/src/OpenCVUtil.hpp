@@ -1,3 +1,5 @@
+#ifndef OPENCVUTIL_H
+#define OPENCVUTIL_H
 #include <opencv2/core/core.hpp>
 
 namespace OpenCVUtil {
@@ -28,3 +30,5 @@ namespace OpenCVUtil {
 	 **/
 	void drawCrossOnImage(cv::Mat& image, const cv::Point2f& point, const cv::Scalar& color, const unsigned int size, const unsigned int thickness);
 }
+
+#endif // OPENCVUTIL_H
