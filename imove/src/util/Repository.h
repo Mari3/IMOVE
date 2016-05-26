@@ -14,7 +14,6 @@ class Repository
 {
 public:
     virtual void add(const std::shared_ptr<T> &item) = 0;
-    virtual void add(const std::shared_ptr<T> &item, unsigned long id) = 0;
     virtual void scheduleForRemoval(const std::shared_ptr<T> &item) = 0;
     virtual void removeAll() = 0;
     virtual unsigned long size() = 0;

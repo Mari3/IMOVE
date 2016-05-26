@@ -9,6 +9,7 @@
 #include <map>
 #include <vector>
 #include <memory>
+#include <iostream>
 #include "../LightPerson.h"
 #include "../../../util/Repository.h"
 
@@ -22,11 +23,10 @@ public:
     }
 
     void add(const std::shared_ptr<LightPerson>& item) override {
-        map[item->getId()] = item;
-    }
-
-    void add(const std::shared_ptr<LightPerson>& item, unsigned long id) override {
-        add(item);
+        if(item)
+            map[item->getId()] = item;
+        else
+            cout << "Warning: Tried to add null pointer to " << this << endl;
     }
 
     void scheduleForRemoval(const std::shared_ptr<LightPerson>& item) override {

@@ -20,13 +20,10 @@ private:
 public:
     void add(const std::shared_ptr<T>& item) override
     {
-        items.push_back(item);
-    }
-
-    void add(const std::shared_ptr<T> &item, unsigned long id) override
-    {
-        //TODO give warning that id is being ignored
-        add(item);
+        if(item)
+            items.push_back(item);
+        else
+            cout << "Warning: Tried to add null pointer to " << this << endl;
     }
 
     void scheduleForRemoval(const std::shared_ptr<T> &item) override
