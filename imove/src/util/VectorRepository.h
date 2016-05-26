@@ -9,6 +9,7 @@
 #include "Repository.h"
 #include <algorithm>
 #include <memory>
+#include <assert.h>
 
 template<typename T>
 class VectorRepository : public Repository<T>
@@ -20,13 +21,8 @@ private:
 public:
     void add(const std::shared_ptr<T>& item) override
     {
+        assert(item);
         items.push_back(item);
-    }
-
-    void add(const std::shared_ptr<T> &item, unsigned long id) override
-    {
-        //TODO give warning that id is being ignored
-        add(item);
     }
 
     void scheduleForRemoval(const std::shared_ptr<T> &item) override
