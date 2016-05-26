@@ -40,20 +40,23 @@ CalibrationProjectionWindow::CalibrationProjectionWindow(cv::Point2i position, C
 // Calibrate projection mouse callback
 void CalibrationProjectionWindow::onMouse(int event, int x, int y, int flags, void* param) {
 	CalibrationProjectionWindow* that = (CalibrationProjectionWindow*) param;
-	that->coordinate_mouse_projection = cv::Point2f(x, y);
-	that->entered_mouse_projection = true;
+	that->onMouse(event, x, y, flags);
+}
+void CalibrationProjectionWindow::onMouse(int event, int x, int y, int flags) {
+	this->coordinate_mouse_projection = cv::Point2f(x, y);
+	this->entered_mouse_projection = true;
 
 	if (event == cv::EVENT_LBUTTONUP) {
 		// set new corner based on last mouse position
-		that->coordinate_corners_camera[that->current_corner] = that->coordinate_mouse_projection;
+		this->coordinate_corners_camera[this->current_corner] = this->coordinate_mouse_projection;
 		// set new current corner to set
-		that->current_corner = (that->current_corner + 1) % that->CalibrationProjectionWindow::REQUIRED_CORNERS;
+		this->current_corner = (this->current_corner + 1) % this->CalibrationProjectionWindow::REQUIRED_CORNERS;
 		// calculate and set new perspective map
 		cv::Mat camera_projector_transformation = cv::getPerspectiveTransform(
-			that->coordinate_corners_camera,
-			that->coordinate_corners_projector
+			this->coordinate_corners_camera,
+			this->coordinate_corners_projector
 		);
-		that->calibration->setCameraProjectorTransformation(camera_projector_transformation);
+		this->calibration->setCameraProjectorTransformation(camera_projector_transformation);
 	}
 }
 

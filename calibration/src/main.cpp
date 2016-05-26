@@ -80,13 +80,14 @@ int main(int argc, char* argv[]) {
 	const cv::Size resolution_projector(std::stoi(argv[WIDTH_RESOLUTION_ARGN]), std::stoi(argv[HEIGHT_RESOLUTION_ARGN]));
 	const cv::Size resolution_camera(camera_videoreader.get(cv::CAP_PROP_FRAME_WIDTH), camera_videoreader.get(cv::CAP_PROP_FRAME_HEIGHT));
 	if (read_config["Camera_projector_transformation"].isNone()) {
-		cv::Point2f* coordinate_corners_projector = new cv::Point2f[CalibrationProjectionWindow::REQUIRED_CORNERS];
+		const unsigned int REQUIRED_CORNERS = 4;
+		cv::Point2f* coordinate_corners_projector = new cv::Point2f[REQUIRED_CORNERS];
 		coordinate_corners_projector[0] = cv::Point2f(        OpenCVUtil::ORIGIN2D.x,          OpenCVUtil::ORIGIN2D.y);
 		coordinate_corners_projector[1] = cv::Point2f(resolution_projector.width - 1,          OpenCVUtil::ORIGIN2D.y);
 		coordinate_corners_projector[2] = cv::Point2f(		  	OpenCVUtil::ORIGIN2D.x, resolution_projector.height - 1);
 		coordinate_corners_projector[3] = cv::Point2f(resolution_projector.width - 1, resolution_projector.height - 1);
 		cv::Size resolution_camera(camera_videoreader.get(cv::CAP_PROP_FRAME_WIDTH), camera_videoreader.get(cv::CAP_PROP_FRAME_HEIGHT));
-		cv::Point2f* coordinate_corners_camera = new cv::Point2f[CalibrationProjectionWindow::REQUIRED_CORNERS];
+		cv::Point2f* coordinate_corners_camera = new cv::Point2f[REQUIRED_CORNERS];
 		coordinate_corners_camera[0]   = cv::Point2f(     OpenCVUtil::ORIGIN2D.x,       OpenCVUtil::ORIGIN2D.y);
 		coordinate_corners_camera[1]   = cv::Point2f(resolution_camera.width - 1,       OpenCVUtil::ORIGIN2D.y);
 		coordinate_corners_camera[2]   = cv::Point2f(			OpenCVUtil::ORIGIN2D.x, resolution_camera.height - 1);
