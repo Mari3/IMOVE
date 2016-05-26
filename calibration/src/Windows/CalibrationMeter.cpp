@@ -15,30 +15,29 @@ CalibrationMeterWindow::CalibrationMeterWindow(cv::Point2i position, Calibration
 // Calibrate projection mouse callback
 void CalibrationMeterWindow::onMouse(int event, int x, int y, int flags, void* param) {
 	CalibrationMeterWindow* that = (CalibrationMeterWindow*) param;
-	that->coordinate_mouse = cv::Point2f(x, y);
-	that->entered_mouse = true;
+	that->onMouse(event, x, y, flags);
+}
+
+void CalibrationMeterWindow::onMouse(int event, int x, int y, int flags) {
+	this->coordinate_mouse = cv::Point2f(x, y);
+	this->entered_mouse = true;
 
 	if (event == cv::EVENT_LBUTTONUP) {
-		switch (that->current_meter) {
+		switch (this->current_meter) {
 			case METER::A:
 				// set meter first position and set right as current position
-				that->a_meter = that->coordinate_mouse;
-				that->current_meter = METER::B;
+				this->a_meter = this->coordinate_mouse;
+				this->current_meter = METER::B;
 				break;
 			case METER::B:
 				// set meter second position and set left as current position
-				that->b_meter = that->coordinate_mouse;
-				that->current_meter = METER::A;
+				this->b_meter = this->coordinate_mouse;
+				this->current_meter = METER::A;
 				break;
 		}
 	}
 }
 
-/**
- * Draws meter and last mouse position on image using line and crosses
- * 
- * @param image Image to draw meter and last mouse position on
- **/
 void CalibrationMeterWindow::drawImage(cv::Mat image) {
 	// draw line between first and second point
 	cv::line(image, this->a_meter, this->b_meter, cv::Scalar(255, 255, 255));
