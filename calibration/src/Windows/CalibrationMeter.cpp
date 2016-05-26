@@ -7,12 +7,14 @@
 
 CalibrationMeterWindow::CalibrationMeterWindow(cv::Point2i position, Calibration* calibration, float meter) : OpenCVWindow("Calibrate meter", position) {
 	this->calibration = calibration;
+
+	// Initialize meter on top left with offset 10
 	this->a_meter = cv::Point2f(10, 10);
 	this->b_meter = cv::Point2f(10 + meter, 10);
+	
 	cv::setMouseCallback(this->name_window, CalibrationMeterWindow::onMouse, (void*) &*this);
 }
 
-// Calibrate projection mouse callback
 void CalibrationMeterWindow::onMouse(int event, int x, int y, int flags, void* param) {
 	CalibrationMeterWindow* that = (CalibrationMeterWindow*) param;
 	that->onMouse(event, x, y, flags);
