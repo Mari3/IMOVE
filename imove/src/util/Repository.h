@@ -6,23 +6,27 @@
 #define IMOVE_REPOSITORY_H
 
 #include <iterator>
+#include <functional>
+#include <memory>
 
 template<typename T>
 class Repository
 {
 public:
-    virtual void add(T* item) = 0;
-    virtual void add(T* item, unsigned long id) = 0;
-    virtual void scheduleForRemoval(T* item) = 0;
+    virtual void add(const std::shared_ptr<T> &item) = 0;
+    virtual void add(const std::shared_ptr<T> &item, unsigned long id) = 0;
+    virtual void scheduleForRemoval(const std::shared_ptr<T> &item) = 0;
     virtual void removeAll() = 0;
     virtual unsigned long size() = 0;
-    virtual T* get(unsigned long id) = 0;
+    virtual typename std::shared_ptr<T> & get(unsigned long id) = 0;
     virtual bool has(unsigned long id) = 0;
-    T* operator[](unsigned long id)
+    typename std::shared_ptr<T> & operator[](unsigned long id)
     {
         return get(id);
     }
+    virtual typename std::vector<std::shared_ptr<T>>::iterator begin() = 0;
+    virtual typename std::vector<std::shared_ptr<T>>::iterator end() = 0;
+    virtual void for_each(const std::function<void(std::shared_ptr<T>)>& f) = 0;
 };
-
 
 #endif //IMOVE_REPOSITORY_H

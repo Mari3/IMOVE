@@ -6,23 +6,26 @@
 #define IMOVE_ALTERNATINGGRAVITYPOINTACTION_H
 
 
+#include <memory>
 #include "../../Action.h"
 #include "../GravityPoint.h"
 #include "../../../util/Timer.h"
-#include "../Repositories/GravityPointRepository.h"
-#include "../Repositories/LightPersonRepository.h"
+#include "../Repositories/LightPersonMapRepository.h"
+#include "../Repositories/LightsSceneRepositories.h"
+#include "../LightTrailConfiguration.h"
 
 class AlternatingGravityPointAction : public Action{
 private:
     GravityPointRepository* gravityPoints;
     LightPersonRepository* lightPeople;
     Timer timer;
-    GravityPoint myGravityPoint;
+    std::shared_ptr<GravityPoint> myGravityPoint;
     util::Range xRange;
     util::Range yRange;
 public:
 
-    AlternatingGravityPointAction();
+    AlternatingGravityPointAction(util::Range hue, GravityPointRepository* gravityPoints, LightPersonRepository* lightPeople,
+    const LightTrailConfiguration &config);
 
     bool isDone(Action *&followUp);
     void execute(float dt);

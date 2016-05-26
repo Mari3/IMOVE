@@ -6,18 +6,21 @@
 #define IMOVE_PARTICIPANTGRAVITYPOINTACTION_H
 
 
-#include "../Repositories/GravityPointRepository.h"
+#include <memory>
 #include "../../Action.h"
 #include "../LightPerson.h"
+#include "../Repositories/LightsSceneRepositories.h"
+#include "../LightTrailConfiguration.h"
 
 class ParticipantGravityPointAction : public Action {
 private:
     GravityPointRepository* gravityPoints;
-    GravityPoint* gravityPoint;
-    LightPerson* person;
+    std::shared_ptr<GravityPoint> gravityPoint;
+    std::shared_ptr<LightPerson> person;
     void setLocation();
 public:
-    explicit ParticipantGravityPointAction(LightPerson* person);
+    explicit ParticipantGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints,
+    const LightTrailConfiguration& config);
 
     bool isDone(Action *&followUp) override;
 

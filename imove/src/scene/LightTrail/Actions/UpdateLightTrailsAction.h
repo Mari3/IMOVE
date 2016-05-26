@@ -9,8 +9,8 @@
 #include "../../Action.h"
 #include "../LightTrail.h"
 #include "../GravityPoint.h"
-#include "../Repositories/LightTrailRepository.h"
-#include "../Repositories/GravityPointRepository.h"
+#include "../Repositories/LightsSceneRepositories.h"
+#include "../LightTrailConfiguration.h"
 
 
 class UpdateLightTrailsAction : public Action {
@@ -18,8 +18,10 @@ private:
     LightTrailRepository* lightTrails;
     GravityPointRepository* gravityPoints;
     Vector2 calculateForce(LightTrail trail);
+    const LightTrailConfiguration& config;
 public:
-    UpdateLightTrailsAction();
+    UpdateLightTrailsAction(LightTrailRepository* lightTrails, GravityPointRepository* gravityPoints,
+    const LightTrailConfiguration& config);
 
     bool isDone(Action *&followUp) override;
     void execute(float dt) override;

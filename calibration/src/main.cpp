@@ -25,7 +25,8 @@ float DEFAULT_METER = 100.f;
 // arguments
 unsigned int CONFIGPATH_ARGN = 1;
 unsigned int CAMERADEVICE_ARGN = 2;
-unsigned int CALIBRATIONPATH_ARGN = 3;
+unsigned int WIDTH_RESOLUTION_ARGN = 3;
+unsigned int HEIGHT_RESOLUTION_ARGN = 4;
 
 const signed int NOKEY_ANYKEY = -1;
 
@@ -36,8 +37,8 @@ cv::Mat camera_projector_transformation;
 
 // create calibration configuration based on arguments and configuration and user input in projection, meter and projection elimination windows
 int main(int argc, char* argv[]) {
-	if (argc != 4) {
-		std::cout << "Usage: <path to configuration file> <int camera device> <path to calibration projection video file>" << std::endl;
+	if (argc != 5) {
+		std::cout << "Usage: <path to configuration file> <int camera device> <resolution projector width> <resolution projector height>" << std::endl;
 		return EXIT_SUCCESS;
 	}
 	
@@ -71,15 +72,12 @@ int main(int argc, char* argv[]) {
 		read_config["Meter"] >> meter;
 	}
  
-	cv::Mat frame_projector;
-	cv::VideoCapture projector_videoreader(argv[CALIBRATIONPATH_ARGN]);
-	
 	cv::Mat frame_camera;
 	int cameradevice = std::stoi(argv[CAMERADEVICE_ARGN]);
 	cv::VideoCapture camera_videoreader(cameradevice);
-	camera_videoreader.set(CV_CAP_PROP_AUTOFOCUS, 0);
+	camera_videoreader.set(cv::CAP_PROP_AUTOFOCUS, 0);
 	
-	const cv::Size resolution_projector(projector_videoreader.get(cv::CAP_PROP_FRAME_WIDTH), projector_videoreader.get(cv::CAP_PROP_FRAME_HEIGHT));
+	const cv::Size resolution_projector(std::stoi(argv[WIDTH_RESOLUTION_ARGN]), std::stoi(argv[HEIGHT_RESOLUTION_ARGN]));
 	const cv::Size resolution_camera(camera_videoreader.get(cv::CAP_PROP_FRAME_WIDTH), camera_videoreader.get(cv::CAP_PROP_FRAME_HEIGHT));
 	if (read_config["Camera_projector_transformation"].isNone()) {
 		cv::Point2f* coordinate_corners_projector = new cv::Point2f[CalibrationProjectionWindow::REQUIRED_CORNERS];
@@ -113,20 +111,19 @@ int main(int argc, char* argv[]) {
 	EliminateProjectionWindow eliminateprojection_window(cv::Size(900, 0), calibration, projector_background_light, frames_projector_camera_delay);
 	ProjectionWindow projection_window(cv::Size(1200, 0), calibration);
 
-	
-	while (cv::waitKey(1) == NOKEY_ANYKEY && projector_videoreader.read(frame_projector) && camera_videoreader.read(frame_camera)) {
-
-		calibration->feedFrameProjector(frame_projector);
-		eliminateprojection_window.drawImage(frame_camera);
-
+	cv::Mat frame_projector;
+	while (cv::waitKey(1) == NOKEY_ANYKEY && camera_videoreader.read(frame_camera)) {
+		frame_projector = cv::Mat::zeros(resolution_projector, CV_8UC3);
 		projector_window.drawImage(frame_projector);
+		calibration->feedFrameProjector(projector_window.getClonedImage());
+		eliminateprojection_window.drawImage(frame_camera);
+		
 		projection_window.drawImage(eliminateprojection_window.getClonedImage());
 		
 		calibrationprojection_window.drawImage(frame_camera.clone());
 		calibrationmeter_window.drawImage(frame_camera.clone());
 	}
 
-	projector_videoreader.release();
 	camera_videoreader.release();
 	
 	// write configuration based on calibration

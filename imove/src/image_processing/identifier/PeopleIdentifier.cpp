@@ -14,18 +14,12 @@ vector<Person> PeopleIdentifier::match(std::vector<Vector2> locations) {
     int index_closest = getClosest(i, locations);
     // If no close location is found, delete person
     if (index_closest < 0) {
-    // if (detected_people[i].closeToEdge(960,540)) {
-        detected_people.erase(detected_people.begin() + i);
-        --i;
-    // }
+      detected_people.erase(detected_people.begin() + i);
+      --i;
     } else {
       //Set location of person to new location
       Vector2 new_location = locations[index_closest];
-      // if (close to edge) { // check closer to edge than location
-      //  delete person
-      // }
       detected_people[i].setLocation(new_location);
-      // putText(thresh, std::to_string(detected_people[i].getId()), Point(new_loc.x, new_loc.y), FONT_HERSHEY_SIMPLEX, 1, Scalar(255,0,0));
       // Delete locations that have been taken
       locations.erase(locations.begin() + index_closest);
     }
@@ -33,16 +27,8 @@ vector<Person> PeopleIdentifier::match(std::vector<Vector2> locations) {
   // Go over all remaining locations and turn them into a new person
   for (unsigned int j = 0; j < locations.size(); j++) {
     Person new_person = Person(locations[j], Participant);
-    // if (!new_person.closeToEdge(480, 270)) {
-      // new_locations.erase(locations.begin() + j);
-      // --j;
-    // }
-    // else {
-      detected_people.push_back(new_person);
-      // putText(thresh, std::to_string(new_person.getId()), Point(new_locations[j].x, new_locations[j].y), FONT_HERSHEY_SIMPLEX, 1, Scalar(255,0,0));
-    // }
+    detected_people.push_back(new_person);
   }
-  // imshow("Frame", thresh);
   return detected_people;
 }
 
