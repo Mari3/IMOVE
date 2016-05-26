@@ -3,6 +3,7 @@
 #include "../OpenCVWindow.hpp"
 #include "../../../imove/src/calibration/Calibration.hpp"
 
+// window to calibrate the projection coordinates on the camera and provide the transformation matrix to the projector coordinates
 class CalibrationProjectionWindow : public OpenCVWindow {
 	public:
 		// UI calibration cross parameters

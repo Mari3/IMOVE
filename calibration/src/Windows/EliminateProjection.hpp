@@ -3,6 +3,7 @@
 #include "./../OpenCVWindow.hpp"
 #include "../../../imove/src/calibration/Calibration.hpp"
 
+// Window to calibrate the elimination of the projection on the camera based on the projector frame with some delay and intensity
 class EliminateProjectionWindow : public OpenCVWindow {
 	public:
 		const char* name_trackbar_ratio_projector_background_light = "Ratio projector - background light";

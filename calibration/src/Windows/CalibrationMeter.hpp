@@ -4,6 +4,7 @@
 #include "../OpenCVUtil.hpp"
 #include "../../../imove/src/calibration/Calibration.hpp"
 
+// Window to calibrete the width of a meter on the camera
 class CalibrationMeterWindow : public OpenCVWindow {
 	public:
 		// UI calibration cross parameters

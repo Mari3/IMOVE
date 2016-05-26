@@ -2,6 +2,7 @@
 
 #include "./../OpenCVWindow.hpp"
 
+// Window to display projector frame sequence to calibrate corners and frame delay
 class ProjectorWindow : public OpenCVWindow {
 	public:
 		const unsigned int lanes = 24;
