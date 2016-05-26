@@ -9,6 +9,8 @@
 #include <map>
 #include <vector>
 #include <memory>
+#include <iostream>
+#include <assert.h>
 #include "../LightPerson.h"
 #include "../../../util/Repository.h"
 
@@ -22,11 +24,8 @@ public:
     }
 
     void add(const std::shared_ptr<LightPerson>& item) override {
+        assert(item);
         map[item->getId()] = item;
-    }
-
-    void add(const std::shared_ptr<LightPerson>& item, unsigned long id) override {
-        add(item);
     }
 
     void scheduleForRemoval(const std::shared_ptr<LightPerson>& item) override {

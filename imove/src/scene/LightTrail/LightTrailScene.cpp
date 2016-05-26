@@ -3,6 +3,7 @@
 //
 
 #include <memory>
+#include <assert.h>
 #include "LightTrailScene.h"
 #include "Actions/UpdateLightTrailsAction.h"
 #include "../Util/HueConverter.h"
@@ -59,6 +60,13 @@ LightPersonRepository* lightPeople) : Scene(),
                                      lightPeople(lightPeople),
                                      config(config)
 {
+    //Make sure that the repostories are not null
+    assert(lightSources);
+    assert(lightTrails);
+    assert(gravityPoints);
+    assert(colorHoles);
+    assert(lightPeople);
+
     //Initialize the light trail texture
     texture.create(config.screenWidth(),config.screenHeight());
 
