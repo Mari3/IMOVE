@@ -28,8 +28,6 @@ class PeopleExtractor {
   // Detector to detect locations of people in a frame
   PeopleDetector detector;
 
-  // CameraProjectionMapper mapper;
-
   // Identifier to identify people with locations
   PeopleIdentifier identifier;
 
@@ -39,21 +37,21 @@ class PeopleExtractor {
   // Size of the frame
   cv::Size frame_size;
 
+  // Nr of pixels equal to one meter on the scene
+  float pixels_per_meter;
+
   // Fixed height to resize frames to
   float resolution_resize_height;
 
   // Ratio with which the frame is resized
   float resize_ratio;
 
-  // Nr of pixels equal to one meter on the scene
-  float pixels_per_meter;
-
  public:
   PeopleExtractor(cv:: Size frame_size, float pixels_per_meter, float resolution_resize_height);
   ~PeopleExtractor();
 
   // Main extraction function to extract people from a frame
-  vector<Person> extractPeople(cv::Mat new_frame);
+  vector<Person> extractPeople(cv::Mat& new_frame);
 };
 
 #endif  // IMOVE_SRC_IMAGE_PROCESSING_PEOPLEEXTRACTOR_H_

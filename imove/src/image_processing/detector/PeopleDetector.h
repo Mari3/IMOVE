@@ -41,7 +41,7 @@ class PeopleDetector {
    ~PeopleDetector();
 
   // Detect people in frame
-  vector<Vector2> detect(cv::Mat frame);
+  vector<Vector2> detect(cv::Mat& frame);
 
   // Renew background subtractor
   void renew();
