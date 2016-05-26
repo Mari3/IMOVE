@@ -7,7 +7,7 @@ class ProjectionWindow : public OpenCVWindow {
 	public:
 		ProjectionWindow(cv::Point2i position, Calibration* calibration);
 		
-		void drawImage(cv::Mat& image_camera);
+		void drawImage(cv::Mat image_camera);
 
 	protected:
 		Calibration* calibration;

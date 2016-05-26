@@ -12,6 +12,7 @@
 #include "./Windows/Projector.hpp"
 #include "./Windows/CalibrationProjection.hpp"
 #include "./Windows/CalibrationMeter.hpp"
+#include "./Windows/EliminateProjection.hpp"
 
 
 
@@ -27,27 +28,11 @@ unsigned int CAMERADEVICE_ARGN = 2;
 unsigned int CALIBRATIONPATH_ARGN = 3;
 
 const signed int NOKEY_ANYKEY = -1;
-const int INT_FULL_PERCENTAGE = 100;
-const double DOUBLE_FULL_PERCENTAGE = 100.0;
 
 Calibration* calibration = NULL;
 cv::Mat camera_projector_transformation;
 
 
-// Projector background light trackbar callback
-void onProjectorBackgroundLight(int tracked_int, void *user_data) {
-	// set as double from percentage
-	calibration->setProjectorBackgroundLight((double) tracked_int / DOUBLE_FULL_PERCENTAGE);
-}
-
-// Amount of frames delay between projection and camera trackbar callback
-void onFramesProjectorCameraDelay(int tracked_int, void *user_data) {
-	if (tracked_int < 0) {
-		calibration->setFramesProjectorCameraDelay(0);
-	} else {
-		calibration->setFramesProjectorCameraDelay((unsigned int) tracked_int);
-	}
-}
 
 // create calibration configuration based on arguments and configuration and user input in projection, meter and projection elimination windows
 int main(int argc, char* argv[]) {
@@ -125,27 +110,17 @@ int main(int argc, char* argv[]) {
 	ProjectorWindow projector_window(cv::Size(0, 0));
 	CalibrationProjectionWindow calibrationprojection_window(cv::Point2i(300, 0), calibration, resolution_projector);
 	CalibrationMeterWindow calibrationmeter_window(cv::Point2i(600, 0), calibration, meter);
+	EliminateProjectionWindow eliminateprojection_window(cv::Size(900, 0), calibration, projector_background_light, frames_projector_camera_delay);
 	ProjectionWindow projection_window(cv::Size(1200, 0), calibration);
-	
-	cv::Mat frame_projectionelimination;
-	cv::namedWindow("Projection elimination", cv::WINDOW_NORMAL);
-	cv::moveWindow("Projection elimination", 900, 0);
-	int track_projector_background_light = round(projector_background_light * DOUBLE_FULL_PERCENTAGE);
-	cv::createTrackbar("Ratio projector - background light", "Projection elimination", &track_projector_background_light, INT_FULL_PERCENTAGE, onProjectorBackgroundLight);
-	int track_frames_projector_camera_delay = (signed int) frames_projector_camera_delay;
-	cv::createTrackbar("Frames projector - camera delay", "Projection elimination", &track_frames_projector_camera_delay, INT_FULL_PERCENTAGE, onFramesProjectorCameraDelay);
-
-	cv::Mat frame_projection;
 
 	
 	while (cv::waitKey(1) == NOKEY_ANYKEY && projector_videoreader.read(frame_projector) && camera_videoreader.read(frame_camera)) {
 
 		calibration->feedFrameProjector(frame_projector);
-		calibration->eliminateProjectionFeedbackFromFrameCamera(frame_projectionelimination, frame_camera);
-		cv::imshow("Projection elimination", frame_projectionelimination);
+		eliminateprojection_window.drawImage(frame_camera);
 
 		projector_window.drawImage(frame_projector);
-		projection_window.drawImage(frame_projectionelimination);
+		projection_window.drawImage(eliminateprojection_window.getClonedImage());
 		
 		calibrationprojection_window.drawImage(frame_camera.clone());
 		calibrationmeter_window.drawImage(frame_camera.clone());
