@@ -14,9 +14,6 @@ class CalibrationProjectionWindow : public OpenCVWindow {
 		
 		void drawImage(cv::Mat image);
 		
-		static void onMouse(int event, int x, int y, int flags, void* userdata);
-		void onMouse(int event, int x, int y, int flags);
-		
 	protected:
 		static const unsigned char REQUIRED_CORNERS = 4;
 		
@@ -35,4 +32,8 @@ class CalibrationProjectionWindow : public OpenCVWindow {
 		cv::Scalar* color_corners = new cv::Scalar[REQUIRED_CORNERS];
 		// corners of projector
 		cv::Point2f* coordinate_corners_projector = new cv::Point2f[REQUIRED_CORNERS];
+		
+		static void onMouse(int event, int x, int y, int flags, void* userdata);
+		void onMouse(int event, int x, int y, int flags);
+		
 };

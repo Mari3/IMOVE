@@ -24,10 +24,6 @@ class CalibrationMeterWindow : public OpenCVWindow {
 		
 		float getMeter() const;
 
-		// Calibrate projection mouse callback
-		static void onMouse(int event, int x, int y, int flags, void* param);
-		void onMouse(int event, int x, int y, int flags);
-		
 	protected:
 		enum METER { A, B };
 		
@@ -42,5 +38,10 @@ class CalibrationMeterWindow : public OpenCVWindow {
 		
 		// current meter point a and b
 		cv::Point2f a_meter;
+		
+		// Calibrate projection mouse callback
+		static void onMouse(int event, int x, int y, int flags, void* param);
+		void onMouse(int event, int x, int y, int flags);
+		
 		cv::Point2f b_meter;
 };
