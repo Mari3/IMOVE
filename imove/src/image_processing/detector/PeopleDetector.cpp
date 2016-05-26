@@ -6,7 +6,7 @@
 
 PeopleDetector::PeopleDetector() {}
 
-PeopleDetector::PeopleDetector(float pixels_per_meter, bool low_camera) : pixels_per_meter(pixels_per_meter) {
+PeopleDetector::PeopleDetector(const float pixels_per_meter, bool low_camera) : pixels_per_meter(pixels_per_meter) {
   // Initialize background subtractor
   background_subtractor = cv::createBackgroundSubtractorKNN();
 
@@ -33,7 +33,7 @@ PeopleDetector::PeopleDetector(float pixels_per_meter, bool low_camera) : pixels
 PeopleDetector::~PeopleDetector() {}
 
 // Detect people in frame
-vector<Vector2> PeopleDetector::detect(cv::Mat frame) {
+vector<Vector2> PeopleDetector::detect(cv::Mat& frame) {
   // Vector to store newly detected locations
   vector<Vector2> new_locations;
 

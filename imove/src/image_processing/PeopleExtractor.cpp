@@ -4,7 +4,7 @@
 
 #include "PeopleExtractor.h"
 
-PeopleExtractor::PeopleExtractor(cv::Size frame_size, float pixels_per_meter, float resolution_resize_height) : frame_size(frame_size), pixels_per_meter(pixels_per_meter), resolution_resize_height(resolution_resize_height) {
+PeopleExtractor::PeopleExtractor(const cv::Size frame_size, const float pixels_per_meter, const float resolution_resize_height) : frame_size(frame_size), pixels_per_meter(pixels_per_meter), resolution_resize_height(resolution_resize_height) {
   // Calculate resize ratio
   resize_ratio = frame_size.height/resolution_resize_height;
 
@@ -25,7 +25,7 @@ PeopleExtractor::PeopleExtractor(cv::Size frame_size, float pixels_per_meter, fl
 
 PeopleExtractor::~PeopleExtractor() {}
 
-vector<Person> PeopleExtractor::extractPeople(cv::Mat new_frame) {
+vector<Person> PeopleExtractor::extractPeople(cv::Mat& new_frame) {
   // Convert frame to grayscale
   cvtColor(new_frame, new_frame, CV_RGB2GRAY);
   // Downscale frame

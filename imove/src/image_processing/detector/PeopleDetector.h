@@ -32,16 +32,16 @@ class PeopleDetector {
   cv::Ptr<cv::SimpleBlobDetector> blob_detector;
 
   // Nr of pixels equal to one meter on the scene
-  float pixels_per_meter;
+  const float pixels_per_meter;
 
  public:
    PeopleDetector();
    // Constructor with number of pixels that represent one meter and wether the camera height is low or not
-   PeopleDetector(float pixels_per_meter, bool low_camera);
+   PeopleDetector(const float pixels_per_meter, bool low_camera);
    ~PeopleDetector();
 
   // Detect people in frame
-  vector<Vector2> detect(cv::Mat frame);
+  vector<Vector2> detect(cv::Mat& frame);
 
   // Renew background subtractor
   void renew();
