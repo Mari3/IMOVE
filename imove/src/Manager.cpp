@@ -77,9 +77,9 @@ bool ImoveManager::run() {
 					detected_people.at(i).getLocation().x,
 					detected_people.at(i).getLocation().y
 				),
-				20,
-				cv::Scalar(255, 0, 0),
-				2
+				ImoveManager::SIZE_CIRCLE_CAMERA_DEBUG,
+				OpenCVUtil::Color::DARKBLUE,
+				ImoveManager::THICKNESS_CIRCLE_CAMERA_DEBUG
 			);
 		}
 		// debug camera frame
@@ -94,9 +94,9 @@ bool ImoveManager::run() {
 					detected_people.at(i).getLocation().x,
 					detected_people.at(i).getLocation().y
 				),
-				80,
-				cv::Scalar(255, 244, 0),
-				8
+				ImoveManager::SIZE_CIRCLE_PROJECTION_DEBUG,
+				OpenCVUtil::Color::LIGHTBLUE,
+				ImoveManager::THICKNESS_CIRCLE_PROJECTION_DEBUG
 			);
 			cv::putText(
 				frame_projection,
@@ -106,8 +106,8 @@ bool ImoveManager::run() {
 					detected_people.at(i).getLocation().y
 				),
 				cv::FONT_HERSHEY_SIMPLEX,
-				1,
-				cv::Scalar(255, 0, 0)
+				ImoveManager::SIZE_FONT_DEBUG,
+				OpenCVUtil::Color::DARKBLUE
 			);
 		}
 		// debug projection window
