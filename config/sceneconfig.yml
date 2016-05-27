@@ -18,4 +18,4 @@ ProximityModifier: .7
 SidesEnabled: 1
 SpeedCap: 400
 Fade: 2
-TrailThickness: 12
+TrailThickness: 7
