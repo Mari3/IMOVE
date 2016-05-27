@@ -7,7 +7,7 @@ find_package(OpenCV REQUIRED HINTS ${OpenCV_DIR})
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 
 
-file(GLOB_RECURSE SOURCE_FILES "*.h" "*.cpp")
+file(GLOB_RECURSE SOURCE_FILES "*.cpp")
 ADD_EXECUTABLE(imove ${SOURCE_FILES})
 SET_TARGET_PROPERTIES(imove PROPERTIES ENABLE_EXPORTS true)
 
