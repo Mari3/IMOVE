@@ -23,8 +23,6 @@ public:
     {
         return get(id);
     }
-    virtual typename std::vector<std::shared_ptr<T>>::iterator begin() = 0;
-    virtual typename std::vector<std::shared_ptr<T>>::iterator end() = 0;
     virtual void for_each(const std::function<void(std::shared_ptr<T>)>& f) = 0;
 };
 

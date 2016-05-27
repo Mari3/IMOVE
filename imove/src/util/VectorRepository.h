@@ -62,16 +62,6 @@ public:
         return items[id];
     }
 
-    typename std::vector<std::shared_ptr<T>>::iterator begin() override
-    {
-        return items.begin();
-    }
-
-    typename std::vector<std::shared_ptr<T>>::iterator end() override
-    {
-        return items.end();
-    }
-
     void for_each(const std::function<void(std::shared_ptr<T>)> &f) override {
         for(auto &item : items){
             f(item);

@@ -5,8 +5,8 @@
 #include <random>
 #include "Range.h"
 
-util::Range::Range(float start, float end, bool bounds, float lowerBound, float upperBound) :
-    start(start),end(end),bounds(bounds),lowerBound(lowerBound),upperBound(upperBound)
+util::Range::Range(float start, float end, RangeRandom* random, bool bounds, float lowerBound, float upperBound) :
+    start(start),end(end),random(random),bounds(bounds),lowerBound(lowerBound),upperBound(upperBound)
 {
     if(bounds)
     {
@@ -31,25 +31,7 @@ void util::Range::operator+=(const float &f)
 
 float util::Range::drawRandom()
 {
-    if(start < end)
-    {
-        return start + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (end - start)));
-    }
-    else if(start == end)
-    {
-        return start;
-    }
-    else
-    {
-        if(!bounds)return start;//TODO throw error
-        else
-        {
-            float hi = upperBound+end-lowerBound;
-            float val = start + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (hi - start)));
-            if(val > upperBound)val -= upperBound-lowerBound;
-            return val;
-        }
-    }
+    return random->next(start,end,bounds,lowerBound,upperBound);
 }
 
 bool util::Range::contains(float f)
@@ -61,6 +43,15 @@ bool util::Range::contains(float f)
 
     return (f > start && f < upperBound) || (f < end && f > lowerBound);
 }
+
+util::Range::Range(float start, float end, bool bounds, float lowerBound, float upperBound) :
+        Range(start,end,UniformRangeRandom::getInstance(),
+              bounds,lowerBound,upperBound)
+{
+
+}
+
+
 
 
 

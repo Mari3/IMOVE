@@ -8,6 +8,7 @@
 #include <SFML/Graphics.hpp>
 #include <queue>
 #include <vector>
+#include <memory>
 #include "../interface/Person.h"
 #include "Action.h"
 #include "Condition.h"
@@ -15,8 +16,8 @@
 class Scene {
 protected:
     queue<vector<Person>> peopleQueue;
-    vector<Action*> actions; //Vector of pointers for polymorphism
-    vector<Condition*> conditions; //Idem
+    vector<std::unique_ptr<Action>> actions; //Vector of pointers for polymorphism
+    vector<std::unique_ptr<Condition>> conditions; //Idem
     virtual void processPeople() = 0;
 public:
     Scene();

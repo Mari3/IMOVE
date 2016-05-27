@@ -10,6 +10,7 @@ class Action {
 public:
     virtual bool isDone(Action*& followUp) = 0;
     virtual void execute(float dt) = 0;
+    virtual ~Action(){}
 };
 
 
