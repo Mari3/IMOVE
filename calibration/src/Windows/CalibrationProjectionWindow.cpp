@@ -21,7 +21,7 @@ CalibrationProjectionWindow::CalibrationProjectionWindow(cv::Point2i position, C
 	
 	// reconstruct points camera from projector points and perspective transformation
 	// create vector of points to perform perspectiveTransform which requires a vector of points instead of an array
-	std::vector<cv::Point2f> points_projector = std::vector<cv::Point2f>(this->CalibrationProjectionWindow::REQUIRED_CORNERS);
+	std::vector<cv::Point2f> points_projector = std::vector<cv::Point2f>(CalibrationProjectionWindow::REQUIRED_CORNERS);
 	points_projector.at(0) = coordinate_corners_projector[0];
 	points_projector.at(1) = coordinate_corners_projector[1];
 	points_projector.at(2) = coordinate_corners_projector[2];
@@ -54,7 +54,7 @@ void CalibrationProjectionWindow::onMouse(int event, int x, int y, int flags) {
 		// set new corner based on last mouse position
 		this->coordinate_corners_camera[this->current_corner] = this->coordinate_mouse_projection;
 		// set new current corner to set
-		this->current_corner = (this->current_corner + 1) % this->CalibrationProjectionWindow::REQUIRED_CORNERS;
+		this->current_corner = (this->current_corner + 1) % CalibrationProjectionWindow::REQUIRED_CORNERS;
 		// calculate and set new perspective map
 		cv::Mat camera_projector_transformation = cv::getPerspectiveTransform(
 			this->coordinate_corners_camera,
@@ -69,13 +69,13 @@ void CalibrationProjectionWindow::onMouse(int event, int x, int y, int flags) {
  **/
 void CalibrationProjectionWindow::drawImage(cv::Mat image) {
 	// draw polylines on this->frame to indicate boundaries
-	cv::Point polypoints[this->CalibrationProjectionWindow::REQUIRED_CORNERS];
+	cv::Point polypoints[CalibrationProjectionWindow::REQUIRED_CORNERS];
 	polypoints[0] = this->coordinate_corners_camera[0];
 	polypoints[1] = this->coordinate_corners_camera[1];
 	polypoints[2] = this->coordinate_corners_camera[3];
 	polypoints[3] = this->coordinate_corners_camera[2];
 	const cv::Point* ppt[1] = { polypoints };
-	int npt[] = {this->CalibrationProjectionWindow::REQUIRED_CORNERS};
+	int npt[] = {CalibrationProjectionWindow::REQUIRED_CORNERS};
 	cv::polylines(
 		image,
 		ppt,
