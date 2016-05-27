@@ -7,7 +7,7 @@
 
 
 #include "../../util/Vector2.h"
-#include "../../util/Range.h"
+#include "../Util/Range.h"
 #include "LightTrail.h"
 
 class LightSource {

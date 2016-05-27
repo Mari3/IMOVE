@@ -9,7 +9,7 @@
 #include <memory>
 #include "../../Action.h"
 #include "../GravityPoint.h"
-#include "../../../util/Timer.h"
+#include "../../Util/Timer.h"
 #include "../Repositories/LightPersonMapRepository.h"
 #include "../Repositories/LightsSceneRepositories.h"
 #include "../LightTrailConfiguration.h"

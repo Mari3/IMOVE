@@ -8,7 +8,7 @@
 #include "../../../../../src/scene/LightTrail/Repositories/LightsSceneRepositories.h"
 #include "../../../../../src/scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 #include "../../../../../src/scene/LightTrail/Actions/UpdateLightSourcesAction.h"
-#include "../../../../../src/util/Range.h"
+#include "../../../../../src/scene/Util/Range.h"
 
 using namespace fakeit;
 

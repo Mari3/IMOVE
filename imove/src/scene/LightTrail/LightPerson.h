@@ -8,7 +8,7 @@
 
 #include "../../util/Vector2.h"
 #include "../../interface/Person.h"
-#include "../../util/Range.h"
+#include "../Util/Range.h"
 
 class LightPerson{
 private:

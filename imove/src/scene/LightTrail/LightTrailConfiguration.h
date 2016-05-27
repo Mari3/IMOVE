@@ -7,7 +7,7 @@
 
 #include <cstdint>
 #include <string>
-#include "../../util/Range.h"
+#include "../Util/Range.h"
 
 class LightTrailConfiguration {
 private:

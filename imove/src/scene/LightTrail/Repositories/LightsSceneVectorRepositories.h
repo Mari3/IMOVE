@@ -6,7 +6,7 @@
 #define IMOVE_LIGHTSSCENEVECTORREPOSITORIES_H
 
 #include "../ColorHole.h"
-#include "../../../util/VectorRepository.h"
+#include "../../Util/VectorRepository.h"
 #include "../LightSource.h"
 
 typedef VectorRepository<ColorHole> ColorHoleVectorRepository;

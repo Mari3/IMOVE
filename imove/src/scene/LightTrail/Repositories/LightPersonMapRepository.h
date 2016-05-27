@@ -12,7 +12,7 @@
 #include <iostream>
 #include <assert.h>
 #include "../LightPerson.h"
-#include "../../../util/Repository.h"
+#include "../../Util/Repository.h"
 
 class LightPersonMapRepository : public Repository<LightPerson> {
 private:

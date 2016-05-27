@@ -1,6 +1,3 @@
-
-add_subdirectory(util)
-
 find_package(SFML REQUIRED system window graphics network audio)
 include_directories(${SFML_INCLUDE_DIR})
 find_package(OpenCV REQUIRED HINTS ${OpenCV_DIR})

@@ -6,7 +6,7 @@
 #define IMOVE_LIGHTSSCENEREPOSITORIES_H
 
 #include "../ColorHole.h"
-#include "../../../util/Repository.h"
+#include "../../Util/Repository.h"
 #include "../LightPerson.h"
 #include "../LightSource.h"
 

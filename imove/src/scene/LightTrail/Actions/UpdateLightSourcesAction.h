@@ -8,7 +8,7 @@
 #include "../../Action.h"
 #include "../LightTrail.h"
 #include "../LightSource.h"
-#include "../../../util/Timer.h"
+#include "../../Util/Timer.h"
 #include "../Repositories/LightsSceneRepositories.h"
 #include "../LightTrailConfiguration.h"
 
