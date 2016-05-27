@@ -81,13 +81,12 @@ vector<Vector2> PeopleDetector::detect(cv::Mat& frame) {
     new_locations.push_back(new_location);
   }
 
-  // Show tresholded background subtraction with drawn keypoints
-  cv::imshow("Frame", keypoints_frame);
+  display_frame = keypoints_frame;
+
   // Return all new locations
   return new_locations;
 }
 
-void PeopleDetector::renew() {
-  // Reset background subtractor to adapt to changes in lighting
-  background_subtractor = cv::createBackgroundSubtractorKNN();
+cv::Mat PeopleDetector::getDisplayFrame() {
+  return display_frame;
 }

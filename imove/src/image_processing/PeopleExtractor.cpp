@@ -45,3 +45,7 @@ vector<Person> PeopleExtractor::extractPeople(cv::Mat& new_frame) {
   // Return vector containing all people in the scene
   return people;
 }
+
+void PeopleExtractor::displayResults() {
+  cv::imshow("Frame", detector.getDisplayFrame());
+}

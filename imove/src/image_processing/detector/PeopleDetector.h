@@ -34,17 +34,19 @@ class PeopleDetector {
   // Nr of pixels equal to one meter on the scene
   float pixels_per_meter;
 
+  // Frame to display
+  cv::Mat display_frame;
+
  public:
-   PeopleDetector();
-   // Constructor with number of pixels that represent one meter and wether the camera height is low or not
-   PeopleDetector(float pixels_per_meter, bool low_camera);
-   ~PeopleDetector();
+  PeopleDetector();
+  // Constructor with number of pixels that represent one meter and wether the camera height is low or not
+  PeopleDetector(float pixels_per_meter, bool low_camera);
+  ~PeopleDetector();
 
   // Detect people in frame
   vector<Vector2> detect(cv::Mat& frame);
 
-  // Renew background subtractor
-  void renew();
+  cv::Mat getDisplayFrame();
 };
 
 
