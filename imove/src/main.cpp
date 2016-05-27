@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 
-#include "Manager.hpp"
+#include "ImoveManager.hpp"
 #include "calibration/Calibration.hpp"
 
 const unsigned int CONFIGURATION_CALIBRATION_ARGN = 1;
