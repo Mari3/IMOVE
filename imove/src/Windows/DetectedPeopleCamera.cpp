@@ -9,6 +9,7 @@ void DetectedPeopleCameraWindow::drawImage(cv::Mat& image_camera, vector<Person>
 	// debug people drawing on camera frame
 	for (unsigned int i = 0; i < detectedpeople.size(); ++i) {
 		Vector2 location_detectedperson = detectedpeople.at(i).getLocation();
+		// draw circle on each detected person location
 		cv::circle(
 			image_camera,
 			cv::Point2f(

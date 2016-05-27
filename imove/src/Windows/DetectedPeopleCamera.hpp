@@ -12,5 +12,6 @@ class DetectedPeopleCameraWindow : public OpenCVWindow {
 		
 		DetectedPeopleCameraWindow(cv::Point2i position);
 		
+		// draw detected people in the camera frame
 		void drawImage(cv::Mat& image_camera, vector<Person>& detectedpeople);
 };

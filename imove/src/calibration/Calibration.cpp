@@ -20,30 +20,40 @@ Calibration* Calibration::readFile(const char* filepath) {
 	// read calibration config
 	cv::FileStorage fs;
 	fs.open(filepath, cv::FileStorage::READ);
+
+	// read camera_device from yml using OpenCV FileNode
 	unsigned int camera_device;
-	int int_camera_device;
+	  signed int int_camera_device;
 	fs["Camera_device"] >> int_camera_device;
+	// OpenCV yml does not support unsigned in; initialize signed int to unsigned int 0
 	if (int_camera_device < 0) {
 		camera_device = 0;
 	} else {
-		camera_device = int_camera_device;
+		camera_device = (unsigned int) int_camera_device;
 	}
+	// read resolution_camera from yml using OpenCV FileNode
 	cv::Size resolution_camera;
 	fs["Resolution_camera"] >> resolution_camera;
+	// read resolution_projector from yml using OpenCV FileNode
 	cv::Size resolution_projector;
 	fs["Resolution_projector"] >> resolution_projector;
+	// read camera_projector_transformation from yml using OpenCV FileNode
 	cv::Mat camera_projector_transformation;
 	fs["Camera_projector_transformation"] >> camera_projector_transformation;
+	// read frames_projector_camera_delay from yml using OpenCV FileNode
 	unsigned int frames_projector_camera_delay;
-	signed int int_frames_projector_camera_delay;
+	  signed int int_frames_projector_camera_delay;
 	fs["Frames_projector_camera_delay"] >> int_frames_projector_camera_delay;
+	// OpenCV yml does not support unsigned in; initialize signed int to unsigned int 0
 	if (int_frames_projector_camera_delay < 0) {
 		frames_projector_camera_delay = 0;
 	} else {
 		frames_projector_camera_delay = (unsigned int) int_frames_projector_camera_delay;
 	}
+	// read percentage_projector_background_light from yml using OpenCV FileNode
 	double percentage_projector_background_light;
 	fs["Percentage_projector_background_light"] >> percentage_projector_background_light;
+	// read meter from yml using OpenCV FileNode
 	float meter;
 	fs["Meter"] >> meter;
 	fs.release();
@@ -62,25 +72,29 @@ Calibration* Calibration::readFile(const char* filepath) {
 Calibration* Calibration::createFromFile(const char* filepath, unsigned int cameradevice, cv::Size resolution_projector) {
 	cv::FileStorage read_config;
 	read_config.open(filepath, cv::FileStorage::READ);
-
+	
+	// read frames_projector_camera_delay from yml using OpenCV FileNode; default if not existing
 	unsigned int frames_projector_camera_delay;
 	if (read_config["Frames_projector_camera_delay"].isNone()) {
 		frames_projector_camera_delay = Calibration::DEFAULT_FRAMES_PROJECTOR_CAMERA_DELAY;
 	} else {
 		signed int int_frames_projector_camera_delay;
 		read_config["Frames_projector_camera_delay"] >> int_frames_projector_camera_delay;
+		// OpenCV yml does not support unsigned in; initialize signed int to unsigned int 0
 		if (int_frames_projector_camera_delay < 0) {
 			frames_projector_camera_delay = 0;
 		} else {
 			frames_projector_camera_delay = (unsigned int) int_frames_projector_camera_delay;
 		}
 	}
+	// read projector_background_light from yml using OpenCV FileNode; default if not existing
 	double projector_background_light;
 	if (read_config["Projector_background_light"].isNone()) {
 		projector_background_light = Calibration::DEFAULT_PROJECTOR_BACKGROUND_LIGHT;
 	} else {
 		read_config["Projector_background_light"] >> projector_background_light;
 	}
+	// read meter from yml using OpenCV FileNode; default if not existing
 	float meter;
 	if (read_config["Meter"].isNone()) {
 		meter = Calibration::DEFAULT_METER;
@@ -88,24 +102,31 @@ Calibration* Calibration::createFromFile(const char* filepath, unsigned int came
 		read_config["Meter"] >> meter;
 	}
  
+	// retreive camera resolution from OpenCV VideoCapture
 	cv::VideoCapture camera_videoreader(cameradevice);
 	const cv::Size resolution_camera(camera_videoreader.get(cv::CAP_PROP_FRAME_WIDTH), camera_videoreader.get(cv::CAP_PROP_FRAME_HEIGHT));
 	camera_videoreader.release();
 	
+	// read camera_projector_transformation from yml using OpenCV FileNode
 	cv::Mat camera_projector_transformation;
 	if (read_config["Camera_projector_transformation"].isNone()) {
+		// if not exists in configuration; create camera projector transformation based on camera and projector corner points
 		const unsigned int REQUIRED_CORNERS = 4;
+		const unsigned int TOPLEFT = 0;
+		const unsigned int TOPRIGHT = 1;
+		const unsigned int BOTTOMLEFT = 2;
+		const unsigned int BOTTOMRIGHT = 3;
 		cv::Point2f* coordinate_corners_projector = new cv::Point2f[REQUIRED_CORNERS];
-		coordinate_corners_projector[0] = cv::Point2f(        OpenCVUtil::ORIGIN2D.x,          OpenCVUtil::ORIGIN2D.y);
-		coordinate_corners_projector[1] = cv::Point2f(resolution_projector.width - 1,          OpenCVUtil::ORIGIN2D.y);
-		coordinate_corners_projector[2] = cv::Point2f(		  	OpenCVUtil::ORIGIN2D.x, resolution_projector.height - 1);
-		coordinate_corners_projector[3] = cv::Point2f(resolution_projector.width - 1, resolution_projector.height - 1);
+		coordinate_corners_projector[TOPLEFT]     = cv::Point2f(        OpenCVUtil::ORIGIN2D.x,          OpenCVUtil::ORIGIN2D.y);
+		coordinate_corners_projector[TOPRIGHT]    = cv::Point2f(resolution_projector.width - 1,          OpenCVUtil::ORIGIN2D.y);
+		coordinate_corners_projector[BOTTOMLEFT] = cv::Point2f(		  	OpenCVUtil::ORIGIN2D.x, resolution_projector.height - 1);
+		coordinate_corners_projector[BOTTOMRIGHT]  = cv::Point2f(resolution_projector.width - 1, resolution_projector.height - 1);
 		cv::Size resolution_camera(camera_videoreader.get(cv::CAP_PROP_FRAME_WIDTH), camera_videoreader.get(cv::CAP_PROP_FRAME_HEIGHT));
-		cv::Point2f* coordinate_corners_camera = new cv::Point2f[REQUIRED_CORNERS];
-		coordinate_corners_camera[0]   = cv::Point2f(     OpenCVUtil::ORIGIN2D.x,       OpenCVUtil::ORIGIN2D.y);
-		coordinate_corners_camera[1]   = cv::Point2f(resolution_camera.width - 1,       OpenCVUtil::ORIGIN2D.y);
-		coordinate_corners_camera[2]   = cv::Point2f(			OpenCVUtil::ORIGIN2D.x, resolution_camera.height - 1);
-		coordinate_corners_camera[3]   = cv::Point2f(resolution_camera.width - 1, resolution_camera.height - 1);
+		cv::Point2f* coordinate_corners_camera  = new cv::Point2f[REQUIRED_CORNERS];
+		coordinate_corners_camera[TOPLEFT]      = cv::Point2f(     OpenCVUtil::ORIGIN2D.x,       OpenCVUtil::ORIGIN2D.y);
+		coordinate_corners_camera[TOPRIGHT]     = cv::Point2f(resolution_camera.width - 1,       OpenCVUtil::ORIGIN2D.y);
+		coordinate_corners_camera[BOTTOMLEFT]   = cv::Point2f(	   OpenCVUtil::ORIGIN2D.x, resolution_camera.height - 1);
+		coordinate_corners_camera[BOTTOMRIGHT]  = cv::Point2f(resolution_camera.width - 1, resolution_camera.height - 1);
 		
 		camera_projector_transformation = cv::getPerspectiveTransform(
 			coordinate_corners_camera,

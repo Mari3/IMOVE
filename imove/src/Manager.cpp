@@ -13,7 +13,8 @@
 
 ImoveManager::ImoveManager(Calibration* calibration, LightTrailConfiguration& configuration_lighttrail) {
 	this->calibration = calibration;
-
+	
+	// setup scene
   this->scene = new LightTrailScene(
 		configuration_lighttrail,
     new LightSourceVectorRepository(),
@@ -33,18 +34,20 @@ void ImoveManager::run() {
 	DetectedPeopleCameraWindow detectedpeople_camera_window(cv::Size(500, 0));
 	DetectedPeopleProjectionWindow detectedpeople_projection_window(cv::Size(1000, 0));
 	
-	// setup scene
+	// setup scene window
 	SceneWindow window_scene(this->calibration->getResolutionProjector());
 	
 	// setup clock
-  sf::Clock clock;
+	sf::Clock clock;
+	
+	// setup camera
+	cv::VideoCapture video_capture(this->calibration->getCameraDevice());
+
 	cv::Mat frame_camera;
 	cv::Mat frame_projection;
 	cv::Mat detectpeople_frame;
-	cv::VideoCapture video_capture(this->calibration->getCameraDevice());
 	vector<Person> detected_people;
 	float dt;
-
 	// while no key pressed
 	while (cv::waitKey(1) == OpenCVUtil::NOKEY_ANYKEY && video_capture.read(frame_camera)) {
 		// debug projection frame
@@ -64,8 +67,11 @@ void ImoveManager::run() {
 		dt = clock.restart().asSeconds();
 		//dt = 1.f/24.f;
 		this->scene->update(dt);
-
+		
+		// draw the actual scene on window
 		window_scene.drawScene(this->scene);
 	}
+
+	// safe release video capture
 	video_capture.release();
 }
