@@ -37,3 +37,4 @@ AlternatingGravityPointAction::AlternatingGravityPointAction(util::Range hue, ut
     myGravityPoint->location.x = xRange.drawRandom();
     myGravityPoint->location.y = yRange.drawRandom();
 }
+
