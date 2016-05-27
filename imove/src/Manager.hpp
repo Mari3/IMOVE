@@ -6,9 +6,9 @@
 #include "scene/Scene.h"
 
 
-class Manager {
+class ImoveManager {
 	public:
-		Manager(Calibration* calibration, LightTrailConfiguration configuration_lighttrail);
+		ImoveManager(Calibration* calibration, LightTrailConfiguration configuration_lighttrail);
 
 		bool run();
 

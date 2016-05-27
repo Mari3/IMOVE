@@ -8,7 +8,7 @@
 #include "scene/LightTrail/LightTrailScene.h"
 #include "scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 
-Manager::Manager(Calibration* calibration, LightTrailConfiguration configuration_lighttrail) {
+ImoveManager::ImoveManager(Calibration* calibration, LightTrailConfiguration configuration_lighttrail) {
 	this->calibration = calibration;
 	// debug windows
 	cv::namedWindow("Camera", cv::WINDOW_NORMAL);
@@ -37,7 +37,7 @@ Manager::Manager(Calibration* calibration, LightTrailConfiguration configuration
 	this->people_extractor = new PeopleExtractor(this->calibration->getResolutionCamera(), this->calibration->getMeter(), 216);
 }
 
-bool Manager::run() {
+bool ImoveManager::run() {
 	// setup clock
   sf::Clock clock;
 	cv::Mat frame_camera;

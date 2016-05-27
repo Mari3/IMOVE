@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
   
 	LightTrailConfiguration configuration_lighttrail = LightTrailConfiguration::readFromFile(argv[CONFIGURATION_LIGHTTRAIL_ARGN]);
 
-	Manager manager(calibration, configuration_lighttrail);
+	ImoveManager manager(calibration, configuration_lighttrail);
 	if (manager.run()) {
 		return EXIT_SUCCESS;
 	} else {
