@@ -4,9 +4,9 @@
 
 #include "opencv2/opencv.hpp"
 #include "SFML/Graphics.hpp"
-#include "../../../src/scene/LightTrail/LightTrailConfiguration.h"
-#include "../../../src/scene/LightTrail/LightTrailScene.h"
-#include "../../../src/scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
+#include "../../../src/Scene/LightTrail/LightTrailConfiguration.h"
+#include "../../../src/Scene/LightTrail/LightTrailScene.h"
+#include "../../../src/Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 
 int main(int argc, char** argv){
 

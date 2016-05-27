@@ -1,7 +1,7 @@
 #include <opencv2/opencv.hpp>
 
 #include "../OpenCVWindow.hpp"
-#include "../interface/Person.h"
+#include "../Interface/Person.h"
 
 // Window to display camera frame for debugging information 
 class DetectedPeopleCameraWindow : public OpenCVWindow {

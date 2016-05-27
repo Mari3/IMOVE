@@ -4,10 +4,10 @@
 
 #include <gtest/gtest.h>
 #include <fakeit.hpp>
-#include "../../../../../src/scene/LightTrail/LightTrailConfiguration.h"
-#include "../../../../../src/scene/LightTrail/Repositories/LightsSceneRepositories.h"
-#include "../../../../../src/scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
-#include "../../../../../src/scene/LightTrail/Actions/AlternatingGravityPointAction.h"
+#include "../../../../../src/Scene/LightTrail/LightTrailConfiguration.h"
+#include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneRepositories.h"
+#include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
+#include "../../../../../src/Scene/LightTrail/Actions/AlternatingGravityPointAction.h"
 
 using namespace fakeit;
 

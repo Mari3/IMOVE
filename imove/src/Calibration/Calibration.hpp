@@ -6,7 +6,7 @@
 #include <vector>
 #include <queue>
 
-#include "../interface/Person.h"
+#include "../Interface/Person.h"
 
 // Mappings for projector frames and points from camera frames and points based on camera and projector properties
 class Calibration {

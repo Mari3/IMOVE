@@ -4,11 +4,11 @@
 
 #include <gtest/gtest.h>
 #include <fakeit.hpp>
-#include "../../../../../src/scene/LightTrail/LightTrailConfiguration.h"
-#include "../../../../../src/scene/LightTrail/Repositories/LightsSceneRepositories.h"
-#include "../../../../../src/scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
-#include "../../../../../src/scene/LightTrail/Actions/UpdateLightSourcesAction.h"
-#include "../../../../../src/scene/Util/Range.h"
+#include "../../../../../src/Scene/LightTrail/LightTrailConfiguration.h"
+#include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneRepositories.h"
+#include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
+#include "../../../../../src/Scene/LightTrail/Actions/UpdateLightSourcesAction.h"
+#include "../../../../../src/Scene/Util/Range.h"
 
 using namespace fakeit;
 

@@ -8,8 +8,8 @@
 #include <limits>
 #include <vector>
 
-#include "../../interface/Person.h"
-#include "../../util/Vector2.h"
+#include "../../Interface/Person.h"
+#include "../../Util/Vector2.h"
 
 class PeopleIdentifier {
  private:

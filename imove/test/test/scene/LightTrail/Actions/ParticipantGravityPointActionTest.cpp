@@ -3,11 +3,11 @@
 //
 
 #include <gtest/gtest.h>
-#include "../../../../../src/scene/LightTrail/LightTrailConfiguration.h"
-#include "../../../../../src/scene/LightTrail/LightPerson.h"
-#include "../../../../../src/scene/LightTrail/Repositories/LightsSceneRepositories.h"
-#include "../../../../../src/scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
-#include "../../../../../src/scene/LightTrail/Actions/ParticipantGravityPointAction.h"
+#include "../../../../../src/Scene/LightTrail/LightTrailConfiguration.h"
+#include "../../../../../src/Scene/LightTrail/LightPerson.h"
+#include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneRepositories.h"
+#include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
+#include "../../../../../src/Scene/LightTrail/Actions/ParticipantGravityPointAction.h"
 
 LightTrailConfiguration pgpat_config(800,600,util::Range(0,0),util::Range(0,0),util::Range(0,0),util::Range(0,0),
 0,0,util::Range(0,0),500,100,0,0,0,0,0,0,0,0,0,0);

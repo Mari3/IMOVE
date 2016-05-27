@@ -9,7 +9,7 @@
 #include <queue>
 #include <vector>
 #include <memory>
-#include "../interface/Person.h"
+#include "../Interface/Person.h"
 #include "Action.h"
 #include "Condition.h"
 

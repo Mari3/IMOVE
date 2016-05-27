@@ -5,7 +5,7 @@
 #include <string>
 
 #include "ImoveManager.hpp"
-#include "calibration/Calibration.hpp"
+#include "Calibration/Calibration.hpp"
 
 const unsigned int CONFIGURATION_CALIBRATION_ARGN = 1;
 const unsigned int CONFIGURATION_LIGHTTRAIL_ARGN = 2;

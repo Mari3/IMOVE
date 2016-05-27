@@ -18,8 +18,8 @@
 // #include "cameraprojectionmapper/CameraProjectionMapper.h"
 #include "detector/PeopleDetector.h"
 #include "identifier/PeopleIdentifier.h"
-#include "../interface/Person.h"
-#include "../util/Vector2.h"
+#include "../Interface/Person.h"
+#include "../Util/Vector2.h"
 
 
 

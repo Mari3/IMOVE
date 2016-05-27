@@ -3,9 +3,9 @@
 #include "ImoveManager.hpp"
 
 #include "OpenCVUtil.hpp"
-#include "interface/Person.h"
-#include "scene/LightTrail/LightTrailScene.h"
-#include "scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
+#include "Interface/Person.h"
+#include "Scene/LightTrail/LightTrailScene.h"
+#include "Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 #include "Windows/FrameWindow.hpp"
 #include "Windows/DetectedPeopleCameraWindow.hpp"
 #include "Windows/DetectedPeopleProjectionWindow.hpp"

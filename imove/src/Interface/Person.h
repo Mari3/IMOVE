@@ -6,7 +6,7 @@
 #define IMOVE_PERSON_H
 
 #include <list>
-#include "../util/Vector2.h"
+#include "../Util/Vector2.h"
 
 using namespace std;
 

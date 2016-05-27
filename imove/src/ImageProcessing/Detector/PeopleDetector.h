@@ -18,7 +18,7 @@
 #include "opencv2/imgproc.hpp"
 #include "opencv2/videoio.hpp"
 
-#include "../../interface/Person.h"
+#include "../../Interface/Person.h"
 
 class PeopleDetector {
  private:

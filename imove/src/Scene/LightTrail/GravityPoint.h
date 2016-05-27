@@ -7,7 +7,7 @@
 
 
 #include "../Util/Range.h"
-#include "../../util/Vector2.h"
+#include "../../Util/Vector2.h"
 
 class GravityPoint {
 private:

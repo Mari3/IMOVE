@@ -1,7 +1,7 @@
-#include "calibration/Calibration.hpp"
-#include "scene/LightTrail/LightTrailConfiguration.h"
+#include "Calibration/Calibration.hpp"
+#include "Scene/LightTrail/LightTrailConfiguration.h"
 #include "ImageProcessing/PeopleExtractor.h"
-#include "scene/Scene.h"
+#include "Scene/Scene.h"
 
 // Setups people extractor and Scene, can let the Scene run using constant input of people extractor
 class ImoveManager {

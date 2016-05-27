@@ -6,8 +6,8 @@
 #define IMOVE_LIGHTPERSON_H
 
 
-#include "../../util/Vector2.h"
-#include "../../interface/Person.h"
+#include "../../Util/Vector2.h"
+#include "../../Interface/Person.h"
 #include "../Util/Range.h"
 
 class LightPerson{

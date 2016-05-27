@@ -1,6 +1,6 @@
 #include <opencv2/opencv.hpp>
 
-#include "../scene/Scene.h"
+#include "../Scene/Scene.h"
 
 // Window to display Scene
 class SceneWindow {
