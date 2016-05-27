@@ -5,9 +5,11 @@
 #include "BystanderGravityPointAction.h"
 #include "../LightTrailConfiguration.h"
 
-BystanderGravityPointAction::BystanderGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints,
-const LightTrailConfiguration &config) : person(person),
-    gravityPoints(gravityPoints), timer(Timer(config.bystanderGravityDelay(),true)), config(config)
+BystanderGravityPointAction::BystanderGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints, const LightTrailConfiguration &config)
+  : gravityPoints(gravityPoints),
+		person(person),
+		timer(Timer(config.bystanderGravityDelay(), true)),
+		config(config)
 {
     gravityPoint = std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(0,0),person->hue,config.bystanderGravity()));
     setLocation();

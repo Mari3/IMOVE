@@ -5,4 +5,4 @@
 
 namespace HueConverter {
     sf::Color ToColor(float hue);
-};
+}
