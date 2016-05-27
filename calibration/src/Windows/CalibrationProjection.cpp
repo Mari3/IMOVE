@@ -20,6 +20,7 @@ CalibrationProjectionWindow::CalibrationProjectionWindow(cv::Point2i position, C
 	coordinate_corners_projector[3] = cv::Point2f(resolution_projector.width - 1, resolution_projector.height - 1);
 	
 	// reconstruct points camera from projector points and perspective transformation
+	// create vector of points to perform perspectiveTransform which requires a vector of points instead of an array
 	std::vector<cv::Point2f> points_projector = std::vector<cv::Point2f>(this->CalibrationProjectionWindow::REQUIRED_CORNERS);
 	points_projector.at(0) = coordinate_corners_projector[0];
 	points_projector.at(1) = coordinate_corners_projector[1];
@@ -31,6 +32,7 @@ CalibrationProjectionWindow::CalibrationProjectionWindow(cv::Point2i position, C
 		points_projection,
 		calibration->getCameraProjectorTransformation().inv()
 	);
+	// create array of points after performing perspectiveTransform which required a vector of points instead of an array
 	coordinate_corners_camera[0] = points_projection.at(0);
 	coordinate_corners_camera[1] = points_projection.at(1);
 	coordinate_corners_camera[2] = points_projection.at(2);
