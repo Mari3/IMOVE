@@ -12,12 +12,12 @@ namespace OpenCVUtil {
 	const cv::Point2f ORIGIN2D(0, 0);
 
 	namespace Color {
-		const cv::Scalar ORANGE(U8_NONE, U8_HALF, U8_FULL);
-		const cv::Scalar GREEN(U8_NONE, U8_FULL, U8_HALF);
-		const cv::Scalar DARKBLUE(U8_HALF, U8_NONE, U8_NONE);
+		const cv::Scalar ORANGE   (U8_NONE, U8_HALF, U8_FULL);
+		const cv::Scalar GREEN    (U8_NONE, U8_FULL, U8_HALF);
+		const cv::Scalar DARKBLUE (U8_HALF, U8_NONE, U8_NONE);
 		const cv::Scalar LIGHTBLUE(U8_HALF, U8_FULL, U8_NONE);
-		const cv::Scalar WHITE(U8_FULL, U8_FULL, U8_FULL);
-		const cv::Scalar BLACK(U8_NONE, U8_NONE, U8_NONE);
+		const cv::Scalar WHITE    (U8_FULL, U8_FULL, U8_FULL);
+		const cv::Scalar BLACK    (U8_NONE, U8_NONE, U8_NONE);
 	}
 
 	/**
