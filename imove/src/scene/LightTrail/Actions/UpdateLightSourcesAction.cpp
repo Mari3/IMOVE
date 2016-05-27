@@ -18,9 +18,11 @@ bool UpdateLightSourcesAction::isDone(Action *&followUp) {
 
 void UpdateLightSourcesAction::execute(float dt) {
     if(trails->size() < cap && timer.update(dt)){
-        for(auto &lightSource : *sources){
+        sources->for_each([&](std::shared_ptr<LightSource> lightSource){
+
             trails->add(std::shared_ptr<LightTrail>(lightSource->sendOut()));
-        }
+
+        });
     }
 }
 

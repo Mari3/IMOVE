@@ -20,12 +20,14 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
     texture.draw(rect);
 
     //Draw all light trails on the texture
-    for(auto &trail : *lightTrails){
+    lightTrails->for_each([&](std::shared_ptr<LightTrail> trail){
+
         sf::RectangleShape circle(sf::Vector2f(config.trailThickness(), config.trailThickness()) );
         circle.setPosition(trail->getLocation().x,trail->getLocation().y);
         circle.setFillColor(HueConverter::ToColor(trail->hue));
         texture.draw(circle);
-    }
+        
+    });
 
     //Draw the texture onto the target
     texture.display();
@@ -33,19 +35,23 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
 
     //Draw all people on the target (for debugging purposes)
     lightPeople->for_each([&](std::shared_ptr<LightPerson> person){
+
         sf::CircleShape circle(5);
         circle.setFillColor(sf::Color::Cyan);
         circle.setPosition(sf::Vector2f(person->getLocation().x,person->getLocation().y));
         target.draw(circle);
+
     });
 
     //Draw all gravitypoints on the target (for debugging purposes)
-    for(auto &point : *gravityPoints){
+    gravityPoints->for_each([&](std::shared_ptr<GravityPoint> point){
+
         sf::CircleShape gCircle(4);
         gCircle.setFillColor(sf::Color::Red);
         gCircle.setPosition(point->location.x,point->location.y);
         target.draw(gCircle);
-    }
+
+    });
 
 }
 
