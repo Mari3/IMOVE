@@ -20,12 +20,14 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
     texture.draw(rect);
 
     //Draw all light trails on the texture
-    for(auto &trail : *lightTrails){
+    lightTrails->for_each([&](std::shared_ptr<LightTrail> trail){
+
         sf::RectangleShape circle(sf::Vector2f(config.trailThickness(), config.trailThickness()) );
         circle.setPosition(trail->getLocation().x,trail->getLocation().y);
         circle.setFillColor(HueConverter::ToColor(trail->hue));
         texture.draw(circle);
-    }
+
+    });
 
     //Draw the texture onto the target
     texture.display();
@@ -33,19 +35,23 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
 
     //Draw all people on the target (for debugging purposes)
     lightPeople->for_each([&](std::shared_ptr<LightPerson> person){
+
         sf::CircleShape circle(5);
         circle.setFillColor(sf::Color::Cyan);
         circle.setPosition(sf::Vector2f(person->getLocation().x,person->getLocation().y));
         target.draw(circle);
+
     });
 
     //Draw all gravitypoints on the target (for debugging purposes)
-    for(auto &point : *gravityPoints){
+    gravityPoints->for_each([&](std::shared_ptr<GravityPoint> point){
+
         sf::CircleShape gCircle(4);
         gCircle.setFillColor(sf::Color::Red);
         gCircle.setPosition(point->location.x,point->location.y);
         target.draw(gCircle);
-    }
+
+    });
 
 }
 
@@ -86,14 +92,26 @@ LightPersonRepository* lightPeople) : Scene(),
 
 
     //Add all the basic actions
-    actions.push_back(new DeleteAllAction(colorHoles,gravityPoints,lightPeople,lightSources,lightTrails));
-    actions.push_back(new UpdateLightTrailsAction(lightTrails,gravityPoints,config));
-    actions.push_back(new UpdateLightSourcesAction(lightSources,lightTrails,config));
-    actions.push_back(new AlternatingGravityPointAction(util::Range(0,180,true),gravityPoints,lightPeople,config));
-    actions.push_back(new AlternatingGravityPointAction(util::Range(180,0,true),gravityPoints,lightPeople,config));
+    actions.push_back(std::unique_ptr<Action>(
+            static_cast<Action*>(new DeleteAllAction(colorHoles,gravityPoints,lightPeople,lightSources,lightTrails))));
+    actions.push_back(std::unique_ptr<Action>(
+            static_cast<Action*>(new UpdateLightTrailsAction(lightTrails,gravityPoints,config))));
+    actions.push_back(std::unique_ptr<Action>(
+            static_cast<Action*>(new UpdateLightSourcesAction(lightSources,lightTrails,config))));
+    actions.push_back(std::unique_ptr<Action>(
+            static_cast<Action*>(new AlternatingGravityPointAction(util::Range(0,180,true),
+                                                        util::Range(0,config.screenWidth()),
+                                                        util::Range(0,config.screenHeight()),
+                                                        gravityPoints,lightPeople,config))));
+    actions.push_back(std::unique_ptr<Action>(
+            static_cast<Action*>(new AlternatingGravityPointAction(util::Range(180,0,true),
+                                                        util::Range(0,config.screenWidth()),
+                                                        util::Range(0,config.screenHeight()),
+                                                        gravityPoints,lightPeople,config))));
 
     //Add all conditions
-    conditions.push_back(new PersonChangedTypeCondition(lightPeople,gravityPoints,config));
+    conditions.push_back(std::unique_ptr<Condition>(
+            static_cast<Condition*>(new PersonChangedTypeCondition(lightPeople,gravityPoints,config))));
 }
 
 void LightTrailScene::processPeople() {

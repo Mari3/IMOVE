@@ -9,10 +9,14 @@ bool UpdateLightTrailsAction::isDone(Action *&followUp) {
 }
 
 void UpdateLightTrailsAction::execute(float dt) {
-    for(auto &lightTrail : *lightTrails){
+    lightTrails->for_each([&](std::shared_ptr<LightTrail> lightTrail){
+
+        // Calculate the force based on the gravity points
         Vector2 force = calculateForce(*(lightTrail.get()));
+        // Apply said force
         lightTrail->applyForce(force,dt,config.speedCap(),config.sidesEnabled(),config.screenWidth(),config.screenHeight());
-    }
+
+    });
 }
 
 UpdateLightTrailsAction::UpdateLightTrailsAction(LightTrailRepository* lightTrails, GravityPointRepository* gravityPoints,
@@ -24,7 +28,8 @@ UpdateLightTrailsAction::UpdateLightTrailsAction(LightTrailRepository* lightTrai
 Vector2 UpdateLightTrailsAction::calculateForce(LightTrail trail) {
     Vector2 totalForce(0,0);
 
-    for(auto &gravityPoint : *gravityPoints){
+    gravityPoints->for_each([&](std::shared_ptr<GravityPoint> gravityPoint){
+
         if(gravityPoint->hue.contains(trail.hue)) { // If the hue of the light trail is in the hue-range of the gravity point
             Vector2 diff = gravityPoint->location - trail.getLocation();
             float dist = diff.size();
@@ -38,7 +43,8 @@ Vector2 UpdateLightTrailsAction::calculateForce(LightTrail trail) {
             // Add force that is inversely proportional to distance, like real gravity.
             totalForce += diff / dist / dist * proximityModifier * gravityPoint->gravity;
         }
-    }
+
+    });
     return totalForce;
 }
 

@@ -52,24 +52,6 @@ public:
         return map[id];
     }
 
-    std::vector<std::shared_ptr<LightPerson>>::iterator begin() override{
-        std::vector<shared_ptr<LightPerson>> items;
-        //items.reserve(map.size());
-        for(auto &pair : map){
-            items.push_back(pair.second);
-        }
-        return items.begin();
-    }
-
-    std::vector<std::shared_ptr<LightPerson>>::iterator end() override{
-        std::vector<shared_ptr<LightPerson>> items;
-        //items.reserve(map.size());
-        for(auto &pair : map){
-            items.push_back(pair.second);
-        }
-        return items.end();
-    }
-
     virtual void for_each(const std::function<void(std::shared_ptr<LightPerson>)> &f) override {
         for(auto &pair : map){
             f(pair.second);
