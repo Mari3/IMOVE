@@ -127,7 +127,7 @@ void LightTrailScene::processPeople() {
         //Set up range for generating new hues
         util::Range hueDraw(0, 360, true);
 
-        for (int i = 0; i < newPeople.size(); ++i) {
+        for (unsigned int i = 0; i < newPeople.size(); ++i) {
 
             Person person = newPeople[i];
             unsigned int id = person.getId();

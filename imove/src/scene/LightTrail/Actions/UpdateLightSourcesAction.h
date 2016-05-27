@@ -17,7 +17,7 @@ private:
     LightSourceRepository* sources;
     LightTrailRepository* trails;
     Timer timer;
-    int cap;
+    unsigned int cap;
 public:
     UpdateLightSourcesAction(LightSourceRepository* lightSources, LightTrailRepository* lightTrails,
         const LightTrailConfiguration& config);
