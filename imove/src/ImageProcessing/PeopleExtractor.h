@@ -15,9 +15,8 @@
 #include "opencv2/imgcodecs.hpp"
 #include "opencv2/imgproc.hpp"
 #include "opencv2/videoio.hpp"
-// #include "cameraprojectionmapper/CameraProjectionMapper.h"
-#include "detector/PeopleDetector.h"
-#include "identifier/PeopleIdentifier.h"
+#include "Detector/PeopleDetector.h"
+#include "Identifier/PeopleIdentifier.h"
 #include "../Interface/Person.h"
 #include "../Util/Vector2.h"
 
@@ -52,6 +51,9 @@ class PeopleExtractor {
 
   // Main extraction function to extract people from a frame
   vector<Person> extractPeople(cv::Mat& new_frame);
+
+  // Display image processing results
+  void displayResults();
 };
 
 #endif  // IMOVE_SRC_IMAGE_PROCESSING_PEOPLEEXTRACTOR_H_

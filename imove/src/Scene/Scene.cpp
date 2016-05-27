@@ -30,7 +30,7 @@ void Scene::update(float dt) {
     vector<int> toDelete;
 
     // Execute the actions
-    for(int i=0;i<actions.size();++i){
+    for(unsigned int i = 0; i < actions.size(); ++i) {
         // Execute the action
         actions[i]->execute(dt);
 
@@ -47,7 +47,7 @@ void Scene::update(float dt) {
 
     // Remove done actions
     int modifier = 0;
-    for(auto &i : toDelete){
+    for(auto &i : toDelete) {
         actions.erase(actions.begin()+i-modifier);
         modifier++;
     }

@@ -1,7 +1,7 @@
 #include <opencv2/opencv.hpp>
 
 #include "../../../imove/src/OpenCVWindow.hpp"
-#include "../../../imove/src/calibration/Calibration.hpp"
+#include "../../../imove/src/Calibration/Calibration.hpp"
 
 // Window to calibrate the elimination of the projection on the camera based on the projector frame with some delay and intensity
 class EliminateProjectionWindow : public OpenCVWindow {

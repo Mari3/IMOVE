@@ -1,7 +1,7 @@
 #include <opencv2/opencv.hpp>
 
 #include "../../../imove/src/OpenCVWindow.hpp"
-#include "../../../imove/src/calibration/Calibration.hpp"
+#include "../../../imove/src/Calibration/Calibration.hpp"
 
 class ProjectionWindow : public OpenCVWindow {
 	public:

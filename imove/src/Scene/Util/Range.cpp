@@ -6,7 +6,12 @@
 #include "Range.h"
 
 util::Range::Range(float start, float end, RangeRandom* random, bool bounds, float lowerBound, float upperBound) :
-    start(start),end(end),random(random),bounds(bounds),lowerBound(lowerBound),upperBound(upperBound)
+    start(start),
+		end(end),
+		lowerBound(lowerBound),
+		upperBound(upperBound),
+		bounds(bounds),
+		random(random)
 {
     if(bounds)
     {

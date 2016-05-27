@@ -2,7 +2,7 @@
 
 #include "../../../imove/src/OpenCVWindow.hpp"
 #include "../../../imove/src/OpenCVUtil.hpp"
-#include "../../../imove/src/calibration/Calibration.hpp"
+#include "../../../imove/src/Calibration/Calibration.hpp"
 
 // Window to calibrete the width of a meter on the camera
 class CalibrationMeterWindow : public OpenCVWindow {
