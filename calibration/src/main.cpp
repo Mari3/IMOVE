@@ -6,7 +6,7 @@
 #include <string>
 #include <queue>
 
-#include "./OpenCVUtil.hpp"
+#include "../../imove/src/OpenCVUtil.hpp"
 #include "../../imove/src/calibration/Calibration.hpp"
 #include "./Windows/Projection.hpp"
 #include "./Windows/Projector.hpp"
@@ -103,7 +103,7 @@ int main(int argc, char* argv[]) {
 	read_config.release();
 	
  	// create initial calibration based on configuration, arguments and defaults
-	calibration = new Calibration(resolution_projector, camera_projector_transformation, frames_projector_camera_delay, projector_background_light, meter);
+	calibration = new Calibration(resolution_projector, resolution_camera, cameradevice, camera_projector_transformation, frames_projector_camera_delay, projector_background_light, meter);
 	
 	// setup calibration windows
 	ProjectorWindow projector_window(cv::Size(0, 0));

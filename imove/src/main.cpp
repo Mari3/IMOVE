@@ -1,26 +1,14 @@
-#include <opencv2/opencv.hpp>
 #include <opencv2/core/persistence.hpp>
 
 #include <iostream>
 #include <vector>
 #include <string>
-#include <SFML/Graphics.hpp>
 
+#include "Manager.hpp"
 #include "calibration/Calibration.hpp"
-#include "image_processing/PeopleExtractor.h"
-#include "interface/Person.h"
-#include "scene/Scene.h"
-#include "scene/LightTrail/LightTrailScene.h"
-#include "scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 
-const signed int NOKEY_ANYKEY = -1;
-
-Calibration* calibration;
-int camera_device;
-Scene* scene;
-cv::Size resolution_camera;
-cv::Size resolution_projector;
-float meter;
+const unsigned int CONFIGURATION_CALIBRATION_ARGN = 1;
+const unsigned int CONFIGURATION_LIGHTTRAIL_ARGN = 2;
 
 // setup and run scene with continous people extraction as input based on configuration given in parameter otherwise show parameters
 int main(int argc, char* argv[]) {
@@ -32,9 +20,10 @@ int main(int argc, char* argv[]) {
 
 	// read calibration config
 	cv::FileStorage fs;
-	fs.open(argv[1], cv::FileStorage::READ);
+	fs.open(argv[CONFIGURATION_CALIBRATION_ARGN], cv::FileStorage::READ);
+	int camera_device;
 	fs["Camera_device"] >> camera_device;
-	//cv::Size resolution_camera;
+	cv::Size resolution_camera;
 	fs["Resolution_camera"] >> resolution_camera;
 	cv::Size resolution_projector;
 	fs["Resolution_projector"] >> resolution_projector;
@@ -50,126 +39,19 @@ int main(int argc, char* argv[]) {
 	}
 	double percentage_projector_background_light;
 	fs["Percentage_projector_background_light"] >> percentage_projector_background_light;
-	//float meter;
+	float meter;
 	fs["Meter"] >> meter;
 	fs.release();
 
-	calibration = new Calibration(resolution_projector, camera_projector_transformation, frames_projector_camera_delay, percentage_projector_background_light, meter);
+	Calibration* calibration = new Calibration(resolution_projector, resolution_camera, camera_device, camera_projector_transformation, frames_projector_camera_delay, percentage_projector_background_light, meter);
+  
+	LightTrailConfiguration configuration_lighttrail = LightTrailConfiguration::readFromFile(argv[CONFIGURATION_LIGHTTRAIL_ARGN]);
 
-	// debug windows
-	cv::namedWindow("Camera", cv::WINDOW_NORMAL);
-	cv::moveWindow("Camera", 500, 0);
-
-	cv::namedWindow("Projection", cv::WINDOW_NORMAL);
-	cv::moveWindow("Projection", 1000, 0);
-
-	cv::namedWindow("Frame", cv::WINDOW_NORMAL);
-
-	// setup scene
-    sf::RenderWindow window(sf::VideoMode(resolution_projector.width, resolution_projector.height),"Projection");
-    window.clear(sf::Color::Black);
-    window.display();
-    
-    
-    LightTrailConfiguration config = LightTrailConfiguration::readFromFile(argv[2]);
-    scene = new LightTrailScene(config,
-                                       new LightSourceVectorRepository(),
-                                       new LightTrailVectorRepository(),
-                                       new GravityPointVectorRepository(),
-                                       new ColorHoleVectorRepository(),
-                                       new LightPersonMapRepository()
-                                       );
-
-	// setup clock
-  sf::Clock clock;
-	
-	// setup people extractor
-	PeopleExtractor people_extractor = PeopleExtractor(resolution_camera, calibration->getMeter(), 216);
-
-	// debug camera window
-	cv::namedWindow("Camera", cv::WINDOW_NORMAL);
-	cv::Mat frame_camera;
-	cv::Mat frame_projection;
-	cv::VideoCapture video_capture(camera_device);
-
-	// while no key pressed
-	while (cv::waitKey(1) == NOKEY_ANYKEY) {
-		//for(int i=0;i<2;++i)
-		//	video_capture.grab();
-		if (!video_capture.read(frame_camera)) {
-			std::cerr << "Unable to read next frame." << std::endl;
-			std::cerr << "Exiting..." << std::endl;
-			exit(EXIT_FAILURE);
-		}
-
-		// debug projection frame
-		calibration->createFrameProjectionFromFrameCamera(
-			frame_projection,
-			frame_camera
-		);
-		// extract people from camera frame
-	 	vector<Person> detected_people = people_extractor.extractPeople(frame_camera);
-		// detected_people.push_back(Person(Vector2(resolution_camera.width / 2, 2 * (resolution_camera.height / 3)), Participant));
-		// debug people drawing on camera frame
-		for (unsigned int i = 0; i < detected_people.size(); ++i) {
-			cv::circle(
-				frame_camera,
-				cv::Point2f(
-					detected_people.at(i).getLocation().x,
-					detected_people.at(i).getLocation().y
-				),
-				20,
-				cv::Scalar(255, 0, 0),
-				2
-			);
-		}
-		// debug camera frame
-		cv::imshow("Camera", frame_camera);
-		// change extrated people to projector location from camera location
-		calibration->changeProjectorFromCameraLocationPerson(detected_people);
-		// debug extracted perspective mapped people on projection
-		for (unsigned int i = 0; i < detected_people.size(); ++i) {
-			cv::circle(
-				frame_projection,
-				cv::Point2f(
-					detected_people.at(i).getLocation().x,
-					detected_people.at(i).getLocation().y
-				),
-				80,
-				cv::Scalar(255, 244, 0),
-				8
-			);
-			cv::putText(
-				frame_projection,
-				//std::to_string(detected_people.at(i).getId()),
-				"12",
-				cv::Point2f(
-					detected_people.at(i).getLocation().x,
-					detected_people.at(i).getLocation().y
-				),
-				cv::FONT_HERSHEY_SIMPLEX,
-				1,
-				cv::Scalar(255, 0, 0)
-			);
-		}
-		// debug projection window
-		cv::imshow("Projection", frame_projection);
-
-		// update scene with location of people
-		scene->updatePeople(detected_people);
-
-		// draw next scene frame based on clock difference
-		float dt = clock.restart().asSeconds();
-		//float dt = 1.f/24.f;
-		scene->update(dt);
-
-		window.clear(sf::Color::Black);
-		scene->draw(window);
-
-		window.display();
+	Manager manager(calibration, configuration_lighttrail);
+	if (manager.run()) {
+		return EXIT_SUCCESS;
+	} else {
+		std::cerr << "Exiting due to unexpected run error." << std::endl;
+		return EXIT_FAILURE;
 	}
-
-	video_capture.release();
-
-	return EXIT_SUCCESS;
 }

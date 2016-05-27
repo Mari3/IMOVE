@@ -15,11 +15,13 @@ class Calibration {
 		 * Setup properties for mapping projector from camera.
 		 * 
 		 * @param resolution_projector The projector resolution
+		 * @param resolution_camera The camera resolution
+		 * @param camera_device The integer identifier of the camera by the OS
 		 * @param camera_projector_transformation The projection transformation matrix between the camera and projection
 		 * @param frames_projector_camera_delay The amount of frames delay between the projectors projection captured by the camera
 		 * @param projector_background_light The light level difference between the projectors projection light level and background level
 		 **/
-		Calibration(const cv::Size& resolution_projector, cv::Mat& camera_projector_transformation, unsigned int frames_projector_camera_delay, double projector_background_light, float meter);
+		Calibration(const cv::Size& resolution_projector, const cv::Size& resolution_camera, unsigned int camera_device, cv::Mat& camera_projector_transformation, unsigned int frames_projector_camera_delay, double projector_background_light, float meter);
 
 		/**
 		 * Adds a projector frame which is used for eliminating the projection
@@ -87,6 +89,21 @@ class Calibration {
 		cv::Mat getCameraProjectorTransformation() const;
 
 		/**
+		 * Gets the resolution of the projector.
+		 **/
+		cv::Size getResolutionProjector() const;
+
+		/**
+		 * Gets the resolution of the camera.
+		 **/
+		cv::Size getResolutionCamera() const;
+
+		/**
+		 * Gets the integer of the camera device defined by the OS.
+		 **/
+		unsigned int getCameraDevice() const;
+
+		/**
 		 * Sets the one meter in pixels on a camera image.
 		 * 
 		 * @param meter The one meter in pixel on a camera image
@@ -96,11 +113,15 @@ class Calibration {
 		/**
 		 * Gets the one meter in pixels on a camera image.
 		 **/
-		float getMeter() const;
+		const float getMeter() const;
 
 	private:
 		// The projector resolution
 		cv::Size resolution_projector;
+		// The camera resolution
+		cv::Size resolution_camera;
+		// The integer identifier of the camera device of the OS 
+		unsigned int camera_device;
 		// The projection transformation matrix between the camera and projection
 		cv::Mat camera_projector_transformation;
 		// The queue with the projector frames which are not yet expected to be captured by the camera frame
