@@ -45,10 +45,13 @@ Vector2 Vector2::operator*(const float &v)
     return Vector2(x*v,y*v);
 }
 
+bool Vector2::operator==(const Vector2 v) const
+{
+  return ((x == v.x) && (y == v.y));
+}
+
 float Vector2::angle(Vector2 other)
 {
     float cosangle = (x*other.x+y*other.y)/size()/other.size();
     return acosf(cosangle)/static_cast<float>(M_PI*180.f);
 }
-
-
