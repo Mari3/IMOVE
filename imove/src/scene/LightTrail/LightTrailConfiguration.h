@@ -47,7 +47,7 @@ public:
     LightTrailConfiguration(unsigned int _screenWidth, unsigned int _screenHeight, const util::Range &_corner1Hue,
                             const util::Range &_corner2Hue, const util::Range &_corner3Hue,
                             const util::Range &_corner4Hue, float _sendOutDelay, int _trailCap, const util::Range &_sendOutSpeed,
-                            float _participantGravity, float _participantAntigravity, float _bystanderGravity,
+                            float _participantGravity, float _participantAntigravity, float _bystanderGravity, float _bystanderGravityDelay,
                             float _alternatingGravity, float _gravityPointDelay, float _proximityRange,
                             float _proximityModifier, bool _sidesEnabled, float _speedCap, int _trailThickness, uint8_t _fade);
 

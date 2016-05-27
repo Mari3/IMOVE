@@ -89,8 +89,14 @@ LightPersonRepository* lightPeople) : Scene(),
     actions.push_back(new DeleteAllAction(colorHoles,gravityPoints,lightPeople,lightSources,lightTrails));
     actions.push_back(new UpdateLightTrailsAction(lightTrails,gravityPoints,config));
     actions.push_back(new UpdateLightSourcesAction(lightSources,lightTrails,config));
-    actions.push_back(new AlternatingGravityPointAction(util::Range(0,180,true),gravityPoints,lightPeople,config));
-    actions.push_back(new AlternatingGravityPointAction(util::Range(180,0,true),gravityPoints,lightPeople,config));
+    actions.push_back(new AlternatingGravityPointAction(util::Range(0,180,true),
+                                                        util::Range(0,config.screenWidth()),
+                                                        util::Range(0,config.screenHeight()),
+                                                        gravityPoints,lightPeople,config));
+    actions.push_back(new AlternatingGravityPointAction(util::Range(180,0,true),
+                                                        util::Range(0,config.screenWidth()),
+                                                        util::Range(0,config.screenHeight()),
+                                                        gravityPoints,lightPeople,config));
 
     //Add all conditions
     conditions.push_back(new PersonChangedTypeCondition(lightPeople,gravityPoints,config));

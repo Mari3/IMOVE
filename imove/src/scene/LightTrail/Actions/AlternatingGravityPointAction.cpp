@@ -22,10 +22,12 @@ void AlternatingGravityPointAction::execute(float dt) {
     }
 }
 
-AlternatingGravityPointAction::AlternatingGravityPointAction(util::Range hue, GravityPointRepository* gravityPoints, LightPersonRepository* lightPeople,
-const LightTrailConfiguration &config)
+AlternatingGravityPointAction::AlternatingGravityPointAction(util::Range hue, util::Range xRange, util::Range yRange,
+                                                             GravityPointRepository* gravityPoints,
+                                                             LightPersonRepository* lightPeople,
+                                                             const LightTrailConfiguration &config)
         : gravityPoints(gravityPoints), lightPeople(lightPeople),
-          timer(config.gravityPointDelay(),true), xRange(0,config.screenWidth()), yRange(0,config.screenHeight()),
+          timer(config.gravityPointDelay(),true), xRange(xRange), yRange(yRange),
         myGravityPoint(std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(0,0),hue,config.alternatingGravity())))
 {
     // Register the gravity point

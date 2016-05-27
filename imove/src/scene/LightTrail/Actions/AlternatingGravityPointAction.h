@@ -24,7 +24,7 @@ private:
     util::Range yRange;
 public:
 
-    AlternatingGravityPointAction(util::Range hue, GravityPointRepository* gravityPoints, LightPersonRepository* lightPeople,
+    AlternatingGravityPointAction(util::Range hue, util::Range xRange, util::Range yRange, GravityPointRepository* gravityPoints, LightPersonRepository* lightPeople,
     const LightTrailConfiguration &config);
 
     bool isDone(Action *&followUp);

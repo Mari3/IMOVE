@@ -12,8 +12,8 @@
 
 using namespace fakeit;
 
-LightTrailConfiguration config(800,600,util::Range(0,0),util::Range(0,0),util::Range(0,0),util::Range(0,0),
-                               2.f,10,util::Range(0,100),0,0,0,0,0,0,0,0,0,0,0);
+LightTrailConfiguration config_ulsat(800,600,util::Range(0,0),util::Range(0,0),util::Range(0,0),util::Range(0,0),
+                               2.f,10,util::Range(0,100),0,0,0,0,0,0,0,0,0,0,0,0);
 
 TEST (UpdateLightSourceTest, LightTrailMadeAfterTime) {
 
@@ -22,7 +22,7 @@ TEST (UpdateLightSourceTest, LightTrailMadeAfterTime) {
     LightSourceRepository* sources = new LightSourceVectorRepository();
     sources->add(std::shared_ptr<LightSource>(new LightSource(Vector2(0,0),util::Range(0,0,true),util::Range(0,0,true),util::Range(0,0,true))));
 
-    UpdateLightSourcesAction action(sources,trails,config);
+    UpdateLightSourcesAction action(sources,trails,config_ulsat);
 
     ASSERT_EQ(trails->size(),0);
 
@@ -44,7 +44,7 @@ TEST (UpdateLightSourceTest, StayWithinCap) {
     LightSourceRepository* sources = new LightSourceVectorRepository();
     sources->add(std::shared_ptr<LightSource>(new LightSource(Vector2(0,0),util::Range(0,0,true),util::Range(0,0,true),util::Range(0,0,true))));
 
-    UpdateLightSourcesAction action(sources,trails,config);
+    UpdateLightSourcesAction action(sources,trails,config_ulsat);
 
     ASSERT_EQ(trails->size(),10);
 
