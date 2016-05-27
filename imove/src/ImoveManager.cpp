@@ -6,10 +6,10 @@
 #include "interface/Person.h"
 #include "scene/LightTrail/LightTrailScene.h"
 #include "scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
-#include "Windows/Frame.hpp"
-#include "Windows/DetectedPeopleCamera.hpp"
-#include "Windows/DetectedPeopleProjection.hpp"
-#include "Windows/Scene.hpp"
+#include "Windows/FrameWindow.hpp"
+#include "Windows/DetectedPeopleCameraWindow.hpp"
+#include "Windows/DetectedPeopleProjectionWindow.hpp"
+#include "Windows/SceneWindow.hpp"
 
 ImoveManager::ImoveManager(Calibration* calibration, LightTrailConfiguration& configuration_lighttrail) {
 	this->calibration = calibration;

@@ -1,7 +1,7 @@
 #include <opencv2/opencv.hpp>
 
 #include "../OpenCVUtil.hpp"
-#include "DetectedPeopleProjection.hpp"
+#include "DetectedPeopleProjectionWindow.hpp"
 
 DetectedPeopleProjectionWindow::DetectedPeopleProjectionWindow(cv::Point2i position) : OpenCVWindow("Detected people on projection", position) { }
 

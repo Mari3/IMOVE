@@ -1,7 +1,7 @@
 #include <opencv2/opencv.hpp>
 
 #include "../OpenCVUtil.hpp"
-#include "Frame.hpp"
+#include "FrameWindow.hpp"
 
 FrameWindow::FrameWindow(cv::Point2i position) : OpenCVWindow("Frame", position) { }
 

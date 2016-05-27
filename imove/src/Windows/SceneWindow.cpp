@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 
-#include "Scene.hpp"
+#include "SceneWindow.hpp"
 
 SceneWindow::SceneWindow(cv::Size resolution_projector) {
 	this->window_scene = new sf::RenderWindow(

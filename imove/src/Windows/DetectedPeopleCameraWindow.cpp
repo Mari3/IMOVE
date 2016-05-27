@@ -1,7 +1,7 @@
 #include <opencv2/opencv.hpp>
 
 #include "../OpenCVUtil.hpp"
-#include "DetectedPeopleCamera.hpp"
+#include "DetectedPeopleCameraWindow.hpp"
 
 DetectedPeopleCameraWindow::DetectedPeopleCameraWindow(cv::Point2i position) : OpenCVWindow("Detected people on camera", position) { }
 
