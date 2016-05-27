@@ -10,6 +10,8 @@ PeopleExtractor::PeopleExtractor(cv::Size frame_size, float pixels_per_meter, fl
 
   // Initialize empty frame
   frame = cv::Mat::zeros(resolution_resize_height, frame_size.width/resize_ratio, CV_8UC1);
+  std::cout << "Resized meter = " + std::to_string(pixels_per_meter/resize_ratio) << std::endl;
+
 
   if (pixels_per_meter > 400) {
     // Initialize detector with low camera if meter > 400 pixels
@@ -44,4 +46,8 @@ vector<Person> PeopleExtractor::extractPeople(cv::Mat& new_frame) {
 
   // Return vector containing all people in the scene
   return people;
+}
+
+void PeopleExtractor::displayResults() {
+  cv::imshow("Frame", detector.getDisplayFrame());
 }
