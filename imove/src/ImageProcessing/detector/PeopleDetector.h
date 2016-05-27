@@ -28,7 +28,7 @@ class PeopleDetector {
   // KNN background subtractor
   cv::Ptr<cv::BackgroundSubtractorKNN> background_subtractor;
 
-  // Blob detector
+  // Blob Detector
   cv::Ptr<cv::SimpleBlobDetector> blob_detector;
 
   // Nr of pixels equal to one meter on the Scene
