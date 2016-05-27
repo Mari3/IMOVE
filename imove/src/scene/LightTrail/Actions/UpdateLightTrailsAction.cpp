@@ -11,7 +11,9 @@ bool UpdateLightTrailsAction::isDone(Action *&followUp) {
 void UpdateLightTrailsAction::execute(float dt) {
     lightTrails->for_each([&](std::shared_ptr<LightTrail> lightTrail){
 
+        // Calculate the force based on the gravity points
         Vector2 force = calculateForce(*(lightTrail.get()));
+        // Apply said force
         lightTrail->applyForce(force,dt,config.speedCap(),config.sidesEnabled(),config.screenWidth(),config.screenHeight());
 
     });
