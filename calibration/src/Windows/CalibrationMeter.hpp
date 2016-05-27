@@ -1,6 +1,6 @@
 #include <opencv2/core/core.hpp>
 
-#include "../OpenCVWindow.hpp"
+#include "../../../imove/src/OpenCVWindow.hpp"
 #include "../../../imove/src/OpenCVUtil.hpp"
 #include "../../../imove/src/calibration/Calibration.hpp"
 

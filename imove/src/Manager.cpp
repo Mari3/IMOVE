@@ -6,28 +6,13 @@
 #include "interface/Person.h"
 #include "scene/LightTrail/LightTrailScene.h"
 #include "scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
+#include "Windows/Frame.hpp"
+#include "Windows/DetectedPeopleCamera.hpp"
+#include "Windows/DetectedPeopleProjection.hpp"
+#include "Windows/Scene.hpp"
 
 ImoveManager::ImoveManager(Calibration* calibration, LightTrailConfiguration& configuration_lighttrail) {
 	this->calibration = calibration;
-	// debug windows
-	cv::namedWindow("Camera", cv::WINDOW_NORMAL);
-	cv::moveWindow("Camera", 500, 0);
-
-	cv::namedWindow("Projection", cv::WINDOW_NORMAL);
-	cv::moveWindow("Projection", 1000, 0);
-
-	cv::namedWindow("Frame", cv::WINDOW_NORMAL);
-
-	// setup scene
-	this->window_scene = new sf::RenderWindow(
-		sf::VideoMode(
-			this->calibration->getResolutionProjector().width,
-			this->calibration->getResolutionProjector().height
-		),
-		"Projector"
-	);
-  this->window_scene->clear(sf::Color::Black);
-  this->window_scene->display();
 
   this->scene = new LightTrailScene(
 		configuration_lighttrail,
@@ -42,24 +27,26 @@ ImoveManager::ImoveManager(Calibration* calibration, LightTrailConfiguration& co
 	this->people_extractor = new PeopleExtractor(this->calibration->getResolutionCamera(), this->calibration->getMeter(), 216);
 }
 
-bool ImoveManager::run() {
+void ImoveManager::run() {
+	// debug windows
+	FrameWindow window_frame(cv::Size(0, 0));
+	DetectedPeopleCameraWindow detectedpeople_camera_window(cv::Size(500, 0));
+	DetectedPeopleProjectionWindow detectedpeople_projection_window(cv::Size(1000, 0));
+	
+	// setup scene
+	SceneWindow window_scene(this->calibration->getResolutionProjector());
+	
 	// setup clock
   sf::Clock clock;
 	cv::Mat frame_camera;
 	cv::Mat frame_projection;
+	cv::Mat detectpeople_frame;
 	cv::VideoCapture video_capture(this->calibration->getCameraDevice());
 	vector<Person> detected_people;
-	cv::Mat detectpeople_frame;
+	float dt;
 
 	// while no key pressed
-	while (cv::waitKey(1) == OpenCVUtil::NOKEY_ANYKEY) {
-		//for(int i=0;i<2;++i)
-		//	video_capture.grab();
-		if (!video_capture.read(frame_camera)) {
-			std::cerr << "Unable to read next frame." << std::endl;
-			return false;
-		}
-
+	while (cv::waitKey(1) == OpenCVUtil::NOKEY_ANYKEY && video_capture.read(frame_camera)) {
 		// debug projection frame
 		this->calibration->createFrameProjectionFromFrameCamera(
 			frame_projection,
@@ -68,65 +55,17 @@ bool ImoveManager::run() {
 		// extract people from camera frame
 		detectpeople_frame = frame_camera.clone();
 	 	detected_people = people_extractor->extractPeople(detectpeople_frame);
-		// detected_people.push_back(Person(Vector2(resolution_camera.width / 2, 2 * (resolution_camera.height / 3)), Participant));
-		// debug people drawing on camera frame
-		for (unsigned int i = 0; i < detected_people.size(); ++i) {
-			cv::circle(
-				frame_camera,
-				cv::Point2f(
-					detected_people.at(i).getLocation().x,
-					detected_people.at(i).getLocation().y
-				),
-				ImoveManager::SIZE_CIRCLE_CAMERA_DEBUG,
-				OpenCVUtil::Color::DARKBLUE,
-				ImoveManager::THICKNESS_CIRCLE_CAMERA_DEBUG
-			);
-		}
-		// debug camera frame
-		cv::imshow("Camera", frame_camera);
 		// change extrated people to projector location from camera location
 		calibration->changeProjectorFromCameraLocationPerson(detected_people);
-		// debug extracted perspective mapped people on projection
-		for (unsigned int i = 0; i < detected_people.size(); ++i) {
-			cv::circle(
-				frame_projection,
-				cv::Point2f(
-					detected_people.at(i).getLocation().x,
-					detected_people.at(i).getLocation().y
-				),
-				ImoveManager::SIZE_CIRCLE_PROJECTION_DEBUG,
-				OpenCVUtil::Color::LIGHTBLUE,
-				ImoveManager::THICKNESS_CIRCLE_PROJECTION_DEBUG
-			);
-			cv::putText(
-				frame_projection,
-				std::to_string(detected_people.at(i).getId()),
-				cv::Point2f(
-					detected_people.at(i).getLocation().x,
-					detected_people.at(i).getLocation().y
-				),
-				cv::FONT_HERSHEY_SIMPLEX,
-				ImoveManager::SIZE_FONT_DEBUG,
-				OpenCVUtil::Color::DARKBLUE
-			);
-		}
-		// debug projection window
-		cv::imshow("Projection", frame_projection);
-
 		// update scene with location of people
 		this->scene->updatePeople(detected_people);
 
 		// draw next scene frame based on clock difference
-		float dt = clock.restart().asSeconds();
-		//float dt = 1.f/24.f;
+		dt = clock.restart().asSeconds();
+		//dt = 1.f/24.f;
 		this->scene->update(dt);
 
-		this->window_scene->clear(sf::Color::Black);
-		this->scene->draw(*this->window_scene);
-
-		this->window_scene->display();
+		window_scene.drawScene(this->scene);
 	}
 	video_capture.release();
-
-	return true;
 }

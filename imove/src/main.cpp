@@ -23,10 +23,7 @@ int main(int argc, char* argv[]) {
 	LightTrailConfiguration configuration_lighttrail = LightTrailConfiguration::readFromFile(argv[CONFIGURATION_LIGHTTRAIL_ARGN]);
 
 	ImoveManager manager(calibration, configuration_lighttrail);
-	if (manager.run()) {
-		return EXIT_SUCCESS;
-	} else {
-		std::cerr << "Exiting due to unexpected run error." << std::endl;
-		return EXIT_FAILURE;
-	}
+	manager.run();
+	
+	return EXIT_SUCCESS;
 }

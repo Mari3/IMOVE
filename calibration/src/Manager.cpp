@@ -11,7 +11,7 @@ CalibrationManager::CalibrationManager(Calibration* calibration) {
 	this->calibration = calibration;
 }
 
-bool CalibrationManager::run() {
+void CalibrationManager::run() {
 	// setup calibration windows
 	cv::Mat frame_camera;
 	cv::VideoCapture camera_videoreader(calibration->getCameraDevice());
@@ -37,6 +37,4 @@ bool CalibrationManager::run() {
 	}
 
 	camera_videoreader.release();
-
-	return true;
 }

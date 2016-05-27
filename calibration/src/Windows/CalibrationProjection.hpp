@@ -1,6 +1,6 @@
 #include <opencv2/core/core.hpp>
 
-#include "../OpenCVWindow.hpp"
+#include "../../../imove/src/OpenCVWindow.hpp"
 #include "../../../imove/src/calibration/Calibration.hpp"
 
 // window to calibrate the projection coordinates on the camera and provide the transformation matrix to the projector coordinates

@@ -5,7 +5,7 @@ class CalibrationManager {
 		CalibrationManager(Calibration* calibration);
 		
 		// runs the calibration using windows and camera as input and sets values in calibration
-		bool run();
+		void run();
 
 	protected:
 		Calibration* calibration;
