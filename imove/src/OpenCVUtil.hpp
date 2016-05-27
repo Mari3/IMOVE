@@ -17,6 +17,7 @@ namespace OpenCVUtil {
 		const cv::Scalar DARKBLUE(U8_HALF, U8_NONE, U8_NONE);
 		const cv::Scalar LIGHTBLUE(U8_HALF, U8_FULL, U8_NONE);
 		const cv::Scalar WHITE(U8_FULL, U8_FULL, U8_FULL);
+		const cv::Scalar BLACK(U8_NONE, U8_NONE, U8_NONE);
 	}
 
 	/**

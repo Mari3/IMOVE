@@ -11,6 +11,11 @@
 // Mappings for projector frames and points from camera frames and points based on camera and projector properties
 class Calibration {
 	public:
+		// Default configuration parameters if not given when createFromFile
+		static constexpr unsigned DEFAULT_FRAMES_PROJECTOR_CAMERA_DELAY = 5;
+		static constexpr double DEFAULT_PROJECTOR_BACKGROUND_LIGHT = 39;
+		static constexpr float DEFAULT_METER = 100.f;
+		
 		/**
 		 * Setup properties for mapping projector from camera.
 		 * 
@@ -26,9 +31,23 @@ class Calibration {
 		/**
 		 * Creates the Calibration from a file by which the filepath is given
 		 * 
+		 * @param filepath Path to file from which to read calibration
+		 **/
+		static Calibration* readFile(const char* filepath);
+		
+		/**
+		 * Creates the Calibration from a file by which the filepath is given and defaults
+		 * 
 		 * @param filepath Path to file from which to load calibration
 		 **/
-		static Calibration* loadFromFile(char* filepath);
+		static Calibration* createFromFile(const char* filepath, unsigned int cameradevice, cv::Size resolution_projector);
+		
+		/**
+		 * Creates the file by which the filepath is given from the Calibration
+		 * 
+		 * @param filepath Path to file to which to save calibration
+		 **/
+		void writeFile(const char* filepath) const;
 
 		/**
 		 * Adds a projector frame which is used for eliminating the projection
@@ -70,11 +89,21 @@ class Calibration {
 		void createFrameProjectionFromFrameCamera(cv::Mat& frame_projection, const cv::Mat& frame_camera) const;
 
 		/**
+		 * Gets the amount of frames delay between the projectors projection captured by the camera.
+		 **/
+		unsigned int getFramesProjectorCameraDelay() const;
+
+		/**
 		 * Sets the amount of frames delay between the projectors projection captured by the camera.
 		 * 
 		 * @param frames_projector_camera_delay The amount of frames delay between the projectors projection captured by the camera
 		 **/
 		void setFramesProjectorCameraDelay(unsigned int frames_projector_camera_delay);
+
+		/**
+		 * Gets the light level difference between the projectors projection light level and background level.
+		 **/
+		double getProjectorBackgroundLight() const;
 
 		/**
 		 * Sets the light level difference between the projectors projection light level and background level.

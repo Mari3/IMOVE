@@ -6,7 +6,7 @@
 #include "./CalibrationProjection.hpp"
 
 
-CalibrationProjectionWindow::CalibrationProjectionWindow(cv::Point2i position, Calibration* calibration, cv::Size resolution_projector) : OpenCVWindow("Calibrate projection", position) {
+CalibrationProjectionWindow::CalibrationProjectionWindow(cv::Point2i position, Calibration* calibration) : OpenCVWindow("Calibrate projection", position) {
 	this->calibration = calibration;
 	// set ui color of corners
 	this->color_corners[0] = OpenCVUtil::Color::ORANGE;
@@ -15,9 +15,9 @@ CalibrationProjectionWindow::CalibrationProjectionWindow(cv::Point2i position, C
 	this->color_corners[3] = OpenCVUtil::Color::LIGHTBLUE;
 	// set projector coordinates
 	coordinate_corners_projector[0] = cv::Point2f(        OpenCVUtil::ORIGIN2D.x,          OpenCVUtil::ORIGIN2D.y);
-	coordinate_corners_projector[1] = cv::Point2f(resolution_projector.width - 1,          OpenCVUtil::ORIGIN2D.y);
-	coordinate_corners_projector[2] = cv::Point2f(        OpenCVUtil::ORIGIN2D.x, resolution_projector.height - 1);
-	coordinate_corners_projector[3] = cv::Point2f(resolution_projector.width - 1, resolution_projector.height - 1);
+	coordinate_corners_projector[1] = cv::Point2f(this->calibration->getResolutionProjector().width - 1,          OpenCVUtil::ORIGIN2D.y);
+	coordinate_corners_projector[2] = cv::Point2f(        OpenCVUtil::ORIGIN2D.x, this->calibration->getResolutionProjector().height - 1);
+	coordinate_corners_projector[3] = cv::Point2f(this->calibration->getResolutionProjector().width - 1, this->calibration->getResolutionProjector().height - 1);
 	
 	// reconstruct points camera from projector points and perspective transformation
 	// create vector of points to perform perspectiveTransform which requires a vector of points instead of an array

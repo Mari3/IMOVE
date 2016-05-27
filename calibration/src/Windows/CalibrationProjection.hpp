@@ -11,7 +11,7 @@ class CalibrationProjectionWindow : public OpenCVWindow {
 		const int THICKNESS_CROSS = 1;
 		const int THICKNESS_LINE = 1;
 		
-		CalibrationProjectionWindow(cv::Point2i position, Calibration* calibration, cv::Size resolution_projector);
+		CalibrationProjectionWindow(cv::Point2i position, Calibration* calibration);
 		
 		void drawImage(cv::Mat image);
 		
