@@ -7,7 +7,7 @@
 #include "scene/LightTrail/LightTrailScene.h"
 #include "scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 
-ImoveManager::ImoveManager(Calibration* calibration, LightTrailConfiguration configuration_lighttrail) {
+ImoveManager::ImoveManager(Calibration* calibration, LightTrailConfiguration& configuration_lighttrail) {
 	this->calibration = calibration;
 	// debug windows
 	cv::namedWindow("Camera", cv::WINDOW_NORMAL);

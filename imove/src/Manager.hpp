@@ -15,7 +15,7 @@ class ImoveManager {
 		const unsigned int SIZE_CIRCLE_CAMERA_DEBUG = 20;
 		const unsigned int THICKNESS_CIRCLE_CAMERA_DEBUG = 2;
 
-		ImoveManager(Calibration* calibration, LightTrailConfiguration configuration_lighttrail);
+		ImoveManager(Calibration* calibration, LightTrailConfiguration& configuration_lighttrail);
 
 		bool run();
 
