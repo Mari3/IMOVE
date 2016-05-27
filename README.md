@@ -2,6 +2,7 @@
 BEP Interactive Crowd Art
 
 This Repository contains the source and testing code of the I. M.O.V.E project. In this project we combine image processing, calibration techniques and computer graphics to create an interactive experience for the user, using a projector and a camera.
+It also contains the Google test and fakeit source code until an alternative way of handling this is found. This code is _not_ written by us, it is just included to be used in testing.
 
 ## Applications
 
