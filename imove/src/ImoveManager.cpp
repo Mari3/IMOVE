@@ -13,7 +13,7 @@
 
 ImoveManager::ImoveManager(Calibration* calibration, LightTrailConfiguration& configuration_lighttrail) {
 	this->calibration = calibration;
-	
+
 	// setup scene
   this->scene = new LightTrailScene(
 		configuration_lighttrail,
@@ -23,7 +23,7 @@ ImoveManager::ImoveManager(Calibration* calibration, LightTrailConfiguration& co
     new ColorHoleVectorRepository(),
     new LightPersonMapRepository()
   );
-	
+
 	// setup people extractor
 	this->people_extractor = new PeopleExtractor(this->calibration->getResolutionCamera(), this->calibration->getMeter(), 216);
 }
@@ -33,13 +33,13 @@ void ImoveManager::run() {
 	FrameWindow window_frame(cv::Size(0, 0));
 	DetectedPeopleCameraWindow detectedpeople_camera_window(cv::Size(500, 0));
 	DetectedPeopleProjectionWindow detectedpeople_projection_window(cv::Size(1000, 0));
-	
+
 	// setup scene window
 	SceneWindow window_scene(this->calibration->getResolutionProjector());
-	
+
 	// setup clock
 	sf::Clock clock;
-	
+
 	// setup camera
 	cv::VideoCapture video_capture(this->calibration->getCameraDevice());
 
@@ -59,16 +59,17 @@ void ImoveManager::run() {
 		// extract people from camera frame
 		detectpeople_frame = frame_camera.clone();
 	 	detected_people = people_extractor->extractPeople(detectpeople_frame);
-		
+		people_extractor->displayResults();
+
 		// draw detected people camera image
 		detectedpeople_camera_window.drawImage(frame_camera, detected_people);
-		
+
 		// change extrated people to projector location from camera location
 		calibration->changeProjectorFromCameraLocationPerson(detected_people);
-		
+
 		// draw detected people projection image
 		detectedpeople_projection_window.drawImage(frame_projection, detected_people);
-		
+
 		// update scene with location of people
 		this->scene->updatePeople(detected_people);
 
@@ -76,7 +77,7 @@ void ImoveManager::run() {
 		dt = clock.restart().asSeconds();
 		//dt = 1.f/24.f;
 		this->scene->update(dt);
-		
+
 		// draw the actual scene on window
 		window_scene.drawScene(this->scene);
 	}
