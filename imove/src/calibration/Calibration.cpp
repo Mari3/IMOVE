@@ -16,6 +16,43 @@ Calibration::Calibration(const cv::Size& resolution_projector, const cv::Size& r
 	this->meter = meter;
 }
 
+Calibration* Calibration::loadFromFile(char* filepath) {
+	// read calibration config
+	cv::FileStorage fs;
+	fs.open(filepath, cv::FileStorage::READ);
+	int camera_device;
+	fs["Camera_device"] >> camera_device;
+	cv::Size resolution_camera;
+	fs["Resolution_camera"] >> resolution_camera;
+	cv::Size resolution_projector;
+	fs["Resolution_projector"] >> resolution_projector;
+	cv::Mat camera_projector_transformation;
+	fs["Camera_projector_transformation"] >> camera_projector_transformation;
+	unsigned int frames_projector_camera_delay;
+	signed int int_frames_projector_camera_delay;
+	fs["Frames_projector_camera_delay"] >> int_frames_projector_camera_delay;
+	if (int_frames_projector_camera_delay < 0) {
+		frames_projector_camera_delay = 0;
+	} else {
+		frames_projector_camera_delay = (unsigned int) int_frames_projector_camera_delay;
+	}
+	double percentage_projector_background_light;
+	fs["Percentage_projector_background_light"] >> percentage_projector_background_light;
+	float meter;
+	fs["Meter"] >> meter;
+	fs.release();
+
+	return new Calibration(
+		resolution_projector,
+		resolution_camera,
+		camera_device,
+		camera_projector_transformation,
+		frames_projector_camera_delay,
+		percentage_projector_background_light,
+		meter
+	);
+}
+
 void Calibration::feedFrameProjector(const cv::Mat& frame_projector) {
 	// add a cloned frame to the queue
 	this->frames_delay_projector.push(frame_projector.clone());

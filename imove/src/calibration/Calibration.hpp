@@ -24,6 +24,13 @@ class Calibration {
 		Calibration(const cv::Size& resolution_projector, const cv::Size& resolution_camera, unsigned int camera_device, cv::Mat& camera_projector_transformation, unsigned int frames_projector_camera_delay, double projector_background_light, float meter);
 
 		/**
+		 * Creates the Calibration from a file by which the filepath is given
+		 * 
+		 * @param filepath Path to file from which to load calibration
+		 **/
+		static Calibration* loadFromFile(char* filepath);
+
+		/**
 		 * Adds a projector frame which is used for eliminating the projection
 		 * 
 		 * @param frame_projector The next frame of the projection
