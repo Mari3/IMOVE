@@ -5,6 +5,9 @@
 #include "PeopleIdentifier.h"
 
 PeopleIdentifier::PeopleIdentifier() {}
+
+PeopleIdentifier::PeopleIdentifier(std::vector<Person> people) : detected_people(people) {}
+
 PeopleIdentifier::~PeopleIdentifier() {}
 
 vector<Person> PeopleIdentifier::match(std::vector<Vector2>& locations) {
