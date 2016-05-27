@@ -55,11 +55,20 @@ void ImoveManager::run() {
 			frame_projection,
 			frame_camera
 		);
+
 		// extract people from camera frame
 		detectpeople_frame = frame_camera.clone();
 	 	detected_people = people_extractor->extractPeople(detectpeople_frame);
+		
+		// draw detected people camera image
+		detectedpeople_camera_window.drawImage(frame_camera, detected_people);
+		
 		// change extrated people to projector location from camera location
 		calibration->changeProjectorFromCameraLocationPerson(detected_people);
+		
+		// draw detected people projection image
+		detectedpeople_projection_window.drawImage(frame_projection, detected_people);
+		
 		// update scene with location of people
 		this->scene->updatePeople(detected_people);
 
