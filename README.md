@@ -15,12 +15,12 @@ The following applications are built:
 
 ### imove
 This is the main application. It processes the camera input and turns it into the graphics that are to be projected by the projector.
-From cli: ./dist/imove config/test.yml config/sceneconfig.yml
+From cli (run from repository root): ./imove config/test.yml config/sceneconfig.yml
 Assuming 0 is the id of the primary camera of the OS.
 
 ### calibration
 This is used to calibrate the program, so that certain setup-specific variables, such as the location of the projection in the camera view, can be determined beforehand. 
-From cli: ./calibration config/test.yml 0 1920 1027
+From cli (run from repository root): ./calibration config/test.yml 0 1920 1027
 Assuming 0 is the id of the primary camera of the OS.
 
 ### scene-integration
@@ -28,6 +28,7 @@ This is an integration test for the graphics part of the program. Used primarily
 
 ### runMyTests
 This executes the tests written using the Google Test framework and the fakeit mocking library. Also used only in development.
+From cli (run from repository root): ./runMyTests 
 
 ## Parts of imove
 
