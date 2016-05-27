@@ -122,7 +122,7 @@ class ClientLoginError(urllib2.HTTPError):
 
 
 class AbstractRpcServer(object):
-  """Provides a common interface for a simple RPC server."""
+  """Provides a common Interface for a simple RPC server."""
 
   def __init__(self, host, auth_function, host_override=None, extra_headers={},
                save_cookies=False):
@@ -342,7 +342,7 @@ class AbstractRpcServer(object):
 
 
 class HttpRpcServer(AbstractRpcServer):
-  """Provides a simplified RPC-style interface for HTTP requests."""
+  """Provides a simplified RPC-style Interface for HTTP requests."""
 
   def _Authenticate(self):
     """Save the cookie jar after authentication."""
@@ -586,7 +586,7 @@ def RunShell(command, silent_ok=False, universal_newlines=True,
 
 
 class VersionControlSystem(object):
-  """Abstract base class providing an interface to the VCS."""
+  """Abstract base class providing an Interface to the VCS."""
 
   def __init__(self, options):
     """Constructor.
@@ -719,7 +719,7 @@ class VersionControlSystem(object):
 
 
 class SubversionVCS(VersionControlSystem):
-  """Implementation of the VersionControlSystem interface for Subversion."""
+  """Implementation of the VersionControlSystem Interface for Subversion."""
 
   def __init__(self, options):
     super(SubversionVCS, self).__init__(options)
@@ -983,7 +983,7 @@ class SubversionVCS(VersionControlSystem):
 
 
 class GitVCS(VersionControlSystem):
-  """Implementation of the VersionControlSystem interface for Git."""
+  """Implementation of the VersionControlSystem Interface for Git."""
 
   def __init__(self, options):
     super(GitVCS, self).__init__(options)
@@ -1040,7 +1040,7 @@ class GitVCS(VersionControlSystem):
 
 
 class MercurialVCS(VersionControlSystem):
-  """Implementation of the VersionControlSystem interface for Mercurial."""
+  """Implementation of the VersionControlSystem Interface for Mercurial."""
 
   def __init__(self, options, repo_dir):
     super(MercurialVCS, self).__init__(options)

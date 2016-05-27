@@ -136,7 +136,7 @@ class GTEST_API_ DeathTest {
   GTEST_DISALLOW_COPY_AND_ASSIGN_(DeathTest);
 };
 
-// Factory interface for death tests.  May be mocked out for testing.
+// Factory Interface for death tests.  May be mocked out for testing.
 class DeathTestFactory {
  public:
   virtual ~DeathTestFactory() { }

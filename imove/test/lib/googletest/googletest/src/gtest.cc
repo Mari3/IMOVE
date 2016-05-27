@@ -600,7 +600,7 @@ ScopedFakeTestPartResultReporter::~ScopedFakeTestPartResultReporter() {
 }
 
 // Increments the test part result count and remembers the result.
-// This method is from the TestPartResultReporterInterface interface.
+// This method is from the TestPartResultReporterInterface Interface.
 void ScopedFakeTestPartResultReporter::ReportTestPartResult(
     const TestPartResult& result) {
   result_->Append(result);
@@ -3023,7 +3023,7 @@ void PrintFullTestCommentIfPresent(const TestInfo& test_info) {
   }
 }
 
-// This class implements the TestEventListener interface.
+// This class implements the TestEventListener Interface.
 //
 // Class PrettyUnitTestResultPrinter is copyable.
 class PrettyUnitTestResultPrinter : public TestEventListener {

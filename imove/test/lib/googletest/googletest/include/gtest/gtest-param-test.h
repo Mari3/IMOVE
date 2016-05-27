@@ -148,7 +148,7 @@ INSTANTIATE_TEST_CASE_P(AnotherInstantiationName, FooTest, ValuesIn(pets));
 // for more examples.
 //
 // In the future, we plan to publish the API for defining new parameter
-// generators. But for now this interface remains part of the internal
+// generators. But for now this Interface remains part of the internal
 // implementation and is subject to change.
 //
 //

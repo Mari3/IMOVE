@@ -782,7 +782,7 @@ DeathTest::TestRole WindowsDeathTest::AssumeRole() {
 # else  // We are not on Windows.
 
 // ForkingDeathTest provides implementations for most of the abstract
-// methods of the DeathTest interface.  Only the AssumeRole method is
+// methods of the DeathTest Interface.  Only the AssumeRole method is
 // left undefined.
 class ForkingDeathTest : public DeathTestImpl {
  public:

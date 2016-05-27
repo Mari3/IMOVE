@@ -252,7 +252,7 @@ TEST(MatchResultListenerTest, IsInterestedWorks) {
   EXPECT_FALSE(StreamMatchResultListener(NULL).IsInterested());
 }
 
-// Makes sure that the MatcherInterface<T> interface doesn't
+// Makes sure that the MatcherInterface<T> Interface doesn't
 // change.
 class EvenMatcherImpl : public MatcherInterface<int> {
  public:

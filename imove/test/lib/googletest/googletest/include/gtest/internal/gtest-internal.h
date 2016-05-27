@@ -459,7 +459,7 @@ TypeId GetTypeId() {
 // framework.
 GTEST_API_ TypeId GetTestTypeId();
 
-// Defines the abstract factory interface that creates instances
+// Defines the abstract factory Interface that creates instances
 // of a Test object.
 class TestFactoryBase {
  public:
@@ -476,7 +476,7 @@ class TestFactoryBase {
   GTEST_DISALLOW_COPY_AND_ASSIGN_(TestFactoryBase);
 };
 
-// This class provides implementation of TeastFactoryBase interface.
+// This class provides implementation of TeastFactoryBase Interface.
 // It is used in TEST and TEST_F macros.
 template <class TestClass>
 class TestFactoryImpl : public TestFactoryBase {
@@ -618,7 +618,7 @@ void SplitString(const ::std::string& str, char delimiter,
 // such that we can call this function in a namespace scope.
 //
 // Implementation note: The GTEST_TEMPLATE_ macro declares a template
-// template parameter.  It's defined in gtest-type-util.h.
+// template parameter.  It's defined in gtest-type-Util.h.
 template <GTEST_TEMPLATE_ Fixture, class TestSel, typename Types>
 class TypeParameterizedTest {
  public:

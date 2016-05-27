@@ -414,7 +414,7 @@ class GTEST_API_ UnitTestOptions {
 // is present.  Used by UnitTestOptions::GetOutputFile.
 GTEST_API_ FilePath GetCurrentExecutableName();
 
-// The role interface for getting the OS stack trace as a string.
+// The role Interface for getting the OS stack trace as a string.
 class OsStackTraceGetterInterface {
  public:
   OsStackTraceGetterInterface() {}
@@ -441,7 +441,7 @@ class OsStackTraceGetterInterface {
   GTEST_DISALLOW_COPY_AND_ASSIGN_(OsStackTraceGetterInterface);
 };
 
-// A working implementation of the OsStackTraceGetterInterface interface.
+// A working implementation of the OsStackTraceGetterInterface Interface.
 class OsStackTraceGetter : public OsStackTraceGetterInterface {
  public:
   OsStackTraceGetter() {}

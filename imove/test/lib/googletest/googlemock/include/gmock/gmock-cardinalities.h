@@ -33,7 +33,7 @@
 //
 // This file implements some commonly used cardinalities.  More
 // cardinalities can be defined by the user implementing the
-// CardinalityInterface interface if necessary.
+// CardinalityInterface Interface if necessary.
 
 #ifndef GMOCK_INCLUDE_GMOCK_GMOCK_CARDINALITIES_H_
 #define GMOCK_INCLUDE_GMOCK_GMOCK_CARDINALITIES_H_
@@ -47,7 +47,7 @@ namespace testing {
 
 // To implement a cardinality Foo, define:
 //   1. a class FooCardinality that implements the
-//      CardinalityInterface interface, and
+//      CardinalityInterface Interface, and
 //   2. a factory function that creates a Cardinality object from a
 //      const FooCardinality*.
 //

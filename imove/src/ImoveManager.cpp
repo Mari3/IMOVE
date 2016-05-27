@@ -14,7 +14,7 @@
 ImoveManager::ImoveManager(Calibration* calibration, LightTrailConfiguration& configuration_lighttrail) {
 	this->calibration = calibration;
 	
-	// setup scene
+	// setup Scene
   this->scene = new LightTrailScene(
 		configuration_lighttrail,
     new LightSourceVectorRepository(),
@@ -34,7 +34,7 @@ void ImoveManager::run() {
 	DetectedPeopleCameraWindow detectedpeople_camera_window(cv::Size(500, 0));
 	DetectedPeopleProjectionWindow detectedpeople_projection_window(cv::Size(1000, 0));
 	
-	// setup scene window
+	// setup Scene window
 	SceneWindow window_scene(this->calibration->getResolutionProjector());
 	
 	// setup clock
@@ -69,15 +69,15 @@ void ImoveManager::run() {
 		// draw detected people projection image
 		detectedpeople_projection_window.drawImage(frame_projection, detected_people);
 		
-		// update scene with location of people
+		// update Scene with location of people
 		this->scene->updatePeople(detected_people);
 
-		// draw next scene frame based on clock difference
+		// draw next Scene frame based on clock difference
 		dt = clock.restart().asSeconds();
 		//dt = 1.f/24.f;
 		this->scene->update(dt);
 		
-		// draw the actual scene on window
+		// draw the actual Scene on window
 		window_scene.drawScene(this->scene);
 	}
 

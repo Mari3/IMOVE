@@ -33,7 +33,7 @@
 //
 // This file implements some commonly used argument matchers.  More
 // matchers can be defined by the user implementing the
-// MatcherInterface<T> interface if necessary.
+// MatcherInterface<T> Interface if necessary.
 
 #ifndef GMOCK_INCLUDE_GMOCK_GMOCK_MATCHERS_H_
 #define GMOCK_INCLUDE_GMOCK_GMOCK_MATCHERS_H_
@@ -60,7 +60,7 @@ namespace testing {
 
 // To implement a matcher Foo for type T, define:
 //   1. a class FooMatcherImpl that implements the
-//      MatcherInterface<T> interface, and
+//      MatcherInterface<T> Interface, and
 //   2. a factory function that creates a Matcher<T> object from a
 //      FooMatcherImpl*.
 //
@@ -294,7 +294,7 @@ class MatcherBase {
   virtual ~MatcherBase() {}
 
  private:
-  // shared_ptr (util/gtl/shared_ptr.h) and linked_ptr have similar
+  // shared_ptr (Util/gtl/shared_ptr.h) and linked_ptr have similar
   // interfaces.  The former dynamically allocates a chunk of memory
   // to hold the reference count, while the latter tracks all
   // references using a circular linked list without allocating
@@ -1058,7 +1058,7 @@ class RefMatcher<T&> {
     explicit Impl(Super& x) : object_(x) {}  // NOLINT
 
     // MatchAndExplain() takes a Super& (as opposed to const Super&)
-    // in order to match the interface MatcherInterface<Super&>.
+    // in order to match the Interface MatcherInterface<Super&>.
     virtual bool MatchAndExplain(
         Super& x, MatchResultListener* listener) const {
       *listener << "which is located @" << static_cast<const void*>(&x);

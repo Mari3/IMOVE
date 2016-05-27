@@ -38,7 +38,7 @@ void CalibrationMeterWindow::onMouse(int event, int x, int y, int flags) {
 				break;
 		}
 		
-		// set meter in calibration
+		// set meter in Calibration
 		cv::Point2f diff_meter = this->b_meter - a_meter;
 		this->calibration->setMeter(sqrt(abs(diff_meter.x * diff_meter.x + diff_meter.y * diff_meter.y)));
 	}

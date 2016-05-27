@@ -160,7 +160,7 @@ class ParamIterator {
   scoped_ptr<ParamIteratorInterface<T> > impl_;
 };
 
-// ParamGeneratorInterface<T> is the binary interface to access generators
+// ParamGeneratorInterface<T> is the binary Interface to access generators
 // defined in other translation units.
 template <typename T>
 class ParamGeneratorInterface {
@@ -169,7 +169,7 @@ class ParamGeneratorInterface {
 
   virtual ~ParamGeneratorInterface() {}
 
-  // Generator interface definition
+  // Generator Interface definition
   virtual ParamIteratorInterface<T>* Begin() const = 0;
   virtual ParamIteratorInterface<T>* End() const = 0;
 };
@@ -459,7 +459,7 @@ class TestMetaFactory
 
 // INTERNAL IMPLEMENTATION - DO NOT USE IN USER CODE.
 //
-// ParameterizedTestCaseInfoBase is a generic interface
+// ParameterizedTestCaseInfoBase is a generic Interface
 // to ParameterizedTestCaseInfo classes. ParameterizedTestCaseInfoBase
 // accumulates test information provided by TEST_P macro invocations
 // and generators provided by INSTANTIATE_TEST_CASE_P macro invocations

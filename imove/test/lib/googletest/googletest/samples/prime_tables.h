@@ -30,8 +30,8 @@
 // Author: wan@google.com (Zhanyong Wan)
 // Author: vladl@google.com (Vlad Losev)
 
-// This provides interface PrimeTable that determines whether a number is a
-// prime and determines a next prime number. This interface is used
+// This provides Interface PrimeTable that determines whether a number is a
+// prime and determines a next prime number. This Interface is used
 // in Google Test samples demonstrating use of parameterized tests.
 
 #ifndef GTEST_SAMPLES_PRIME_TABLES_H_
@@ -39,7 +39,7 @@
 
 #include <algorithm>
 
-// The prime table interface.
+// The prime table Interface.
 class PrimeTable {
  public:
   virtual ~PrimeTable() {}

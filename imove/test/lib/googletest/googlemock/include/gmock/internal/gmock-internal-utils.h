@@ -254,7 +254,7 @@ struct LosslessArithmeticConvertible
     : public LosslessArithmeticConvertibleImpl<
   GMOCK_KIND_OF_(From), From, GMOCK_KIND_OF_(To), To> {};  // NOLINT
 
-// This interface knows how to report a Google Mock failure (either
+// This Interface knows how to report a Google Mock failure (either
 // non-fatal or fatal).
 class FailureReporterInterface {
  public:

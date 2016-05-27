@@ -142,7 +142,7 @@ class GTEST_API_ TestPartResultArray {
   GTEST_DISALLOW_COPY_AND_ASSIGN_(TestPartResultArray);
 };
 
-// This interface knows how to report a test part result.
+// This Interface knows how to report a test part result.
 class TestPartResultReporterInterface {
  public:
   virtual ~TestPartResultReporterInterface() {}

@@ -6,7 +6,7 @@
 // window to calibrate the projection coordinates on the camera and provide the transformation matrix to the projector coordinates
 class CalibrationProjectionWindow : public OpenCVWindow {
 	public:
-		// UI calibration cross parameters
+		// UI Calibration cross parameters
 		const int SIZE_CROSS = 10;
 		const int THICKNESS_CROSS = 1;
 		const int THICKNESS_LINE = 1;

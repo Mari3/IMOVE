@@ -12,7 +12,7 @@ unsigned int WIDTH_RESOLUTION_ARGN = 3;
 unsigned int HEIGHT_RESOLUTION_ARGN = 4;
 
 
-// create calibration configuration based on arguments and configuration and user input in projection, meter and projection elimination windows
+// create Calibration configuration based on arguments and configuration and user input in projection, meter and projection elimination windows
 int main(int argc, char* argv[]) {
 	if (argc != 5) {
 		std::cout << "Usage: <path to configuration file> <int camera device> <resolution projector width> <resolution projector height>" << std::endl;

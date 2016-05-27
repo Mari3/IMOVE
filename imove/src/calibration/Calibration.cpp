@@ -17,7 +17,7 @@ Calibration::Calibration(const cv::Size& resolution_projector, const cv::Size& r
 }
 
 Calibration* Calibration::readFile(const char* filepath) {
-	// read calibration config
+	// read Calibration config
 	cv::FileStorage fs;
 	fs.open(filepath, cv::FileStorage::READ);
 
@@ -138,12 +138,12 @@ Calibration* Calibration::createFromFile(const char* filepath, unsigned int came
 
 	read_config.release();
 	
- 	// create initial calibration based on configuration, arguments and defaults
+ 	// create initial Calibration based on configuration, arguments and defaults
 	return new Calibration(resolution_projector, resolution_camera, cameradevice, camera_projector_transformation, frames_projector_camera_delay, projector_background_light, meter);
 }
 
 void Calibration::writeFile(const char* filepath) const {
-	// write configuration based on calibration
+	// write configuration based on Calibration
 	cv::FileStorage write_config(filepath, cv::FileStorage::WRITE);
 	
 	write_config << "Camera_device" << (int) this->camera_device;

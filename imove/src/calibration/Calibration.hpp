@@ -31,21 +31,21 @@ class Calibration {
 		/**
 		 * Creates the Calibration from a file by which the filepath is given
 		 * 
-		 * @param filepath Path to file from which to read calibration
+		 * @param filepath Path to file from which to read Calibration
 		 **/
 		static Calibration* readFile(const char* filepath);
 		
 		/**
 		 * Creates the Calibration from a file by which the filepath is given and defaults
 		 * 
-		 * @param filepath Path to file from which to load calibration
+		 * @param filepath Path to file from which to load Calibration
 		 **/
 		static Calibration* createFromFile(const char* filepath, unsigned int cameradevice, cv::Size resolution_projector);
 		
 		/**
 		 * Creates the file by which the filepath is given from the Calibration
 		 * 
-		 * @param filepath Path to file to which to save calibration
+		 * @param filepath Path to file to which to save Calibration
 		 **/
 		void writeFile(const char* filepath) const;
 

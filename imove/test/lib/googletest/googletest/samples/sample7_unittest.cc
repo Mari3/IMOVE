@@ -30,12 +30,12 @@
 // Author: vladl@google.com (Vlad Losev)
 
 // This sample shows how to test common properties of multiple
-// implementations of an interface (aka interface tests) using
+// implementations of an Interface (aka Interface tests) using
 // value-parameterized tests. Each test in the test case has
-// a parameter that is an interface pointer to an implementation
+// a parameter that is an Interface pointer to an implementation
 // tested.
 
-// The interface and its implementations are in this header.
+// The Interface and its implementations are in this header.
 #include "prime_tables.h"
 
 #include "gtest/gtest.h"

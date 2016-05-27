@@ -14,8 +14,8 @@ void Manager::run() {
 
     //Thread two
     //Track time
-    //scene.update(dt)
+    //Scene.update(dt)
     //if people changed
-    //scene.updatePeople(people)
+    //Scene.updatePeople(people)
 }
 

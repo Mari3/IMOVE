@@ -121,7 +121,7 @@ GTEST_API_ GTEST_DECLARE_STATIC_MUTEX_(g_gmock_mutex);
 class UntypedActionResultHolderBase;
 
 // Abstract base class of FunctionMockerBase.  This is the
-// type-agnostic part of the function mocker interface.  Its pure
+// type-agnostic part of the function mocker Interface.  Its pure
 // virtual methods are implemented by FunctionMockerBase.
 class GTEST_API_ UntypedFunctionMockerBase {
  public:

@@ -2,17 +2,17 @@
 
 #include "../scene/Scene.h"
 
-// Window to display scene
+// Window to display Scene
 class SceneWindow {
 	public:
 		/**
-		 * Initialize scene window with resolution projector
+		 * Initialize Scene window with resolution projector
 		 * 
-		 * @param resoltuion_projector The resolution of the projector which the scene should be rendering in.
+		 * @param resoltuion_projector The resolution of the projector which the Scene should be rendering in.
 		 **/
 		SceneWindow(cv::Size resolution_projector);
 		
-		// draw the scene on the render window
+		// draw the Scene on the render window
 		void drawScene(Scene* scene);
 
 	protected:

@@ -1,20 +1,20 @@
 #include "calibration/Calibration.hpp"
 #include "scene/LightTrail/LightTrailConfiguration.h"
-#include "image_processing/PeopleExtractor.h"
+#include "ImageProcessing/PeopleExtractor.h"
 #include "scene/Scene.h"
 
-// Setups people extractor and scene, can let the scene run using constant input of people extractor
+// Setups people extractor and Scene, can let the Scene run using constant input of people extractor
 class ImoveManager {
 	public:
 		/**
-		 * Setup people extractor and scene.
+		 * Setup people extractor and Scene.
 		 * 
-		 * @param calibration              The camera projector calibration
-		 * @param configuration_lighttrail The light trail scene configuration
+		 * @param Calibration              The camera projector Calibration
+		 * @param configuration_lighttrail The light trail Scene configuration
 		 **/
 		ImoveManager(Calibration* calibration, LightTrailConfiguration& configuration_lighttrail);
 
-		// Run the people extractor and scene frame by frame
+		// Run the people extractor and Scene frame by frame
 		void run();
 
 	protected:

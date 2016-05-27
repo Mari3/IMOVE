@@ -8,7 +8,7 @@ class CalibrationManager {
 	public:
 		CalibrationManager(Calibration* calibration);
 		
-		// runs the calibration using windows and camera as input and sets values in calibration using mouse input untill key pressed meaning its done
+		// runs the Calibration using windows and camera as input and sets values in Calibration using mouse input untill key pressed meaning its done
 		void run();
 
 	protected:

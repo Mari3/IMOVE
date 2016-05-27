@@ -991,7 +991,7 @@ class Message;
 
 #if defined(GTEST_TUPLE_NAMESPACE_)
 // Import tuple and friends into the ::testing namespace.
-// It is part of our interface, having them in ::testing allows us to change
+// It is part of our Interface, having them in ::testing allows us to change
 // their types as needed.
 using GTEST_TUPLE_NAMESPACE_::get;
 using GTEST_TUPLE_NAMESPACE_::make_tuple;

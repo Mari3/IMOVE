@@ -7,7 +7,7 @@
 // Window to calibrete the width of a meter on the camera
 class CalibrationMeterWindow : public OpenCVWindow {
 	public:
-		// UI calibration cross parameters
+		// UI Calibration cross parameters
 		const cv::Scalar COLOR_A_METER = OpenCVUtil::Color::ORANGE;
 		const cv::Scalar COLOR_B_METER = OpenCVUtil::Color::GREEN;
 		const int SIZE_CROSS = 10;
