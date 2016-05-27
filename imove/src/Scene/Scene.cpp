@@ -10,6 +10,8 @@ Scene::Scene() {
     conditions = vector<std::unique_ptr<Condition>>();
 }
 
+
+// Executes conditions and actions, that are to be added in the constructor of a subclass.
 void Scene::update(float dt) {
 
     processPeople();
