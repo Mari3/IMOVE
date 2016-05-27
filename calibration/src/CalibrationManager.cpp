@@ -1,11 +1,11 @@
-#include "Manager.hpp"
+#include "CalibrationManager.hpp"
 
 #include "../../imove/src/OpenCVUtil.hpp"
-#include "Windows/Projection.hpp"
-#include "Windows/Projector.hpp"
-#include "Windows/CalibrationProjection.hpp"
-#include "Windows/CalibrationMeter.hpp"
-#include "Windows/EliminateProjection.hpp"
+#include "Windows/ProjectionWindow.hpp"
+#include "Windows/ProjectorWindow.hpp"
+#include "Windows/CalibrationProjectionWindow.hpp"
+#include "Windows/CalibrationMeterWindow.hpp"
+#include "Windows/EliminateProjectionWindow.hpp"
 
 CalibrationManager::CalibrationManager(Calibration* calibration) {
 	this->calibration = calibration;

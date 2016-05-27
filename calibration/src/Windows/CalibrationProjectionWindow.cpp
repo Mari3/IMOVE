@@ -3,7 +3,7 @@
 #include <functional>
 
 #include "../../../imove/src/OpenCVUtil.hpp"
-#include "./CalibrationProjection.hpp"
+#include "./CalibrationProjectionWindow.hpp"
 
 
 CalibrationProjectionWindow::CalibrationProjectionWindow(cv::Point2i position, Calibration* calibration) : OpenCVWindow("Calibrate projection", position) {

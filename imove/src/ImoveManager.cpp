@@ -1,6 +1,6 @@
 #include <opencv2/opencv.hpp>
 
-#include "Manager.hpp"
+#include "ImoveManager.hpp"
 
 #include "OpenCVUtil.hpp"
 #include "interface/Person.h"

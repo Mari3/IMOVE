@@ -1,4 +1,4 @@
-#include "./EliminateProjection.hpp"
+#include "./EliminateProjectionWindow.hpp"
 
 EliminateProjectionWindow::EliminateProjectionWindow(cv::Point2i position, Calibration* calibration) : OpenCVWindow("Eliminate projection", position) {
 	this->calibration = calibration;

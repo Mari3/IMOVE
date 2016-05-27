@@ -1,4 +1,4 @@
-#include "./Projection.hpp"
+#include "./ProjectionWindow.hpp"
 
 ProjectionWindow::ProjectionWindow(cv::Point2i position, Calibration* calibration) : OpenCVWindow("Projection", position) {
 	this->calibration = calibration;

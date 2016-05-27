@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 
-#include "Manager.hpp"
+#include "CalibrationManager.hpp"
 #include "../../imove/src/calibration/Calibration.hpp"
 
 

@@ -1,7 +1,7 @@
 #include <opencv2/opencv.hpp>
 
 #include "../../../imove/src/OpenCVUtil.hpp"
-#include "./Projector.hpp"
+#include "./ProjectorWindow.hpp"
 
 ProjectorWindow::ProjectorWindow(cv::Point2i position) : OpenCVWindow("Projector", position) {
 	
