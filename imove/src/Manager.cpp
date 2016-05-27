@@ -1,4 +1,3 @@
-#include <iostream>
 #include <opencv2/opencv.hpp>
 
 #include "Manager.hpp"
@@ -20,7 +19,13 @@ ImoveManager::ImoveManager(Calibration* calibration, LightTrailConfiguration con
 	cv::namedWindow("Frame", cv::WINDOW_NORMAL);
 
 	// setup scene
-	this->window_scene = new sf::RenderWindow(sf::VideoMode(this->calibration->getResolutionProjector().width, this->calibration->getResolutionProjector().height),"Projection");
+	this->window_scene = new sf::RenderWindow(
+		sf::VideoMode(
+			this->calibration->getResolutionProjector().width,
+			this->calibration->getResolutionProjector().height
+		),
+		"Projector"
+	);
   this->window_scene->clear(sf::Color::Black);
   this->window_scene->display();
 
@@ -42,7 +47,6 @@ bool ImoveManager::run() {
   sf::Clock clock;
 	cv::Mat frame_camera;
 	cv::Mat frame_projection;
-std::cout << camera_device;
 	cv::VideoCapture video_capture(this->calibration->getCameraDevice());
 	vector<Person> detected_people;
 	cv::Mat detectpeople_frame;
