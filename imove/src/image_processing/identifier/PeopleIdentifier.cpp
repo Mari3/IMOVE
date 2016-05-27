@@ -6,7 +6,7 @@
 
 PeopleIdentifier::PeopleIdentifier() {}
 
-PeopleIdentifier::PeopleIdentifier(std::vector<Person> people) : detected_people(people) {}
+PeopleIdentifier::PeopleIdentifier(std::vector<Person>& people) : detected_people(people) {}
 
 PeopleIdentifier::~PeopleIdentifier() {}
 

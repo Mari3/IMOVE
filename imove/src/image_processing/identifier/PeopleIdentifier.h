@@ -18,7 +18,7 @@ class PeopleIdentifier {
 
  public:
   PeopleIdentifier();
-  PeopleIdentifier(std::vector<Person> people);
+  PeopleIdentifier(std::vector<Person>& people);
   ~PeopleIdentifier();
 
   // Match people to new locations
