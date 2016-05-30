@@ -17,8 +17,19 @@ vector<Person> PeopleIdentifier::match(std::vector<Vector2>& locations) {
     int index_closest = getClosest(i, locations);
     // If no close location is found, delete person
     if (index_closest < 0) {
-      detected_people.erase(detected_people.begin() + i);
-      --i;
+      if (detected_people[i].type == None) {
+        detected_people.erase(detected_people.begin() + i);
+        --i;
+      } else if (detected_people[i].type == StandingStill) {
+        if (detected_people[i].getNotMovedCount() <= 0) {
+          detected_people[i].type = None;
+        } else {
+          detected_people[i]. decreaseNotMovedCount();
+        }
+      } else {
+        detected_people[i].type = StandingStill;
+        detected_people[i].resetNotMovedCount();
+      }
     } else {
       //Set location of person to new location
       Vector2 new_location = locations[index_closest];

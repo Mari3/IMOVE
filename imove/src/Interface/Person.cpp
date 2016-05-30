@@ -30,3 +30,15 @@ unsigned int Person::count = 0;
 unsigned int Person::getId() {
     return id;
 }
+
+unsigned int Person::getNotMovedCount() {
+  return not_moved_count;
+}
+
+void Person::decreaseNotMovedCount() {
+  not_moved_count--;
+}
+
+void Person::resetNotMovedCount() {
+  not_moved_count = 100;
+}

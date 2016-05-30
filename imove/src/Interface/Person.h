@@ -14,6 +14,7 @@ enum PersonType{
     Bystander,
     Passerthrough,
     Participant,
+    StandingStill,
     None
 };
 
@@ -31,6 +32,9 @@ class Person {
     // Object counter to create unique ids
     static unsigned int count;
 
+    //
+    unsigned int not_moved_count = 200;
+
  public:
     PersonType type;
     Person(Vector2 location, PersonType type);
@@ -39,6 +43,10 @@ class Person {
     Vector2 getLocation();
     void setLocation(Vector2 location);
     unsigned int getId();
+    unsigned int getNotMovedCount();
+
+    void decreaseNotMovedCount();
+    void resetNotMovedCount();
 };
 
 

@@ -32,6 +32,7 @@ class PeopleExtractor {
 
   // Current frame
   cv::Mat frame;
+  cv::Mat results_frame;
 
   // Size of the frame
   cv::Size frame_size;
