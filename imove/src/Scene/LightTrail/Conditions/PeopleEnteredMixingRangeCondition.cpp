@@ -3,10 +3,12 @@
 //
 
 #include "PeopleEnteredMixingRangeCondition.h"
+#include "../Actions/MixingAction.h"
 
 PeopleEnteredMixingRangeCondition::PeopleEnteredMixingRangeCondition(LightPersonRepository *lightPeople,
+                                                                     LightTrailRepository *lightTrails,
                                                                      const LightTrailConfiguration &config) :
-lightPeople(lightPeople), config(config)
+lightPeople(lightPeople), lightTrails(lightTrails), config(config)
 {
 }
 
@@ -19,20 +21,30 @@ int PeopleEnteredMixingRangeCondition::check(float dt, std::vector<Action *> &ac
                 Vector2 diff = person1->getLocation() - person2->getLocation();
                 float dist = diff.size();
 
-                std::pair<int, int> pair(person1->getId(), person2->getId());
+                int id1 = person1->getId();
+                int id2 = person2->getId();
+                if(id2 < id1){
+                    int temp = id2;
+                    id2 = id1;
+                    id1 = temp;
+                }
+
+                std::pair<int, int> pair(id1, id2);
                 std::set<std::pair<int, int>>::iterator loc = withinRange.find(pair);
 
                 if (dist < 512) { // TODO replace with config
-                    if (loc < withinRange.end())
+                    if (loc != withinRange.end())
                         return;
-                    //TODO create new mixing action
+                    Action* newAction = new MixingAction(person1,person2,lightTrails,config);
+                    actions.push_back(newAction);
                     withinRange.insert(pair);
-                } else if (loc < withinRange.end())
+                } else if (loc != withinRange.end())
                     withinRange.erase(loc);
             }
             j++;
         });
         i++;
     });
+    return static_cast<int>(actions.size());
 }
 

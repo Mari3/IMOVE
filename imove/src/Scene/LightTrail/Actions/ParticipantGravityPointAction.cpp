@@ -29,4 +29,5 @@ bool ParticipantGravityPointAction::isDone(Action *&followUp) {
 
 void ParticipantGravityPointAction::execute(float dt) {
     setLocation();
+    gravityPoint->hue = person->hue;
 }

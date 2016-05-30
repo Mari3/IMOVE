@@ -14,10 +14,11 @@
 class PeopleEnteredMixingRangeCondition : public Condition {
 private:
     LightPersonRepository* lightPeople;
+    LightTrailRepository* lightTrails;
     LightTrailConfiguration config;
     std::set<std::pair<int,int>> withinRange;
 public:
-    PeopleEnteredMixingRangeCondition(LightPersonRepository* lightPeople, const LightTrailConfiguration& config);
+    PeopleEnteredMixingRangeCondition(LightPersonRepository* lightPeople, LightTrailRepository* lightTrails, const LightTrailConfiguration& config);
     int check(float dt, std::vector<Action *> &actions) override;
 
 };

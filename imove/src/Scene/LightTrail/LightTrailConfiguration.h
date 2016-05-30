@@ -7,6 +7,7 @@
 
 #include <cstdint>
 #include <string>
+#include <vector>
 #include "../Util/Range.h"
 
 class LightTrailConfiguration {

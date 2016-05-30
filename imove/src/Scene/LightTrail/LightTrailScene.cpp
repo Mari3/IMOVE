@@ -11,6 +11,7 @@
 #include "Actions/AlternatingGravityPointAction.h"
 #include "Conditions/PersonChangedTypeCondition.h"
 #include "Actions/DeleteAllAction.h"
+#include "Conditions/PeopleEnteredMixingRangeCondition.h"
 
 void LightTrailScene::draw(sf::RenderTarget &target) {
 
@@ -113,6 +114,9 @@ LightPersonRepository* lightPeople) : Scene(),
     //Add all conditions
     conditions.push_back(std::unique_ptr<Condition>(
             static_cast<Condition*>(new PersonChangedTypeCondition(lightPeople,gravityPoints,config))));
+    conditions.push_back(std::unique_ptr<Condition>(
+            static_cast<Condition*>(new PeopleEnteredMixingRangeCondition(lightPeople,lightTrails,config))
+    ));
 }
 
 void LightTrailScene::processPeople() {
