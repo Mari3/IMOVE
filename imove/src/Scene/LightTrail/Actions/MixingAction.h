@@ -17,12 +17,16 @@ private:
     float progress;
     LightTrailConfiguration config;
     LightTrailRepository* trails;
-    void shift(shared_ptr<LightPerson> person, float amount);
+    GravityPointRepository* gravityPoints;
+    bool mixingComplete = false;
 public:
-    MixingAction(std::shared_ptr<LightPerson> person1, std::shared_ptr<LightPerson> person2, LightTrailRepository* trails, const LightTrailConfiguration& config);
+    MixingAction(std::shared_ptr<LightPerson> person1, std::shared_ptr<LightPerson> person2, LightTrailRepository* trails,
+                 GravityPointRepository* gravityPoints, const LightTrailConfiguration& config);
     bool isDone(Action *&followUp) override;
 
     void execute(float dt) override;
+
+    static void shift(LightTrailRepository* trails, shared_ptr<LightPerson> person, float amount);
 };
 
 

@@ -1,9 +1,9 @@
 %YAML:1.0
 Resolution: [ 1024, 750 ]
-TopLeftHue: [ 40, 80 ]
-TopRightHue: [ 130, 170 ]
-BottomRightHue : [ 220, 260 ]
-BottomLeftHue: [ 310, 340 ]
+TopLeftHue: [ 40, 90 ]
+TopRightHue: [ 130, 180 ]
+BottomRightHue : [ 220, 270 ]
+BottomLeftHue: [ 310, 0 ]
 SendOutDelay: .1
 SendOutSpeed: [ 0, 100 ]
 TrailCap: 200

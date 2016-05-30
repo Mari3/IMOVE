@@ -115,7 +115,7 @@ LightPersonRepository* lightPeople) : Scene(),
     conditions.push_back(std::unique_ptr<Condition>(
             static_cast<Condition*>(new PersonChangedTypeCondition(lightPeople,gravityPoints,config))));
     conditions.push_back(std::unique_ptr<Condition>(
-            static_cast<Condition*>(new PeopleEnteredMixingRangeCondition(lightPeople,lightTrails,config))
+            static_cast<Condition*>(new PeopleEnteredMixingRangeCondition(lightPeople,lightTrails,gravityPoints,config))
     ));
 }
 

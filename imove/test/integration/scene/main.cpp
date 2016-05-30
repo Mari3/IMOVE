@@ -7,6 +7,7 @@
 #include "../../../src/Scene/LightTrail/LightTrailConfiguration.h"
 #include "../../../src/Scene/LightTrail/LightTrailScene.h"
 #include "../../../src/Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
+#include "../../../src/Scene/Util/Timer.h"
 
 struct Scenario{
     vector<Person> people;
@@ -17,6 +18,36 @@ struct StandardScenario : public Scenario {
 
     void update(float dt) override {
         return;
+    }
+};
+
+struct MixingFailsScenario : public Scenario {
+
+    float thresh;
+    Timer timer;
+    bool timerDone = false;
+
+    MixingFailsScenario(const LightTrailConfiguration& config): timer(10.f){
+        unsigned int y = config.screenHeight()/2;
+        thresh = config.screenWidth()/4.f;
+        people.push_back(Person(Vector2(0,y),Participant));
+        people.push_back(Person(Vector2(config.screenWidth(),y),Participant));
+    }
+
+    void update(float dt) override {
+        Vector2 p0loc = people[0].getLocation();
+        Vector2 p1loc = people[1].getLocation();
+        if(timerDone){
+            people[0].setLocation(people[0].getLocation() + Vector2(-20.f * dt, 0));
+            people[1].setLocation(people[1].getLocation() + Vector2(20.f * dt, 0));
+        }else if(p0loc.x < thresh) {
+            people[0].setLocation(people[0].getLocation() + Vector2(20.f * dt, 0));
+            people[1].setLocation(people[1].getLocation() + Vector2(-20.f * dt, 0));
+        }else{
+            if(timer.update(dt)){
+                timerDone = true;
+            }
+        }
     }
 };
 
@@ -58,6 +89,8 @@ int main(int argc, char** argv){
         scenario = new StandardScenario();
     }else if(scenarioCode == 1){
         scenario = new MixingScenario(config);
+    }else if(scenarioCode == 2){
+        scenario = new MixingFailsScenario(config);
     }
 
     sf::RenderWindow window(sf::VideoMode(config.screenWidth(),config.screenHeight()),"Projection");

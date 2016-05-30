@@ -4,8 +4,19 @@
 
 #include <cmath>
 #include "MixingAction.h"
+#include "ExplosionAction.h"
+#include "RevertMixingAction.h"
 
 bool MixingAction::isDone(Action *&followUp) {
+    if(mixingComplete){
+        followUp = new ExplosionAction(person1,gravityPoints,config);
+        return true;
+    }
+    float dist = (person1->getLocation()-person2->getLocation()).size();
+    if(dist > 512) {
+        followUp = new RevertMixingAction(person1,person2,progress,trails,config);
+        return true;
+    }
     return false;
 }
 
@@ -22,27 +33,32 @@ void MixingAction::execute(float dt) {
     if(difference > 0)
         currentProgress *= -1;
 
-    if(fabs(difference)/2.f < fabs(currentProgress))
-        currentProgress = difference/2.f;
+    if(fabs(difference)/2.f < fabs(currentProgress)) {
+        currentProgress = difference / 2.f;
+        mixingComplete = true;
+    }
 
-    shift(person1, currentProgress);
-    shift(person2, -currentProgress);
+    progress += currentProgress;
+
+    shift(trails, person1, currentProgress);
+    shift(trails, person2, -currentProgress);
 
 }
 
 MixingAction::MixingAction(std::shared_ptr<LightPerson> person1, std::shared_ptr<LightPerson> person2,
                            LightTrailRepository* trails,
+                           GravityPointRepository* gravityPoints,
                            const LightTrailConfiguration &config) :
-            person1(person1),person2(person2),trails(trails),config(config)
+            person1(person1),person2(person2),trails(trails),gravityPoints(gravityPoints),config(config)
 {
     progress = 0;
 }
 
-void MixingAction::shift(std::shared_ptr<LightPerson> person, float amount) {
+void MixingAction::shift(LightTrailRepository* trails, std::shared_ptr<LightPerson> person, float amount) {
     trails->for_each([&](std::shared_ptr<LightTrail> trail){
         if(person->hue.contains(trail->hue)) {
             float dist = (trail->getLocation() - person->getLocation()).size();
-            if (dist < config.proximityRange() * 1.3f) {
+            if (dist < 400) {
                 trail->hue += amount;
             }
         }

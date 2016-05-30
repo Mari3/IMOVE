@@ -7,8 +7,9 @@
 
 PeopleEnteredMixingRangeCondition::PeopleEnteredMixingRangeCondition(LightPersonRepository *lightPeople,
                                                                      LightTrailRepository *lightTrails,
+                                                                     GravityPointRepository* gravityPoints,
                                                                      const LightTrailConfiguration &config) :
-lightPeople(lightPeople), lightTrails(lightTrails), config(config)
+lightPeople(lightPeople), lightTrails(lightTrails), gravityPoints(gravityPoints), config(config)
 {
 }
 
@@ -35,7 +36,7 @@ int PeopleEnteredMixingRangeCondition::check(float dt, std::vector<Action *> &ac
                 if (dist < 512) { // TODO replace with config
                     if (loc != withinRange.end())
                         return;
-                    Action* newAction = new MixingAction(person1,person2,lightTrails,config);
+                    Action* newAction = new MixingAction(person1,person2,lightTrails,gravityPoints,config);
                     actions.push_back(newAction);
                     withinRange.insert(pair);
                 } else if (loc != withinRange.end())
