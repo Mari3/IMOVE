@@ -15,7 +15,7 @@ private:
     unsigned int _screenWidth, _screenHeight;
 
     // Light source hues
-    util::Range _corner1Hue, _corner2Hue, _corner3Hue, _corner4Hue;
+    std::vector<util::Range> _cornerHues;
 
     // Light sources
     float _sendOutDelay;
@@ -57,13 +57,7 @@ public:
 
     unsigned int screenHeight() const;
 
-    const util::Range & corner1Hue() const;
-
-    const util::Range & corner2Hue() const;
-
-    const util::Range & corner3Hue() const;
-
-    const util::Range & corner4Hue() const;
+    const std::vector<util::Range> & cornerHues() const;
 
     float sendOutDelay() const;
 

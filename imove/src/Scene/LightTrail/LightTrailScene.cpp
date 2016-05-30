@@ -72,22 +72,23 @@ LightPersonRepository* lightPeople) : Scene(),
     assert(gravityPoints);
     assert(colorHoles);
     assert(lightPeople);
+    hueCounter = 0;
 
     //Initialize the light trail texture
     texture.create(config.screenWidth(),config.screenHeight());
 
     //Add Light sources on every corner
     lightSources->add(std::shared_ptr<LightSource>(
-            new LightSource(Vector2(0, 0),config.corner1Hue(),
+            new LightSource(Vector2(0, 0),config.cornerHues()[0],
                             util::Range(0, 90,true),config.sendOutSpeed())));
     lightSources->add(std::shared_ptr<LightSource>(
-            new LightSource(Vector2(config.screenWidth(),0),config.corner2Hue(),
+            new LightSource(Vector2(config.screenWidth(),0),config.cornerHues()[1],
                             util::Range(90, 180,true),config.sendOutSpeed())));
     lightSources->add(std::shared_ptr<LightSource>(
-            new LightSource(Vector2(0, config.screenHeight()),config.corner3Hue(),
+            new LightSource(Vector2(0, config.screenHeight()),config.cornerHues()[2],
                             util::Range(270, 0,true),config.sendOutSpeed())));
     lightSources->add(std::shared_ptr<LightSource>(
-            new LightSource(Vector2(config.screenWidth(), config.screenHeight()),config.corner4Hue(),
+            new LightSource(Vector2(config.screenWidth(), config.screenHeight()),config.cornerHues()[3],
                             util::Range(180, 270,true),config.sendOutSpeed())));
 
 
@@ -143,10 +144,12 @@ void LightTrailScene::processPeople() {
             } else {
 
                 //Create a new person with randomly generated hue
-                float startHue = hueDraw.drawRandom();
-                float endHue = startHue + 90;
+                util::Range hue = config.cornerHues()[hueCounter];
                 lightPeople->add(
-                        std::shared_ptr<LightPerson>(new LightPerson(person.getLocation(), id, person.type, util::Range(startHue, endHue, true))));
+                        std::shared_ptr<LightPerson>(new LightPerson(person.getLocation(), id, person.type, hue)));
+                if(hueCounter++>3){
+                    hueCounter = 0;
+                }
 
             }
         }

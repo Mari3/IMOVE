@@ -13,22 +13,6 @@ unsigned int LightTrailConfiguration::screenHeight() const {
     return _screenHeight;
 }
 
-const util::Range &LightTrailConfiguration::corner1Hue() const {
-    return _corner1Hue;
-}
-
-const util::Range &LightTrailConfiguration::corner2Hue() const {
-    return _corner2Hue;
-}
-
-const util::Range &LightTrailConfiguration::corner3Hue() const {
-    return _corner3Hue;
-}
-
-const util::Range &LightTrailConfiguration::corner4Hue() const {
-    return _corner4Hue;
-}
-
 float LightTrailConfiguration::sendOutDelay() const {
     return _sendOutDelay;
 }
@@ -84,14 +68,18 @@ LightTrailConfiguration::LightTrailConfiguration(unsigned int _screenWidth, unsi
                                                  float _bystanderGravityDelay,
                                                  float _alternatingGravity, float _gravityPointDelay, float _proximityRange,
                                                  float _proximityModifier, bool _sidesEnabled, float _speedCap, int _trailThickness, uint8_t _fade)
-        : _screenWidth(_screenWidth), _screenHeight(_screenHeight), _corner1Hue(_corner1Hue),
-          _corner2Hue(_corner2Hue), _corner3Hue(_corner3Hue), _corner4Hue(_corner4Hue),
+        : _screenWidth(_screenWidth), _screenHeight(_screenHeight),
           _sendOutDelay(_sendOutDelay), _trailCap(_trailCap), _sendOutSpeed(_sendOutSpeed), _participantGravity(_participantGravity),
           _participantAntigravity(_participantAntigravity), _bystanderGravity(_bystanderGravity),
           _bystanderGravityDelay(_bystanderGravityDelay),
           _alternatingGravity(_alternatingGravity), _gravityPointDelay(_gravityPointDelay),
           _proximityRange(_proximityRange), _proximityModifier(_proximityModifier), _sidesEnabled(_sidesEnabled),
-          _speedCap(_speedCap), _trailThickness(_trailThickness), _fade(_fade) { }
+          _speedCap(_speedCap), _trailThickness(_trailThickness), _fade(_fade) {
+    _cornerHues.push_back(_corner1Hue);
+    _cornerHues.push_back(_corner2Hue);
+    _cornerHues.push_back(_corner3Hue);
+    _cornerHues.push_back(_corner4Hue);
+}
 
 float LightTrailConfiguration::bystanderGravityDelay() const {
     return _bystanderGravityDelay;
@@ -162,3 +150,8 @@ LightTrailConfiguration LightTrailConfiguration::readFromFile(char *fileName) {
 int LightTrailConfiguration::trailThickness() const {
     return _trailThickness;
 }
+
+const std::vector<util::Range> &LightTrailConfiguration::cornerHues() const {
+    return _cornerHues;
+}
+
