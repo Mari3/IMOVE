@@ -19,6 +19,7 @@ public:
     Vector2 operator*(const float& v);
     void operator+=(const Vector2& v);
     bool operator==(const Vector2 v) const;
+    //bool closeToEdge(cv::Size edges);
 };
 
 #endif //IMOVE_VECTOR2_H

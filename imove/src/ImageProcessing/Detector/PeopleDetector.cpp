@@ -24,7 +24,7 @@ PeopleDetector::PeopleDetector(float pixels_per_meter, bool low_camera) : pixels
     params.minDistBetweenBlobs = params.minArea*0.20;
   } else {
     params.minArea = pixels_per_meter*2;
-    params.minDistBetweenBlobs = params.minArea*0.250;
+    params.minDistBetweenBlobs = params.minArea*0.25;
   }
   // Create SimpleBlobDetector
   blob_detector = cv::SimpleBlobDetector::create(params);

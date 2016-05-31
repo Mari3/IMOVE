@@ -33,7 +33,7 @@ class Person {
     static unsigned int count;
 
     //
-    unsigned int not_moved_count = 200;
+    unsigned int not_moved_count = 100;
 
  public:
     PersonType type;

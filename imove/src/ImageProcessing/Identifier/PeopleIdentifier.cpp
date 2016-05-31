@@ -6,7 +6,9 @@
 
 PeopleIdentifier::PeopleIdentifier() {}
 
-PeopleIdentifier::PeopleIdentifier(std::vector<Person>& people) : detected_people(people) {}
+PeopleIdentifier::PeopleIdentifier(float height, float width) : frame_height(height), frame_width(width) {}
+
+PeopleIdentifier::PeopleIdentifier(std::vector<Person>& people, float height, float width) : detected_people(people), frame_height(height), frame_width(width) {}
 
 PeopleIdentifier::~PeopleIdentifier() {}
 
@@ -64,4 +66,8 @@ int PeopleIdentifier::getClosest(unsigned int index, vector<Vector2>& new_locati
   }
   // Return index of closest location
   return min_index;
+}
+
+bool PeopleIdentifier::closeToEdge(Vector2 location) {
+  return true;
 }

@@ -4,13 +4,15 @@
 
 #include "PeopleExtractor.h"
 
-PeopleExtractor::PeopleExtractor(cv::Size frame_size, float pixels_per_meter, float resolution_resize_height) : frame_size(frame_size), pixels_per_meter(pixels_per_meter), resolution_resize_height(resolution_resize_height) {
+PeopleExtractor::PeopleExtractor(cv::Size frame_size, float pixels_per_meter, float resolution_resize_height) {
   // Calculate resize ratio
   resize_ratio = frame_size.height/resolution_resize_height;
   std::cout << pixels_per_meter << std::endl;
 
   // Initialize empty frame
   frame = cv::Mat::zeros(resolution_resize_height, frame_size.width/resize_ratio, CV_8UC1);
+
+  frame_size_resized = cv::Size(frame_size.width/resize_ratio, resolution_resize_height);
 
   if (pixels_per_meter > 400) {
     // Initialize Detector with low camera if meter > 400 pixels
@@ -21,9 +23,7 @@ PeopleExtractor::PeopleExtractor(cv::Size frame_size, float pixels_per_meter, fl
   }
 
   // Initialize Identifier
-  identifier = PeopleIdentifier();
-  std::cout << frame.cols << std::endl;
-  std::cout << frame.rows << std::endl;
+  identifier = PeopleIdentifier(frame_size_resized.height, frame_size_resized.width);
 }
 
 PeopleExtractor::~PeopleExtractor() {}
@@ -32,7 +32,7 @@ vector<Person> PeopleExtractor::extractPeople(cv::Mat& new_frame) {
   // Convert frame to grayscale
   cvtColor(new_frame, new_frame, CV_RGB2GRAY);
   // Downscale frame
-  resize(new_frame, new_frame, cv::Size(frame_size.width/resize_ratio, resolution_resize_height));
+  resize(new_frame, new_frame, frame_size_resized);
 
   // Start working with new frame
   frame = new_frame;
