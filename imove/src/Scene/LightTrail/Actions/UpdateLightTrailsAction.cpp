@@ -30,22 +30,7 @@ Vector2 UpdateLightTrailsAction::calculateForce(LightTrail trail) {
 
     gravityPoints->for_each([&](std::shared_ptr<GravityPoint> gravityPoint){
 
-        if(gravityPoint->hue.contains(trail.hue)) { // If the hue of the light trail is in the hue-range of the gravity point
-            Vector2 diff = gravityPoint->location - trail.getLocation();
-            float dist = diff.size();
-            float proximityModifier = 1;
-
-            if (dist < config.proximityRange()) { // If the light trail is in a certain proximity to the gravity point
-                // Decrease instead of increase the gravity the closer the trail gets
-                // in order to cause orbit
-               // proximityModifier = config.proximityModifier() * (dist/config.proximityRange()) * (dist/config.proximityRange());
-                proximityModifier = config.proximityModifier() * dist/config.proximityRange();
-            }
-            if(dist > 10 && (gravityPoint->range < 0 || dist < gravityPoint->range)) {
-                // Add force that is inversely proportional to distance, like real gravity.
-                totalForce += diff / dist / dist * proximityModifier * gravityPoint->gravity;
-            }
-        }
+        totalForce += gravityPoint->calculateForce(trail,config);
 
     });
     return totalForce;

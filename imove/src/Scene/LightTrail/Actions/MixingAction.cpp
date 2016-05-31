@@ -63,6 +63,7 @@ void MixingAction::shift(LightTrailRepository* trails, std::shared_ptr<LightPers
             float dist = (trail->getLocation() - person->getLocation()).size();
             if (dist < 400) {
                 trail->hue += amount;
+                trail->hue = fmodf(trail->hue,360);
             }
         }
     });

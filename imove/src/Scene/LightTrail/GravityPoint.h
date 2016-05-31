@@ -8,6 +8,8 @@
 
 #include "../Util/Range.h"
 #include "../../Util/Vector2.h"
+#include "LightTrail.h"
+#include "LightTrailConfiguration.h"
 
 class GravityPoint {
 private:
@@ -17,6 +19,7 @@ public:
     util::Range hue;
     float gravity, range;
     GravityPoint(Vector2 location, util::Range hue, float gravity, float range = -1);
+    Vector2 calculateForce(LightTrail trail, const LightTrailConfiguration& config);
 };
 
 

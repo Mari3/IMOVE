@@ -12,6 +12,8 @@
 #include "Conditions/PersonChangedTypeCondition.h"
 #include "Actions/DeleteAllAction.h"
 #include "Conditions/PeopleEnteredMixingRangeCondition.h"
+#include "Repositories/LightsSceneVectorRepositories.h"
+#include "Actions/LightSourceEffectAction.h"
 
 void LightTrailScene::draw(sf::RenderTarget &target) {
 
@@ -20,15 +22,21 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
     rect.setFillColor(sf::Color(0, 0, 0, config.fade()));
     texture.draw(rect);
 
-    //Draw all light trails on the texture
-    lightTrails->for_each([&](std::shared_ptr<LightTrail> trail){
+    std::function<void(std::shared_ptr<LightTrail>)> func = [&](std::shared_ptr<LightTrail> trail){
 
         sf::RectangleShape circle(sf::Vector2f(config.trailThickness(), config.trailThickness()) );
         circle.setPosition(trail->getLocation().x,trail->getLocation().y);
         circle.setFillColor(HueConverter::ToColor(trail->hue));
         texture.draw(circle);
 
-    });
+    };
+
+    //Draw all light trails on the texture
+    lightTrails->for_each(func);
+
+    for(auto &trails : sourceTrails){
+        trails->for_each(func);
+    }
 
     //Draw the texture onto the target
     texture.display();
@@ -92,19 +100,12 @@ LightPersonRepository* lightPeople) : Scene(),
             new LightSource(Vector2(config.screenWidth(), config.screenHeight()),config.cornerHues()[3],
                             util::Range(180, 270,true),config.sendOutSpeed())));
 
-    //Add gravity points for every source
-    gravityPoints->add(std::shared_ptr<GravityPoint>(
-            new GravityPoint(Vector2(0,0),config.cornerHues()[0],10000)
-    ));
-    gravityPoints->add(std::shared_ptr<GravityPoint>(
-            new GravityPoint(Vector2(config.screenWidth(),0),config.cornerHues()[1],10000)
-    ));
-    gravityPoints->add(std::shared_ptr<GravityPoint>(
-            new GravityPoint(Vector2(0,config.screenHeight()),config.cornerHues()[2],10000)
-    ));
-    gravityPoints->add(std::shared_ptr<GravityPoint>(
-            new GravityPoint(Vector2(config.screenWidth(),config.screenHeight()),config.cornerHues()[3],10000)
-    ));
+    for(int i=0;i<4;++i){
+        LightTrailRepository* sourceRepo = new LightTrailVectorRepository();
+        Action* sourceAction = new LightSourceEffectAction(lightSources->get(i),sourceRepo,config);
+        sourceTrails.push_back(sourceRepo);
+        actions.push_back(unique_ptr<Action>(sourceAction));
+    }
 
 
     //Add all the basic actions

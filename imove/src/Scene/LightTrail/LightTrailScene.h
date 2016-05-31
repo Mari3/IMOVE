@@ -21,6 +21,7 @@ private:
     GravityPointRepository* gravityPoints;
     ColorHoleRepository* colorHoles;
     LightPersonRepository* lightPeople;
+    std::vector<LightTrailRepository*> sourceTrails;
     LightTrailConfiguration config;
     sf::RenderTexture texture;
     int hueCounter;

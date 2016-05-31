@@ -11,7 +11,7 @@
 
 struct Scenario{
     vector<Person> people;
-    virtual void update(float dt) = 0;
+    virtual void update(float dt) {};
 };
 
 struct StandardScenario : public Scenario {
@@ -72,6 +72,18 @@ struct MixingScenario : public Scenario {
     }
 };
 
+struct ManyScenario : public Scenario {
+
+    ManyScenario(const LightTrailConfiguration &config){
+        util::Range xRange(0,config.screenWidth());
+        util::Range yRange(0,config.screenHeight());
+        for(int i=0;i<10;++i){
+            people.push_back(Person(Vector2(xRange.drawRandom(),yRange.drawRandom()),Participant));
+        }
+    }
+
+};
+
 int main(int argc, char** argv){
 
     srand(static_cast<unsigned int>(time(NULL)));
@@ -91,6 +103,8 @@ int main(int argc, char** argv){
         scenario = new MixingScenario(config);
     }else if(scenarioCode == 2){
         scenario = new MixingFailsScenario(config);
+    }else if(scenarioCode == 3){
+        scenario = new ManyScenario(config);
     }
 
     sf::RenderWindow window(sf::VideoMode(config.screenWidth(),config.screenHeight()),"Projection");

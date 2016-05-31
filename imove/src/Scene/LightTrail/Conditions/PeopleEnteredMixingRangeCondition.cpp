@@ -2,6 +2,7 @@
 // Created by Wouter Posdijk on 30/05/16.
 //
 
+#include <cmath>
 #include "PeopleEnteredMixingRangeCondition.h"
 #include "../Actions/MixingAction.h"
 
@@ -33,13 +34,19 @@ int PeopleEnteredMixingRangeCondition::check(float dt, std::vector<Action *> &ac
                 std::pair<int, int> pair(id1, id2);
                 std::set<std::pair<int, int>>::iterator loc = withinRange.find(pair);
 
-                if (dist < config.mixingDistance()) {
+                float mixingThreshold = 20;
+
+                float huediff = fabs(person1->hue.getCenter() - person2->hue.getCenter());
+                if(huediff > 180) huediff = 360-huediff;
+
+                if (dist < config.mixingDistance() && huediff > mixingThreshold
+                        && huediff < 170) {
                     if (loc != withinRange.end())
                         return;
                     Action* newAction = new MixingAction(person1,person2,lightTrails,gravityPoints,config);
                     actions.push_back(newAction);
                     withinRange.insert(pair);
-                } else if (loc != withinRange.end())
+                } else if (loc != withinRange.end() && (dist > config.mixingDistance() || fabs(person1->hue.getCenter() - person2->hue.getCenter()) < 0.001f))
                     withinRange.erase(loc);
             }
             j++;
