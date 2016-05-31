@@ -1,0 +1,22 @@
+find_package(Threads REQUIRED)
+find_package(Boost 1.54.0 COMPONENTS system thread REQUIRED)
+include_directories(${Boost_INCLUDE_DIR})
+link_directories(${Boost_LIBRARY_DIR})
+find_package(SFML REQUIRED system window graphics network audio)
+include_directories(${SFML_INCLUDE_DIR})
+find_package(OpenCV REQUIRED HINTS ${OpenCV_DIR})
+include_directories( ${OpenCV_INCLUDE_DIRS} )
+
+
+file(GLOB_RECURSE SOURCE_FILES "*.cpp")
+ADD_EXECUTABLE(imove_peopleextractor ${SOURCE_FILES})
+SET_TARGET_PROPERTIES(imove_peopleextractor PROPERTIES ENABLE_EXPORTS true)
+SET_TARGET_PROPERTIES(imove_peopleextractor PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
+
+TARGET_LINK_LIBRARIES(imove_peopleextractor ${CMAKE_THREAD_LIBS_INIT})
+TARGET_LINK_LIBRARIES(imove_peopleextractor rt)
+TARGET_LINK_LIBRARIES(imove_peopleextractor ${Boost_SYSTEM_LIBRARY})
+TARGET_LINK_LIBRARIES(imove_peopleextractor ${Boost_THREAD_LIBRARY})
+TARGET_LINK_LIBRARIES(imove_peopleextractor scene_interface)
+TARGET_LINK_LIBRARIES(imove_peopleextractor ${OpenCV_LIBS})
+TARGET_LINK_LIBRARIES(imove_peopleextractor ${SFML_LIBRARIES})

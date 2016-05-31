@@ -1,5 +1,7 @@
 #include "ExtractedpeopleQueue.hpp"
 
+using namespace scene_interface;
+
 ExtractedpeopleQueue::ExtractedpeopleQueue(unsigned int size) : size(size) {}
 		
 bool ExtractedpeopleQueue::empty() const {
@@ -10,7 +12,7 @@ bool ExtractedpeopleQueue::full() const {
 	return ((this->head + 1) % this->size) == this->tail;
 }
 
-void ExtractedpeopleQueue::push(boost::interprocess::offset_ptr<Person> item) {
+void ExtractedpeopleQueue::push(boost::interprocess::offset_ptr<std::vector<boost::interprocess::offset_ptr<scene_interface::Person> > >& item) {
 	if (this->full()) {
 		std::cerr << "todo assert" << std::endl;
 	}
@@ -19,12 +21,12 @@ void ExtractedpeopleQueue::push(boost::interprocess::offset_ptr<Person> item) {
 	this->head = (this->head + 1) % this->size;
 }
 
-boost::interprocess::offset_ptr<Person> ExtractedpeopleQueue::pop() {
+boost::interprocess::offset_ptr<std::vector<boost::interprocess::offset_ptr<scene_interface::Person> > > ExtractedpeopleQueue::pop() {
 	if (this->empty()) {
 		std::cerr << "todo assert" << std::endl;
 	}
 	std::cout << "pop: " << this->tail << std::endl;
-	boost::interprocess::offset_ptr<Person> item = items[this->tail];
+	boost::interprocess::offset_ptr<std::vector<boost::interprocess::offset_ptr<scene_interface::Person> > > item = items[this->tail];
 	this->tail = (this->tail + 1) % this->size;
 	return item;
 }

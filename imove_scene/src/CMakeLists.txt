@@ -1,0 +1,22 @@
+find_package(Threads REQUIRED)
+find_package(Boost 1.54.0 COMPONENTS system thread REQUIRED)
+include_directories(${Boost_INCLUDE_DIR})
+link_directories(${Boost_LIBRARY_DIR})
+find_package(SFML REQUIRED system window graphics network audio)
+include_directories(${SFML_INCLUDE_DIR})
+find_package(OpenCV REQUIRED HINTS ${OpenCV_DIR})
+include_directories( ${OpenCV_INCLUDE_DIRS} )
+
+file(GLOB_RECURSE SOURCE_FILES "../../scene_interface/src/*.cpp" "*.cpp")
+ADD_EXECUTABLE(imove_scene ${SOURCE_FILES})
+SET_TARGET_PROPERTIES(imove_scene PROPERTIES ENABLE_EXPORTS true)
+SET_TARGET_PROPERTIES(imove_scene PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
+
+#TARGET_LINK_LIBRARIES(imove_scene scene_interface)
+TARGET_LINK_LIBRARIES(imove_scene ${CMAKE_THREAD_LIBS_INIT})
+TARGET_LINK_LIBRARIES(imove_scene rt)
+TARGET_LINK_LIBRARIES(imove_scene ${Boost_SYSTEM_LIBRARY})
+TARGET_LINK_LIBRARIES(imove_scene ${Boost_THREAD_LIBRARY})
+TARGET_LINK_LIBRARIES(imove_scene ${SFML_LIBRARIES})
+TARGET_LINK_LIBRARIES(imove_scene ${OpenCV_LIBS})
+

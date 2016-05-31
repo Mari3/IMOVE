@@ -2,7 +2,7 @@
 
 #include <functional>
 
-#include "../../../imove-peopleextractor/src/OpenCVUtil.hpp"
+#include "../../../imove_peopleextractor/src/OpenCVUtil.hpp"
 #include "./CalibrationProjectionWindow.hpp"
 
 

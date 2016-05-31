@@ -1,6 +1,6 @@
 #include "CalibrationManager.hpp"
 
-#include "../../imove-peopleextractor/src/OpenCVUtil.hpp"
+#include "../../imove_peopleextractor/src/OpenCVUtil.hpp"
 #include "Windows/ProjectionWindow.hpp"
 #include "Windows/ProjectorWindow.hpp"
 #include "Windows/CalibrationProjectionWindow.hpp"

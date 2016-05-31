@@ -1,6 +1,6 @@
 #include <opencv2/opencv.hpp>
 
-#include "../../../imove-peopleextractor/src/OpenCVWindow.hpp"
+#include "../../../imove_peopleextractor/src/OpenCVWindow.hpp"
 
 // Window to display projector frame sequence to calibrate corners and frame delay
 class ProjectorWindow : public OpenCVWindow {

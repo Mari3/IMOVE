@@ -2,7 +2,7 @@
 #include <string>
 
 #include "CalibrationManager.hpp"
-#include "../../imove-peopleextractor/src/Calibration/Calibration.hpp"
+#include "../../imove_peopleextractor/src/Calibration/Calibration.hpp"
 
 
 // arguments
