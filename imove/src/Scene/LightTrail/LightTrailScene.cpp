@@ -92,6 +92,20 @@ LightPersonRepository* lightPeople) : Scene(),
             new LightSource(Vector2(config.screenWidth(), config.screenHeight()),config.cornerHues()[3],
                             util::Range(180, 270,true),config.sendOutSpeed())));
 
+    //Add gravity points for every source
+    gravityPoints->add(std::shared_ptr<GravityPoint>(
+            new GravityPoint(Vector2(0,0),config.cornerHues()[0],10000)
+    ));
+    gravityPoints->add(std::shared_ptr<GravityPoint>(
+            new GravityPoint(Vector2(config.screenWidth(),0),config.cornerHues()[1],10000)
+    ));
+    gravityPoints->add(std::shared_ptr<GravityPoint>(
+            new GravityPoint(Vector2(0,config.screenHeight()),config.cornerHues()[2],10000)
+    ));
+    gravityPoints->add(std::shared_ptr<GravityPoint>(
+            new GravityPoint(Vector2(config.screenWidth(),config.screenHeight()),config.cornerHues()[3],10000)
+    ));
+
 
     //Add all the basic actions
     actions.push_back(std::unique_ptr<Action>(

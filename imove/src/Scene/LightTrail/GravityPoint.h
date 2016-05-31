@@ -15,8 +15,8 @@ private:
 public:
     Vector2 location;
     util::Range hue;
-    float gravity;
-    GravityPoint(Vector2 location, util::Range hue, float gravity);
+    float gravity, range;
+    GravityPoint(Vector2 location, util::Range hue, float gravity, float range = -1);
 };
 
 

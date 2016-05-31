@@ -24,10 +24,11 @@ private:
     util::Range _sendOutSpeed;
 
     // Player gravitation
-    float _participantGravity, _participantAntigravity, _bystanderGravity, _bystanderGravityDelay;
+    float _participantGravity, _participantAntigravity, _participantGravityRange,
+            _bystanderGravity, _bystanderGravityDelay, _bystanderGravityRange;
 
     // Other gravitation
-    float _alternatingGravity, _gravityPointDelay;
+    float _alternatingGravity, _gravityPointDelay, _alternatingGravityRange;
 
     // Orbiting
     float _proximityRange, _proximityModifier;
@@ -54,8 +55,10 @@ public:
     LightTrailConfiguration(unsigned int _screenWidth, unsigned int _screenHeight, const util::Range &_corner1Hue,
                             const util::Range &_corner2Hue, const util::Range &_corner3Hue,
                             const util::Range &_corner4Hue, float _sendOutDelay, int _trailCap, const util::Range &_sendOutSpeed,
-                            float _participantGravity, float _participantAntigravity, float _bystanderGravity, float _bystanderGravityDelay,
-                            float _alternatingGravity, float _gravityPointDelay, float _proximityRange,
+                            float _participantGravity, float _participantAntigravity, float _participantGravityRange,
+                            float _bystanderGravity, float _bystanderGravityDelay, float _bystanderGravityRange,
+                            float _alternatingGravity, float _gravityPointDelay,
+                            float _alternatingGravityRange, float _proximityRange,
                             float _proximityModifier, bool _sidesEnabled, float _speedCap, int _trailThickness, uint8_t _fade,
                             float _mixingSpeed, float _mixingDistance, float _mixingRevertTime, float _explosionAntigravity,
                             float _explosionGravity, float _explosionExTime, float _explosionInTime
@@ -112,6 +115,12 @@ public:
     float explosionExTime() const;
 
     float explosionInTime() const;
+
+    float participantGravityRange() const;
+
+    float bystanderGravityRange() const;
+
+    float alternatingGravityRange() const;
 };
 
 

@@ -41,8 +41,10 @@ Vector2 UpdateLightTrailsAction::calculateForce(LightTrail trail) {
                // proximityModifier = config.proximityModifier() * (dist/config.proximityRange()) * (dist/config.proximityRange());
                 proximityModifier = config.proximityModifier() * dist/config.proximityRange();
             }
-            // Add force that is inversely proportional to distance, like real gravity.
-            totalForce += diff / dist / dist * proximityModifier * gravityPoint->gravity;
+            if(dist > 10 && (gravityPoint->range < 0 || dist < gravityPoint->range)) {
+                // Add force that is inversely proportional to distance, like real gravity.
+                totalForce += diff / dist / dist * proximityModifier * gravityPoint->gravity;
+            }
         }
 
     });
