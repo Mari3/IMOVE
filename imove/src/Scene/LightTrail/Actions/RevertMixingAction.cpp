@@ -14,7 +14,7 @@ RevertMixingAction::RevertMixingAction(const shared_ptr<LightPerson> &person1, c
           trails(trails),
           config(config) {
     progressLeft = progress;
-    progPerSecond = progress;
+    progPerSecond = progress/config.mixingRevertTime();
 }
 
 bool RevertMixingAction::isDone(std::vector<Action*> &followUp) {

@@ -16,7 +16,7 @@ bool MixingAction::isDone(std::vector<Action*> &followUp) {
         return true;
     }
     float dist = (person1->getLocation()-person2->getLocation()).size();
-    if(dist > 512) {
+    if(dist > config.mixingDistance()) {
         Action* revertFollowUp = new RevertMixingAction(person1,person2,progress,trails,config);
         followUp.push_back(revertFollowUp);
         return true;
@@ -26,9 +26,8 @@ bool MixingAction::isDone(std::vector<Action*> &followUp) {
 
 void MixingAction::execute(float dt) {
     float dist = (person1->getLocation()-person2->getLocation()).size();
-    float closeness = 1+1-dist/512;
-    float stdSpeed = 2.f;
-    float currentProgress = closeness * stdSpeed * dt;
+    float closeness = 1+1-dist/config.mixingDistance();
+    float currentProgress = closeness * config.mixingSpeed() * dt;
 
     float difference = person1->hue.getCenter()-person2->hue.getCenter();
     if(difference > 180) difference -= 360;
