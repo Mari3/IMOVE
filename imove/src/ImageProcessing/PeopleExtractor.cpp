@@ -49,6 +49,11 @@ vector<Person> PeopleExtractor::extractPeople(cv::Mat& new_frame) {
     p.setLocation(Vector2(location.x*resize_ratio,location.y*resize_ratio));
   }
 
+  cv::line(results_frame, cv::Point(frame_size_resized.width/20, frame_size_resized.height/20), cv::Point((frame_size_resized.width - frame_size_resized.width/20), frame_size_resized.height/20), cv::Scalar(0, 255, 0));
+  cv::line(results_frame, cv::Point((frame_size_resized.width - frame_size_resized.width/20), frame_size_resized.height/20), cv::Point((frame_size_resized.width - frame_size_resized.width/20), frame_size_resized.height - frame_size_resized.height/20), cv::Scalar(0, 255, 0));
+  cv::line(results_frame, cv::Point((frame_size_resized.width - frame_size_resized.width/20), frame_size_resized.height - frame_size_resized.height/20), cv::Point(frame_size_resized.width/20, frame_size_resized.height - frame_size_resized.height/20), cv::Scalar(0, 255, 0));
+  cv::line(results_frame, cv::Point(frame_size_resized.width/20, frame_size_resized.height - frame_size_resized.height/20), cv::Point(frame_size_resized.width/20, frame_size_resized.height/20), cv::Scalar(0, 255, 0));
+
   // Return vector containing all people in the Scene
   return people;
 }

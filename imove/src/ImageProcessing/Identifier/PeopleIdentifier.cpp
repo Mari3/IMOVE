@@ -23,7 +23,10 @@ vector<Person> PeopleIdentifier::match(std::vector<Vector2>& locations) {
         detected_people.erase(detected_people.begin() + i);
         --i;
       } else if (detected_people[i].type == StandingStill) {
-        if (detected_people[i].getNotMovedCount() <= 0) {
+        if (closeToEdge(detected_people[i].getLocation())) {
+          detected_people.erase(detected_people.begin() + i);
+          --i;
+        } else if (detected_people[i].getNotMovedCount() <= 0) {
           detected_people[i].type = None;
         } else {
           detected_people[i]. decreaseNotMovedCount();
@@ -69,5 +72,10 @@ int PeopleIdentifier::getClosest(unsigned int index, vector<Vector2>& new_locati
 }
 
 bool PeopleIdentifier::closeToEdge(Vector2 location) {
-  return true;
+  if ((location.x < frame_width/15) || (location.x > frame_width - frame_width/15)) {
+    return true;
+  } else if ((location.y < frame_height/15) || (location.y > frame_height - frame_height/15)) {
+    return true;
+  }
+  return false;
 }
