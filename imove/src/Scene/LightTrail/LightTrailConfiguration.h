@@ -42,6 +42,12 @@ private:
     // Display
     uint8_t _fade;
 
+    // Mixing
+    float _mixingSpeed, _mixingDistance, _mixingRevertTime;
+
+    // Explosion
+    float _explosionAntigravity, _explosionGravity, _explosionExTime, _explosionInTime;
+
 public:
 
 
@@ -50,7 +56,10 @@ public:
                             const util::Range &_corner4Hue, float _sendOutDelay, int _trailCap, const util::Range &_sendOutSpeed,
                             float _participantGravity, float _participantAntigravity, float _bystanderGravity, float _bystanderGravityDelay,
                             float _alternatingGravity, float _gravityPointDelay, float _proximityRange,
-                            float _proximityModifier, bool _sidesEnabled, float _speedCap, int _trailThickness, uint8_t _fade);
+                            float _proximityModifier, bool _sidesEnabled, float _speedCap, int _trailThickness, uint8_t _fade,
+                            float _mixingSpeed, float _mixingDistance, float _mixingRevertTime, float _explosionAntigravity,
+                            float _explosionGravity, float _explosionExTime, float _explosionInTime
+    );
 
     static LightTrailConfiguration readFromFile(char* fileName);
 
@@ -89,6 +98,20 @@ public:
     const util::Range & sendOutSpeed() const;
 
     int trailThickness() const;
+
+    float mixingSpeed() const;
+
+    float mixingDistance() const;
+
+    float mixingRevertTime() const;
+
+    float explosionAntigravity() const;
+
+    float explosionGravity() const;
+
+    float explosionExTime() const;
+
+    float explosionInTime() const;
 };
 
 

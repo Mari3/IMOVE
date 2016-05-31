@@ -19,3 +19,10 @@ SidesEnabled: 1
 SpeedCap: 400
 Fade: 6
 TrailThickness: 12
+MixingSpeed: 2.
+MixingDistance: 512
+MixingRevertTime: 1.
+ExplosionAntigravity: 500000
+ExplosionGravity: 300000
+ExplosionExTime: .2
+ExplosionInTime: .3

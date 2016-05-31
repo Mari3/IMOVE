@@ -67,14 +67,22 @@ LightTrailConfiguration::LightTrailConfiguration(unsigned int _screenWidth, unsi
                                                  float _participantGravity, float _participantAntigravity, float _bystanderGravity,
                                                  float _bystanderGravityDelay,
                                                  float _alternatingGravity, float _gravityPointDelay, float _proximityRange,
-                                                 float _proximityModifier, bool _sidesEnabled, float _speedCap, int _trailThickness, uint8_t _fade)
+                                                 float _proximityModifier, bool _sidesEnabled, float _speedCap, int _trailThickness, uint8_t _fade,
+                                                 float _mixingSpeed, float _mixingDistance, float _mixingRevertTime, float _explosionAntigravity,
+                                                 float _explosionGravity, float _explosionExTime, float _explosionInTime
+)
         : _screenWidth(_screenWidth), _screenHeight(_screenHeight),
           _sendOutDelay(_sendOutDelay), _trailCap(_trailCap), _sendOutSpeed(_sendOutSpeed), _participantGravity(_participantGravity),
           _participantAntigravity(_participantAntigravity), _bystanderGravity(_bystanderGravity),
           _bystanderGravityDelay(_bystanderGravityDelay),
           _alternatingGravity(_alternatingGravity), _gravityPointDelay(_gravityPointDelay),
           _proximityRange(_proximityRange), _proximityModifier(_proximityModifier), _sidesEnabled(_sidesEnabled),
-          _speedCap(_speedCap), _trailThickness(_trailThickness), _fade(_fade) {
+          _speedCap(_speedCap), _trailThickness(_trailThickness), _fade(_fade),
+          _mixingSpeed(_mixingSpeed), _mixingDistance(_mixingDistance), _mixingRevertTime(_mixingRevertTime),
+          _explosionAntigravity(_explosionAntigravity), _explosionGravity(_explosionGravity),
+          _explosionExTime(_explosionExTime), _explosionInTime(_explosionInTime)
+
+{
     _cornerHues.push_back(_corner1Hue);
     _cornerHues.push_back(_corner2Hue);
     _cornerHues.push_back(_corner3Hue);
@@ -103,7 +111,8 @@ LightTrailConfiguration LightTrailConfiguration::readFromFile(char *fileName) {
     int trailCap;
     float participantGravity, participantAntiGravity, bystanderGravity,
             bystanderGravityDelay, alternatingGravity, alternatingGravityDelay,
-            proximityRange, proximityModifier, speedCap;
+            proximityRange, proximityModifier, speedCap, mixingSpeed, mixingDistance, mixingRevertTime,
+            explosionAntigravity, explosionGravity, explosionExTime, explosionInTime;
     bool sidesEnabled;
     int fadeint, trailThickness;
 
@@ -127,6 +136,13 @@ LightTrailConfiguration LightTrailConfiguration::readFromFile(char *fileName) {
     fs["SpeedCap"] >> speedCap;
     fs["Fade"] >> fadeint;
     fs["TrailThickness"] >> trailThickness;
+    fs["MixingSpeed"] >> mixingSpeed;
+    fs["MixingDistance"] >> mixingDistance;
+    fs["MixingRevertTime"] >> mixingRevertTime;
+    fs["ExplosionAntigravity"] >> explosionAntigravity;
+    fs["ExplosionGravity"] >> explosionGravity;
+    fs["ExplosionExTime"] >> explosionExTime;
+    fs["ExplosionInTime"] >> explosionInTime;
 
     uint8_t fade = static_cast<uint8_t>(fadeint > 255 ? 255 : fadeint);
 
@@ -143,7 +159,10 @@ LightTrailConfiguration LightTrailConfiguration::readFromFile(char *fileName) {
                                    participantGravity,participantAntiGravity,
                                    bystanderGravity,bystanderGravityDelay,alternatingGravity,
                                    alternatingGravityDelay,proximityRange,proximityModifier,
-                                   sidesEnabled,speedCap,trailThickness,fade
+                                   sidesEnabled,speedCap,trailThickness,fade,
+                                   mixingSpeed,mixingDistance,mixingRevertTime,
+                                   explosionAntigravity,explosionGravity,explosionExTime,
+                                   explosionInTime
     );
 }
 
@@ -155,3 +174,30 @@ const std::vector<util::Range> &LightTrailConfiguration::cornerHues() const {
     return _cornerHues;
 }
 
+float LightTrailConfiguration::mixingSpeed() const {
+    return _mixingSpeed;
+}
+
+float LightTrailConfiguration::mixingDistance() const {
+    return _mixingDistance;
+}
+
+float LightTrailConfiguration::mixingRevertTime() const {
+    return _mixingRevertTime;
+}
+
+float LightTrailConfiguration::explosionAntigravity() const {
+    return _explosionAntigravity;
+}
+
+float LightTrailConfiguration::explosionGravity() const {
+    return _explosionGravity;
+}
+
+float LightTrailConfiguration::explosionExTime() const {
+    return _explosionExTime;
+}
+
+float LightTrailConfiguration::explosionInTime() const {
+    return _explosionInTime;
+}
