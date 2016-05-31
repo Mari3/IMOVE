@@ -22,7 +22,7 @@ private:
 public:
     MixingAction(std::shared_ptr<LightPerson> person1, std::shared_ptr<LightPerson> person2, LightTrailRepository* trails,
                  GravityPointRepository* gravityPoints, const LightTrailConfiguration& config);
-    bool isDone(Action *&followUp) override;
+    bool isDone(std::vector<Action*> &followUp) override;
 
     void execute(float dt) override;
 

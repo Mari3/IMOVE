@@ -17,7 +17,7 @@ RevertMixingAction::RevertMixingAction(const shared_ptr<LightPerson> &person1, c
     progPerSecond = progress;
 }
 
-bool RevertMixingAction::isDone(Action *&followUp) {
+bool RevertMixingAction::isDone(std::vector<Action*> &followUp) {
     return fabs(progressLeft) < 0.001;
 }
 

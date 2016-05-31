@@ -18,7 +18,7 @@ void ParticipantGravityPointAction::setLocation() {
 }
 
 
-bool ParticipantGravityPointAction::isDone(Action *&followUp) {
+bool ParticipantGravityPointAction::isDone(std::vector<Action*> &followUp) {
     // This action is done when the person it tracks is no longer a participant
     if(person->type != Participant){
         gravityPoints->scheduleForRemoval(gravityPoint);

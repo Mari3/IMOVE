@@ -4,7 +4,7 @@
 
 #include "UpdateLightTrailsAction.h"
 
-bool UpdateLightTrailsAction::isDone(Action *&followUp) {
+bool UpdateLightTrailsAction::isDone(std::vector<Action*> &followUp) {
     return false;
 }
 

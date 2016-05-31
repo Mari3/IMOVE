@@ -7,14 +7,18 @@
 #include "ExplosionAction.h"
 #include "RevertMixingAction.h"
 
-bool MixingAction::isDone(Action *&followUp) {
+bool MixingAction::isDone(std::vector<Action*> &followUp) {
     if(mixingComplete){
-        followUp = new ExplosionAction(person1,gravityPoints,config);
+        Action* followUp1 = new ExplosionAction(person1,gravityPoints,config);
+        Action* followUp2 = new ExplosionAction(person2,gravityPoints,config);
+        followUp.push_back(followUp1);
+        followUp.push_back(followUp2);
         return true;
     }
     float dist = (person1->getLocation()-person2->getLocation()).size();
     if(dist > 512) {
-        followUp = new RevertMixingAction(person1,person2,progress,trails,config);
+        Action* revertFollowUp = new RevertMixingAction(person1,person2,progress,trails,config);
+        followUp.push_back(revertFollowUp);
         return true;
     }
     return false;

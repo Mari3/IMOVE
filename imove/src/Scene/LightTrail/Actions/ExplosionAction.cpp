@@ -14,7 +14,7 @@ ExplosionAction::ExplosionAction(std::shared_ptr<LightPerson> person, GravityPoi
     std::cout << "Explosion action created!" << std::endl;
 }
 
-bool ExplosionAction::isDone(Action *&followUp) {
+bool ExplosionAction::isDone(std::vector<Action*> &followUp) {
     return phase == 2;
 }
 

@@ -26,7 +26,7 @@ public:
     explicit BystanderGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints,
     const LightTrailConfiguration &config);
 
-    bool isDone(Action *&followUp) override;
+    bool isDone(std::vector<Action*> &followUp) override;
 
     void execute(float dt) override;
 

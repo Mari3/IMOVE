@@ -14,7 +14,7 @@ BystanderGravityDelay: 2.
 AlternatingGravity: 300000
 AlternatingGravityDelay: 5.
 ProximityRange: 200
-ProximityModifier: .5
+ProximityModifier: .8
 SidesEnabled: 1
 SpeedCap: 400
 Fade: 2
