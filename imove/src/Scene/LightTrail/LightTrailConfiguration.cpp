@@ -112,11 +112,13 @@ LightTrailConfiguration LightTrailConfiguration::readFromFile(char *fileName) {
     float participantGravity, participantAntiGravity, bystanderGravity,
             bystanderGravityDelay, alternatingGravity, alternatingGravityDelay,
             proximityRange, proximityModifier, speedCap, mixingSpeed, mixingDistance, mixingRevertTime,
-            explosionAntigravity, explosionGravity, explosionExTime, explosionInTime;
+            explosionAntigravity, explosionGravity, explosionExTime, explosionInTime, meter;
     bool sidesEnabled;
-    int fadeint, trailThickness;
+    int fadeint;
+    float trailThickness;
 
     fs["Resolution"] >> resolution;
+    fs["Meter"] >> meter;
     fs["TopLeftHue"] >> topLeftRange;
     fs["TopRightHue"] >> topRightRange;
     fs["BottomRightHue"] >> bottomRightRange;
@@ -155,12 +157,12 @@ LightTrailConfiguration LightTrailConfiguration::readFromFile(char *fileName) {
                                    util::Range(bottomLeftRange.val[0],bottomLeftRange.val[1],true),
                                    util::Range(bottomRightRange.val[0],bottomRightRange.val[1],true),
                                    sendOutDelay, trailCap,
-                                   util::Range(sendOutSpeed.val[0],sendOutSpeed.val[1]),
+                                   util::Range(sendOutSpeed.val[0]*meter,sendOutSpeed.val[1]*meter),
                                    participantGravity,participantAntiGravity,
                                    bystanderGravity,bystanderGravityDelay,alternatingGravity,
-                                   alternatingGravityDelay,proximityRange,proximityModifier,
-                                   sidesEnabled,speedCap,trailThickness,fade,
-                                   mixingSpeed,mixingDistance,mixingRevertTime,
+                                   alternatingGravityDelay,proximityRange*meter,proximityModifier,
+                                   sidesEnabled,speedCap*meter,(int)(trailThickness*meter),fade,
+                                   mixingSpeed,mixingDistance*meter,mixingRevertTime,
                                    explosionAntigravity,explosionGravity,explosionExTime,
                                    explosionInTime
     );

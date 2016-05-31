@@ -57,7 +57,7 @@ struct MixingScenario : public Scenario {
 
     MixingScenario(const LightTrailConfiguration& config){
         unsigned int y = config.screenHeight()/2;
-        thresh = config.screenWidth()/3.f;
+        thresh = 340.f;
         people.push_back(Person(Vector2(0,y),Participant));
         people.push_back(Person(Vector2(config.screenWidth(),y),Participant));
     }
@@ -65,7 +65,7 @@ struct MixingScenario : public Scenario {
     void update(float dt) override {
         Vector2 p0loc = people[0].getLocation();
         Vector2 p1loc = people[1].getLocation();
-        if(p0loc.x < thresh) {
+        if(p1loc.x-p0loc.x > 320.f) {
             people[0].setLocation(people[0].getLocation() + Vector2(20.f * dt, 0));
             people[1].setLocation(people[1].getLocation() + Vector2(-20.f * dt, 0));
         }

@@ -33,7 +33,7 @@ int PeopleEnteredMixingRangeCondition::check(float dt, std::vector<Action *> &ac
                 std::pair<int, int> pair(id1, id2);
                 std::set<std::pair<int, int>>::iterator loc = withinRange.find(pair);
 
-                if (dist < 512) { // TODO replace with config
+                if (dist < config.mixingDistance()) {
                     if (loc != withinRange.end())
                         return;
                     Action* newAction = new MixingAction(person1,person2,lightTrails,gravityPoints,config);
