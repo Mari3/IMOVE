@@ -38,7 +38,8 @@ Vector2 UpdateLightTrailsAction::calculateForce(LightTrail trail) {
             if (dist < config.proximityRange()) { // If the light trail is in a certain proximity to the gravity point
                 // Decrease instead of increase the gravity the closer the trail gets
                 // in order to cause orbit
-                proximityModifier = config.proximityModifier() * (dist/config.proximityRange()) * (dist/config.proximityRange());
+               // proximityModifier = config.proximityModifier() * (dist/config.proximityRange()) * (dist/config.proximityRange());
+                proximityModifier = config.proximityModifier() * dist/config.proximityRange();
             }
             // Add force that is inversely proportional to distance, like real gravity.
             totalForce += diff / dist / dist * proximityModifier * gravityPoint->gravity;
