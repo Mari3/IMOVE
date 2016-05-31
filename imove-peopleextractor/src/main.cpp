@@ -8,7 +8,6 @@
 #include "Calibration/Calibration.hpp"
 
 const unsigned int CONFIGURATION_CALIBRATION_ARGN = 1;
-const unsigned int CONFIGURATION_LIGHTTRAIL_ARGN = 2;
 
 // setup and run Scene with continous people extraction as input based on configuration given in parameter otherwise show parameters
 int main(int argc, char* argv[]) {
