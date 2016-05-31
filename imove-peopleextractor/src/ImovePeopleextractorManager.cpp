@@ -1,41 +1,26 @@
 #include <opencv2/opencv.hpp>
+#include <SFML/Graphics.hpp>
 
-#include "ImoveManager.hpp"
+#include "ImovePeopleextractorManager.hpp"
 
 #include "OpenCVUtil.hpp"
 #include "Interface/Person.h"
-#include "Scene/LightTrail/LightTrailScene.h"
-#include "Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 #include "Windows/FrameWindow.hpp"
 #include "Windows/DetectedPeopleCameraWindow.hpp"
 #include "Windows/DetectedPeopleProjectionWindow.hpp"
-#include "Windows/SceneWindow.hpp"
 
-ImoveManager::ImoveManager(Calibration* calibration, LightTrailConfiguration& configuration_lighttrail) {
+ImovePeopleextractorManager::ImovePeopleextractorManager(Calibration* calibration) {
 	this->calibration = calibration;
-
-	// setup scene
-  this->scene = new LightTrailScene(
-		configuration_lighttrail,
-    new LightSourceVectorRepository(),
-    new LightTrailVectorRepository(),
-    new GravityPointVectorRepository(),
-    new ColorHoleVectorRepository(),
-    new LightPersonMapRepository()
-  );
 
 	// setup people extractor
 	this->people_extractor = new PeopleExtractor(this->calibration->getResolutionCamera(), this->calibration->getMeter(), 216);
 }
 
-void ImoveManager::run() {
+void ImovePeopleextractorManager::run() {
 	// debug windows
 	FrameWindow window_frame(cv::Size(0, 0));
 	DetectedPeopleCameraWindow detectedpeople_camera_window(cv::Size(500, 0));
 	DetectedPeopleProjectionWindow detectedpeople_projection_window(cv::Size(1000, 0));
-
-	// setup scene window
-	SceneWindow window_scene(this->calibration->getResolutionProjector());
 
 	// setup clock
 	sf::Clock clock;
@@ -47,7 +32,6 @@ void ImoveManager::run() {
 	cv::Mat frame_projection;
 	cv::Mat detectpeople_frame;
 	vector<Person> detected_people;
-	float dt;
 	// while no key pressed
 	while (cv::waitKey(1) == OpenCVUtil::NOKEY_ANYKEY && video_capture.read(frame_camera)) {
 		// debug projection frame
@@ -69,17 +53,8 @@ void ImoveManager::run() {
 
 		// draw detected people projection image
 		detectedpeople_projection_window.drawImage(frame_projection, detected_people);
-		
-		// update scene with location of people
-		this->scene->updatePeople(detected_people);
 
-		// draw next Scene frame based on clock difference
-		dt = clock.restart().asSeconds();
-		//dt = 1.f/24.f;
-		this->scene->update(dt);
-		
-		// draw the actual Scene on window
-		window_scene.drawScene(this->scene);
+		//todo communicate to other process
 	}
 
 	// safe release video capture
