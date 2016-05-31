@@ -21,9 +21,9 @@ PeopleExtractor::PeopleExtractor(cv::Size frame_size, float pixels_per_meter, fl
     // Initialize Detector with high camera if meter < 400 pixels
     detector = PeopleDetector(pixels_per_meter/resize_ratio, false);
   }
-
+  std::cout << (pixels_per_meter/resize_ratio)/2 << std::endl;
   // Initialize Identifier
-  identifier = PeopleIdentifier(frame_size_resized.height, frame_size_resized.width);
+  identifier = PeopleIdentifier(frame_size_resized.height, frame_size_resized.width, (pixels_per_meter/resize_ratio)/2);
 }
 
 PeopleExtractor::~PeopleExtractor() {}
@@ -49,10 +49,15 @@ vector<Person> PeopleExtractor::extractPeople(cv::Mat& new_frame) {
     p.setLocation(Vector2(location.x*resize_ratio,location.y*resize_ratio));
   }
 
-  cv::line(results_frame, cv::Point(frame_size_resized.width/20, frame_size_resized.height/20), cv::Point((frame_size_resized.width - frame_size_resized.width/20), frame_size_resized.height/20), cv::Scalar(0, 255, 0));
-  cv::line(results_frame, cv::Point((frame_size_resized.width - frame_size_resized.width/20), frame_size_resized.height/20), cv::Point((frame_size_resized.width - frame_size_resized.width/20), frame_size_resized.height - frame_size_resized.height/20), cv::Scalar(0, 255, 0));
-  cv::line(results_frame, cv::Point((frame_size_resized.width - frame_size_resized.width/20), frame_size_resized.height - frame_size_resized.height/20), cv::Point(frame_size_resized.width/20, frame_size_resized.height - frame_size_resized.height/20), cv::Scalar(0, 255, 0));
-  cv::line(results_frame, cv::Point(frame_size_resized.width/20, frame_size_resized.height - frame_size_resized.height/20), cv::Point(frame_size_resized.width/20, frame_size_resized.height/20), cv::Scalar(0, 255, 0));
+  // cv::line(results_frame, cv::Point(frame_size_resized.width/20, frame_size_resized.height/20), cv::Point((frame_size_resized.width - frame_size_resized.width/20), frame_size_resized.height/20), cv::Scalar(0, 255, 0));
+  // cv::line(results_frame, cv::Point((frame_size_resized.width - frame_size_resized.width/20), frame_size_resized.height/20), cv::Point((frame_size_resized.width - frame_size_resized.width/20), frame_size_resized.height - frame_size_resized.height/20), cv::Scalar(0, 255, 0));
+  // cv::line(results_frame, cv::Point((frame_size_resized.width - frame_size_resized.width/20), frame_size_resized.height - frame_size_resized.height/20), cv::Point(frame_size_resized.width/20, frame_size_resized.height - frame_size_resized.height/20), cv::Scalar(0, 255, 0));
+  // cv::line(results_frame, cv::Point(frame_size_resized.width/20, frame_size_resized.height - frame_size_resized.height/20), cv::Point(frame_size_resized.width/20, frame_size_resized.height/20), cv::Scalar(0, 255, 0));
+
+  cv::line(results_frame, cv::Point(40.33, 40.33), cv::Point((frame_size_resized.width - 40.33), 40.33), cv::Scalar(0, 255, 0));
+  cv::line(results_frame, cv::Point((frame_size_resized.width - 40.33), 40.33), cv::Point((frame_size_resized.width - 40.33), frame_size_resized.height - 40.33), cv::Scalar(0, 255, 0));
+  cv::line(results_frame, cv::Point((frame_size_resized.width - 40.33), frame_size_resized.height - 40.33), cv::Point(40.33, frame_size_resized.height - 40.33), cv::Scalar(0, 255, 0));
+  cv::line(results_frame, cv::Point(40.33, frame_size_resized.height - 40.33), cv::Point(40.33, 40.33), cv::Scalar(0, 255, 0));
 
   // Return vector containing all people in the Scene
   return people;

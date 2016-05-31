@@ -10,6 +10,9 @@ PeopleDetector::PeopleDetector(float pixels_per_meter, bool low_camera) : pixels
   // Initialize background subtractor
   background_subtractor = cv::createBackgroundSubtractorKNN();
 
+  //
+  cv::createTrackbar("Minimim blob size:", "Frame", &blob_slider_value, 10);
+
   // Set parameters for SimpleBlobDetector
   params.filterByCircularity = false;
   params.filterByColor = false;
@@ -21,9 +24,9 @@ PeopleDetector::PeopleDetector(float pixels_per_meter, bool low_camera) : pixels
   // Set parameters for SimpleBlobDetector according wether the camera height is low or not
   if (low_camera) {
     params.minArea = pixels_per_meter*5;
-    params.minDistBetweenBlobs = params.minArea*0.20;
+    params.minDistBetweenBlobs = params.minArea*0.15;
   } else {
-    params.minArea = pixels_per_meter*2;
+    params.minArea = pixels_per_meter*5;
     params.minDistBetweenBlobs = params.minArea*0.25;
   }
   // Create SimpleBlobDetector
@@ -92,4 +95,8 @@ vector<Vector2> PeopleDetector::detect(cv::Mat& frame) {
 
 cv::Mat PeopleDetector::getDisplayFrame() {
   return display_frame;
+}
+
+void PeopleDetector::blobsize_trackbar(int tracked_int, void* v) {
+    
 }

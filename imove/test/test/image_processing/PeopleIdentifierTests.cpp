@@ -7,7 +7,7 @@
 TEST (PeopleIdentifierTests, getClosestOneTest) {
   std::vector<Person> test_person;
   test_person.push_back(Person(Vector2(10,10), None));
-  PeopleIdentifier identifier = PeopleIdentifier(test_person, 216, 384);
+  PeopleIdentifier identifier = PeopleIdentifier(test_person, 216, 384, 7.68);
 
   std::vector<Vector2> test_locations;
   test_locations.push_back(Vector2(20,20));
@@ -21,7 +21,7 @@ TEST (PeopleIdentifierTests, getClosestMultipleTest) {
   std::vector<Person> test_people;
   test_people.push_back(Person(Vector2(10,10), None));
   test_people.push_back(Person(Vector2(30,30), None));
-  PeopleIdentifier identifier = PeopleIdentifier(test_people, 216, 384);
+  PeopleIdentifier identifier = PeopleIdentifier(test_people, 216, 384, 7.68);
 
   std::vector<Vector2> test_locations;
   test_locations.push_back(Vector2(20,20));
@@ -35,7 +35,7 @@ TEST (PeopleIdentifierTests, getClosestMultipleTest) {
 TEST (PeopleIdentifierTests, getClosestNoneTest) {
   std::vector<Person> test_person;
   test_person.push_back(Person(Vector2(10,10), None));
-  PeopleIdentifier identifier = PeopleIdentifier(test_person, 216, 384);
+  PeopleIdentifier identifier = PeopleIdentifier(test_person, 216, 384, 7.68);
 
   std::vector<Vector2> test_locations;
   test_locations.push_back(Vector2(200,200));
@@ -49,7 +49,7 @@ TEST (PeopleIdentifierTests, newPersonTest) {
   std::vector<Vector2> new_locations;
   new_locations.push_back(Vector2(20,20));
 
-  PeopleIdentifier identifier = PeopleIdentifier(216, 384);
+  PeopleIdentifier identifier = PeopleIdentifier(216, 384, 7.68);
   std::vector<Person> identified_people = identifier.match(new_locations);
 
   ASSERT_EQ(identified_people.size(), (unsigned int) 1);
@@ -65,7 +65,7 @@ TEST (PeopleIdentifierTests, deletePersonTest) {
   test_people.push_back(Person(Vector2(20, 200), None));
   test_people.push_back(Person(Vector2(10, 10), None));
 
-  PeopleIdentifier identifier = PeopleIdentifier(test_people, 216, 384);
+  PeopleIdentifier identifier = PeopleIdentifier(test_people, 216, 384, 7.68);
   std::vector<Person> matched_people = identifier.match(new_locations);
 
   ASSERT_EQ(matched_people.size(), (unsigned int) 2);
@@ -84,7 +84,7 @@ TEST (PeopleIdentifierTests, matchMultipleTest) {
   test_people.push_back(Person(Vector2(60, 55), None));
   test_people.push_back(Person(Vector2(80, 403), None));
 
-  PeopleIdentifier identifier = PeopleIdentifier(test_people, 216, 384);
+  PeopleIdentifier identifier = PeopleIdentifier(test_people, 216, 384, 7.68);
   std::vector<Person> matched_people = identifier.match(test_locations);
 
   ASSERT_EQ(matched_people.size(), (unsigned int) 3);

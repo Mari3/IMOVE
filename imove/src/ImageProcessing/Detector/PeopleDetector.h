@@ -37,6 +37,9 @@ class PeopleDetector {
   // Frame to display
   cv::Mat display_frame;
 
+  //
+  int blob_slider_value;
+
  public:
   PeopleDetector();
   // Constructor with number of pixels that represent one meter and wether the camera height is low or not
@@ -47,6 +50,8 @@ class PeopleDetector {
   vector<Vector2> detect(cv::Mat& frame);
 
   cv::Mat getDisplayFrame();
+
+  void blobsize_trackbar(int tracked_int, void* v);
 };
 
 

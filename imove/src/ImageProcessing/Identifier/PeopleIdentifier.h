@@ -7,6 +7,7 @@
 
 #include <limits>
 #include <vector>
+#include <iostream>
 
 #include "../../Interface/Person.h"
 #include "../../Util/Vector2.h"
@@ -19,11 +20,12 @@ class PeopleIdentifier {
   //
   float frame_height;
   float frame_width;
+  float boundary;
 
  public:
   PeopleIdentifier();
-  PeopleIdentifier(float height, float width);
-  PeopleIdentifier(std::vector<Person>& people, float height, float width);
+  PeopleIdentifier(float height, float width, float boundary);
+  PeopleIdentifier(std::vector<Person>& people, float height, float width, float boundary);
   ~PeopleIdentifier();
 
   // Match people to new locations

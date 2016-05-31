@@ -6,9 +6,9 @@
 
 PeopleIdentifier::PeopleIdentifier() {}
 
-PeopleIdentifier::PeopleIdentifier(float height, float width) : frame_height(height), frame_width(width) {}
+PeopleIdentifier::PeopleIdentifier(float height, float width, float boundary) : frame_height(height), frame_width(width), boundary(boundary) {}
 
-PeopleIdentifier::PeopleIdentifier(std::vector<Person>& people, float height, float width) : detected_people(people), frame_height(height), frame_width(width) {}
+PeopleIdentifier::PeopleIdentifier(std::vector<Person>& people, float height, float width, float boundary) : detected_people(people), frame_height(height), frame_width(width), boundary(boundary) {}
 
 PeopleIdentifier::~PeopleIdentifier() {}
 
@@ -72,9 +72,9 @@ int PeopleIdentifier::getClosest(unsigned int index, vector<Vector2>& new_locati
 }
 
 bool PeopleIdentifier::closeToEdge(Vector2 location) {
-  if ((location.x < frame_width/15) || (location.x > frame_width - frame_width/15)) {
+  if ((location.x < boundary) || (location.x > frame_width - boundary)) {
     return true;
-  } else if ((location.y < frame_height/15) || (location.y > frame_height - frame_height/15)) {
+  } else if ((location.y < boundary) || (location.y > frame_height - boundary)) {
     return true;
   }
   return false;
