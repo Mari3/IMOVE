@@ -57,7 +57,7 @@ struct MixingScenario : public Scenario {
 
     MixingScenario(const LightTrailConfiguration& config){
         unsigned int y = config.screenHeight()/2;
-        thresh = config.screenWidth()/4.f;
+        thresh = config.screenWidth()/3.f;
         people.push_back(Person(Vector2(0,y),Participant));
         people.push_back(Person(Vector2(config.screenWidth(),y),Participant));
     }
