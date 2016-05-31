@@ -33,5 +33,6 @@ include_directories(${SFML_INCLUDE_DIR})
 find_package(OpenCV REQUIRED HINTS ${OpenCV_DIR})
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 
-add_subdirectory(imove)
+add_subdirectory(imove-scene)
+add_subdirectory(imove-peopleextractor)
 add_subdirectory(calibration)

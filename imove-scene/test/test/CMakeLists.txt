@@ -15,4 +15,5 @@ if (APPLE)
 endif (APPLE)
 
 target_link_libraries(runMyTests gtest gtest_main)
-target_link_libraries(runMyTests imove)
+target_link_libraries(runMyTests imove-scene)
+target_link_libraries(runMyTests imove-peopleextractor)

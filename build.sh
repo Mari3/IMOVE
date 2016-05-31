@@ -9,4 +9,5 @@ popd >> /dev/null
 
 mkdir -p dist
 mv build/calibration/calibration dist/calibration
-mv build/imove/src/imove dist/imove
+mv build/imove-scene/src/imove-scene dist/imove-scene
+mv build/imove-peopleextractor/src/imove-peopleextractor dist/imove-peopleextractor
