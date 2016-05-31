@@ -9,5 +9,6 @@ ADD_EXECUTABLE(imove-peopleextractor ${SOURCE_FILES})
 SET_TARGET_PROPERTIES(imove-peopleextractor PROPERTIES ENABLE_EXPORTS true)
 SET_TARGET_PROPERTIES(imove-peopleextractor PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
 
+TARGET_LINK_LIBRARIES(imove-peopleextractor scene-interface)
 TARGET_LINK_LIBRARIES(imove-peopleextractor ${OpenCV_LIBS})
 TARGET_LINK_LIBRARIES(imove-peopleextractor ${SFML_LIBRARIES})
