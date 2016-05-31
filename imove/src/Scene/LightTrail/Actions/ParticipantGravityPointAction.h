@@ -16,6 +16,7 @@ class ParticipantGravityPointAction : public Action {
 private:
     GravityPointRepository* gravityPoints;
     std::shared_ptr<GravityPoint> gravityPoint;
+    std::shared_ptr<GravityPoint> antigravityPoint;
     std::shared_ptr<LightPerson> person;
     void setLocation();
 public:

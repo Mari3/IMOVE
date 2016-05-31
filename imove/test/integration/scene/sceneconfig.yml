@@ -23,7 +23,7 @@ SidesEnabled: 1
 SpeedCap: 2.
 Fade: 3
 TrailThickness: .02
-MixingSpeed: 5.
+MixingSpeed: 3.
 MixingDistance: 2.
 MixingRevertTime: 1.
 ExplosionAntigravity: 800000
