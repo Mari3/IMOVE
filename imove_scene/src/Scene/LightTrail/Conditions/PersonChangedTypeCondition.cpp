@@ -16,7 +16,7 @@ int PersonChangedTypeCondition::check(float dt, vector<Action*> &actions) {
             i++;
             actions.push_back(new BystanderGravityPointAction(person,gravityPoints,config));
         } // Else if the person turned particpant
-        else if((oldType.count(person->getId()) == 0 || (oldType[person->getId()] != Participant || oldType[person->getId()] != StandingStill)) && (person->type == Participant || person->type == StandingStill))
+        else if((oldType.count(person->getId()) == 0 || (oldType[person->getId()] != Participant && oldType[person->getId()] != StandingStill)) && (person->type == Participant || person->type == StandingStill))
         {
             // Create a new participant action
             i++;
