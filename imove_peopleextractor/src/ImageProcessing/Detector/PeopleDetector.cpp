@@ -21,10 +21,10 @@ PeopleDetector::PeopleDetector(float pixels_per_meter, bool low_camera) : pixels
   // Set parameters for SimpleBlobDetector according wether the camera height is low or not
   if (low_camera) {
     params.minArea = pixels_per_meter*5;
-    params.minDistBetweenBlobs = params.minArea*0.20;
+    params.minDistBetweenBlobs = params.minArea*0.15;
   } else {
     params.minArea = pixels_per_meter*2;
-    params.minDistBetweenBlobs = params.minArea*0.250;
+    params.minDistBetweenBlobs = params.minArea*0.25;
   }
   // Create SimpleBlobDetector
   blob_detector = cv::SimpleBlobDetector::create(params);
@@ -51,8 +51,9 @@ vector<Vector2> PeopleDetector::detect(cv::Mat& frame) {
   vector<cv::KeyPoint> keypoints;
   // Detect blobs as keypoints
   blob_detector->detect(thresh_frame, keypoints);
+  cvtColor(thresh_frame, thresh_frame, CV_GRAY2RGB);
   // Draw circle around keypoints
-  cv::drawKeypoints(thresh_frame, keypoints, keypoints_frame, cv::Scalar(0, 0, 255), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+  //cv::drawKeypoints(thresh_frame, keypoints, keypoints_frame, cv::Scalar(0, 0, 255), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 
   float frame_height = frame.rows;
   float frame_width = frame.cols;
@@ -76,12 +77,14 @@ vector<Vector2> PeopleDetector::detect(cv::Mat& frame) {
       xco = keypoint.pt.x-(pixels_per_meter/6);
     }
 
+    cv::circle(thresh_frame, cv::Point(xco, yco), 5, cv::Scalar(0, 0, 255));
+
     // Add location to locations vector
     Vector2 new_location = Vector2(xco, yco);
     new_locations.push_back(new_location);
   }
 
-  display_frame = keypoints_frame;
+  display_frame = thresh_frame;
 
   // Return all new locations
   return new_locations;

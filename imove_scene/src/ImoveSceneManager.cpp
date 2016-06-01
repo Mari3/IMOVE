@@ -76,6 +76,9 @@ void ImoveSceneManager::run() {
 					case scene_interface::PersonType::Participant:
 						person_type = PersonType::Participant;
 						break;
+					case scene_interface::PersonType::StandingStill:
+						person_type = PersonType::StandingStill;
+						break;
 					case scene_interface::PersonType::None:
 						person_type = PersonType::None;
 						break;

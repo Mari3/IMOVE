@@ -7,6 +7,7 @@
 
 #include <limits>
 #include <vector>
+#include <iostream>
 
 #include "../../Interface/Person.h"
 #include "../../Util/Vector2.h"
@@ -16,9 +17,15 @@ class PeopleIdentifier {
   // Vector containing detected people in the frame
   vector<Person> detected_people;
 
+  //
+  float frame_height;
+  float frame_width;
+  float boundary;
+
  public:
   PeopleIdentifier();
-  PeopleIdentifier(std::vector<Person>& people);
+  PeopleIdentifier(float height, float width, float boundary);
+  PeopleIdentifier(std::vector<Person>& people, float height, float width, float boundary);
   ~PeopleIdentifier();
 
   // Match people to new locations
@@ -26,6 +33,8 @@ class PeopleIdentifier {
 
   // Get closest location to a Person
   int getClosest(unsigned int index, vector<Vector2>& new_locations);
+
+  bool closeToEdge(Vector2 location);
 };
 
 

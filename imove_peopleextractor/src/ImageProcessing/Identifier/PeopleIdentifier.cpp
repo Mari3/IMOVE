@@ -6,7 +6,9 @@
 
 PeopleIdentifier::PeopleIdentifier() {}
 
-PeopleIdentifier::PeopleIdentifier(std::vector<Person>& people) : detected_people(people) {}
+PeopleIdentifier::PeopleIdentifier(float height, float width, float boundary) : frame_height(height), frame_width(width), boundary(boundary) {}
+
+PeopleIdentifier::PeopleIdentifier(std::vector<Person>& people, float height, float width, float boundary) : detected_people(people), frame_height(height), frame_width(width), boundary(boundary) {}
 
 PeopleIdentifier::~PeopleIdentifier() {}
 
@@ -17,8 +19,22 @@ vector<Person> PeopleIdentifier::match(std::vector<Vector2>& locations) {
     int index_closest = getClosest(i, locations);
     // If no close location is found, delete person
     if (index_closest < 0) {
-      detected_people.erase(detected_people.begin() + i);
-      --i;
+      if (detected_people[i].type == None) {
+        detected_people.erase(detected_people.begin() + i);
+        --i;
+      } else if (detected_people[i].type == StandingStill) {
+        if (closeToEdge(detected_people[i].getLocation())) {
+          detected_people.erase(detected_people.begin() + i);
+          --i;
+        } else if (detected_people[i].getNotMovedCount() <= 0) {
+          detected_people[i].type = None;
+        } else {
+          detected_people[i]. decreaseNotMovedCount();
+        }
+      } else {
+        detected_people[i].type = StandingStill;
+        detected_people[i].resetNotMovedCount();
+      }
     } else {
       //Set location of person to new location
       Vector2 new_location = locations[index_closest];
@@ -53,4 +69,13 @@ int PeopleIdentifier::getClosest(unsigned int index, vector<Vector2>& new_locati
   }
   // Return index of closest location
   return min_index;
+}
+
+bool PeopleIdentifier::closeToEdge(Vector2 location) {
+  if ((location.x < boundary) || (location.x > frame_width - boundary)) {
+    return true;
+  } else if ((location.y < boundary) || (location.y > frame_height - boundary)) {
+    return true;
+  }
+  return false;
 }

@@ -109,6 +109,9 @@ void ImovePeopleextractorManager::run() {
 				case None:
 					person_type = scene_interface::PersonType::None;
 					break;
+				case StandingStill:
+					person_type = scene_interface::PersonType::StandingStill;
+					break;
 			}
 			boost::interprocess::offset_ptr<scene_interface::Person> si_person = segment.construct<scene_interface::Person>(boost::interprocess::anonymous_instance)(
 				locations,
