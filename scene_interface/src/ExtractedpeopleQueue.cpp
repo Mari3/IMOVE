@@ -1,3 +1,4 @@
+#include <iostream>
 #include "ExtractedpeopleQueue.hpp"
 
 using namespace scene_interface;
