@@ -1,21 +1,32 @@
 %YAML:1.0
 Resolution: [ 1024, 750 ]
-TopLeftHue: [ 0, 90 ]
-TopRightHue: [ 90, 180 ]
-BottomRightHue : [ 180, 240 ]
-BottomLeftHue: [ 240, 0 ]
+Meter: 170
+TopLeftHue: [ 40, 90 ]
+TopRightHue: [ 130, 180 ]
+BottomRightHue : [ 220, 270 ]
+BottomLeftHue: [ 310, 0 ]
 SendOutDelay: .1
-SendOutSpeed: [ 0, 100 ]
-TrailCap: 200
-ParticipantGravity: 300000
+SendOutSpeed: [ 0, 2 ]
+TrailCap: 150
+ParticipantGravity: 100000
 ParticipantAntiGravity: 10000
+ParticipantGravityRange: 2.
 BystanderGravity: 300000
 BystanderGravityDelay: 2.
-AlternatingGravity: 300000
+BystanderGravityRange: 2.
+AlternatingGravity: 120000
 AlternatingGravityDelay: 5.
-ProximityRange: 300
+AlternatingGravityRange: 3.
+ProximityRange: .7
 ProximityModifier: .7
 SidesEnabled: 1
-SpeedCap: 400
-Fade: 2
-TrailThickness: 12
+SpeedCap: 2.
+Fade: 3
+TrailThickness: .02
+MixingSpeed: 3.
+MixingDistance: 2.
+MixingRevertTime: 1.
+ExplosionAntigravity: 800000
+ExplosionGravity: 300000
+ExplosionExTime: .2
+ExplosionInTime: .3
