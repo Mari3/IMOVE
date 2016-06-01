@@ -1,6 +1,7 @@
 #include <opencv2/opencv.hpp>
 #include <SFML/Graphics.hpp>
 #include <boost/interprocess/managed_shared_memory.hpp>
+#include <boost/interprocess/offset_ptr.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/thread/thread.hpp> 
 #include <boost/interprocess/offset_ptr.hpp>
@@ -77,11 +78,18 @@ void ImovePeopleextractorManager::run() {
 		detectedpeople_projection_window.drawImage(frame_projection, detected_people);
 
 		//communicate to other process
-		boost::interprocess::offset_ptr<std::vector<boost::interprocess::offset_ptr<scene_interface::Person> > > si_detected_people = segment.construct<std::vector<boost::interprocess::offset_ptr<scene_interface::Person> > >(boost::interprocess::anonymous_instance)();
+		//Initialize shared memory STL-compatible allocator
+    const scene_interface::PersonSMA person_sma(segment.get_segment_manager());
+
+		//Construct a vector named "MyVector" in shared memory with argument alloc_inst
+    boost::interprocess::offset_ptr<scene_interface::PersonVector> si_detected_people = segment.construct<scene_interface::PersonVector>(boost::interprocess::anonymous_instance)(person_sma);
 		for (Person person : detected_people) {
 			// convert person location
+			//communicate to other process
+			//Initialize shared memory STL-compatible allocator
+    	const scene_interface::Vector2SMA vector2_sma(segment.get_segment_manager());
 			Vector2 location = person.getLocation();
-			boost::interprocess::offset_ptr<std::list<boost::interprocess::offset_ptr<scene_interface::Vector2> > > locations = segment.construct<std::list<boost::interprocess::offset_ptr<scene_interface::Vector2> > >(boost::interprocess::anonymous_instance)();
+			boost::interprocess::offset_ptr<scene_interface::Vector2Vector> locations = segment.construct<scene_interface::Vector2Vector>(boost::interprocess::anonymous_instance)(vector2_sma);
 			locations->push_back(
 				segment.construct<scene_interface::Vector2>(boost::interprocess::anonymous_instance)(location.x, location.y)
 			);
@@ -102,7 +110,7 @@ void ImovePeopleextractorManager::run() {
 					person_type = scene_interface::PersonType::None;
 					break;
 			}
-			std::cout << "id: " << person.getId() << std::endl;
+			std::cerr << "id: " << person.getId() << std::endl;
 			boost::interprocess::offset_ptr<scene_interface::Person> si_person = segment.construct<scene_interface::Person>(boost::interprocess::anonymous_instance)(
 				locations,
 				person_type,

@@ -2,7 +2,7 @@
 
 using namespace scene_interface;
 
-scene_interface::Person::Person(boost::interprocess::offset_ptr<std::list<boost::interprocess::offset_ptr<scene_interface::Vector2> > > locations, scene_interface::PersonType type, unsigned int id) :
+scene_interface::Person::Person(boost::interprocess::offset_ptr<Vector2Vector> locations, scene_interface::PersonType type, unsigned int id) :
 	locations(locations),
 	type(type),
 	id(id)
@@ -11,7 +11,7 @@ scene_interface::Person::Person(boost::interprocess::offset_ptr<std::list<boost:
 /*--------------------
  * Getters
  * -----------------*/
-boost::interprocess::offset_ptr<std::list<boost::interprocess::offset_ptr<scene_interface::Vector2> > > scene_interface::Person::getLocations() const {
+boost::interprocess::offset_ptr<Vector2Vector> scene_interface::Person::getLocations() const {
   return this->locations;
 }
 

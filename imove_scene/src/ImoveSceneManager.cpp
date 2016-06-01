@@ -1,4 +1,5 @@
 #include <boost/interprocess/managed_shared_memory.hpp>
+#include <boost/interprocess/offset_ptr.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/thread/thread.hpp> 
 #include <boost/interprocess/offset_ptr.hpp>
@@ -59,12 +60,12 @@ void ImoveSceneManager::run() {
 	// while no key pressed
 	while (true) {
 		if (!extractedpeople_queue->empty()) {
-			boost::interprocess::offset_ptr<std::vector<boost::interprocess::offset_ptr<scene_interface::Person> > > detected_people_ptr = extractedpeople_queue->pop();
+			boost::interprocess::offset_ptr<scene_interface::PersonVector> detected_people_ptr = extractedpeople_queue->pop();
 			detected_people = std::vector<Person>();
 			for (unsigned int i = 0; i < detected_people_ptr->size(); ++i) {
 				boost::interprocess::offset_ptr<scene_interface::Person> si_person = detected_people_ptr->at(i);
 			//for (boost::interprocess::offset_ptr<scene_interface::Person> si_person : detected_people_ptr) {
-				std::cout << "x: " << si_person->getId() << std::endl;
+				std::cerr << "x: " << si_person->getId() << std::endl;
 				PersonType person_type;
 				switch (si_person->getPersonType()) {
 					case scene_interface::PersonType::Bystander:
@@ -80,7 +81,7 @@ void ImoveSceneManager::run() {
 						person_type = PersonType::None;
 						break;
 				}
-				boost::interprocess::offset_ptr<std::list<boost::interprocess::offset_ptr<scene_interface::Vector2> > > locations = si_person->getLocations();
+				boost::interprocess::offset_ptr<scene_interface::Vector2Vector> locations = si_person->getLocations();
 				boost::interprocess::offset_ptr<scene_interface::Vector2> location = locations->front();
 				float x = location->getX();
 				float y = location->getY();
