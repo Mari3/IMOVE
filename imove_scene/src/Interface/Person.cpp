@@ -2,12 +2,17 @@
 // Created by Wouter Posdijk on 11/05/16.
 //
 
+#include <assert.h>
 #include "Person.h"
 
 Person::Person(Vector2 location, PersonType type) : location(location), type(type) {
     previousLocations = list<Vector2>();
     id = count;
     count++;
+}
+Person::Person(unsigned int id, Vector2 location, PersonType type) : id(id), location(location), type(type) {
+		assert(id < count || count == 0);
+    previousLocations = list<Vector2>();
 }
 
 /*--------------------

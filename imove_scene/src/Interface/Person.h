@@ -23,11 +23,11 @@ class Person {
     // List of previous locations
     list<Vector2> previousLocations;
 
-    // Current location
-    Vector2 location;
-
     // Id
     unsigned int id;
+
+    // Current location
+    Vector2 location;
 
     // Object counter to create unique ids
     static unsigned int count;
@@ -36,8 +36,10 @@ class Person {
     unsigned int not_moved_count = 100;
 
  public:
-    PersonType type;
     Person(Vector2 location, PersonType type);
+    Person(unsigned int id, Vector2 location, PersonType type);
+    
+		PersonType type;
 
     //Getters and setters
     Vector2 getLocation();

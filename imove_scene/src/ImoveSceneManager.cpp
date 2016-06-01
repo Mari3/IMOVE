@@ -87,14 +87,18 @@ void ImoveSceneManager::run() {
 				boost::interprocess::offset_ptr<scene_interface::Vector2> location = locations->front();
 				float x = location->getX();
 				float y = location->getY();
+				unsigned int id = si_person->getId();
 				Vector2 vector2(
 					x,
 					y
 				);
+				//std::cerr << i << ": " << x << "," <<  y << " id:" << id << std::endl;
 				Person person = Person(
+					id,
 					vector2,
-					person_type	
+					person_type
 				);
+				//std::cerr << i << ": " << x << "," <<  y << " id:" << id << "=" << person.getId() << std::endl;
 				detected_people.push_back(person);
 			}
 		}
