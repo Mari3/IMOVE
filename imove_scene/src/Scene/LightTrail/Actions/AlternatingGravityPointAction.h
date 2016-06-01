@@ -27,7 +27,7 @@ public:
     AlternatingGravityPointAction(util::Range hue, util::Range xRange, util::Range yRange, GravityPointRepository* gravityPoints, LightPersonRepository* lightPeople,
     const LightTrailConfiguration &config);
 
-    bool isDone(Action *&followUp);
+    bool isDone(std::vector<Action*> &followUp);
     void execute(float dt);
 
 };

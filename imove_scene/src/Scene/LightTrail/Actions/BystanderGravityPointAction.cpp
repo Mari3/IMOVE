@@ -11,7 +11,8 @@ BystanderGravityPointAction::BystanderGravityPointAction(std::shared_ptr<LightPe
 		timer(Timer(config.bystanderGravityDelay(), true)),
 		config(config)
 {
-    gravityPoint = std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(0,0),person->hue,config.bystanderGravity()));
+    gravityPoint = std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(0,0),person->hue,config.bystanderGravity(),
+    config.bystanderGravityRange()));
     setLocation();
 
     // Register the gravity point
@@ -42,7 +43,7 @@ void BystanderGravityPointAction::setLocation() {
 }
 
 
-bool BystanderGravityPointAction::isDone(Action *&followUp) {
+bool BystanderGravityPointAction::isDone(std::vector<Action*> &followUp) {
     //This action is done when the person it tracks is not a bystander anymore
     if(person->type != Bystander){
         gravityPoints->scheduleForRemoval(gravityPoint);

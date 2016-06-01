@@ -22,7 +22,7 @@ public:
                     LightPersonRepository *lightPeople, LightSourceRepository *lightSources,
                     LightTrailRepository *lightTrails);
 
-    bool isDone(Action *&followUp) override;
+    bool isDone(std::vector<Action*> &followUp) override;
 
     void execute(float dt) override;
 

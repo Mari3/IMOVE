@@ -56,6 +56,21 @@ util::Range::Range(float start, float end, bool bounds, float lowerBound, float 
 
 }
 
+float util::Range::getCenter() {
+    if(end > start)
+        return (start+end)/2.f;
+    if(end == start)
+        return start;
+
+    float diff = end-lowerBound + upperBound-start;
+    float center = start+diff/2.f;
+    if(center>upperBound)
+        center -= upperBound-lowerBound;
+    return center;
+}
+
+
+
 
 
 
