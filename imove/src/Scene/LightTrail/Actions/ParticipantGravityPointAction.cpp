@@ -4,24 +4,38 @@
 
 #include "ParticipantGravityPointAction.h"
 
-ParticipantGravityPointAction::ParticipantGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints, const LightTrailConfiguration& config)
+ParticipantGravityPointAction::ParticipantGravityPointAction(std::shared_ptr<LightPerson> person,
+                                                             GravityPointRepository* gravityPoints,
+                                                             const LightTrailConfiguration& config)
 	: gravityPoints(gravityPoints), person(person) {
-    gravityPoint = std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(0,0),person->hue,config.participantGravity()));
-    setLocation();
+    gravityPoint = std::shared_ptr<GravityPoint>(new GravityPoint(
+            Vector2(0,0),person->hue,config.participantGravity(),config.participantGravityRange()));
+
+    util::Range antiHue = person->hue;
+    antiHue += 180;
+    antigravityPoint = std::shared_ptr<GravityPoint>(
+            new GravityPoint(Vector2(0,0),antiHue,config.participantAntigravity(),config.participantGravityRange())
+    );
     // Register the gravity point
     gravityPoints->add(gravityPoint);
+    gravityPoints->add(antigravityPoint);
+
+    setLocation();
 }
 
 void ParticipantGravityPointAction::setLocation() {
     gravityPoint->location.x = person->getLocation().x;
     gravityPoint->location.y = person->getLocation().y;
+    antigravityPoint->location.x = person->getLocation().x;
+    antigravityPoint->location.y = person->getLocation().y;
 }
 
 
-bool ParticipantGravityPointAction::isDone(Action *&followUp) {
+bool ParticipantGravityPointAction::isDone(std::vector<Action*> &followUp) {
     // This action is done when the person it tracks is no longer a participant
     if(person->type != Participant){
         gravityPoints->scheduleForRemoval(gravityPoint);
+        gravityPoints->scheduleForRemoval(antigravityPoint);
         return true;
     }
     return false;
@@ -29,4 +43,7 @@ bool ParticipantGravityPointAction::isDone(Action *&followUp) {
 
 void ParticipantGravityPointAction::execute(float dt) {
     setLocation();
+    gravityPoint->hue = person->hue;
+    antigravityPoint->hue = person->hue;
+    antigravityPoint->hue += 180;
 }

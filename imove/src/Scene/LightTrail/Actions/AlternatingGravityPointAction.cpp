@@ -5,7 +5,7 @@
 #include "AlternatingGravityPointAction.h"
 #include <memory>
 
-bool AlternatingGravityPointAction::isDone(Action *&followUp) {
+bool AlternatingGravityPointAction::isDone(std::vector<Action*> &followUp) {
     // This action is done when a person gets close to the Scene.
     if(lightPeople->size()>0) {
         gravityPoints->scheduleForRemoval(myGravityPoint);

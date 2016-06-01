@@ -6,25 +6,22 @@ TopRightHue: [ 130, 180 ]
 BottomRightHue : [ 220, 270 ]
 BottomLeftHue: [ 310, 0 ]
 SendOutDelay: .1
-SendOutSpeed: [ 0, 2 ]
+SendOutSpeed: [ 0, 100 ]
 TrailCap: 150
-ParticipantGravity: 100000
+ParticipantGravity: 500000
 ParticipantAntiGravity: 10000
-ParticipantGravityRange: 2.
 BystanderGravity: 300000
 BystanderGravityDelay: 2.
-BystanderGravityRange: 2.
-AlternatingGravity: 120000
+AlternatingGravity: 300000
 AlternatingGravityDelay: 5.
-AlternatingGravityRange: 3.
-ProximityRange: .7
+ProximityRange: 300
 ProximityModifier: .7
 SidesEnabled: 1
-SpeedCap: 2.
-Fade: 3
-TrailThickness: .02
-MixingSpeed: 3.
-MixingDistance: 2.
+SpeedCap: 400
+Fade: 2
+TrailThickness: 12
+MixingSpeed: 2.
+MixingDistance: 512
 MixingRevertTime: 1.
 ExplosionAntigravity: 800000
 ExplosionGravity: 300000

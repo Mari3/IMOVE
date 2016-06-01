@@ -11,7 +11,7 @@ UpdateLightSourcesAction::UpdateLightSourcesAction(LightSourceRepository* lightS
 {
 }
 
-bool UpdateLightSourcesAction::isDone(Action *&followUp) {
+bool UpdateLightSourcesAction::isDone(std::vector<Action*> &followUp) {
     // This action is never done
     return false;
 }
