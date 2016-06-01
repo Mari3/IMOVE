@@ -7,7 +7,7 @@
 PeopleExtractor::PeopleExtractor(cv::Size frame_size, float pixels_per_meter, float resolution_resize_height) {
   // Calculate resize ratio
   resize_ratio = frame_size.height/resolution_resize_height;
-  std::cout << pixels_per_meter << std::endl;
+  std::cout << pixels_per_meter/frame_size.height << std::endl;
 
   // Initialize empty frame
   frame = cv::Mat::zeros(resolution_resize_height, frame_size.width/resize_ratio, CV_8UC1);
@@ -54,10 +54,10 @@ vector<Person> PeopleExtractor::extractPeople(cv::Mat& new_frame) {
   // cv::line(results_frame, cv::Point((frame_size_resized.width - frame_size_resized.width/20), frame_size_resized.height - frame_size_resized.height/20), cv::Point(frame_size_resized.width/20, frame_size_resized.height - frame_size_resized.height/20), cv::Scalar(0, 255, 0));
   // cv::line(results_frame, cv::Point(frame_size_resized.width/20, frame_size_resized.height - frame_size_resized.height/20), cv::Point(frame_size_resized.width/20, frame_size_resized.height/20), cv::Scalar(0, 255, 0));
 
-  cv::line(results_frame, cv::Point(40.33, 40.33), cv::Point((frame_size_resized.width - 40.33), 40.33), cv::Scalar(0, 255, 0));
-  cv::line(results_frame, cv::Point((frame_size_resized.width - 40.33), 40.33), cv::Point((frame_size_resized.width - 40.33), frame_size_resized.height - 40.33), cv::Scalar(0, 255, 0));
-  cv::line(results_frame, cv::Point((frame_size_resized.width - 40.33), frame_size_resized.height - 40.33), cv::Point(40.33, frame_size_resized.height - 40.33), cv::Scalar(0, 255, 0));
-  cv::line(results_frame, cv::Point(40.33, frame_size_resized.height - 40.33), cv::Point(40.33, 40.33), cv::Scalar(0, 255, 0));
+  // cv::line(results_frame, cv::Point(40.33, 40.33), cv::Point((frame_size_resized.width - 40.33), 40.33), cv::Scalar(0, 255, 0));
+  // cv::line(results_frame, cv::Point((frame_size_resized.width - 40.33), 40.33), cv::Point((frame_size_resized.width - 40.33), frame_size_resized.height - 40.33), cv::Scalar(0, 255, 0));
+  // cv::line(results_frame, cv::Point((frame_size_resized.width - 40.33), frame_size_resized.height - 40.33), cv::Point(40.33, frame_size_resized.height - 40.33), cv::Scalar(0, 255, 0));
+  // cv::line(results_frame, cv::Point(40.33, frame_size_resized.height - 40.33), cv::Point(40.33, 40.33), cv::Scalar(0, 255, 0));
 
   // Return vector containing all people in the Scene
   return people;
