@@ -2,6 +2,7 @@
 // Created by Wouter Posdijk on 12/05/16.
 //
 
+#include <assert.h>
 #include <random>
 #include "Range.h"
 
@@ -15,8 +16,12 @@ util::Range::Range(float start, float end, RangeRandom* random, bool bounds, flo
 {
     if(bounds)
     {
-        fixBounds();
-    }
+        assert(upperBound > lowerBound);
+				fixBounds();
+    }else
+		{
+		    assert(end > start);
+		}
 }
 
 void util::Range::fixBounds()
