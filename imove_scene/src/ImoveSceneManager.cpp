@@ -39,12 +39,12 @@ ImoveSceneManager::ImoveSceneManager(Calibration* calibration, LightTrailConfigu
 void ImoveSceneManager::run() {
 	// delete (left over) on construction and delete on destruction
 	struct shm_remove {
-		shm_remove() { boost::interprocess::shared_memory_object::remove("MySharedMemory"); }
-		~shm_remove(){ boost::interprocess::shared_memory_object::remove("MySharedMemory"); }
+		shm_remove() { boost::interprocess::shared_memory_object::remove("ImoveSharedMemory"); }
+		~shm_remove(){ boost::interprocess::shared_memory_object::remove("ImoveSharedMemory"); }
 	} remover;
 	
 	//Create a new segment with given name and size
-	boost::interprocess::managed_shared_memory segment(boost::interprocess::create_only, "MySharedMemory", 65536);
+	boost::interprocess::managed_shared_memory segment(boost::interprocess::create_only, "ImoveSharedMemory", 100000000); // 65536
 
 	//Construct a queue named "root" in shared memory
 	boost::interprocess::offset_ptr<scene_interface::ExtractedpeopleQueue> extractedpeople_queue = segment.construct<scene_interface::ExtractedpeopleQueue>("root")(128);
@@ -65,7 +65,6 @@ void ImoveSceneManager::run() {
 			for (unsigned int i = 0; i < detected_people_ptr->size(); ++i) {
 				boost::interprocess::offset_ptr<scene_interface::Person> si_person = detected_people_ptr->at(i);
 			//for (boost::interprocess::offset_ptr<scene_interface::Person> si_person : detected_people_ptr) {
-				std::cerr << "x: " << si_person->getId() << std::endl;
 				PersonType person_type;
 				switch (si_person->getPersonType()) {
 					case scene_interface::PersonType::Bystander:

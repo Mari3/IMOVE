@@ -46,7 +46,7 @@ void ImovePeopleextractorManager::run() {
 
 	// link to shared memory
 	//Open the managed segment
-	boost::interprocess::managed_shared_memory segment(boost::interprocess::open_only, "MySharedMemory");
+	boost::interprocess::managed_shared_memory segment(boost::interprocess::open_only, "ImoveSharedMemory");
 
 	//Find the vector using the c-string name
 	boost::interprocess::offset_ptr<scene_interface::ExtractedpeopleQueue> extractedpeople_queue = segment.find<scene_interface::ExtractedpeopleQueue>("root").first;
@@ -110,7 +110,6 @@ void ImovePeopleextractorManager::run() {
 					person_type = scene_interface::PersonType::None;
 					break;
 			}
-			std::cerr << "id: " << person.getId() << std::endl;
 			boost::interprocess::offset_ptr<scene_interface::Person> si_person = segment.construct<scene_interface::Person>(boost::interprocess::anonymous_instance)(
 				locations,
 				person_type,
