@@ -2,12 +2,14 @@
 // Created by Wouter Posdijk on 19/05/16.
 //
 
+#include <iostream>
 #include "ParticipantGravityPointAction.h"
 
 ParticipantGravityPointAction::ParticipantGravityPointAction(std::shared_ptr<LightPerson> person,
                                                              GravityPointRepository* gravityPoints,
                                                              const LightTrailConfiguration& config)
 	: gravityPoints(gravityPoints), person(person) {
+		std::cerr << "PGPA: " << person->getLocation().x << "," << person->getLocation().y << " lb: " << person->hue.lowerBound << " ub: " << person->hue.upperBound << std::endl; 
     gravityPoint = std::shared_ptr<GravityPoint>(new GravityPoint(
             Vector2(0,0),person->hue,config.participantGravity(),config.participantGravityRange()));
 

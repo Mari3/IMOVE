@@ -9,10 +9,10 @@
 util::Range::Range(float start, float end, RangeRandom* random, bool bounds, float lowerBound, float upperBound) :
     start(start),
 		end(end),
-		lowerBound(lowerBound),
-		upperBound(upperBound),
+		random(random),
 		bounds(bounds),
-		random(random)
+		lowerBound(lowerBound),
+		upperBound(upperBound)
 {
     if(bounds)
     {

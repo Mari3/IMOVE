@@ -141,9 +141,6 @@ void LightTrailScene::processPeople() {
         vector<Person> newPeople = peopleQueue.front();
         peopleQueue.pop();
 
-        //Set up tracking of people that are gone
-        map<unsigned int,bool> existingPeople;
-
         //Set up range for generating new hues
         util::Range hueDraw(0, 360, true);
 
@@ -151,7 +148,6 @@ void LightTrailScene::processPeople() {
 
             Person person = newPeople[i];
             unsigned int id = person.getId();
-            existingPeople[id] = true;
 
             if (lightPeople->has(id)) { //If the person currently exists
 
@@ -164,25 +160,21 @@ void LightTrailScene::processPeople() {
 
                 //Create a new person with randomly generated hue
                 util::Range hue = config.cornerHues()[hueCounter];
+								std::cerr << "lb :" << hue.lowerBound << "ub: " << hue.upperBound << "hueCounter: " << hueCounter << std::endl;
                 lightPeople->add(
                         std::shared_ptr<LightPerson>(new LightPerson(person.getLocation(), id, person.type, hue)));
-                if(hueCounter++>3){
-                    hueCounter = 0;
-                }
+								hueCounter = (hueCounter + 1) % 4;
 
             }
         }
         lightPeople->for_each([&](std::shared_ptr<LightPerson> person){
-            if(existingPeople.count(person->getId()) == 0){ //If this person does not exist anymore
-                person->type = None;
+            if(person->type == None){ //If this person does not exist anymore
 
                 //Remove it from the list
                 lightPeople->scheduleForRemoval(person);
             }
         });
     }
-
-    //TODO remove people when they're gone
 }
 
 
