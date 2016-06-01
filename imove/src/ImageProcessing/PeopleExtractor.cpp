@@ -14,8 +14,8 @@ PeopleExtractor::PeopleExtractor(cv::Size frame_size, float pixels_per_meter, fl
 
   frame_size_resized = cv::Size(frame_size.width/resize_ratio, resolution_resize_height);
 
-  if (pixels_per_meter > 400) {
-    // Initialize Detector with low camera if meter > 400 pixels
+  if (pixels_per_meter/frame_size.height > 0.2) {
+    // Initialize Detector with low camera if meter/frame height > 0.2
     detector = PeopleDetector(pixels_per_meter/resize_ratio, true);
   } else {
     // Initialize Detector with high camera if meter < 400 pixels
