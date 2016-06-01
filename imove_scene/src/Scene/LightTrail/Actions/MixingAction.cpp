@@ -16,7 +16,8 @@ bool MixingAction::isDone(std::vector<Action*> &followUp) {
         return true;
     }
     float dist = (person1->getLocation()-person2->getLocation()).size();
-    if(dist > config.mixingDistance()) {
+    if(dist > config.mixingDistance() || (person1->type != Participant && person1->type != StandingStill)
+            || (person2->type != Participant && person2->type != StandingStill)) {
         Action* revertFollowUp = new RevertMixingAction(person1,person2,progress,trails,config);
         followUp.push_back(revertFollowUp);
         return true;
