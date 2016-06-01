@@ -52,7 +52,7 @@ MixingAction::MixingAction(std::shared_ptr<LightPerson> person1, std::shared_ptr
                            LightTrailRepository* trails,
                            GravityPointRepository* gravityPoints,
                            const LightTrailConfiguration &config) :
-            person1(person1),person2(person2),trails(trails),gravityPoints(gravityPoints),config(config)
+            person1(person1),person2(person2),config(config),trails(trails),gravityPoints(gravityPoints)
 {
     progress = 0;
 }
@@ -69,6 +69,3 @@ void MixingAction::shift(LightTrailRepository* trails, std::shared_ptr<LightPers
     });
     person->hue += amount;
 }
-
-
-

@@ -36,7 +36,7 @@ struct MixingFailsScenario : public Scenario {
 
     void update(float dt) override {
         Vector2 p0loc = people[0].getLocation();
-        Vector2 p1loc = people[1].getLocation();
+        //Vector2 p1loc = people[1].getLocation();
         if(timerDone){
             people[0].setLocation(people[0].getLocation() + Vector2(-20.f * dt, 0));
             people[1].setLocation(people[1].getLocation() + Vector2(20.f * dt, 0));

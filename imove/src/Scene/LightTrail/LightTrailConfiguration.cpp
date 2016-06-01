@@ -74,17 +74,14 @@ LightTrailConfiguration::LightTrailConfiguration(unsigned int _screenWidth, unsi
 )
         : _screenWidth(_screenWidth), _screenHeight(_screenHeight),
           _sendOutDelay(_sendOutDelay), _trailCap(_trailCap), _sendOutSpeed(_sendOutSpeed), _participantGravity(_participantGravity),
-          _participantAntigravity(_participantAntigravity), _bystanderGravity(_bystanderGravity),
-          _bystanderGravityDelay(_bystanderGravityDelay),
-          _alternatingGravity(_alternatingGravity), _gravityPointDelay(_gravityPointDelay),
+          _participantAntigravity(_participantAntigravity), _participantGravityRange(_participantGravityRange),
+          _bystanderGravity(_bystanderGravity), _bystanderGravityDelay(_bystanderGravityDelay), _bystanderGravityRange(_bystanderGravityRange),
+          _alternatingGravity(_alternatingGravity), _gravityPointDelay(_gravityPointDelay), _alternatingGravityRange(_alternatingGravityRange),
           _proximityRange(_proximityRange), _proximityModifier(_proximityModifier), _sidesEnabled(_sidesEnabled),
           _speedCap(_speedCap), _trailThickness(_trailThickness), _fade(_fade),
           _mixingSpeed(_mixingSpeed), _mixingDistance(_mixingDistance), _mixingRevertTime(_mixingRevertTime),
           _explosionAntigravity(_explosionAntigravity), _explosionGravity(_explosionGravity),
-          _explosionExTime(_explosionExTime), _explosionInTime(_explosionInTime),
-          _participantGravityRange(_participantGravityRange),
-          _bystanderGravityRange(_bystanderGravityRange),
-          _alternatingGravityRange(_alternatingGravityRange)
+          _explosionExTime(_explosionExTime), _explosionInTime(_explosionInTime)
 
 {
     _cornerHues.push_back(_corner1Hue);

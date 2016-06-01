@@ -7,8 +7,8 @@
 LightSourceEffectAction::LightSourceEffectAction(shared_ptr<LightSource> source, LightTrailRepository *myLightTrails,
                                                  const LightTrailConfiguration& config
 )
-        : myLightTrails(myLightTrails),
-          gravityPoint(source->getLocation(),source->getHue(),20000),
+        : gravityPoint(source->getLocation(),source->getHue(),20000),
+          myLightTrails(myLightTrails),
           config(config)
 {
     util::Range range(-40,40);
