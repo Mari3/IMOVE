@@ -22,6 +22,8 @@
 #include "../../scene_interface/src/Person.hpp"
 #include "../../scene_interface/src/Vector2.hpp"
 
+const unsigned int SIZE_SHAREDMEMORY = 100000000; // 100MB
+
 ImoveSceneManager::ImoveSceneManager(Calibration* calibration, LightTrailConfiguration& configuration_lighttrail) {
 	this->calibration = calibration;
 
@@ -37,14 +39,9 @@ ImoveSceneManager::ImoveSceneManager(Calibration* calibration, LightTrailConfigu
 }
 
 void ImoveSceneManager::run() {
-	// delete (left over) on construction and delete on destruction
-	struct shm_remove {
-		shm_remove() { boost::interprocess::shared_memory_object::remove("ImoveSharedMemory"); }
-		~shm_remove(){ boost::interprocess::shared_memory_object::remove("ImoveSharedMemory"); }
-	} remover;
-	
-	//Create a new segment with given name and size
-	boost::interprocess::managed_shared_memory segment(boost::interprocess::create_only, "ImoveSharedMemory", 100000000); // 65536
+	// Newly create a new shared memory segment with given name and size
+	boost::interprocess::shared_memory_object::remove("ImoveSharedMemory");
+	boost::interprocess::managed_shared_memory segment(boost::interprocess::create_only, "ImoveSharedMemory", SIZE_SHAREDMEMORY);
 
 	//Construct a queue named "root" in shared memory
 	boost::interprocess::offset_ptr<scene_interface::ExtractedpeopleQueue> extractedpeople_queue = segment.construct<scene_interface::ExtractedpeopleQueue>("root")(128);
@@ -85,20 +82,16 @@ void ImoveSceneManager::run() {
 				}
 				boost::interprocess::offset_ptr<scene_interface::Vector2Vector> locations = si_person->getLocations();
 				boost::interprocess::offset_ptr<scene_interface::Vector2> location = locations->front();
-				float x = location->getX();
-				float y = location->getY();
-				Vector2 vector2(
-					x,
-					y
-				);
 				Person person = Person(
-					vector2,
+					Vector2(
+						location->getX(),
+						location->getY()
+					),
 					person_type	
 				);
 				detected_people.push_back(person);
 			}
 		}
-		//todo destruct
 
 		// update scene with location of people
 		this->scene->updatePeople(detected_people);
@@ -111,4 +104,6 @@ void ImoveSceneManager::run() {
 		// draw the actual Scene on window
 		window_scene.drawScene(this->scene);
 	}
+	//destroy shared memory
+	boost::interprocess::shared_memory_object::remove("ImoveSharedMemory");
 }

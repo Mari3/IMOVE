@@ -29,9 +29,9 @@ namespace scene_interface {
 	    Person(boost::interprocess::offset_ptr<Vector2Vector> locations, PersonType type, unsigned int id);
 	
 	    //Getters
-	    boost::interprocess::offset_ptr<Vector2Vector> getLocations() const;
-	    unsigned int getId() const;
-	    PersonType getPersonType() const;
+	    const boost::interprocess::offset_ptr<Vector2Vector> getLocations() const;
+	    const unsigned int getId() const;
+	    const PersonType getPersonType() const;
 	 
 	 private:
 	    // List of previous locations

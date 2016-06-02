@@ -13,7 +13,7 @@ bool ExtractedpeopleQueue::full() const {
 	return ((this->head + 1) % this->size) == this->tail;
 }
 
-void ExtractedpeopleQueue::push(boost::interprocess::offset_ptr<PersonVector>& item) {
+void ExtractedpeopleQueue::push(const boost::interprocess::offset_ptr<PersonVector>& item) {
 	if (this->full()) {
 		std::cerr << "todo assert" << std::endl;
 	}
@@ -21,7 +21,7 @@ void ExtractedpeopleQueue::push(boost::interprocess::offset_ptr<PersonVector>& i
 	this->head = (this->head + 1) % this->size;
 }
 
-boost::interprocess::offset_ptr<PersonVector> ExtractedpeopleQueue::pop() {
+const boost::interprocess::offset_ptr<PersonVector> ExtractedpeopleQueue::pop() {
 	if (this->empty()) {
 		std::cerr << "todo assert" << std::endl;
 	}

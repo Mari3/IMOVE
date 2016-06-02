@@ -22,9 +22,9 @@ namespace scene_interface {
 			bool empty() const;
 			bool full() const;
 	
-			void push(boost::interprocess::offset_ptr<PersonVector>& item);
+			void push(const boost::interprocess::offset_ptr<PersonVector>& item);
 	
-			boost::interprocess::offset_ptr<PersonVector> pop();
+			const boost::interprocess::offset_ptr<PersonVector> pop();
 		private:
 			unsigned int size;
 			unsigned int head = 0;
