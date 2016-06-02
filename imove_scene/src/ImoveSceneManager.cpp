@@ -114,8 +114,9 @@ void ImoveSceneManager::run() {
 
 		// draw next Scene frame based on clock difference
 		dt = clock.restart().asSeconds();
-		//dt = 1.f/24.f;
 		this->scene->update(dt);
+
+		// cout the fps for debugging
 		frames_per_second++;
 		fps_dt += dt;
 		if (fps_dt > ONE_SECOND) {
@@ -127,7 +128,8 @@ void ImoveSceneManager::run() {
 		
 		// draw the actual Scene on window
 		window_scene.drawScene(this->scene);
-
+		
+		// capture the screen
 		capture_dt += dt;
 		if (capture_dt > CAPTURE_SPF) {
 			window_scene.captureWindow();
