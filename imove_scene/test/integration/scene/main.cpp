@@ -81,6 +81,7 @@ struct FirstPersonScenario : public Scenario {
 
     Timer timer;
     bool timerDone = false;
+    bool timer2Done = false;
     float sh;
 
     FirstPersonScenario(const LightTrailConfiguration &config) : timer(5.f) {
@@ -92,9 +93,14 @@ struct FirstPersonScenario : public Scenario {
             if(timer.update(dt)){
                 people.push_back(Person(Vector2(0,sh/2.f),Participant));
                 timerDone = true;
+                timer.restart(20.f);
             }
         }else{
             people[0].setLocation(people[0].getLocation()+Vector2(20*dt,0));
+            if(!timer2Done && timer.update(dt)){
+                people.push_back(Person(Vector2(50,sh/2.f),StandingStill));
+                timer2Done = true;
+            }
         }
     }
 
