@@ -57,7 +57,12 @@ void ImoveSceneManager::run() {
 	
 	std::vector<Person> detected_people;
 	float dt;
-	// while no key pressed
+	unsigned int frames_per_second = 0;
+	float fps_dt = 0;
+	float capture_dt = 0;
+	const float ONE_SECOND = 1.f;
+	const unsigned int CAPTURE_FPS = 6;
+	const float CAPTURE_SPF = ONE_SECOND / (float) CAPTURE_FPS;
 	while (true) {
 		if (!extractedpeople_queue->empty()) {
 			boost::interprocess::offset_ptr<scene_interface::PersonVector> detected_people_ptr = extractedpeople_queue->pop();
@@ -111,8 +116,22 @@ void ImoveSceneManager::run() {
 		dt = clock.restart().asSeconds();
 		//dt = 1.f/24.f;
 		this->scene->update(dt);
+		frames_per_second++;
+		fps_dt += dt;
+		if (fps_dt > ONE_SECOND) {
+			unsigned int fps = round(((float) frames_per_second) / fps_dt);
+			std::cout << "fps: " << fps << std::endl;
+			frames_per_second = 0;
+			fps_dt -= ONE_SECOND;
+		}
 		
 		// draw the actual Scene on window
 		window_scene.drawScene(this->scene);
+
+		capture_dt += dt;
+		if (capture_dt > CAPTURE_SPF) {
+			window_scene.captureWindow();
+			capture_dt -= CAPTURE_SPF;
+		}
 	}
 }

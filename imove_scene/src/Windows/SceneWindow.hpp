@@ -1,3 +1,4 @@
+#include <SFML/Graphics.hpp>
 #include <opencv2/opencv.hpp>
 
 #include "../Scene/Scene.h"
@@ -14,6 +15,8 @@ class SceneWindow {
 		
 		// draw the Scene on the render window
 		void drawScene(Scene* scene);
+		
+		sf::Image captureWindow();
 
 	protected:
 		sf::RenderWindow* window_scene;
