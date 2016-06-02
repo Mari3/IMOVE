@@ -14,13 +14,6 @@ struct Scenario{
     virtual void update(float dt) {};
 };
 
-struct StandardScenario : public Scenario {
-
-    void update(float dt) override {
-        return;
-    }
-};
-
 struct MixingFailsScenario : public Scenario {
 
     float thresh;
@@ -84,6 +77,29 @@ struct ManyScenario : public Scenario {
 
 };
 
+struct FirstPersonScenario : public Scenario {
+
+    Timer timer;
+    bool timerDone = false;
+    float sh;
+
+    FirstPersonScenario(const LightTrailConfiguration &config) : timer(5.f) {
+        sh = config.screenHeight();
+    }
+
+    void update(float dt) override {
+        if(!timerDone){
+            if(timer.update(dt)){
+                people.push_back(Person(Vector2(0,sh/2.f),Participant));
+                timerDone = true;
+            }
+        }else{
+            people[0].setLocation(people[0].getLocation()+Vector2(20*dt,0));
+        }
+    }
+
+};
+
 int main(int argc, char** argv){
 
     srand(static_cast<unsigned int>(time(NULL)));
@@ -98,13 +114,15 @@ int main(int argc, char** argv){
 
     Scenario* scenario;
     if(scenarioCode == 0){
-        scenario = new StandardScenario();
+        scenario = new Scenario();
     }else if(scenarioCode == 1){
         scenario = new MixingScenario(config);
     }else if(scenarioCode == 2){
         scenario = new MixingFailsScenario(config);
     }else if(scenarioCode == 3){
         scenario = new ManyScenario(config);
+    }else if(scenarioCode == 4){
+        scenario = new FirstPersonScenario(config);
     }
 
     sf::RenderWindow window(sf::VideoMode(config.screenWidth(),config.screenHeight()),"Projection");

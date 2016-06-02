@@ -14,6 +14,7 @@
 #include "Conditions/PeopleEnteredMixingRangeCondition.h"
 #include "Repositories/LightsSceneVectorRepositories.h"
 #include "Actions/LightSourceEffectAction.h"
+#include "Conditions/FirstParticipantCondition.h"
 
 void LightTrailScene::draw(sf::RenderTarget &target) {
 
@@ -131,6 +132,9 @@ LightPersonRepository* lightPeople) : Scene(),
             static_cast<Condition*>(new PersonChangedTypeCondition(lightPeople,gravityPoints,config))));
     conditions.push_back(std::unique_ptr<Condition>(
             static_cast<Condition*>(new PeopleEnteredMixingRangeCondition(lightPeople,lightTrails,gravityPoints,config))
+    ));
+    conditions.push_back(std::unique_ptr<Condition>(
+            static_cast<Condition*>(new FirstParticipantCondition(lightPeople,config,gravityPoints))
     ));
 }
 
