@@ -1,7 +1,4 @@
 #include <boost/interprocess/managed_shared_memory.hpp>
-#include <boost/interprocess/offset_ptr.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/thread/thread.hpp> 
 
 #include "ImoveSceneManager.hpp"
 

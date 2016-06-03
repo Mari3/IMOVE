@@ -1,8 +1,5 @@
 #include <opencv2/opencv.hpp>
 #include <SFML/Graphics.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/thread/thread.hpp> 
-#include <boost/interprocess/offset_ptr.hpp>
 
 #include "ImovePeopleextractorManager.hpp"
 
