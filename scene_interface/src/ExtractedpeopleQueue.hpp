@@ -1,3 +1,6 @@
+#ifndef SCENEINTERFACE_EXTRACTEDPEOPLEQUEUE_H
+#define SCENEINTERFACE_EXTRACTEDPEOPLEQUEUE_H
+
 #include <boost/interprocess/offset_ptr.hpp>
 #include <boost/interprocess/managed_shared_memory.hpp>
 #include <boost/interprocess/containers/vector.hpp>
@@ -7,6 +10,8 @@
 
 
 namespace scene_interface {
+	const char* const NAME_EXTRACTEDPEOPLE_QUEUE = "ExtractedpeopleQueue";
+	
 	//Define an STL compatible allocator of ints that allocates from the managed_shared_memory.
 	//This allocator will allow placing containers in the segment
 	typedef boost::interprocess::allocator<boost::interprocess::offset_ptr<Person>, boost::interprocess::managed_shared_memory::segment_manager> PersonSMA;
@@ -32,3 +37,5 @@ namespace scene_interface {
 			boost::interprocess::offset_ptr<PersonVector> items [128]; //todo fix static size
 	};
 }
+
+#endif //IMOVE_SCENE_INTERFACE_EXTRACTEDPEOPLEQUEUE_H

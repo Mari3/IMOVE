@@ -7,7 +7,7 @@ include_directories(${SFML_INCLUDE_DIR})
 find_package(OpenCV REQUIRED HINTS ${OpenCV_DIR})
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 
-file(GLOB_RECURSE SOURCE_FILES "../../scene_interface/src/*.cpp" "*.cpp")
+file(GLOB_RECURSE SOURCE_FILES "*.cpp" "../../scene_interface/src/*.cpp")
 ADD_EXECUTABLE(imove_scene ${SOURCE_FILES})
 SET_TARGET_PROPERTIES(imove_scene PROPERTIES ENABLE_EXPORTS true)
 SET_TARGET_PROPERTIES(imove_scene PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -Werror")

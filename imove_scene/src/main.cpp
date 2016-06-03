@@ -1,7 +1,4 @@
-#include <opencv2/core/persistence.hpp>
-
 #include <iostream>
-#include <vector>
 #include <string>
 
 #include "ImoveSceneManager.hpp"
