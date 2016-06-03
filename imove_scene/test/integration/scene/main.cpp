@@ -106,6 +106,35 @@ struct FirstPersonScenario : public Scenario {
 
 };
 
+struct RestartAlternatingScenario : public Scenario {
+
+    Timer timer;
+    bool timerDone = false;
+    bool timer2Done = false;
+    float sh;
+
+    RestartAlternatingScenario(const LightTrailConfiguration &config) : timer(10.f) {
+        sh = config.screenHeight();
+    }
+
+    void update(float dt) override {
+        if(!timerDone){
+            if(timer.update(dt)){
+                people.push_back(Person(Vector2(0,sh/2.f),Participant));
+                timerDone = true;
+                timer.restart(15.f);
+            }
+        }else if(!timer2Done){
+            people[0].setLocation(people[0].getLocation()+Vector2(20*dt,0));
+            if(timer.update(dt)){
+                people[0].type = None;
+                timer2Done = true;
+            }
+        }
+    }
+
+};
+
 int main(int argc, char** argv){
 
     srand(static_cast<unsigned int>(time(NULL)));
@@ -129,10 +158,13 @@ int main(int argc, char** argv){
         scenario = new ManyScenario(config);
     }else if(scenarioCode == 4){
         scenario = new FirstPersonScenario(config);
+    }else if(scenarioCode == 5){
+        scenario = new RestartAlternatingScenario(config);
     }
 
     sf::RenderWindow window(sf::VideoMode(config.screenWidth(),config.screenHeight()),"Projection");
     window.clear(sf::Color::Black);
+    window.setFramerateLimit(80);
     window.display();
     sf::Clock clock;
 

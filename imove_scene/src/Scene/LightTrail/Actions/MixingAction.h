@@ -26,7 +26,7 @@ public:
 
     void execute(float dt) override;
 
-    static void shift(LightTrailRepository* trails, shared_ptr<LightPerson> person, float amount);
+    static void shift(LightTrailRepository* trails, Vector2 location, util::Range& hue, float amount);
 };
 
 

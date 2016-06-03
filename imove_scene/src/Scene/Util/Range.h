@@ -26,7 +26,7 @@ public:
     void operator+=(const float& f);
     float drawRandom();
     float getCenter();
-    bool contains(float f);
+    bool contains(float f) const;
     void fixBounds();
 };
 

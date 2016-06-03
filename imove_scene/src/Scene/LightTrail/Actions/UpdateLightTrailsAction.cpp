@@ -15,7 +15,9 @@ void UpdateLightTrailsAction::execute(float dt) {
         Vector2 force = calculateForce(*(lightTrail.get()));
         // Apply said force
         lightTrail->applyForce(force,dt,config.speedCap(),config.sidesEnabled(),config.screenWidth(),config.screenHeight());
-
+        if(lightTrail->tick(dt)){
+            lightTrails->scheduleForRemoval(lightTrail);
+        }
     });
 }
 

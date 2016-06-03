@@ -44,14 +44,14 @@ float util::Range::drawRandom()
     return random->next(start,end,bounds,lowerBound,upperBound);
 }
 
-bool util::Range::contains(float f)
+bool util::Range::contains(float f) const
 {
     if(end > start)
-        return f > start && f < end;
+        return f >= start && f <= end;
     if(start == end)
         return f == start;
 
-    return (f > start && f < upperBound) || (f < end && f > lowerBound);
+    return (f >= start && f <= upperBound) || (f <= end && f >= lowerBound);
 }
 
 util::Range::Range(float start, float end, bool bounds, float lowerBound, float upperBound) :

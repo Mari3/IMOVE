@@ -16,7 +16,7 @@ ParticipantGravityPointAction::ParticipantGravityPointAction(std::shared_ptr<Lig
     util::Range antiHue = person->hue;
     antiHue += 180;
     antigravityPoint = std::shared_ptr<GravityPoint>(
-            new GravityPoint(Vector2(0,0),antiHue,config.participantAntigravity(),config.participantGravityRange())
+            new GravityPoint(Vector2(0,0),antiHue,-config.participantAntigravity(),config.participantGravityRange())
     );
     // Register the gravity point
     gravityPoints->add(gravityPoint);

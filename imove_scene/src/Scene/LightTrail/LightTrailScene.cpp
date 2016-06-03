@@ -15,6 +15,8 @@
 #include "Repositories/LightsSceneVectorRepositories.h"
 #include "Actions/LightSourceEffectAction.h"
 #include "Conditions/FirstParticipantCondition.h"
+#include "Conditions/NoPeopleCondition.h"
+#include "Actions/LightSourceGravityPointAction.h"
 
 void LightTrailScene::draw(sf::RenderTarget &target) {
 
@@ -89,17 +91,18 @@ LightPersonRepository* lightPeople) : Scene(),
 
     //Add Light sources on every corner
     lightSources->add(std::shared_ptr<LightSource>(
-            new LightSource(Vector2(0, 0),config.cornerHues()[0],
-                            util::Range(0, 90,true),config.sendOutSpeed())));
+            new LightSource(Vector2(0, 0), config.cornerHues()[0], util::Range(0, 90, true),
+                            config.sendOutSpeed(), config.sendOutDelay()*config.trailCap()/4.f)));
     lightSources->add(std::shared_ptr<LightSource>(
-            new LightSource(Vector2(config.screenWidth(),0),config.cornerHues()[1],
-                            util::Range(90, 180,true),config.sendOutSpeed())));
+            new LightSource(Vector2(config.screenWidth(), 0), config.cornerHues()[1], util::Range(90, 180, true),
+                            config.sendOutSpeed(), config.sendOutDelay()*config.trailCap()/4.f)));
     lightSources->add(std::shared_ptr<LightSource>(
-            new LightSource(Vector2(0, config.screenHeight()),config.cornerHues()[2],
-                            util::Range(270, 0,true),config.sendOutSpeed())));
+            new LightSource(Vector2(0, config.screenHeight()), config.cornerHues()[2], util::Range(270, 0, true),
+                            config.sendOutSpeed(), config.sendOutDelay()*config.trailCap()/4.f)));
     lightSources->add(std::shared_ptr<LightSource>(
-            new LightSource(Vector2(config.screenWidth(), config.screenHeight()),config.cornerHues()[3],
-                            util::Range(180, 270,true),config.sendOutSpeed())));
+            new LightSource(Vector2(config.screenWidth(), config.screenHeight()), config.cornerHues()[3],
+                            util::Range(180, 270, true),
+                            config.sendOutSpeed(), config.sendOutDelay()*config.trailCap()/4.f)));
 
     for(int i=0;i<4;++i){
         LightTrailRepository* sourceRepo = new LightTrailVectorRepository();
@@ -117,15 +120,8 @@ LightPersonRepository* lightPeople) : Scene(),
     actions.push_back(std::unique_ptr<Action>(
             static_cast<Action*>(new UpdateLightSourcesAction(lightSources,lightTrails,config))));
     actions.push_back(std::unique_ptr<Action>(
-            static_cast<Action*>(new AlternatingGravityPointAction(util::Range(0,180,true),
-                                                        util::Range(0,config.screenWidth()),
-                                                        util::Range(0,config.screenHeight()),
-                                                        gravityPoints,lightPeople,config))));
-    actions.push_back(std::unique_ptr<Action>(
-            static_cast<Action*>(new AlternatingGravityPointAction(util::Range(180,0,true),
-                                                        util::Range(0,config.screenWidth()),
-                                                        util::Range(0,config.screenHeight()),
-                                                        gravityPoints,lightPeople,config))));
+            static_cast<Action*>(new LightSourceGravityPointAction(lightPeople,gravityPoints,config))
+    ));
 
     //Add all conditions
     conditions.push_back(std::unique_ptr<Condition>(
@@ -133,8 +129,11 @@ LightPersonRepository* lightPeople) : Scene(),
     conditions.push_back(std::unique_ptr<Condition>(
             static_cast<Condition*>(new PeopleEnteredMixingRangeCondition(lightPeople,lightTrails,gravityPoints,config))
     ));
-    conditions.push_back(std::unique_ptr<Condition>(
+    /*conditions.push_back(std::unique_ptr<Condition>(
             static_cast<Condition*>(new FirstParticipantCondition(lightPeople,config,gravityPoints))
+    ));*/
+    conditions.push_back(std::unique_ptr<Condition>(
+            static_cast<Condition*>(new NoPeopleCondition(lightPeople, gravityPoints, config, lightTrails))
     ));
 }
 
@@ -160,7 +159,7 @@ void LightTrailScene::processPeople() {
                 lPerson->setLocation(person.getLocation());
                 lPerson->type = person.type;
 
-            } else {
+            } else if(person.type != None) {
 
                 //Create a new person with randomly generated hue
                 util::Range hue = config.cornerHues()[hueCounter];

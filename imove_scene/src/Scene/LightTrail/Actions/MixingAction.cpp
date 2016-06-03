@@ -44,8 +44,8 @@ void MixingAction::execute(float dt) {
 
     progress += currentProgress;
 
-    shift(trails, person1, currentProgress);
-    shift(trails, person2, -currentProgress);
+    shift(trails, person1->getLocation(), person1->hue, currentProgress);
+    shift(trails, person2->getLocation(), person2->hue, -currentProgress);
 
 }
 
@@ -58,15 +58,15 @@ MixingAction::MixingAction(std::shared_ptr<LightPerson> person1, std::shared_ptr
     progress = 0;
 }
 
-void MixingAction::shift(LightTrailRepository* trails, std::shared_ptr<LightPerson> person, float amount) {
+void MixingAction::shift(LightTrailRepository* trails, Vector2 location, util::Range& hue, float amount) {
     trails->for_each([&](std::shared_ptr<LightTrail> trail){
-        if(person->hue.contains(trail->hue)) {
-            float dist = (trail->getLocation() - person->getLocation()).size();
+        if(hue.contains(trail->hue)) {
+            float dist = (trail->getLocation() - location).size();
             if (dist < 400) {
                 trail->hue += amount;
                 trail->hue = fmodf(trail->hue,360);
             }
         }
     });
-    person->hue += amount;
+    hue += amount;
 }

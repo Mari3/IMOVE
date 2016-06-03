@@ -4,11 +4,13 @@
 
 #include "LightTrail.h"
 
-LightTrail::LightTrail(Vector2 location, Vector2 speed, float hue) :
+LightTrail::LightTrail(Vector2 location, Vector2 speed, float hue, float lifespan) :
     location(location),
     speed(speed),
-    hue(hue)
+    hue(hue),
+    lifespan(lifespan)
 {
+    hasLifespan = lifespan > 0;
 }
 
 void LightTrail::applyForce(Vector2 force, float dt, float speedCap, bool sidesEnabled,
@@ -50,6 +52,12 @@ Vector2 LightTrail::getLocation() {
 Vector2 LightTrail::getSpeed() {
     return speed;
 }
+
+bool LightTrail::tick(float dt) {
+    return hasLifespan && lifespan.update(dt);
+}
+
+
 
 
 

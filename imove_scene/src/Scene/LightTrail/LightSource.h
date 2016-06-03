@@ -14,8 +14,9 @@ class LightSource {
 private:
     Vector2 location;
     util::Range hue,angle,speed;
+    float lifespan;
 public:
-    LightSource(Vector2 location, util::Range hue, util::Range angle, util::Range speed);
+    LightSource(Vector2 location, util::Range hue, util::Range angle, util::Range speed, float lifespan);
     LightTrail * sendOut();
     Vector2 getLocation();
     util::Range getHue();

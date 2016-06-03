@@ -163,14 +163,14 @@ LightTrailConfiguration LightTrailConfiguration::readFromFile(char *fileName) {
                                    util::Range(bottomRightRange.val[0],bottomRightRange.val[1],true),
                                    sendOutDelay, trailCap,
                                    util::Range(sendOutSpeed.val[0]*meter,sendOutSpeed.val[1]*meter),
-                                   participantGravity,participantAntiGravity, participantGravityRange*meter,
-                                   bystanderGravity,bystanderGravityDelay,bystanderGravityRange*meter,
-                                   alternatingGravity,
+                                   participantGravity*meter*meter,participantAntiGravity*meter*meter, participantGravityRange*meter,
+                                   bystanderGravity*meter*meter,bystanderGravityDelay,bystanderGravityRange*meter,
+                                   alternatingGravity*meter*meter,
                                    alternatingGravityDelay,alternatingGravityRange*meter,
                                    proximityRange*meter,proximityModifier,
                                    sidesEnabled,speedCap*meter,(int)(trailThickness*meter),fade,
                                    mixingSpeed,mixingDistance*meter,mixingRevertTime,
-                                   explosionAntigravity,explosionGravity,explosionExTime,
+                                   explosionAntigravity*meter*meter,explosionGravity*meter*meter,explosionExTime,
                                    explosionInTime
     );
 }

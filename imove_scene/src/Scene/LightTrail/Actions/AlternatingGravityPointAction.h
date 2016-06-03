@@ -18,14 +18,19 @@ class AlternatingGravityPointAction : public Action{
 private:
     GravityPointRepository* gravityPoints;
     LightPersonRepository* lightPeople;
+    LightTrailRepository* lightTrails;
     Timer timer;
     std::shared_ptr<GravityPoint> myGravityPoint;
     util::Range xRange;
     util::Range yRange;
 public:
 
-    AlternatingGravityPointAction(util::Range hue, util::Range xRange, util::Range yRange, GravityPointRepository* gravityPoints, LightPersonRepository* lightPeople,
-    const LightTrailConfiguration &config);
+    AlternatingGravityPointAction(util::Range hue, util::Range xRange,
+                                      util::Range yRange,
+                                      GravityPointRepository *gravityPoints,
+                                      LightPersonRepository *lightPeople,
+                                      LightTrailRepository *lightTrails,
+                                      const LightTrailConfiguration &config);
 
     bool isDone(std::vector<Action*> &followUp);
     void execute(float dt);
