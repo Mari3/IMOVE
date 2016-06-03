@@ -2,19 +2,24 @@
 // Created by Wouter Posdijk on 12/05/16.
 //
 
+#include <cmath>
 #include "LightTrail.h"
 
 LightTrail::LightTrail(Vector2 location, Vector2 speed, float hue, float lifespan) :
     location(location),
     speed(speed),
     hue(hue),
-    lifespan(lifespan)
+    lifespan(lifespan),
+    prevLocation(location)
 {
     hasLifespan = lifespan > 0;
 }
 
 void LightTrail::applyForce(Vector2 force, float dt, float speedCap, bool sidesEnabled,
     unsigned int screenWidth, unsigned int screenHeight) {
+
+    prevLocation = location;
+
     //Increase the speed based on the force and delta time
     speed += force*dt;
 
@@ -56,6 +61,13 @@ Vector2 LightTrail::getSpeed() {
 bool LightTrail::tick(float dt) {
     return hasLifespan && lifespan.update(dt);
 }
+
+float LightTrail::getAngle() {
+    Vector2 diff = location-prevLocation;
+    return static_cast<float>(atan2f(diff.y,diff.x)*180.f/M_PI);
+}
+
+
 
 
 

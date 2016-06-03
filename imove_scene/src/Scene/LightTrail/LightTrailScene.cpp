@@ -26,8 +26,13 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
     texture.draw(rect);
 
     std::function<void(std::shared_ptr<LightTrail>)> func = [&](std::shared_ptr<LightTrail> trail){
+        float speed = trail->getSpeed().size()/340.f*14.f;
+        if(speed < config.trailThickness()) speed = config.trailThickness();
+        float total = config.trailThickness()*config.trailThickness();
+        float thickness = total/speed;
 
-        sf::RectangleShape circle(sf::Vector2f(config.trailThickness(), config.trailThickness()) );
+        sf::RectangleShape circle(sf::Vector2f(speed, thickness) );
+        circle.setRotation(trail->getAngle());
         circle.setPosition(trail->getLocation().x,trail->getLocation().y);
         circle.setFillColor(HueConverter::ToColor(trail->hue));
         texture.draw(circle);

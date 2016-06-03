@@ -21,8 +21,8 @@ ProximityRange: .7
 ProximityModifier: .7
 SidesEnabled: 1
 SpeedCap: 2.
-Fade: 3
-TrailThickness: .02
+Fade: 4
+TrailThickness: .035
 MixingSpeed: 3.
 MixingDistance: 2.
 MixingRevertTime: 1.

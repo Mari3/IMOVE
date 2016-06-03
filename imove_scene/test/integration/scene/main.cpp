@@ -164,7 +164,7 @@ int main(int argc, char** argv){
 
     sf::RenderWindow window(sf::VideoMode(config.screenWidth(),config.screenHeight()),"Projection");
     window.clear(sf::Color::Black);
-    window.setFramerateLimit(80);
+    window.setFramerateLimit(60);
     window.display();
     sf::Clock clock;
 

@@ -11,7 +11,7 @@
 
 class LightTrail {
 private:
-    Vector2 location, speed;
+    Vector2 location, prevLocation, speed;
     Timer lifespan;
     bool hasLifespan;
 public:
@@ -20,6 +20,7 @@ public:
     void applyForce(Vector2 force, float dt, float speedCap, bool sidesEnabled, unsigned int screenWidth = 0, unsigned int screenHeight = 0);
     bool tick(float dt);
     Vector2 getLocation();
+    float getAngle();
     Vector2 getSpeed();
 };
 
