@@ -1,7 +1,3 @@
-//
-// Created by Wouter Posdijk on 11/05/16.
-//
-
 #ifndef IMOVE_LIGHTTRAILSCENE_H
 #define IMOVE_LIGHTTRAILSCENE_H
 

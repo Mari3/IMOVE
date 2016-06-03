@@ -5,6 +5,8 @@
 
 #include "../OpenCVUtil.hpp"
 #include "Calibration.hpp"
+#include "../../../scene_interface/src/Person.h"
+#include "../../../scene_interface/src/Vector2.h"
 
 Calibration::Calibration(const cv::Size& resolution_projector, const cv::Size& resolution_camera, unsigned int camera_device, cv::Mat& camera_projector_transformation, unsigned int frames_projector_camera_delay, double projector_background_light, float meter) {
 	this->resolution_projector = resolution_projector;
@@ -199,11 +201,11 @@ void Calibration::createPointsFrameProjectorFromPointsFrameCamera(std::vector<cv
 	}
 }
 
-void Calibration::changeProjectorFromCameraLocationPerson(std::vector<Person>& persons) const {
-	// map std::vector<cv::Point2f> from std::vector<Person> for input this->createPointsFrameProjectorFramePointsFrameCamera
+void Calibration::changeProjectorFromCameraLocationPerson(std::vector<scene_interface::Person>& persons) const {
+	// map std::vector<cv::Point2f> from std::vector<scene_interface::Person> for input this->createPointsFrameProjectorFramePointsFrameCamera
 	std::vector<cv::Point2f> points_camera = std::vector<cv::Point2f>(persons.size());
 	for (unsigned int i = 0; i < persons.size(); i++) {
-		Vector2 location_person = persons.at(i).getLocation();
+		scene_interface::Vector2 location_person = persons.at(i).getLocation();
 		points_camera.at(i) = cv::Point2f(
 			location_person.x,
 			location_person.y
@@ -215,10 +217,10 @@ void Calibration::changeProjectorFromCameraLocationPerson(std::vector<Person>& p
 		points_projector,
 		points_camera
 	);
-	// set Persons location based on mapped projector frame points
+	// set scene_interface::Persons location based on mapped projector frame points
 	for (unsigned int i = 0; i < persons.size(); i++) {
 		cv::Point2f point_projector = points_projector.at(i);
-		persons.at(i).setLocation(Vector2(
+		persons.at(i).setLocation(scene_interface::Vector2(
 			point_projector.x,
 			point_projector.y
 		));

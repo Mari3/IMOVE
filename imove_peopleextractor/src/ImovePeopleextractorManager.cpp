@@ -4,17 +4,18 @@
 #include "ImovePeopleextractorManager.hpp"
 
 #include "OpenCVUtil.hpp"
-#include "Interface/Person.h"
+#include "../../scene_interface/src/Person.h"
+#include "../../scene_interface/src/Vector2.h"
 #include "Windows/FrameWindow.hpp"
 #include "Windows/DetectedPeopleCameraWindow.hpp"
 #include "Windows/DetectedPeopleProjectionWindow.hpp"
 
-//#include <scene_interface/SharedMemory.hpp>
-//#include <scene_interface/Person.hpp>
-//#include <scene_interface/Vector2.hpp>
-#include "../../scene_interface/src/SharedMemory.hpp"
-#include "../../scene_interface/src/Person.hpp"
-#include "../../scene_interface/src/Vector2.hpp"
+//#include <scene_interface_sma/SharedMemory.hpp>
+//#include <scene_interface_sma/Person.hpp>
+//#include <scene_interface_sma/Vector2.hpp>
+#include "../../scene_interface_sma/src/SharedMemory.hpp"
+#include "../../scene_interface_sma/src/Person.hpp"
+#include "../../scene_interface_sma/src/Vector2.hpp"
 
 ImovePeopleextractorManager::ImovePeopleextractorManager(Calibration* calibration) {
 	this->calibration = calibration;
@@ -23,9 +24,9 @@ ImovePeopleextractorManager::ImovePeopleextractorManager(Calibration* calibratio
 	this->people_extractor = new PeopleExtractor(this->calibration->getResolutionCamera(), this->calibration->getMeter(), 216);
 
 	//Open the managed segment
-	this->segment = new boost::interprocess::managed_shared_memory(boost::interprocess::open_only, scene_interface::NAME_SHARED_MEMORY);
+	this->segment = new boost::interprocess::managed_shared_memory(boost::interprocess::open_only, scene_interface_sma::NAME_SHARED_MEMORY);
 	// Get the extracted people vector in the segment
-	this->extractedpeople_queue = this->segment->find<scene_interface::ExtractedpeopleQueue>(scene_interface::NAME_EXTRACTEDPEOPLE_QUEUE).first;
+	this->extractedpeople_queue = this->segment->find<scene_interface_sma::ExtractedpeopleQueue>(scene_interface_sma::NAME_EXTRACTEDPEOPLE_QUEUE).first;
 }
 
 void ImovePeopleextractorManager::run() {
@@ -43,7 +44,7 @@ void ImovePeopleextractorManager::run() {
 	cv::Mat frame_camera;
 	cv::Mat frame_projection;
 	cv::Mat detectpeople_frame;
-	vector<Person> extractedpeople;
+	std::vector<scene_interface::Person> extractedpeople;
 	// while no key pressed
 	while (cv::waitKey(1) == OpenCVUtil::NOKEY_ANYKEY && video_capture.read(frame_camera)) {
 		// debug projection frame
@@ -74,46 +75,46 @@ void ImovePeopleextractorManager::run() {
 	video_capture.release();
 }
 
-void ImovePeopleextractorManager::sendExtractedpeople(std::vector<Person> extractedpeople) {
+void ImovePeopleextractorManager::sendExtractedpeople(std::vector<scene_interface::Person> extractedpeople) {
 	//Initialize shared memory STL-compatible allocator
-	scene_interface::PersonSMA person_sma = scene_interface::PersonSMA((*this->segment).get_segment_manager());
+	scene_interface_sma::PersonSMA person_sma = scene_interface_sma::PersonSMA((*this->segment).get_segment_manager());
 	
 	// create shared memory vector of extracted people
-  boost::interprocess::offset_ptr<scene_interface::PersonVector> si_extractedpeople = this->segment->construct<scene_interface::PersonVector>(boost::interprocess::anonymous_instance)(person_sma);
+  boost::interprocess::offset_ptr<scene_interface_sma::PersonVector> si_extractedpeople = this->segment->construct<scene_interface_sma::PersonVector>(boost::interprocess::anonymous_instance)(person_sma);
 
-	for (Person person : extractedpeople) {
+	for (scene_interface::Person person : extractedpeople) {
 		//Initialize shared memory STL-compatible allocator
-		scene_interface::Vector2SMA vector2_sma(this->segment->get_segment_manager());
-		Vector2 location = person.getLocation();
+		scene_interface_sma::Vector2SMA vector2_sma(this->segment->get_segment_manager());
+		scene_interface::Vector2 location = person.getLocation();
 		// create shared memory vector of locations
-		boost::interprocess::offset_ptr<scene_interface::Vector2Vector> locations = this->segment->construct<scene_interface::Vector2Vector>(boost::interprocess::anonymous_instance)(vector2_sma);
+		boost::interprocess::offset_ptr<scene_interface_sma::Vector2Vector> locations = this->segment->construct<scene_interface_sma::Vector2Vector>(boost::interprocess::anonymous_instance)(vector2_sma);
 		// put shared memory allocated location in shared memory allocated vector of locations
 		locations->push_back(
-			this->segment->construct<scene_interface::Vector2>(boost::interprocess::anonymous_instance)(location.x, location.y)
+			this->segment->construct<scene_interface_sma::Vector2>(boost::interprocess::anonymous_instance)(location.x, location.y)
 		);
 		
 		// create shared memory allocated person type from person type
-		scene_interface::PersonType person_type;
+		scene_interface_sma::PersonType person_type;
 		switch (person.type) {
 			case scene_interface::PersonType::Bystander:
-				person_type = scene_interface::PersonType::Bystander;
+				person_type = scene_interface_sma::PersonType::Bystander;
 				break;
-			case Passerthrough:
-				person_type = scene_interface::PersonType::Passerthrough;
+			case scene_interface::PersonType::Passerthrough:
+				person_type = scene_interface_sma::PersonType::Passerthrough;
 				break;
-			case Participant:
-				person_type = scene_interface::PersonType::Participant;
+			case scene_interface::PersonType::Participant:
+				person_type = scene_interface_sma::PersonType::Participant;
 				break;
-			case None:
-				person_type = scene_interface::PersonType::None;
+			case scene_interface::PersonType::None:
+				person_type = scene_interface_sma::PersonType::None;
 				break;
-			case StandingStill:
-				person_type = scene_interface::PersonType::StandingStill;
+			case scene_interface::PersonType::StandingStill:
+				person_type = scene_interface_sma::PersonType::StandingStill;
 				break;
 		}
 		// put shared memory allocated extracted person in shared memory allocated vector of extracted people
 		si_extractedpeople->push_back(
-			this->segment->construct<scene_interface::Person>(boost::interprocess::anonymous_instance)(
+			this->segment->construct<scene_interface_sma::Person>(boost::interprocess::anonymous_instance)(
 				locations,
 				person_type,
 				person.getId()

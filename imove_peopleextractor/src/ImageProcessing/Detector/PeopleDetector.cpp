@@ -1,8 +1,7 @@
-//
-// Created by Wouter Posdijk on 11/05/16.
-//
+#include <vector>
 
 #include "PeopleDetector.h"
+#include "../../../../scene_interface/src/Vector2.h"
 
 PeopleDetector::PeopleDetector() {}
 
@@ -33,9 +32,9 @@ PeopleDetector::PeopleDetector(float pixels_per_meter, bool low_camera) : pixels
 PeopleDetector::~PeopleDetector() {}
 
 // Detect people in frame
-vector<Vector2> PeopleDetector::detect(cv::Mat& frame) {
+std::vector<scene_interface::Vector2> PeopleDetector::detect(cv::Mat& frame) {
   // Vector to store newly detected locations
-  vector<Vector2> new_locations;
+  std::vector<scene_interface::Vector2> new_locations;
 
   // Initialize frames for operations
   cv::Mat background_subtr_frame;
@@ -48,7 +47,7 @@ vector<Vector2> PeopleDetector::detect(cv::Mat& frame) {
   threshold(background_subtr_frame, thresh_frame, 200, 255, 0);
 
   // Vector to store keypoints
-  vector<cv::KeyPoint> keypoints;
+  std::vector<cv::KeyPoint> keypoints;
   // Detect blobs as keypoints
   blob_detector->detect(thresh_frame, keypoints);
   cvtColor(thresh_frame, thresh_frame, CV_GRAY2RGB);
@@ -80,7 +79,7 @@ vector<Vector2> PeopleDetector::detect(cv::Mat& frame) {
     cv::circle(thresh_frame, cv::Point(xco, yco), 5, cv::Scalar(0, 0, 255));
 
     // Add location to locations vector
-    Vector2 new_location = Vector2(xco, yco);
+    scene_interface::Vector2 new_location = scene_interface::Vector2(xco, yco);
     new_locations.push_back(new_location);
   }
 

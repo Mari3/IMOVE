@@ -17,7 +17,7 @@
 class LightPersonMapRepository : public Repository<LightPerson> {
 private:
     std::map<int,std::shared_ptr<LightPerson>> map;
-    vector<int> scheduledForRemoval;
+    std::vector<int> scheduledForRemoval;
 
 public:
     LightPersonMapRepository(){

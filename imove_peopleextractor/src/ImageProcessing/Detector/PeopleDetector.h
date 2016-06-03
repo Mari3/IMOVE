@@ -1,7 +1,3 @@
-//
-// Created by Wouter Posdijk on 11/05/16.
-//
-
 #ifndef IMOVE_SRC_IMAGE_PROCESSING_DETECTOR_PEOPLEDETECTOR_H_
 #define IMOVE_SRC_IMAGE_PROCESSING_DETECTOR_PEOPLEDETECTOR_H_
 
@@ -10,15 +6,11 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/video.hpp>
 #include <cv.hpp>
-#include <stdio.h>
 #include <vector>
-#include <sstream>
-#include <iostream>
 #include "opencv2/imgcodecs.hpp"
 #include "opencv2/imgproc.hpp"
 #include "opencv2/videoio.hpp"
-
-#include "../../Interface/Person.h"
+#include "../../../../scene_interface/src/Vector2.h"
 
 class PeopleDetector {
  private:
@@ -44,10 +36,9 @@ class PeopleDetector {
   ~PeopleDetector();
 
   // Detect people in frame
-  vector<Vector2> detect(cv::Mat& frame);
+  std::vector<scene_interface::Vector2> detect(cv::Mat& frame);
 
   cv::Mat getDisplayFrame();
 };
-
 
 #endif  // IMOVE_SRC_IMAGE_PROCESSING_DETECTOR_PEOPLEDETECTOR_H_

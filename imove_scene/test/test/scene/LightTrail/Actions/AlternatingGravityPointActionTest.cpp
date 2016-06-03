@@ -32,7 +32,7 @@ TEST (AlternatingGravityPointActionTest, UpdateLocation) {
 
     ASSERT_EQ(gravityPoints->size(),1);
 
-    shared_ptr<GravityPoint> gPoint = gravityPoints->get(0);
+    std::shared_ptr<GravityPoint> gPoint = gravityPoints->get(0);
 
     ASSERT_FLOAT_EQ(gPoint->location.x,20);
     ASSERT_FLOAT_EQ(gPoint->location.y,40);

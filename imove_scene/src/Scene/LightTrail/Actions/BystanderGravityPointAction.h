@@ -1,7 +1,3 @@
-//
-// Created by Wouter Posdijk on 18/05/16.
-//
-
 #ifndef IMOVE_BYSTANDERGRAVITYPOINTACTION_H
 #define IMOVE_BYSTANDERGRAVITYPOINTACTION_H
 

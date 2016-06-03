@@ -1,5 +1,5 @@
-#ifndef SCENEINTERFACE_PERSON_H
-#define SCENEINTERFACE_PERSON_H
+#ifndef SCENEINTERFACESMA_PERSON_H
+#define SCENEINTERFACESMA_PERSON_H
 
 #include <boost/interprocess/offset_ptr.hpp>
 #include <boost/interprocess/managed_shared_memory.hpp>
@@ -7,7 +7,7 @@
 #include <boost/interprocess/allocators/allocator.hpp>
 #include "Vector2.hpp"
 
-namespace scene_interface {
+namespace scene_interface_sma {
 	enum PersonType{
 	    Bystander,
 	    Passerthrough,
@@ -31,13 +31,13 @@ namespace scene_interface {
 	    //Getters
 	    const boost::interprocess::offset_ptr<Vector2Vector> getLocations() const;
 	    const unsigned int getId() const;
-	    const PersonType getPersonType() const;
+	    const scene_interface_sma::PersonType getPersonType() const;
 	 
 	 private:
 	    // List of previous locations
 	    const boost::interprocess::offset_ptr<Vector2Vector> locations;
 	
-			// Person Type
+			// scene_interface_sma::Person Type
 			const PersonType type;
 	
 	    // Id
@@ -45,4 +45,4 @@ namespace scene_interface {
 	};
 }
 
-#endif //SCENEINTERFACE_PERSON_H
+#endif //SCENEINTERFACESMA_PERSON_H

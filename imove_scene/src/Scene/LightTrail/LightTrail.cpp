@@ -1,17 +1,13 @@
-//
-// Created by Wouter Posdijk on 12/05/16.
-//
-
 #include "LightTrail.h"
 
-LightTrail::LightTrail(Vector2 location, Vector2 speed, float hue) :
+LightTrail::LightTrail(scene_interface::Vector2 location, scene_interface::Vector2 speed, float hue) :
     location(location),
     speed(speed),
     hue(hue)
 {
 }
 
-void LightTrail::applyForce(Vector2 force, float dt, float speedCap, bool sidesEnabled,
+void LightTrail::applyForce(scene_interface::Vector2 force, float dt, float speedCap, bool sidesEnabled,
     unsigned int screenWidth, unsigned int screenHeight) {
     //Increase the speed based on the force and delta time
     speed += force*dt;
@@ -43,11 +39,11 @@ void LightTrail::applyForce(Vector2 force, float dt, float speedCap, bool sidesE
     }
 }
 
-Vector2 LightTrail::getLocation() {
+scene_interface::Vector2 LightTrail::getLocation() {
     return location;
 }
 
-Vector2 LightTrail::getSpeed() {
+scene_interface::Vector2 LightTrail::getSpeed() {
     return speed;
 }
 

@@ -1,10 +1,6 @@
-//
-// Created by Wouter Posdijk on 12/05/16.
-//
-
 #include "ColorHole.h"
 
-ColorHole::ColorHole(Vector2 location, util::Range hue, float gravity) : GravityPoint(location, hue, gravity)
+ColorHole::ColorHole(scene_interface::Vector2 location, util::Range hue, float gravity) : GravityPoint(location, hue, gravity)
 {
     consumedTrails = std::vector<LightTrail>();
 }
@@ -16,6 +12,3 @@ void ColorHole::consume(LightTrail &trail) {
 std::vector<LightTrail> ColorHole::explode() {
     return consumedTrails;
 }
-
-
-

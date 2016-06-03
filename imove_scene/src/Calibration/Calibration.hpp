@@ -6,7 +6,7 @@
 #include <vector>
 #include <queue>
 
-#include "../Interface/Person.h"
+#include "../../../scene_interface/src/Person.h"
 
 // Mappings for projector frames and points from camera frames and points based on camera and projector properties
 class Calibration {
@@ -78,7 +78,7 @@ class Calibration {
 		 * @param persons locations get changed from camera frame location to projector frame location
 		 **/
 
-		void changeProjectorFromCameraLocationPerson(std::vector<Person>& persons) const;
+		void changeProjectorFromCameraLocationPerson(std::vector<scene_interface::Person>& persons) const;
 
 		/**
 		 * Creates a projection frame from the camera frame based on the given camera_projector_transformation

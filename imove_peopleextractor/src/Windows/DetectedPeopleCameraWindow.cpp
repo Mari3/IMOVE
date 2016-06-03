@@ -5,10 +5,10 @@
 
 DetectedPeopleCameraWindow::DetectedPeopleCameraWindow(cv::Point2i position) : OpenCVWindow("Detected people on camera", position) { }
 
-void DetectedPeopleCameraWindow::drawImage(cv::Mat& image_camera, vector<Person>& detectedpeople) {
+void DetectedPeopleCameraWindow::drawImage(cv::Mat& image_camera, std::vector<scene_interface::Person>& detectedpeople) {
 	// debug people drawing on camera frame
 	for (unsigned int i = 0; i < detectedpeople.size(); ++i) {
-		Vector2 location_detectedperson = detectedpeople.at(i).getLocation();
+		scene_interface::Vector2 location_detectedperson = detectedpeople.at(i).getLocation();
 		// draw circle on each detected person location
 		cv::circle(
 			image_camera,

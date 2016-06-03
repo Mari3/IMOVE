@@ -1,7 +1,7 @@
 #include <iostream>
 #include "ExtractedpeopleQueue.hpp"
 
-using namespace scene_interface;
+using namespace scene_interface_sma;
 
 ExtractedpeopleQueue::ExtractedpeopleQueue(unsigned int size) : size(size) {}
 		

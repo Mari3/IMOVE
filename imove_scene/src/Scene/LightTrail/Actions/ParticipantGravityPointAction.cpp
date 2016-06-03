@@ -1,12 +1,10 @@
-//
-// Created by Wouter Posdijk on 19/05/16.
-//
-
 #include "ParticipantGravityPointAction.h"
+#include "../../../../../scene_interface/src/Person.h"
+#include "../../../../../scene_interface/src/Vector2.h"
 
 ParticipantGravityPointAction::ParticipantGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints, const LightTrailConfiguration& config)
 	: gravityPoints(gravityPoints), person(person) {
-    gravityPoint = std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(0,0),person->hue,config.participantGravity()));
+    gravityPoint = std::shared_ptr<GravityPoint>(new GravityPoint(scene_interface::Vector2(0,0),person->hue,config.participantGravity()));
     setLocation();
     // Register the gravity point
     gravityPoints->add(gravityPoint);
@@ -20,7 +18,7 @@ void ParticipantGravityPointAction::setLocation() {
 
 bool ParticipantGravityPointAction::isDone(Action *&followUp) {
     // This action is done when the person it tracks is no longer a participant
-    if(person->type != Participant){
+    if(person->type != scene_interface::Participant){
         gravityPoints->scheduleForRemoval(gravityPoint);
         return true;
     }

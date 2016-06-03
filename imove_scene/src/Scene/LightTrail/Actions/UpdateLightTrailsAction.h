@@ -1,7 +1,3 @@
-//
-// Created by Wouter Posdijk on 12/05/16.
-//
-
 #ifndef IMOVE_UPDATELIGHTTRAILSACTION_H
 #define IMOVE_UPDATELIGHTTRAILSACTION_H
 
@@ -11,13 +7,14 @@
 #include "../GravityPoint.h"
 #include "../Repositories/LightsSceneRepositories.h"
 #include "../LightTrailConfiguration.h"
+#include "../../../../../scene_interface/src/Vector2.h"
 
 
 class UpdateLightTrailsAction : public Action {
 private:
     LightTrailRepository* lightTrails;
     GravityPointRepository* gravityPoints;
-    Vector2 calculateForce(LightTrail trail);
+    scene_interface::Vector2 calculateForce(LightTrail trail);
     const LightTrailConfiguration& config;
 public:
     UpdateLightTrailsAction(LightTrailRepository* lightTrails, GravityPointRepository* gravityPoints,

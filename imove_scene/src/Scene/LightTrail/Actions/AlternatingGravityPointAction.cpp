@@ -1,7 +1,3 @@
-//
-// Created by Wouter Posdijk on 12/05/16.
-//
-
 #include "AlternatingGravityPointAction.h"
 #include <memory>
 
@@ -30,7 +26,7 @@ AlternatingGravityPointAction::AlternatingGravityPointAction(util::Range hue, ut
 		lightPeople(lightPeople),
 	  timer(config.gravityPointDelay(),true),
 		myGravityPoint(std::shared_ptr<GravityPoint>(new GravityPoint(
-			Vector2(0,0),
+			scene_interface::Vector2(0,0),
 			hue,
 			config.alternatingGravity()
 		))),

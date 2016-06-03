@@ -1,7 +1,3 @@
-//
-// Created by Wouter Posdijk on 11/05/16.
-//
-
 #ifndef IMOVE_SRC_IMAGE_PROCESSING_PEOPLEEXTRACTOR_H_
 #define IMOVE_SRC_IMAGE_PROCESSING_PEOPLEEXTRACTOR_H_
 
@@ -17,8 +13,8 @@
 #include "opencv2/videoio.hpp"
 #include "Detector/PeopleDetector.h"
 #include "Identifier/PeopleIdentifier.h"
-#include "../Interface/Person.h"
-#include "../Util/Vector2.h"
+#include "../../../scene_interface/src/Person.h"
+#include "../../../scene_interface/src/Vector2.h"
 
 
 
@@ -45,7 +41,7 @@ class PeopleExtractor {
   ~PeopleExtractor();
 
   // Main extraction function to extract people from a frame
-  vector<Person> extractPeople(cv::Mat& new_frame);
+  std::vector<scene_interface::Person> extractPeople(cv::Mat& new_frame);
 
   // Display image processing results
   void displayResults();

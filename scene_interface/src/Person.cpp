@@ -1,24 +1,44 @@
-#include "Person.hpp"
+#include <list>
+
+#include "Person.h"
 
 using namespace scene_interface;
 
-scene_interface::Person::Person(boost::interprocess::offset_ptr<Vector2Vector> locations, scene_interface::PersonType type, unsigned int id) :
-	locations(locations),
-	type(type),
-	id(id)
-{ }
+Person::Person(Vector2 location, PersonType type) : location(location), type(type) {
+    previousLocations = std::list<Vector2>();
+    id = count;
+    count++;
+}
 
 /*--------------------
- * Getters
+ * Getters and setters
  * -----------------*/
-const boost::interprocess::offset_ptr<Vector2Vector> scene_interface::Person::getLocations() const {
-  return this->locations;
+Vector2 Person::getLocation() {
+    return location;
 }
 
-const unsigned int scene_interface::Person::getId() const {
-  return this->id;
+void Person::setLocation(Vector2 location) {
+    if(previousLocations.size() > 10){
+        previousLocations.pop_front();
+    }
+    previousLocations.push_back(this->location);
+    this->location = location;
 }
 
-const scene_interface::PersonType scene_interface::Person::getPersonType() const {
-  return this->type;
+unsigned int Person::count = 0;
+
+unsigned int Person::getId() {
+    return id;
+}
+
+unsigned int Person::getNotMovedCount() {
+  return not_moved_count;
+}
+
+void Person::decreaseNotMovedCount() {
+  not_moved_count--;
+}
+
+void Person::resetNotMovedCount() {
+  not_moved_count = 100;
 }

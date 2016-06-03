@@ -9,13 +9,12 @@
 #include <vector>
 #include <iostream>
 
-#include "../../Interface/Person.h"
-#include "../../Util/Vector2.h"
+#include "../../../../scene_interface/src/Person.h"
 
 class PeopleIdentifier {
  private:
   // Vector containing detected people in the frame
-  vector<Person> detected_people;
+  std::vector<scene_interface::Person> detected_people;
 
   //
   float frame_height;
@@ -25,16 +24,16 @@ class PeopleIdentifier {
  public:
   PeopleIdentifier();
   PeopleIdentifier(float height, float width, float boundary);
-  PeopleIdentifier(std::vector<Person>& people, float height, float width, float boundary);
+  PeopleIdentifier(std::vector<scene_interface::Person>& people, float height, float width, float boundary);
   ~PeopleIdentifier();
 
   // Match people to new locations
-  vector<Person> match(std::vector<Vector2>& locations);
+  std::vector<scene_interface::Person> match(std::vector<scene_interface::Vector2>& locations);
 
   // Get closest location to a Person
-  int getClosest(unsigned int index, vector<Vector2>& new_locations);
+  int getClosest(unsigned int index, std::vector<scene_interface::Vector2>& new_locations);
 
-  bool closeToEdge(Vector2 location);
+  bool closeToEdge(scene_interface::Vector2 location);
 };
 
 

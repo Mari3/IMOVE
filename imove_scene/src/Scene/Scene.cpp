@@ -1,13 +1,9 @@
-//
-// Created by Wouter Posdijk on 11/05/16.
-//
-
 #include "Scene.h"
 
 Scene::Scene() {
     //Initialize vectors
-    actions = vector<std::unique_ptr<Action>>();
-    conditions = vector<std::unique_ptr<Condition>>();
+    actions = std::vector<std::unique_ptr<Action>>();
+    conditions = std::vector<std::unique_ptr<Condition>>();
 }
 
 
@@ -18,7 +14,7 @@ void Scene::update(float dt) {
 
     // Check all conditions
     for(auto &condition : conditions){
-        vector<Action*> newActions;
+        std::vector<Action*> newActions;
         int amount = condition->check(dt,newActions);
 
         // Add the actions to the list
@@ -27,7 +23,7 @@ void Scene::update(float dt) {
         }
     }
 
-    vector<int> toDelete;
+    std::vector<int> toDelete;
 
     // Execute the actions
     for(unsigned int i = 0; i < actions.size(); ++i) {
@@ -53,13 +49,6 @@ void Scene::update(float dt) {
     }
 }
 
-void Scene::updatePeople(vector<Person> newPeople) {
+void Scene::updatePeople(std::vector<scene_interface::Person> newPeople) {
     peopleQueue.push(newPeople);
 }
-
-
-
-
-
-
-

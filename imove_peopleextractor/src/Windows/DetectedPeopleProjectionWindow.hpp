@@ -1,7 +1,7 @@
 #include <opencv2/opencv.hpp>
 
 #include "../OpenCVWindow.hpp"
-#include "../Interface/Person.h"
+#include "../../../scene_interface/src/Person.h"
 
 // Window to display projection frame for debugging information
 class DetectedPeopleProjectionWindow : public OpenCVWindow {
@@ -14,5 +14,5 @@ class DetectedPeopleProjectionWindow : public OpenCVWindow {
 		DetectedPeopleProjectionWindow(cv::Point2i position);
 		
 		// draw detected people in the projection image
-		void drawImage(cv::Mat& image_projection, vector<Person>& detectedpeople_projection);
+		void drawImage(cv::Mat& image_projection, std::vector<scene_interface::Person>& detectedpeople_projection);
 };

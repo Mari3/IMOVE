@@ -6,18 +6,18 @@
 #define IMOVE_LIGHTSOURCE_H
 
 
-#include "../../Util/Vector2.h"
+#include "../../../../scene_interface/src/Vector2.h"
 #include "../Util/Range.h"
 #include "LightTrail.h"
 
 class LightSource {
 private:
-    Vector2 location;
+    scene_interface::Vector2 location;
     util::Range hue,angle,speed;
 public:
-    LightSource(Vector2 location, util::Range hue, util::Range angle, util::Range speed);
+    LightSource(scene_interface::Vector2 location, util::Range hue, util::Range angle, util::Range speed);
     LightTrail * sendOut();
-    Vector2 getLocation();
+    scene_interface::Vector2 getLocation();
     util::Range getHue();
 };
 

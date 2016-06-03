@@ -1,26 +1,23 @@
-//
-// Created by Wouter Posdijk on 18/05/16.
-//
-
 #ifndef IMOVE_LIGHTPERSON_H
 #define IMOVE_LIGHTPERSON_H
 
+#include <list>
 
-#include "../../Util/Vector2.h"
-#include "../../Interface/Person.h"
+#include "../../../../scene_interface/src/Vector2.h"
+#include "../../../../scene_interface/src/Person.h"
 #include "../Util/Range.h"
 
 class LightPerson{
 private:
-    Vector2 location;
-    list<Vector2> previousLocations;
+    scene_interface::Vector2 location;
+    std::list<scene_interface::Vector2> previousLocations;
     unsigned int id;
 public:
-    PersonType type;
-    LightPerson(const Vector2 &location, unsigned int id, PersonType type, util::Range hue);
+    scene_interface::PersonType type;
+    LightPerson(const scene_interface::Vector2 &location, unsigned int id, scene_interface::PersonType type, util::Range hue);
     void shiftHue(float shift);
-    void setLocation(Vector2 newLocation);
-    Vector2 getLocation();
+    void setLocation(scene_interface::Vector2 newLocation);
+    scene_interface::Vector2 getLocation();
     unsigned int getId();
     util::Range hue;
 };

@@ -8,6 +8,7 @@
 #include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 #include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneRepositories.h"
 #include "../../../../../src/Scene/LightTrail/Actions/UpdateLightTrailsAction.h"
+#include "../../../../../../scene_interface/src/Vector2.h"
 
 LightTrailConfiguration config2(800, 600, util::Range(0, 0), util::Range(0, 0), util::Range(0, 0), util::Range(0, 0),
                                2.f,10,util::Range(0,400),0,0,0,0,0,0,400,.5,true,200,0,0);
@@ -17,10 +18,10 @@ TEST (UpdateLightTrailsActionTest, OutsideProximityRange) {
     LightTrailRepository* trails = new LightTrailVectorRepository();
     GravityPointRepository* gravityPoints = new GravityPointVectorRepository();
 
-    std::shared_ptr<LightTrail> trail(new LightTrail(Vector2(300,300),Vector2(0,0),0));
+    std::shared_ptr<LightTrail> trail(new LightTrail(scene_interface::Vector2(300,300),scene_interface::Vector2(0,0),0));
     trails->add(trail);
 
-    gravityPoints->add(std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(600,700),util::Range(0,0),20000)));
+    gravityPoints->add(std::shared_ptr<GravityPoint>(new GravityPoint(scene_interface::Vector2(600,700),util::Range(0,0),20000)));
 
     UpdateLightTrailsAction action(trails,gravityPoints,config2);
 
