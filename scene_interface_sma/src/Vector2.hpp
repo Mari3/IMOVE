@@ -6,13 +6,13 @@
 namespace scene_interface_sma {
 	class Vector2 {
 		public:
-			gVector2(float x, float y);
+			Vector2(float x, float y);
 		
 			float getX() const;
 			float getY() const;
 	
 		private:
-			gfloat x,y;
+			float x,y;
 	};
 }
 
