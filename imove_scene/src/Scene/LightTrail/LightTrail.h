@@ -11,7 +11,7 @@
 
 class LightTrail {
 private:
-    Vector2 location, prevLocation, speed;
+    Vector2 location, prevLocation, prevPrevLocation, speed;
     Timer lifespan;
     bool hasLifespan;
 public:
@@ -21,6 +21,7 @@ public:
     bool tick(float dt);
     Vector2 getLocation();
     float getAngle();
+    Vector2 getSize();
     Vector2 getSpeed();
 };
 
