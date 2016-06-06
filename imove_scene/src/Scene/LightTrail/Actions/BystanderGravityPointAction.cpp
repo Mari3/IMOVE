@@ -58,10 +58,12 @@ void BystanderGravityPointAction::execute(float dt) {
     if(timer.update(dt)){ //If the timer is done
         //Switch the gravity point on or off
         if(gravityPointActive){
-            gravityPoints->scheduleForRemoval(gravityPoint);
+            //gravityPoints->scheduleForRemoval(gravityPoint);
+            gravityPoint->gravity = 0;
             gravityPointActive = false;
         }else{
-            gravityPoints->add(gravityPoint);
+            //gravityPoints->add(gravityPoint);
+            gravityPoint->gravity = config.bystanderGravity();
             gravityPointActive = true;
         }
     }

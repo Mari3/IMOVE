@@ -11,9 +11,9 @@ TrailCap: 75
 ParticipantGravity: 3.46
 ParticipantAntiGravity: 3.46
 ParticipantGravityRange: 2.
-BystanderGravity: 10.38
-BystanderGravityDelay: 2.
-BystanderGravityRange: 2.
+BystanderGravity: 10
+BystanderGravityDelay: 4.
+BystanderGravityRange: -2.
 AlternatingGravity: 4.15
 AlternatingGravityDelay: 10.
 AlternatingGravityRange: -1

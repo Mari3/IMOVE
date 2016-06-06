@@ -135,6 +135,17 @@ struct RestartAlternatingScenario : public Scenario {
 
 };
 
+struct BystanderScenario : public Scenario {
+
+    BystanderScenario(const LightTrailConfiguration &config, Scene *scene) {
+        for(int i=0;i<300;++i)
+            scene->update(.1f);
+        people.push_back(Person(Vector2(config.screenWidth()/2,config.screenHeight()+100),Bystander));
+        people.push_back(Person(Vector2(config.screenWidth()/4,config.screenHeight()/2),StandingStill));
+    }
+
+};
+
 int main(int argc, char** argv){
 
     srand(static_cast<unsigned int>(time(NULL)));
@@ -146,6 +157,14 @@ int main(int argc, char** argv){
         istringstream ss(argv[2]);
         ss >> scenarioCode;
     }
+
+    Scene* scene = new LightTrailScene(config,
+                                       new LightSourceVectorRepository(),
+                                       new LightTrailVectorRepository(),
+                                       new GravityPointVectorRepository(),
+                                       new ColorHoleVectorRepository(),
+                                       new LightPersonMapRepository()
+    );
 
     Scenario* scenario;
     if(scenarioCode == 0){
@@ -160,6 +179,8 @@ int main(int argc, char** argv){
         scenario = new FirstPersonScenario(config);
     }else if(scenarioCode == 5){
         scenario = new RestartAlternatingScenario(config);
+    }else if(scenarioCode == 6){
+        scenario = new BystanderScenario(config,scene);
     }
 
     sf::RenderWindow window(sf::VideoMode(config.screenWidth(),config.screenHeight()),"Projection");
@@ -167,14 +188,6 @@ int main(int argc, char** argv){
     window.setFramerateLimit(60);
     window.display();
     sf::Clock clock;
-
-    Scene* scene = new LightTrailScene(config,
-                                       new LightSourceVectorRepository(),
-                                       new LightTrailVectorRepository(),
-                                       new GravityPointVectorRepository(),
-                                       new ColorHoleVectorRepository(),
-                                       new LightPersonMapRepository()
-    );
 
     while(window.isOpen()){
         sf::Event event;
