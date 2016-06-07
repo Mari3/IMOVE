@@ -18,7 +18,7 @@ ColorHoleTimerCondition::ColorHoleTimerCondition(
     lightTrails(lightTrails),
     gravityPoints(gravityPoints),
     config(config),
-    timer(10.f)
+    timer(config.colorHoleDelay())
 { }
 
 int ColorHoleTimerCondition::check(float dt, std::vector<Action *> &actions) {
