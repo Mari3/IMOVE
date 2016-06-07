@@ -2,8 +2,8 @@
 #include "LightTrail.h"
 
 LightTrail::LightTrail(Vector2 location, Vector2 speed, float hue, float lifespan) :
-	hue(hue),
-    location(location),
+	location(location),
+    hue(hue),
     prevLocation(location),
     prevPrevLocation(location),
     speed(speed),

@@ -49,20 +49,30 @@ private:
     // Explosion
     float _explosionAntigravity, _explosionGravity, _explosionExTime, _explosionInTime;
 
+    float _lightSourceGravity;
+
+    float _colorHoleDelay, _colorHoleGravity, _colorHoleRange, _colorHoleGravityRange;
+
 public:
 
 
-    LightTrailConfiguration(unsigned int _screenWidth, unsigned int _screenHeight, const util::Range &_corner1Hue,
-                            const util::Range &_corner2Hue, const util::Range &_corner3Hue,
-                            const util::Range &_corner4Hue, float _sendOutDelay, int _trailCap, const util::Range &_sendOutSpeed,
-                            float _participantGravity, float _participantAntigravity, float _participantGravityRange,
-                            float _bystanderGravity, float _bystanderGravityDelay, float _bystanderGravityRange,
-                            float _alternatingGravity, float _gravityPointDelay,
-                            float _alternatingGravityRange, float _proximityRange,
-                            float _proximityModifier, bool _sidesEnabled, float _speedCap, int _trailThickness, uint8_t _fade,
-                            float _mixingSpeed, float _mixingDistance, float _mixingRevertTime, float _explosionAntigravity,
-                            float _explosionGravity, float _explosionExTime, float _explosionInTime
-    );
+    LightTrailConfiguration(unsigned int _screenWidth, unsigned int _screenHeight,
+                                const util::Range &_corner1Hue, const util::Range &_corner2Hue,
+                                const util::Range &_corner3Hue, const util::Range &_corner4Hue,
+                                float _sendOutDelay, int _trailCap,
+                                const util::Range &_sendOutSpeed, float _participantGravity,
+                                float _participantAntigravity, float _participantGravityRange,
+                                float _bystanderGravity, float _bystanderGravityDelay,
+                                float _bystanderGravityRange, float _alternatingGravity,
+                                float _gravityPointDelay, float _alternatingGravityRange,
+                                float _proximityRange, float _proximityModifier,
+                                bool _sidesEnabled, float _speedCap, int _trailThickness,
+                                uint8_t _fade, float _mixingSpeed, float _mixingDistance,
+                                float _mixingRevertTime, float _explosionAntigravity,
+                                float _explosionGravity, float _explosionExTime,
+                                float _explosionInTime, float _lightSourceGravity,
+                                float _colorHoleDelay, float _colorHoleGravity,
+                                float _colorHoleRange, float _colorHoleGravityRange);
 
     static LightTrailConfiguration readFromFile(char* fileName);
 
@@ -121,6 +131,18 @@ public:
     float bystanderGravityRange() const;
 
     float alternatingGravityRange() const;
+
+
+    float lightSourceGravity() const;
+
+    float colorHoleDelay() const;
+
+    float colorHoleGravity() const;
+
+    float colorHoleRange() const;
+
+
+    float colorHoleGravityRange() const;
 };
 
 

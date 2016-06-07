@@ -1,7 +1,17 @@
 #include "GravityPoint.h"
 
-GravityPoint::GravityPoint(Vector2 location, util::Range hue, float gravity, float range) :
-    location(location), hue(hue), gravity(gravity), range(range)
+GravityPoint::GravityPoint(
+	Vector2 location,
+	util::Range hue,
+	float gravity,
+	float range,
+	bool isColorHole
+) :
+	colorHole(isColorHole),
+    location(location),
+    hue(hue),
+    gravity(gravity),
+    range(range)
 {
 
 }
@@ -25,6 +35,12 @@ Vector2 GravityPoint::calculateForce(LightTrail trail, const LightTrailConfigura
     }
     return Vector2(0,0);
 }
+
+bool GravityPoint::isColorHole() {
+    return colorHole;
+}
+
+
 
 
 

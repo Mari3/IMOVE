@@ -136,6 +136,42 @@ struct RestartAlternatingScenario : public Scenario {
 
 };
 
+struct BystanderScenario : public Scenario {
+
+    BystanderScenario(const LightTrailConfiguration &config, Scene *scene) {
+        for(int i=0;i<300;++i)
+            scene->update(.1f);
+        people.push_back(Person(Vector2(config.screenWidth()/2,config.screenHeight()+100),Bystander));
+        people.push_back(Person(Vector2(config.screenWidth()/4,config.screenHeight()/2),StandingStill));
+    }
+
+};
+
+struct ColorHoleScenario : public Scenario {
+
+    float thresh;
+    Timer timer;
+
+    ColorHoleScenario(const LightTrailConfiguration& config) : timer(20.f) {
+        srand(36);
+        unsigned int y = config.screenHeight()/4*3;
+        thresh = 340.f;
+        people.push_back(Person(Vector2(config.screenWidth()/2,20),Participant));
+        people.push_back(Person(Vector2(0,y),Participant));
+        people.push_back(Person(Vector2(config.screenWidth(),y),Participant));
+    }
+
+    void update(float dt) override {
+        Vector2 p0loc = people[1].getLocation();
+        Vector2 p1loc = people[2].getLocation();
+        if(p1loc.x-p0loc.x > 320.f || timer.update(dt)) {
+            people[1].setLocation(people[1].getLocation() + Vector2(20.f * dt, 0));
+            people[2].setLocation(people[2].getLocation() + Vector2(-20.f * dt, 0));
+        }
+    }
+
+};
+
 int main(int argc, char** argv){
 
     srand(static_cast<unsigned int>(time(NULL)));
@@ -144,9 +180,17 @@ int main(int argc, char** argv){
 
     int scenarioCode = 0;
     if(argc == 3){
-        istringstream ss(argv[2]);
+    	std::istringstream ss(argv[2]);
         ss >> scenarioCode;
     }
+
+    Scene* scene = new LightTrailScene(config,
+                                       new LightSourceVectorRepository(),
+                                       new LightTrailVectorRepository(),
+                                       new GravityPointVectorRepository(),
+                                       new ColorHoleVectorRepository(),
+                                       new LightPersonMapRepository()
+    );
 
     Scenario* scenario;
     if(scenarioCode == 0){
@@ -161,6 +205,10 @@ int main(int argc, char** argv){
         scenario = new FirstPersonScenario(config);
     }else if(scenarioCode == 5){
         scenario = new RestartAlternatingScenario(config);
+    }else if(scenarioCode == 6){
+        scenario = new BystanderScenario(config,scene);
+    }else if(scenarioCode == 7){
+        scenario = new ColorHoleScenario(config);
     }
 
     sf::RenderWindow window(sf::VideoMode(config.screenWidth(),config.screenHeight()),"Projection");
@@ -168,14 +216,6 @@ int main(int argc, char** argv){
     window.setFramerateLimit(60);
     window.display();
     sf::Clock clock;
-
-    Scene* scene = new LightTrailScene(config,
-                                       new LightSourceVectorRepository(),
-                                       new LightTrailVectorRepository(),
-                                       new GravityPointVectorRepository(),
-                                       new ColorHoleVectorRepository(),
-                                       new LightPersonMapRepository()
-    );
 
     while(window.isOpen()){
         sf::Event event;

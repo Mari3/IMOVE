@@ -15,6 +15,7 @@
 #include "Conditions/FirstParticipantCondition.h"
 #include "Conditions/NoPeopleCondition.h"
 #include "Actions/LightSourceGravityPointAction.h"
+#include "Conditions/ColorHoleTimerCondition.h"
 
 void LightTrailScene::draw(sf::RenderTarget &target) {
 
@@ -65,6 +66,13 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
 
     });
 
+    colorHoles->for_each([&](std::shared_ptr<ColorHole> hole){
+        sf::CircleShape hCircle(20);
+        hCircle.setFillColor(HueConverter::ToColor(hole->hue.getCenter()));
+        hCircle.setPosition(sf::Vector2f(hole->location.x-20,hole->location.y-20));
+        target.draw(hCircle);
+    });
+
 }
 
 LightTrailScene::LightTrailScene(const LightTrailConfiguration &config,
@@ -88,6 +96,7 @@ LightPersonRepository* lightPeople) : Scene(),
 
     //Initialize the light trail texture
     texture.create(config.screenWidth(),config.screenHeight());
+    texture.clear(sf::Color::Black);
 
     //Add Light sources on every corner
     lightSources->add(std::shared_ptr<LightSource>(
@@ -134,6 +143,9 @@ LightPersonRepository* lightPeople) : Scene(),
     ));*/
     conditions.push_back(std::unique_ptr<Condition>(
             static_cast<Condition*>(new NoPeopleCondition(lightPeople, gravityPoints, config, lightTrails))
+    ));
+    conditions.push_back(std::unique_ptr<Condition>(
+            static_cast<Condition*>(new ColorHoleTimerCondition(colorHoles,lightPeople,config,lightTrails,gravityPoints))
     ));
 }
 

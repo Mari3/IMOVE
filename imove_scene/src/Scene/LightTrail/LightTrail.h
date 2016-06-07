@@ -8,6 +8,7 @@ using namespace scene_interface;
 
 class LightTrail {
 public:
+    Vector2 location;
     float hue;
 
     LightTrail(Vector2 location, Vector2 speed, float hue, float lifespan = -1);
@@ -18,7 +19,7 @@ public:
     Vector2 getSize();
     Vector2 getSpeed();
 private:
-    Vector2 location, prevLocation, prevPrevLocation, speed;
+    Vector2 prevLocation, prevPrevLocation, speed;
     Timer lifespan;
     bool hasLifespan;
 };

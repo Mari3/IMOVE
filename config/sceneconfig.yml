@@ -9,11 +9,11 @@ SendOutDelay: 3.
 SendOutSpeed: [ 0, 2 ]
 TrailCap: 75
 ParticipantGravity: 3.46
-ParticipantAntiGravity: 3.46
+ParticipantAntiGravity: 0.46
 ParticipantGravityRange: 2.
-BystanderGravity: 10.38
-BystanderGravityDelay: 2.
-BystanderGravityRange: 2.
+BystanderGravity: 10
+BystanderGravityDelay: 4.
+BystanderGravityRange: -2.
 AlternatingGravity: 4.15
 AlternatingGravityDelay: 10.
 AlternatingGravityRange: -1
@@ -30,3 +30,8 @@ ExplosionAntigravity: 27.68
 ExplosionGravity: 10.38
 ExplosionExTime: .2
 ExplosionInTime: .3
+LightSourceGravity: 3.46
+ColorHoleDelay: 10.
+ColorHoleGravity: 3.46
+ColorHoleGravityRange: .5
+ColorHoleRange: .1

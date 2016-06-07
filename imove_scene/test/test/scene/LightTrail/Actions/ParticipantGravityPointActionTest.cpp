@@ -11,8 +11,10 @@
 #include "../../../../../../scene_interface/src/Vector2.h"
 #include "../../../../../../scene_interface/src/Person.h"
 
-LightTrailConfiguration pgpat_config(800,600,util::Range(0,0),util::Range(0,0),util::Range(0,0),util::Range(0,0),
-0,0,util::Range(0,0),500,100,0,0,0,0,0,0,0,0,0,0);
+LightTrailConfiguration pgpat_config(800, 600, util::Range(0, 0), util::Range(0, 0), util::Range(0, 0),
+                                     util::Range(0, 0), 0, 0, util::Range(0, 0),
+                                     500, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                     0);
 
 TEST (ParticipantGravityPointActionTest, UpdateLocation) {
 
