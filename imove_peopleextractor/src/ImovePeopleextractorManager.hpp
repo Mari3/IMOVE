@@ -6,6 +6,7 @@
 #include "ImageProcessing/PeopleExtractor.h"
 //#include <scene_interface_sma/ExtractedpeopleQueue.hpp>
 #include "../../scene_interface_sma/src/ExtractedpeopleQueue.hpp"
+#include "../../peopleextractor_interface_sma/src/SceneframeQueue.hpp"
 
 // Setups people extractor and Scene, can let the Scene run using constant input of people extractor
 class ImovePeopleextractorManager {
@@ -28,6 +29,10 @@ class ImovePeopleextractorManager {
 		boost::interprocess::managed_shared_memory* segment;
 		// shared memory extracted people queue
 		boost::interprocess::offset_ptr<scene_interface_sma::ExtractedpeopleQueue> extractedpeople_queue;
+		// shared memory people extractor scene frame queue
+		boost::interprocess::offset_ptr<peopleextractor_interface_sma::SceneframeQueue> pi_sceneframe_queue;
+
+		bool still_run_receive_scene_frames = true;
 		
 		/**
 		 * Push extractedpeople on shared memory query for scene to pop.
@@ -35,4 +40,10 @@ class ImovePeopleextractorManager {
 		 * @param extractedpeople Extracted people for scene input
 		 **/
 		void sendExtractedpeople(std::vector<scene_interface::Person> extractedpeople);
+
+		// Receive scene frame and feed projection for later projection subtraction
+		void receiveSceneFrameAndFeedProjection();
+		
+		// thread function to receive scene frame and feed projectio for later projection subtraction
+		static void receiveSceneFrameAndFeedProjectionThread(ImovePeopleextractorManager* imove_peopleextractor_manager);
 };

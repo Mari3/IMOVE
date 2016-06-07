@@ -2,37 +2,32 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/core/persistence.hpp>
+#include <assert.h>
 
 #include "../OpenCVUtil.hpp"
 #include "Calibration.hpp"
 #include "../../../scene_interface/src/Person.h"
 #include "../../../scene_interface/src/Vector2.h"
 
-Calibration::Calibration(const cv::Size& resolution_projector, const cv::Size& resolution_camera, unsigned int camera_device, cv::Mat& camera_projector_transformation, unsigned int frames_projector_camera_delay, double projector_background_light, float meter) {
-	this->resolution_projector = resolution_projector;
-	this->resolution_camera = resolution_camera;
-	this->camera_device = camera_device;
-	this->camera_projector_transformation = camera_projector_transformation;
-	this->frames_projector_camera_delay = frames_projector_camera_delay;
-	this->projector_background_light = projector_background_light;
-	this->meter = meter;
-}
+Calibration::Calibration(const cv::Size& resolution_projector, const cv::Size& resolution_camera, unsigned int camera_device, cv::Mat& camera_projector_transformation, unsigned int frames_projector_camera_delay, float projector_background_light, float meter, unsigned int maximum_fps_scene, unsigned int fps_capture_scene, unsigned int iterations_delay_peopleextracting, unsigned int factor_resize_capture_scene) :
+	resolution_projector(resolution_projector),
+	resolution_camera(resolution_camera),
+	camera_device(camera_device),
+	camera_projector_transformation(camera_projector_transformation),
+	frames_projector_camera_delay(frames_projector_camera_delay),
+	projector_background_light(projector_background_light),
+	meter(meter),
+	maximum_fps_scene(maximum_fps_scene),
+	fps_capture_scene(fps_capture_scene),
+	iterations_delay_peopleextracting(iterations_delay_peopleextracting),
+	factor_resize_capture_scene(factor_resize_capture_scene)
+{ }
 
 Calibration* Calibration::readFile(const char* filepath) {
 	// read Calibration config
 	cv::FileStorage fs;
 	fs.open(filepath, cv::FileStorage::READ);
 
-	// read camera_device from yml using OpenCV FileNode
-	unsigned int camera_device;
-	  signed int int_camera_device;
-	fs["Camera_device"] >> int_camera_device;
-	// OpenCV yml does not support unsigned in; initialize signed int to unsigned int 0
-	if (int_camera_device < 0) {
-		camera_device = 0;
-	} else {
-		camera_device = (unsigned int) int_camera_device;
-	}
 	// read resolution_camera from yml using OpenCV FileNode
 	cv::Size resolution_camera;
 	fs["Resolution_camera"] >> resolution_camera;
@@ -42,55 +37,38 @@ Calibration* Calibration::readFile(const char* filepath) {
 	// read camera_projector_transformation from yml using OpenCV FileNode
 	cv::Mat camera_projector_transformation;
 	fs["Camera_projector_transformation"] >> camera_projector_transformation;
-	// read frames_projector_camera_delay from yml using OpenCV FileNode
-	unsigned int frames_projector_camera_delay;
-	  signed int int_frames_projector_camera_delay;
-	fs["Frames_projector_camera_delay"] >> int_frames_projector_camera_delay;
-	// OpenCV yml does not support unsigned in; initialize signed int to unsigned int 0
-	if (int_frames_projector_camera_delay < 0) {
-		frames_projector_camera_delay = 0;
-	} else {
-		frames_projector_camera_delay = (unsigned int) int_frames_projector_camera_delay;
-	}
-	// read percentage_projector_background_light from yml using OpenCV FileNode
-	double percentage_projector_background_light;
-	fs["Percentage_projector_background_light"] >> percentage_projector_background_light;
+	// read projector_background_light from yml using OpenCV FileNode
+	float projector_background_light;
+	fs["Projector_background_light"] >> projector_background_light;
 	// read meter from yml using OpenCV FileNode
 	float meter;
 	fs["Meter"] >> meter;
-	fs.release();
 
-	return new Calibration(
+	Calibration* calibration = new Calibration(
 		resolution_projector,
 		resolution_camera,
-		camera_device,
+		Calibration::read(fs, "Camera_device"),
 		camera_projector_transformation,
-		frames_projector_camera_delay,
-		percentage_projector_background_light,
-		meter
+		Calibration::read(fs, "Frames_projector_camera_delay"),
+		projector_background_light,
+		meter,
+		Calibration::read(fs, "Maximum_FPS_scene"),
+		Calibration::read(fs, "FPS_capture_scene"),
+		Calibration::read(fs, "Iterations_delay_peopleextracting"),
+		Calibration::read(fs, "Factor_resize_capture_scene")
 	);
+
+	fs.release();
+
+	return calibration;
 }
 
 Calibration* Calibration::createFromFile(const char* filepath, unsigned int cameradevice, cv::Size resolution_projector) {
 	cv::FileStorage read_config;
 	read_config.open(filepath, cv::FileStorage::READ);
 	
-	// read frames_projector_camera_delay from yml using OpenCV FileNode; default if not existing
-	unsigned int frames_projector_camera_delay;
-	if (read_config["Frames_projector_camera_delay"].isNone()) {
-		frames_projector_camera_delay = Calibration::DEFAULT_FRAMES_PROJECTOR_CAMERA_DELAY;
-	} else {
-		signed int int_frames_projector_camera_delay;
-		read_config["Frames_projector_camera_delay"] >> int_frames_projector_camera_delay;
-		// OpenCV yml does not support unsigned in; initialize signed int to unsigned int 0
-		if (int_frames_projector_camera_delay < 0) {
-			frames_projector_camera_delay = 0;
-		} else {
-			frames_projector_camera_delay = (unsigned int) int_frames_projector_camera_delay;
-		}
-	}
 	// read projector_background_light from yml using OpenCV FileNode; default if not existing
-	double projector_background_light;
+	float projector_background_light;
 	if (read_config["Projector_background_light"].isNone()) {
 		projector_background_light = Calibration::DEFAULT_PROJECTOR_BACKGROUND_LIGHT;
 	} else {
@@ -137,24 +115,42 @@ Calibration* Calibration::createFromFile(const char* filepath, unsigned int came
 	} else {
 		read_config["Camera_projector_transformation"] >> camera_projector_transformation;
 	}
-
-	read_config.release();
 	
  	// create initial Calibration based on configuration, arguments and defaults
-	return new Calibration(resolution_projector, resolution_camera, cameradevice, camera_projector_transformation, frames_projector_camera_delay, projector_background_light, meter);
+	Calibration* calibration = new Calibration(
+		resolution_projector,
+		resolution_camera,
+		cameradevice,
+		camera_projector_transformation,
+		Calibration::create(read_config, "Frames_projector_camera_delay", Calibration::DEFAULT_FRAMES_PROJECTOR_CAMERA_DELAY),
+		projector_background_light,
+		meter,
+		Calibration::create(read_config, "Maximum_FPS_scene", Calibration::DEFAULT_MAXIMUM_FPS_SCENE),
+		Calibration::create(read_config, "FPS_capture_scene", Calibration::DEFAULT_FPS_CAPTURE_SCENE),
+		Calibration::create(read_config, "Iterations_delay_peopleextracting", Calibration::DEFAULT_ITERATIONS_DELAY_PEOPLEEXTRACTING),
+		Calibration::create(read_config, "Factor_resize_capture_scene", Calibration::DEFAULT_FACTOR_RESIZE_CAPTURE_SCENE)
+	);
+
+	read_config.release();
+
+	return calibration;
 }
 
 void Calibration::writeFile(const char* filepath) const {
 	// write configuration based on Calibration
 	cv::FileStorage write_config(filepath, cv::FileStorage::WRITE);
 	
-	write_config << "Camera_device" << (int) this->camera_device;
-	write_config << "Resolution_camera" << this->resolution_camera;
-	write_config << "Resolution_projector" << this->resolution_projector;
-	write_config << "Camera_projector_transformation" << this->camera_projector_transformation;
-	write_config << "Frames_projector_camera_delay" << (int) this->frames_projector_camera_delay;
-	write_config << "Projector_background_light" << this->projector_background_light;
-	write_config << "Meter" << this->meter;
+	write_config << "Camera_device"                     << (int) this->camera_device;
+	write_config << "Resolution_camera"                 <<       this->resolution_camera;
+	write_config << "Resolution_projector"              <<       this->resolution_projector;
+	write_config << "Camera_projector_transformation"   <<       this->camera_projector_transformation;
+	write_config << "Frames_projector_camera_delay"     << (int) this->frames_projector_camera_delay;
+	write_config << "Projector_background_light"        <<       this->projector_background_light;
+	write_config << "Meter"                             <<       this->meter;
+	write_config << "Maximum_FPS_scene"                 << (int) this->maximum_fps_scene;
+	write_config << "FPS_capture_scene"                 << (int) this->fps_capture_scene;
+	write_config << "Iterations_delay_peopleextracting" << (int) this->iterations_delay_peopleextracting;
+	write_config << "Factor_resize_capture_scene"       << (int) this->factor_resize_capture_scene;
 	
 	write_config.release();
 }
@@ -167,10 +163,10 @@ void Calibration::feedFrameProjector(const cv::Mat& frame_projector) {
 
 void Calibration::eliminateProjectionFeedbackFromFrameCamera(cv::Mat& frame_projectioneliminated, const cv::Mat& frame_camera) {
 	// Skip frames which are older than delay
-  while ((frames_delay_projector.size() - 1) > this->frames_projector_camera_delay) {
+	while ((((signed int) frames_delay_projector.size()) - 1) > (signed int) this->frames_projector_camera_delay) {
 	  this->frames_delay_projector.pop();
 	}
-	if (this->frames_delay_projector.empty()) {
+	if (this->frames_delay_projector.size() <= this->frames_projector_camera_delay) {
 		// use camera frame when no projector frames are (yet) fed
 		frame_projectioneliminated = frame_camera;
 	} else {
@@ -244,10 +240,10 @@ unsigned int Calibration::getFramesProjectorCameraDelay() const {
 void Calibration::setFramesProjectorCameraDelay(unsigned int frames_projector_camera_delay) {
 	this->frames_projector_camera_delay = frames_projector_camera_delay;
 }
-double Calibration::getProjectorBackgroundLight() const {
+float Calibration::getProjectorBackgroundLight() const {
 	return this->projector_background_light;
 }
-void Calibration::setProjectorBackgroundLight(double projector_background_light) {
+void Calibration::setProjectorBackgroundLight(float projector_background_light) {
 	this->projector_background_light = projector_background_light;
 }
 cv::Mat Calibration::getCameraProjectorTransformation() const {
@@ -270,4 +266,28 @@ void Calibration::setMeter(float meter) {
 }
 const float Calibration::getMeter() const {
 	return this->meter;
+}
+void Calibration::setMaximumFpsScene(const unsigned int maximum_fps_scene) {
+	this->maximum_fps_scene = maximum_fps_scene;
+}
+const unsigned int Calibration::getMaximumFpsScene() const {
+	return this->maximum_fps_scene;
+}
+void Calibration::setFpsCaptureScene(const unsigned int fps_capture_scene) {
+	this->fps_capture_scene = fps_capture_scene;
+}
+const unsigned int Calibration::getFpsCaptureScene() const {
+	return this->fps_capture_scene;
+}
+void Calibration::setIterationsDelayPeopleextracting(unsigned int iterations_delay_peopleextracting) {
+	this->iterations_delay_peopleextracting = iterations_delay_peopleextracting;
+}
+const unsigned int Calibration::getIterationsDelayPeopleextracting() const {
+	return this->iterations_delay_peopleextracting;
+}
+void Calibration::setFactorResizeCaptureScene(unsigned int factor_resize_capture_scene) {
+	this->factor_resize_capture_scene = factor_resize_capture_scene;
+}
+const unsigned int Calibration::getFactorResizeCaptureScene() const {
+	return this->factor_resize_capture_scene;
 }
