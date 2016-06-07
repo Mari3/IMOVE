@@ -21,9 +21,10 @@ std::vector<scene_interface::Person> PeopleIdentifier::match(std::vector<scene_i
         --i;
       } else if (detected_people[i].type == scene_interface::StandingStill) {
         if (closeToEdge(detected_people[i].getLocation())) {
-          detected_people.erase(detected_people.begin() + i);
-          --i;
+          detected_people[i].type = scene_interface::None;
+          std::cout << "None" << std::endl;
         } else if (detected_people[i].getNotMovedCount() <= 0) {
+          std::cout << "Time out" << std::endl;
           detected_people[i].type = scene_interface::None;
         } else {
           detected_people[i]. decreaseNotMovedCount();
