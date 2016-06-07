@@ -17,6 +17,7 @@
 #include "Conditions/NoPeopleCondition.h"
 #include "Actions/LightSourceGravityPointAction.h"
 #include "Conditions/ColorHoleTimerCondition.h"
+#include "Conditions/ParticipantCloseToSourceCondition.h"
 
 void LightTrailScene::draw(sf::RenderTarget &target) {
 
@@ -147,6 +148,9 @@ LightPersonRepository* lightPeople) : Scene(),
     ));
     conditions.push_back(std::unique_ptr<Condition>(
             static_cast<Condition*>(new ColorHoleTimerCondition(colorHoles,lightPeople,config,lightTrails,gravityPoints))
+    ));
+    conditions.push_back(std::unique_ptr<Condition>(
+            static_cast<Condition*>(new ParticipantCloseToSourceCondition(lightPeople,lightSources,config))
     ));
 }
 
