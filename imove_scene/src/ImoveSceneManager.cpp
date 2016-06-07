@@ -1,4 +1,6 @@
 #include <boost/interprocess/managed_shared_memory.hpp>
+#include <iostream>
+#include <string>
 
 #include "ImoveSceneManager.hpp"
 
@@ -111,6 +113,7 @@ void ImoveSceneManager::receiveExtractedpeopleAndUpdateScene() {
 			// create extracted person for input of scene from received extracted person from shared memory and add extracted person to vector of extracted people
 			extractedpeople.push_back(
 				scene_interface::Person(
+					si_person->getId(),
 					scene_interface::Vector2(
 						location->getX(),
 						location->getY()

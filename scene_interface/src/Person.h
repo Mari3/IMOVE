@@ -33,6 +33,7 @@ namespace scene_interface {
 	 public:
 	    PersonType type;
 	    Person(Vector2 location, PersonType type);
+	    Person(unsigned int id, Vector2 location, PersonType type);
 	
 	    //Getters and setters
 	    Vector2 getLocation();

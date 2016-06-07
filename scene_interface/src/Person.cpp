@@ -10,6 +10,13 @@ Person::Person(Vector2 location, PersonType type) : location(location), type(typ
     count++;
 }
 
+Person::Person(unsigned int id, Vector2 location, PersonType type) : location(location), id(id), type(type) {
+    previousLocations = std::list<Vector2>();
+    if (id >= count) {
+			count = id + 1;
+		}
+}
+
 /*--------------------
  * Getters and setters
  * -----------------*/
