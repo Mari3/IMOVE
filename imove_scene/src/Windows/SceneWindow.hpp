@@ -16,7 +16,8 @@ class SceneWindow {
 		// draw the Scene on the render window
 		void drawScene(Scene* scene);
 		
-		sf::Image captureWindow();
+		// capture the drawn scene to image
+		const sf::Image captureFrameScene();
 
 	protected:
 		sf::RenderWindow* window_scene;
