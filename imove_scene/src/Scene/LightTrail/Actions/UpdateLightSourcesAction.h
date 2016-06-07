@@ -23,7 +23,7 @@ private:
 public:
     UpdateLightSourcesAction(LightSourceRepository* lightSources, LightTrailRepository* lightTrails,
         const LightTrailConfiguration& config);
-    bool isDone(Action *&followUp) override;
+    bool isDone(std::vector<Action*> &followUp) override;
     void execute(float dt) override;
 };
 

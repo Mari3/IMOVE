@@ -4,6 +4,8 @@
 
 #include "../Util/Range.h"
 #include "../../../../scene_interface/src/Vector2.h"
+#include "LightTrail.h"
+#include "LightTrailConfiguration.h"
 
 using namespace scene_interface;
 
@@ -13,8 +15,9 @@ private:
 public:
     Vector2 location;
     util::Range hue;
-    float gravity;
-    GravityPoint(Vector2 location, util::Range hue, float gravity);
+    float gravity, range;
+    GravityPoint(Vector2 location, util::Range hue, float gravity, float range = -1);
+    Vector2 calculateForce(LightTrail trail, const LightTrailConfiguration& config);
 };
 
 

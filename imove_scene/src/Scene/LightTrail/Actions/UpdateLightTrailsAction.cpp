@@ -1,7 +1,7 @@
 #include "../../../../../scene_interface/src/Vector2.h"
 #include "UpdateLightTrailsAction.h"
 
-bool UpdateLightTrailsAction::isDone(Action *&followUp) {
+bool UpdateLightTrailsAction::isDone(std::vector<Action*> &followUp) {
     return false;
 }
 
@@ -12,7 +12,9 @@ void UpdateLightTrailsAction::execute(float dt) {
         Vector2 force = calculateForce(*(lightTrail.get()));
         // Apply said force
         lightTrail->applyForce(force,dt,config.speedCap(),config.sidesEnabled(),config.screenWidth(),config.screenHeight());
-
+        if(lightTrail->tick(dt)){
+            lightTrails->scheduleForRemoval(lightTrail);
+        }
     });
 }
 
@@ -27,19 +29,7 @@ Vector2 UpdateLightTrailsAction::calculateForce(LightTrail trail) {
 
     gravityPoints->for_each([&](std::shared_ptr<GravityPoint> gravityPoint){
 
-        if(gravityPoint->hue.contains(trail.hue)) { // If the hue of the light trail is in the hue-range of the gravity point
-            Vector2 diff = gravityPoint->location - trail.getLocation();
-            float dist = diff.size();
-            float proximityModifier = 1;
-
-            if (dist < config.proximityRange()) { // If the light trail is in a certain proximity to the gravity point
-                // Decrease instead of increase the gravity the closer the trail gets
-                // in order to cause orbit
-                proximityModifier = config.proximityModifier() * (dist/config.proximityRange()) * (dist/config.proximityRange());
-            }
-            // Add force that is inversely proportional to distance, like real gravity.
-            totalForce += diff / dist / dist * proximityModifier * gravityPoint->gravity;
-        }
+        totalForce += gravityPoint->calculateForce(trail,config);
 
     });
     return totalForce;

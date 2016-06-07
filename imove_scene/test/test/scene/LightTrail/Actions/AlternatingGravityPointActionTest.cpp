@@ -28,7 +28,8 @@ TEST (AlternatingGravityPointActionTest, UpdateLocation) {
     util::Range xRange(0,0,&xRandom.get());
     util::Range yRange(0,0,&yRandom.get());
 
-    AlternatingGravityPointAction action(util::Range(0,180),xRange,yRange,gravityPoints,lightPeople,agpat_config);
+    AlternatingGravityPointAction action(util::Range(0, 180), xRange,
+                                         yRange, gravityPoints, lightPeople, nullptr, agpat_config);
 
     ASSERT_EQ(gravityPoints->size(),1);
 

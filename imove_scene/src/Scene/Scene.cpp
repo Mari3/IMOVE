@@ -31,11 +31,11 @@ void Scene::update(float dt) {
         actions[i]->execute(dt);
 
         // Remove action if it is done
-        Action* followUp = nullptr;
+        std::vector<Action*> followUp;
         if(actions[i]->isDone(followUp)){
             // If there is a followup, add it to the list
-            if(followUp){
-                actions.push_back(std::unique_ptr<Action>(followUp));
+            for(auto &fu : followUp){
+                actions.push_back(std::unique_ptr<Action>(fu));
             }
             toDelete.push_back(i);
         }

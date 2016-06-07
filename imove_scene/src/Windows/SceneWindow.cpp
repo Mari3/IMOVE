@@ -21,3 +21,6 @@ void SceneWindow::drawScene(Scene* scene) {
 	this->window_scene->display();
 }
 
+sf::Image SceneWindow::captureWindow() {
+	return this->window_scene->capture();
+}

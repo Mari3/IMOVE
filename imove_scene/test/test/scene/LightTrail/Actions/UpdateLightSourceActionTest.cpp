@@ -21,7 +21,9 @@ TEST (UpdateLightSourceTest, LightTrailMadeAfterTime) {
     LightTrailRepository* trails = new LightTrailVectorRepository();
 
     LightSourceRepository* sources = new LightSourceVectorRepository();
-    sources->add(std::shared_ptr<LightSource>(new LightSource(scene_interface::Vector2(0,0),util::Range(0,0,true),util::Range(0,0,true),util::Range(0,0,true))));
+    sources->add(std::shared_ptr<LightSource>(
+            new LightSource(Vector2(0, 0), util::Range(0, 0, true), util::Range(0, 0, true),
+                            util::Range(0, 0, true), 0)));
 
     UpdateLightSourcesAction action(sources,trails,config_ulsat);
 
@@ -43,7 +45,9 @@ TEST (UpdateLightSourceTest, StayWithinCap) {
     }
 
     LightSourceRepository* sources = new LightSourceVectorRepository();
-    sources->add(std::shared_ptr<LightSource>(new LightSource(scene_interface::Vector2(0,0),util::Range(0,0,true),util::Range(0,0,true),util::Range(0,0,true))));
+    sources->add(std::shared_ptr<LightSource>(
+            new LightSource(Vector2(0, 0), util::Range(0, 0, true), util::Range(0, 0, true),
+                            util::Range(0, 0, true), 0)));
 
     UpdateLightSourcesAction action(sources,trails,config_ulsat);
 

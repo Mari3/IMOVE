@@ -46,16 +46,24 @@ void ImoveSceneManager::run() {
 	sf::Clock clock;
 	
 	float dt;
+	float capture_dt;
+	float CAPTURE_SPF = 1.f / 6.f;
 	while (true) {
 		this->receiveExtractedpeopleAndUpdateScene();
 		
 		// draw next Scene frame based on clock difference
 		dt = clock.restart().asSeconds();
-		//dt = 1.f/24.f;
 		this->scene->update(dt);
 		
 		// draw the actual Scene on window
 		window_scene.drawScene(this->scene);
+		
+		// capture the screen
+		capture_dt += dt;
+		if (capture_dt > CAPTURE_SPF) {
+			window_scene.captureWindow();
+			capture_dt -= CAPTURE_SPF;
+		}
 	}
 
 	//destroy shared memory segment

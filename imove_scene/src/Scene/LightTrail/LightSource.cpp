@@ -8,9 +8,8 @@
 
 #define PI 3.14159265358979323846
 
-LightSource::LightSource(Vector2 location, util::Range hue, util::Range angle, util::Range speed) :
-    location(location), hue(hue), angle(angle), speed(speed)
-{
+LightSource::LightSource(Vector2 location, util::Range hue, util::Range angle, util::Range speed, float lifespan) :
+        location(location), hue(hue), angle(angle), speed(speed), lifespan(lifespan) {
 
 }
 
@@ -22,7 +21,7 @@ LightTrail* LightSource::sendOut() {
     //Create speed vector from speed and angle
     Vector2 trailSpeedVector(trailSpeed*static_cast<float>(cos(trailAngle/180.f*PI)),trailSpeed*static_cast<float>(sin(trailAngle/180.f*PI)));
 
-    return new LightTrail(location,trailSpeedVector,trailHue);
+    return new LightTrail(location,trailSpeedVector,trailHue,lifespan);
 }
 
 Vector2 LightSource::getLocation() {

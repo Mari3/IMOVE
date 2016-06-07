@@ -1,5 +1,6 @@
 #include "PersonChangedTypeCondition.h"
 #include <memory>
+#include <iostream>
 #include "../Actions/BystanderGravityPointAction.h"
 #include "../Actions/ParticipantGravityPointAction.h"
 
@@ -12,8 +13,10 @@ int PersonChangedTypeCondition::check(float dt, std::vector<Action*> &actions) {
             i++;
             actions.push_back(new BystanderGravityPointAction(person,gravityPoints,config));
         } // Else if the person turned particpant
-        else if((oldType.count(person->getId()) == 0 || (oldType[person->getId()] != Participant || oldType[person->getId()] != StandingStill)) && (person->type == Participant || person->type == StandingStill))
+        else if((oldType.count(person->getId()) == 0 || (oldType[person->getId()] != Participant && oldType[person->getId()] != StandingStill)) && (person->type == Participant || person->type == StandingStill))
         {
+						std::cerr << person->getLocation().x << "," << person->getLocation().y << std::endl; 
+						std::cerr << "1PGPA: " << person->getLocation().x << "," << person->getLocation().y << " lb: " << person->hue.lowerBound << " ub: " << person->hue.upperBound << std::endl; 
             // Create a new participant action
             i++;
             actions.push_back(new ParticipantGravityPointAction(person,gravityPoints,config));

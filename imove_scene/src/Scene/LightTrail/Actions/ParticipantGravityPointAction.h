@@ -14,13 +14,14 @@ class ParticipantGravityPointAction : public Action {
 private:
     GravityPointRepository* gravityPoints;
     std::shared_ptr<GravityPoint> gravityPoint;
+    std::shared_ptr<GravityPoint> antigravityPoint;
     std::shared_ptr<LightPerson> person;
     void setLocation();
 public:
     explicit ParticipantGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints,
     const LightTrailConfiguration& config);
 
-    bool isDone(Action *&followUp) override;
+    bool isDone(std::vector<Action*> &followUp) override;
 
     void execute(float dt) override;
 

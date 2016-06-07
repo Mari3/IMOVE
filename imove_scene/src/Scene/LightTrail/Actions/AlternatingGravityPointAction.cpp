@@ -1,7 +1,8 @@
 #include "AlternatingGravityPointAction.h"
+#include "MixingAction.h"
 #include <memory>
 
-bool AlternatingGravityPointAction::isDone(Action *&followUp) {
+bool AlternatingGravityPointAction::isDone(std::vector<Action*> &followUp) {
     // This action is done when a person gets close to the Scene.
     if(lightPeople->size()>0) {
         gravityPoints->scheduleForRemoval(myGravityPoint);
@@ -16,22 +17,30 @@ void AlternatingGravityPointAction::execute(float dt) {
         myGravityPoint->location.x = xRange.drawRandom();
         myGravityPoint->location.y = yRange.drawRandom();
     }
+
+    MixingAction::shift(lightTrails,myGravityPoint->location,myGravityPoint->hue,10*dt);
 }
 
-AlternatingGravityPointAction::AlternatingGravityPointAction(util::Range hue, util::Range xRange, util::Range yRange,
-                                                             GravityPointRepository* gravityPoints,
-                                                             LightPersonRepository* lightPeople,
-                                                             const LightTrailConfiguration &config)
-	: gravityPoints(gravityPoints),
-		lightPeople(lightPeople),
-	  timer(config.gravityPointDelay(),true),
-		myGravityPoint(std::shared_ptr<GravityPoint>(new GravityPoint(
-			Vector2(0,0),
-			hue,
-			config.alternatingGravity()
-		))),
-		xRange(xRange),
-		yRange(yRange)
+AlternatingGravityPointAction::AlternatingGravityPointAction(
+	util::Range hue,
+	util::Range xRange,
+    util::Range yRange,
+    GravityPointRepository *gravityPoints,
+    LightPersonRepository *lightPeople,
+    LightTrailRepository *lightTrails,
+    const LightTrailConfiguration &config
+) :
+	xRange(xRange),
+	yRange(yRange),
+    gravityPoints(gravityPoints),
+    lightPeople(lightPeople),
+    lightTrails(lightTrails),
+    timer(config.gravityPointDelay(),true),
+    myGravityPoint(std::shared_ptr<GravityPoint>(new GravityPoint(
+	    Vector2(0,0),
+		hue,
+		config.alternatingGravity()
+    )))
 {
     // Register the gravity point
     gravityPoints->add(myGravityPoint);
