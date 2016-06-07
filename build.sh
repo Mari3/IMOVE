@@ -7,7 +7,7 @@ pushd build >> /dev/null
 #	make
 popd >> /dev/null
 
-mkdir -p dist
-mv build/calibration/calibration dist/calibration
-mv build/imove_scene/src/imove_scene dist/imove-scene
-mv build/imove_peopleextractor/src/imove_peopleextractor dist/imove-peopleextractor
+#mkdir -p dist
+#mv build/calibration/calibration dist/calibration
+#mv build/imove_scene/src/imove_scene dist/imove-scene
+#mv build/imove_peopleextractor/src/imove_peopleextractor dist/imove-peopleextractor

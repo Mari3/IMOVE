@@ -1,3 +1,3 @@
 #!/bin/bash
 set -e
-./dist/imove-scene ./config/INSYGHTLab.yml ./config/sceneconfig.yml
+./build/imove_scene/src/imove_scene ./config/INSYGHTLab.yml ./config/sceneconfigINSYGHTLab.yml
