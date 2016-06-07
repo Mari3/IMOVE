@@ -7,12 +7,12 @@ int PersonChangedTypeCondition::check(float dt, std::vector<Action*> &actions) {
     int i = 0;
     lightPeople->for_each([&](std::shared_ptr<LightPerson> person){
         // If the person turned bystander
-        if((oldType.count(person->getId()) == 0 || oldType[person->getId()] != scene_interface::Bystander) && person->type == scene_interface::Bystander){
+        if((oldType.count(person->getId()) == 0 || oldType[person->getId()] != Bystander) && person->type == Bystander){
             // Create a new bystander action
             i++;
             actions.push_back(new BystanderGravityPointAction(person,gravityPoints,config));
         } // Else if the person turned particpant
-        else if((oldType.count(person->getId()) == 0 || (oldType[person->getId()] != scene_interface::Participant || oldType[person->getId()] != scene_interface::StandingStill)) && (person->type == scene_interface::Participant || person->type == scene_interface::StandingStill))
+        else if((oldType.count(person->getId()) == 0 || (oldType[person->getId()] != Participant || oldType[person->getId()] != StandingStill)) && (person->type == Participant || person->type == StandingStill))
         {
             // Create a new participant action
             i++;

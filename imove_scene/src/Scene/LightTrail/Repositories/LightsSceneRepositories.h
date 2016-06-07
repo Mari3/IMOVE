@@ -10,6 +10,8 @@
 #include "../LightPerson.h"
 #include "../LightSource.h"
 
+using namespace scene_interface;
+
 typedef Repository<ColorHole> ColorHoleRepository;
 typedef Repository<GravityPoint> GravityPointRepository;
 typedef Repository<LightPerson> LightPersonRepository;

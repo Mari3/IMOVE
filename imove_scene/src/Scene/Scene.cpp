@@ -49,6 +49,6 @@ void Scene::update(float dt) {
     }
 }
 
-void Scene::updatePeople(std::vector<scene_interface::Person> newPeople) {
+void Scene::updatePeople(std::vector<Person> newPeople) {
     peopleQueue.push(newPeople);
 }

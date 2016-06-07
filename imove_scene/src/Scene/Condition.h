@@ -8,6 +8,8 @@
 #include "Action.h"
 #include <vector>
 
+using namespace scene_interface;
+
 class Condition{
 public:
     virtual int check(float dt, std::vector<Action*>& actions) = 0;

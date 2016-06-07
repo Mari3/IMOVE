@@ -11,6 +11,8 @@
 #include <memory>
 #include <assert.h>
 
+using namespace scene_interface;
+
 template<typename T>
 class VectorRepository : public Repository<T>
 {

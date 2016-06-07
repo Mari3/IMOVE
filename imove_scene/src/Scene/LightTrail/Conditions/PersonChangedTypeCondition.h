@@ -8,11 +8,13 @@
 #include "../LightTrailConfiguration.h"
 #include "../../../../../scene_interface/src/Person.h"
 
+using namespace scene_interface;
+
 class PersonChangedTypeCondition : public Condition {
 private:
     LightPersonRepository* lightPeople;
     GravityPointRepository* gravityPoints;
-    std::map<int,scene_interface::PersonType> oldType;
+    std::map<int,PersonType> oldType;
     LightTrailConfiguration config;
 public:
     PersonChangedTypeCondition(LightPersonRepository* lightPeople,

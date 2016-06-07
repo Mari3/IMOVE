@@ -10,14 +10,16 @@
 #include "../Util/Range.h"
 #include "LightTrail.h"
 
+using namespace scene_interface;
+
 class LightSource {
 private:
-    scene_interface::Vector2 location;
+    Vector2 location;
     util::Range hue,angle,speed;
 public:
-    LightSource(scene_interface::Vector2 location, util::Range hue, util::Range angle, util::Range speed);
+    LightSource(Vector2 location, util::Range hue, util::Range angle, util::Range speed);
     LightTrail * sendOut();
-    scene_interface::Vector2 getLocation();
+    Vector2 getLocation();
     util::Range getHue();
 };
 

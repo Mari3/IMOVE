@@ -26,7 +26,7 @@ AlternatingGravityPointAction::AlternatingGravityPointAction(util::Range hue, ut
 		lightPeople(lightPeople),
 	  timer(config.gravityPointDelay(),true),
 		myGravityPoint(std::shared_ptr<GravityPoint>(new GravityPoint(
-			scene_interface::Vector2(0,0),
+			Vector2(0,0),
 			hue,
 			config.alternatingGravity()
 		))),

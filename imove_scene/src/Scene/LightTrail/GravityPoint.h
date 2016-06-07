@@ -5,14 +5,16 @@
 #include "../Util/Range.h"
 #include "../../../../scene_interface/src/Vector2.h"
 
+using namespace scene_interface;
+
 class GravityPoint {
 private:
     bool existing = true;
 public:
-    scene_interface::Vector2 location;
+    Vector2 location;
     util::Range hue;
     float gravity;
-    GravityPoint(scene_interface::Vector2 location, util::Range hue, float gravity);
+    GravityPoint(Vector2 location, util::Range hue, float gravity);
 };
 
 

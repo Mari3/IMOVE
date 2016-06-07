@@ -14,6 +14,8 @@
 #include "../LightPerson.h"
 #include "../../Util/Repository.h"
 
+using namespace scene_interface;
+
 class LightPersonMapRepository : public Repository<LightPerson> {
 private:
     std::map<int,std::shared_ptr<LightPerson>> map;

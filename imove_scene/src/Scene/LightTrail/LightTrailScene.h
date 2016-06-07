@@ -10,6 +10,8 @@
 #include "Repositories/LightsSceneRepositories.h"
 #include "LightTrailConfiguration.h"
 
+using namespace scene_interface;
+
 class LightTrailScene : public Scene{
 private:
     LightSourceRepository* lightSources;

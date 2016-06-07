@@ -9,12 +9,13 @@
 #include "../LightTrailConfiguration.h"
 #include "../../../../../scene_interface/src/Vector2.h"
 
+using namespace scene_interface;
 
 class UpdateLightTrailsAction : public Action {
 private:
     LightTrailRepository* lightTrails;
     GravityPointRepository* gravityPoints;
-    scene_interface::Vector2 calculateForce(LightTrail trail);
+    Vector2 calculateForce(LightTrail trail);
     const LightTrailConfiguration& config;
 public:
     UpdateLightTrailsAction(LightTrailRepository* lightTrails, GravityPointRepository* gravityPoints,

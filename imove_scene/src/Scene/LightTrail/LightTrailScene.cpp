@@ -76,16 +76,16 @@ LightPersonRepository* lightPeople) : Scene(),
 
     //Add Light sources on every corner
     lightSources->add(std::shared_ptr<LightSource>(
-            new LightSource(scene_interface::Vector2(0, 0),config.corner1Hue(),
+            new LightSource(Vector2(0, 0),config.corner1Hue(),
                             util::Range(0, 90,true),config.sendOutSpeed())));
     lightSources->add(std::shared_ptr<LightSource>(
-            new LightSource(scene_interface::Vector2(config.screenWidth(),0),config.corner2Hue(),
+            new LightSource(Vector2(config.screenWidth(),0),config.corner2Hue(),
                             util::Range(90, 180,true),config.sendOutSpeed())));
     lightSources->add(std::shared_ptr<LightSource>(
-            new LightSource(scene_interface::Vector2(0, config.screenHeight()),config.corner3Hue(),
+            new LightSource(Vector2(0, config.screenHeight()),config.corner3Hue(),
                             util::Range(270, 0,true),config.sendOutSpeed())));
     lightSources->add(std::shared_ptr<LightSource>(
-            new LightSource(scene_interface::Vector2(config.screenWidth(), config.screenHeight()),config.corner4Hue(),
+            new LightSource(Vector2(config.screenWidth(), config.screenHeight()),config.corner4Hue(),
                             util::Range(180, 270,true),config.sendOutSpeed())));
 
 
@@ -116,7 +116,7 @@ void LightTrailScene::processPeople() {
     if(!peopleQueue.empty()) { //If people have been updated
 
         //Get the first update and pop it.
-        std::vector<scene_interface::Person> newPeople = peopleQueue.front();
+        std::vector<Person> newPeople = peopleQueue.front();
         peopleQueue.pop();
 
         //Set up tracking of people that are gone
@@ -127,7 +127,7 @@ void LightTrailScene::processPeople() {
 
         for (unsigned int i = 0; i < newPeople.size(); ++i) {
 
-            scene_interface::Person person = newPeople[i];
+            Person person = newPeople[i];
             unsigned int id = person.getId();
             existingPeople[id] = true;
 
@@ -150,7 +150,7 @@ void LightTrailScene::processPeople() {
         }
         lightPeople->for_each([&](std::shared_ptr<LightPerson> person){
             if(existingPeople.count(person->getId()) == 0){ //If this person does not exist anymore
-                person->type = scene_interface::None;
+                person->type = None;
 
                 //Remove it from the list
                 lightPeople->scheduleForRemoval(person);
