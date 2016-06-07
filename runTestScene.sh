@@ -1,3 +1,3 @@
 #!/bin/bash
 set -e
-./dist/imove-scene ./config/test.yml ./config/sceneconfig.yml
+./build/imove_scene/src/imove_scene ./config/test.yml ./config/sceneconfig.yml
