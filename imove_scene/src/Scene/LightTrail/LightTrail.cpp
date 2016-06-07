@@ -66,7 +66,7 @@ float LightTrail::getAngle() {
 }
 
 Vector2 LightTrail::getSize() {
-    float sp = speed.size()/340.f*2.f;
+    float sp = speed.size()/340.f*3.f;
 
 
     Vector2 diff = location-prevLocation;
