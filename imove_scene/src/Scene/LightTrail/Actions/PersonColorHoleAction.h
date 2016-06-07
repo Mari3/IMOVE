@@ -20,12 +20,14 @@ private:
     ColorHoleRepository* colorHoles;
     LightTrailRepository* lightTrails;
     LightPersonRepository* lightPeople;
+    LightTrailConfiguration config;
     void finish();
 public:
 
     PersonColorHoleAction(const shared_ptr<LightPerson> &person,
                               GravityPointRepository *gravityPoints, ColorHoleRepository *colorHoles,
-                              LightTrailRepository *lightTrails, LightPersonRepository *lightPeople);
+                              LightTrailRepository *lightTrails, LightPersonRepository *lightPeople,
+                              LightTrailConfiguration config);
 
     bool isDone(std::vector<Action *> &followUp) override;
 

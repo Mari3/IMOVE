@@ -23,7 +23,8 @@ int ColorHoleTimerCondition::check(float dt, std::vector<Action *> &actions) {
         lightPeople->for_each([&](std::shared_ptr<LightPerson> person) {
             if (j == index) {
                 timer.restart();
-                Action *action = new PersonColorHoleAction(person, gravityPoints, colorHoles, lightTrails, lightPeople);
+                Action *action = new PersonColorHoleAction(person, gravityPoints, colorHoles, lightTrails, lightPeople,
+                                                           config);
                 actions.push_back(action);
             }
             j++;

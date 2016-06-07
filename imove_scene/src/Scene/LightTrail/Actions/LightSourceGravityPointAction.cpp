@@ -10,10 +10,10 @@ LightSourceGravityPointAction::LightSourceGravityPointAction(LightPersonReposito
         : lightPeople(lightPeople),
           gravityPoints(gravityPoints),
           config(config) {
-    gPoints[0] = std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(0,0),config.cornerHues()[0],500000));
-    gPoints[1] = std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(config.screenWidth(),0),config.cornerHues()[1],500000));
-    gPoints[2] = std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(0,config.screenHeight()),config.cornerHues()[2],500000));
-    gPoints[3] = std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(config.screenWidth(),config.screenHeight()),config.cornerHues()[3],500000));
+    gPoints[0] = std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(0,0),config.cornerHues()[0],config.lightSourceGravity()));
+    gPoints[1] = std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(config.screenWidth(),0),config.cornerHues()[1],config.lightSourceGravity()));
+    gPoints[2] = std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(0,config.screenHeight()),config.cornerHues()[2],config.lightSourceGravity()));
+    gPoints[3] = std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(config.screenWidth(),config.screenHeight()),config.cornerHues()[3],config.lightSourceGravity()));
 
     execute(0);
 
@@ -56,7 +56,7 @@ void LightSourceGravityPointAction::execute(float dt) {
         if(!lowestRange.contains(highest) || noGpoint){
             gPoints[i]->gravity = 0;
         }else{
-            gPoints[i]->gravity = 500000;
+            gPoints[i]->gravity = config.lightSourceGravity();
             gPoints[i]->hue.start = highest;
             gPoints[i]->hue.end = lowest;
         }

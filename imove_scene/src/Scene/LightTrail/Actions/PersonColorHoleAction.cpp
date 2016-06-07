@@ -6,16 +6,17 @@
 
 PersonColorHoleAction::PersonColorHoleAction(const shared_ptr<LightPerson> &person,
                                              GravityPointRepository *gravityPoints, ColorHoleRepository *colorHoles,
-                                             LightTrailRepository *lightTrails, LightPersonRepository *lightPeople)
+                                             LightTrailRepository *lightTrails, LightPersonRepository *lightPeople,
+                                             LightTrailConfiguration config)
         : person(person),
           gravityPoints(
                   gravityPoints),
           colorHoles(colorHoles),
           lightTrails(
-                  lightTrails), lightPeople(lightPeople) {
+                  lightTrails), lightPeople(lightPeople), config(config) {
     util::Range hue = person->hue;
     hue += 180.f;
-    ColorHole* hole = new ColorHole(person->getLocation(),hue,1000000,300);
+    ColorHole* hole = new ColorHole(person->getLocation(),hue,config.colorHoleGravity(),config.colorHoleGravityRange());
     colorHole = std::shared_ptr<ColorHole>(hole);
     colorHoles->add(colorHole);
     gravityPoints->add(colorHole);
@@ -30,7 +31,7 @@ bool PersonColorHoleAction::isDone(std::vector<Action *> &followUp) {
     lightPeople->for_each([&](std::shared_ptr<LightPerson> person){
         if(!done && person != this->person) {
             float diff = (person->getLocation() - colorHole->location).size();
-            if (diff < 30.f) {
+            if (diff < config.colorHoleRange()) {
                 finish();
                 //TODO create followup
                 done = true;
@@ -45,7 +46,7 @@ void PersonColorHoleAction::execute(float dt) {
     colorHole->location.y = person->getLocation().y;
     lightTrails->for_each([&](std::shared_ptr<LightTrail> trail){
         float diff = (trail->getLocation()-colorHole->location).size();
-        if(diff < 30.f && colorHole->hue.contains(trail->hue)){
+        if(diff < config.colorHoleRange() && colorHole->hue.contains(trail->hue)){
             colorHole->consume(trail);
             lightTrails->scheduleForRemoval(trail);
         }
