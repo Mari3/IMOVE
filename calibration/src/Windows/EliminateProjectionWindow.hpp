@@ -20,7 +20,7 @@ class EliminateProjectionWindow : public OpenCVWindow {
 		int track_frames_projector_camera_delay;
 
 		const int INT_FULL_PERCENTAGE = 100;
-		const double DOUBLE_FULL_PERCENTAGE = 100.0;
+		const float FLOAT_FULL_PERCENTAGE = 100.0f;
 		
 		static void onProjectorBackgroundLight(int tracked_int, void *param);
 		static void onFramesProjectorCameraDelay(int tracked_int, void *param);

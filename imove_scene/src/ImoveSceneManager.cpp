@@ -1,6 +1,5 @@
 #include <boost/interprocess/managed_shared_memory.hpp>
-#include <iostream>
-#include <string>
+#include <thread>
 
 #include "ImoveSceneManager.hpp"
 
@@ -20,6 +19,10 @@
 
 const unsigned int SIZE_SHAREDMEMORY = 100000000; // 100MB
 
+void ImoveSceneManager::sendSceneFrameThread(ImoveSceneManager* imove_scene_manager, sf::Image sf_image) {
+	imove_scene_manager->sendSceneFrame(sf_image);
+}
+
 ImoveSceneManager::ImoveSceneManager(Calibration* calibration, LightTrailConfiguration& configuration_lighttrail) {
 	this->calibration = calibration;
 
@@ -38,6 +41,8 @@ ImoveSceneManager::ImoveSceneManager(Calibration* calibration, LightTrailConfigu
 	segment = new boost::interprocess::managed_shared_memory(boost::interprocess::create_only, scene_interface_sma::NAME_SHARED_MEMORY, SIZE_SHAREDMEMORY);
 	// Construct the people extracted queue in shared memory
 	this->extractedpeople_queue = segment->construct<scene_interface_sma::ExtractedpeopleQueue>(scene_interface_sma::NAME_EXTRACTEDPEOPLE_QUEUE)(128);
+	const peopleextractor_interface_sma::SceneframeQueueSMA sceneframe_queue_sma(this->segment->get_segment_manager());
+	this->pi_sceneframe_queue = segment->construct<peopleextractor_interface_sma::SceneframeQueue>(peopleextractor_interface_sma::NAME_SCENEFRAME_QUEUE)(sceneframe_queue_sma);
 }
 
 void ImoveSceneManager::run() {
@@ -46,10 +51,12 @@ void ImoveSceneManager::run() {
 
 	// setup clock
 	sf::Clock clock;
-	
+
+	std::thread* previous_thread = NULL;
+
 	float dt;
-	float capture_dt;
-	float CAPTURE_SPF = 1.f / 6.f;
+	float capture_dt = 0;
+	float SPF_capture_scene = 1.f / (float) this->calibration->getFpsCaptureScene();
 	while (true) {
 		this->receiveExtractedpeopleAndUpdateScene();
 		
@@ -60,11 +67,13 @@ void ImoveSceneManager::run() {
 		// draw the actual Scene on window
 		window_scene.drawScene(this->scene);
 		
-		// capture the screen
 		capture_dt += dt;
-		if (capture_dt > CAPTURE_SPF) {
-			window_scene.captureWindow();
-			capture_dt -= CAPTURE_SPF;
+		if (capture_dt > SPF_capture_scene) {
+			if (previous_thread != NULL) {
+				previous_thread->join();
+			}
+			previous_thread = new std::thread(ImoveSceneManager::sendSceneFrameThread, this, window_scene.captureFrameScene());
+			capture_dt -= SPF_capture_scene;
 		}
 	}
 
@@ -126,4 +135,26 @@ void ImoveSceneManager::receiveExtractedpeopleAndUpdateScene() {
 		// update scene with extracted people from peopleextractor
 		this->scene->updatePeople(extractedpeople);
 	}
+}
+
+void ImoveSceneManager::sendSceneFrame(const sf::Image& frame_scene) {
+	// create shared memory scene frame from sfml image
+	sf::Vector2u size_image = frame_scene.getSize();
+	boost::interprocess::offset_ptr<peopleextractor_interface_sma::Image> pi_sceneframe = this->segment->construct<peopleextractor_interface_sma::Image>(boost::interprocess::anonymous_instance)(
+		((unsigned int) size_image.x) / this->calibration->getFactorResizeCaptureScene(), 
+		((unsigned int) size_image.y) / this->calibration->getFactorResizeCaptureScene(),
+		this->segment
+	);
+	for (unsigned int x = 0; x < ((unsigned int) size_image.x) / this->calibration->getFactorResizeCaptureScene(); ++x) {
+		for (unsigned int y = 0; y < ((unsigned int) size_image.y) / this->calibration->getFactorResizeCaptureScene(); ++y) {
+			sf::Color sf_pixel = frame_scene.getPixel(
+				x * (signed int) this->calibration->getFactorResizeCaptureScene(),
+				y * (signed int) this->calibration->getFactorResizeCaptureScene()
+			);
+			pi_sceneframe->setRGB(x, y, (unsigned char) sf_pixel.r, (unsigned char) sf_pixel.g, (unsigned char) sf_pixel.b);
+		}
+	}
+
+	// push on shared memory queue for people extractor to pop
+	this->pi_sceneframe_queue->push_back(pi_sceneframe);
 }

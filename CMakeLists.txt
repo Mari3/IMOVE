@@ -35,6 +35,7 @@ include_directories( ${OpenCV_INCLUDE_DIRS} )
 
 add_subdirectory(scene_interface/src)
 add_subdirectory(scene_interface_sma/src)
+add_subdirectory(peopleextractor_interface_sma/src)
 add_subdirectory(imove_scene)
 add_subdirectory(imove_peopleextractor)
 add_subdirectory(calibration)
