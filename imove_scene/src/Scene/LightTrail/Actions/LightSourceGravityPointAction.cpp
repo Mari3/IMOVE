@@ -34,7 +34,7 @@ void LightSourceGravityPointAction::execute(float dt) {
         util::Range highestRange(highest,lowest,true);
         bool noGpoint = false;
         gravityPoints->for_each([&](std::shared_ptr<GravityPoint> gPoint){
-            if(gPoint != gPoints[i] && gPoint->gravity > 0) {
+            if(gPoint != gPoints[i] && gPoint->gravity > 0 && !gPoint->isColorHole()) {
                 float start = gPoint->hue.start;
                 float end = gPoint->hue.end;
                 if (start == config.cornerHues()[i].start ||
