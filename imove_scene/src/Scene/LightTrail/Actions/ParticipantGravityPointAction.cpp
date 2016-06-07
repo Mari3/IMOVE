@@ -5,7 +5,7 @@
 ParticipantGravityPointAction::ParticipantGravityPointAction(std::shared_ptr<LightPerson> person,
                                                              GravityPointRepository* gravityPoints,
                                                              const LightTrailConfiguration& config)
-	: gravityPoints(gravityPoints), person(person) {
+	: gravityPoints(gravityPoints), person(person), config(config) {
 		std::cerr << "PGPA: " << person->getLocation().x << "," << person->getLocation().y << " lb: " << person->hue.lowerBound << " ub: " << person->hue.upperBound << std::endl; 
     gravityPoint = std::shared_ptr<GravityPoint>(new GravityPoint(
             Vector2(0,0),person->hue,config.participantGravity(),config.participantGravityRange()));
@@ -42,6 +42,17 @@ bool ParticipantGravityPointAction::isDone(std::vector<Action*> &followUp) {
 
 void ParticipantGravityPointAction::execute(float dt) {
     setLocation();
+
+    if(person->type == StandingStill){
+        gravityPoint->gravity -= config.participantGravity()/40.f*dt;
+        antigravityPoint->gravity += config.participantAntigravity()/40.f*dt;
+        if(gravityPoint->gravity < 0)gravityPoint->gravity = 0;
+        if(antigravityPoint->gravity > 0)antigravityPoint->gravity = 0;
+    }else{
+        gravityPoint->gravity = config.participantGravity();
+        antigravityPoint->gravity = -config.participantAntigravity();
+    }
+
     gravityPoint->hue = person->hue;
     antigravityPoint->hue = person->hue;
     antigravityPoint->hue += 180;

@@ -245,6 +245,22 @@ struct SourceColorScenario : public Scenario {
 
 };
 
+struct StandingStillScenario : public Scenario {
+
+    Timer timer;
+
+    StandingStillScenario(const LightTrailConfiguration& config) : timer (30.f) {
+        people.push_back(Person(Vector2(config.screenWidth()/2,config.screenHeight()/2),Participant));
+    }
+
+    void update(float dt) override {
+        if(timer.update(dt)){
+            people[0].type = StandingStill;
+        }
+    }
+
+};
+
 int main(int argc, char** argv){
 
     srand(static_cast<unsigned int>(time(NULL)));
@@ -284,6 +300,8 @@ int main(int argc, char** argv){
         scenario = new ColorHoleScenario(config);
     }else if(scenarioCode == 8){
         scenario = new SourceColorScenario(config);
+    }else if(scenarioCode == 9){
+        scenario = new StandingStillScenario(config);
     }
 
     sf::RenderWindow window(sf::VideoMode(config.screenWidth(),config.screenHeight()),"Projection");

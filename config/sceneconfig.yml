@@ -31,7 +31,7 @@ ExplosionGravity: 10.38
 ExplosionExTime: .2
 ExplosionInTime: .3
 LightSourceGravity: 3.46
-ColorHoleDelay: 10.
+ColorHoleDelay: 150.
 ColorHoleGravity: 3.46
 ColorHoleGravityRange: .5
 ColorHoleRange: .1
