@@ -1,7 +1,9 @@
 
 #include "Boundary.h"
 
-Boundary::Boundary(Vector2 upleft, Vector2 upright, Vector2 lowleft, Vector2 lowright) :
+Boundary::Boundary() {}
+
+Boundary::Boundary(scene_interface::Vector2 upleft, scene_interface::Vector2 upright, scene_interface::Vector2 lowleft, scene_interface::Vector2 lowright) :
   upper_left(upleft), upper_right(upright), lower_left(lowleft), lower_right(lowright) {
     a1 = (upper_right.y - upper_left.y)/(upper_right.x - upper_left.x);
     b1 = upper_left.x*a1;
@@ -16,7 +18,9 @@ Boundary::Boundary(Vector2 upleft, Vector2 upright, Vector2 lowleft, Vector2 low
     b4 = lower_left.x*a4;
   }
 
-bool Boundary::inBounds(Vector2 location) {
+Boundary::~Boundary() {}
+
+bool Boundary::inBounds(scene_interface::Vector2 location) {
   if ((location.y < ((a1*location.x) - b1)) && (location.y > ((a3*location.x) - b3))) {
     if ((location.x < ((location.y - b2)/a2)) && (location.x > ((location.y - b4)/a4))) {
       return true;

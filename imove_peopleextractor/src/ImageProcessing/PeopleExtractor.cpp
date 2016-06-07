@@ -18,9 +18,12 @@ PeopleExtractor::PeopleExtractor(cv::Size frame_size, float pixels_per_meter, fl
     // Initialize Detector with high camera if meter < 400 pixels
     detector = PeopleDetector(pixels_per_meter/resize_ratio, false);
   }
-  std::cout << (pixels_per_meter/resize_ratio)/2 << std::endl;
+  std::cout << (pixels_per_meter/resize_ratio)/3 << std::endl;
   // Initialize Identifier
-  identifier = PeopleIdentifier(frame_size_resized.height, frame_size_resized.width, (pixels_per_meter/resize_ratio)/2);
+  float boundary_edge = (pixels_per_meter/resize_ratio)/3;
+  Boundary bound = Boundary(scene_interface::Vector2(boundary_edge, boundary_edge), scene_interface::Vector2(frame_size_resized.width - boundary_edge, boundary_edge),
+                            scene_interface::Vector2(frame_size_resized.height - boundary_edge, boundary_edge), scene_interface::Vector2(frame_size_resized.width - boundary_edge, frame_size_resized.height - boundary_edge));
+  identifier = PeopleIdentifier(bound);
 }
 
 PeopleExtractor::~PeopleExtractor() {}

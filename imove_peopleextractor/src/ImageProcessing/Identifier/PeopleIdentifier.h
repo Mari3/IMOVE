@@ -10,6 +10,7 @@
 #include <iostream>
 
 #include "../../../../scene_interface/src/Person.h"
+#include "../../../../scene_interface/src/Boundary.h"
 
 class PeopleIdentifier {
  private:
@@ -17,14 +18,12 @@ class PeopleIdentifier {
   std::vector<scene_interface::Person> detected_people;
 
   //
-  float frame_height;
-  float frame_width;
-  float boundary;
+  Boundary boundary;
 
  public:
   PeopleIdentifier();
-  PeopleIdentifier(float height, float width, float boundary);
-  PeopleIdentifier(std::vector<scene_interface::Person>& people, float height, float width, float boundary);
+  PeopleIdentifier(Boundary boundary);
+  PeopleIdentifier(std::vector<scene_interface::Person>& people, Boundary boundary);
   ~PeopleIdentifier();
 
   // Match people to new locations
@@ -32,8 +31,6 @@ class PeopleIdentifier {
 
   // Get closest location to a Person
   int getClosest(unsigned int index, std::vector<scene_interface::Vector2>& new_locations);
-
-  bool closeToEdge(scene_interface::Vector2 location);
 };
 
 

@@ -6,6 +6,7 @@ namespace scene_interface {
 	{
 	public:
 	    float x,y;
+			Vector2();
 	    Vector2(float x, float y);
 	    float distance(Vector2 other);
 	    float angle(Vector2 other);

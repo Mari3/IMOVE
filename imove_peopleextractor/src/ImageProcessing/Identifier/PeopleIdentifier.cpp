@@ -3,9 +3,9 @@
 
 PeopleIdentifier::PeopleIdentifier() {}
 
-PeopleIdentifier::PeopleIdentifier(float height, float width, float boundary) : frame_height(height), frame_width(width), boundary(boundary) {}
+PeopleIdentifier::PeopleIdentifier(Boundary boundary) : boundary(boundary) {}
 
-PeopleIdentifier::PeopleIdentifier(std::vector<scene_interface::Person>& people, float height, float width, float boundary) : detected_people(people), frame_height(height), frame_width(width), boundary(boundary) {}
+PeopleIdentifier::PeopleIdentifier(std::vector<scene_interface::Person>& people, Boundary boundary) : detected_people(people), boundary(boundary) {}
 
 PeopleIdentifier::~PeopleIdentifier() {}
 
@@ -20,7 +20,7 @@ std::vector<scene_interface::Person> PeopleIdentifier::match(std::vector<scene_i
         detected_people.erase(detected_people.begin() + i);
         --i;
       } else if (detected_people[i].type == scene_interface::StandingStill) {
-        if (closeToEdge(detected_people[i].getLocation())) {
+        if (!boundary.inBounds(detected_people[i].getLocation())) {
           detected_people.erase(detected_people.begin() + i);
           --i;
         } else if (detected_people[i].getNotMovedCount() <= 0) {
@@ -66,13 +66,4 @@ int PeopleIdentifier::getClosest(unsigned int index, std::vector<scene_interface
   }
   // Return index of closest location
   return min_index;
-}
-
-bool PeopleIdentifier::closeToEdge(scene_interface::Vector2 location) {
-  if ((location.x < boundary) || (location.x > frame_width - boundary)) {
-    return true;
-  } else if ((location.y < boundary) || (location.y > frame_height - boundary)) {
-    return true;
-  }
-  return false;
 }
