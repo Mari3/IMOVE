@@ -172,6 +172,23 @@ struct ColorHoleScenario : public Scenario {
 
 };
 
+struct SourceColorScenario : public Scenario {
+
+    float thresh;
+
+    SourceColorScenario(const LightTrailConfiguration& config) {
+        people.push_back(Person(Vector2(20,config.screenHeight()/2),Participant));
+        thresh = config.screenHeight()-50;
+    }
+
+    void update(float dt) override {
+        if(people[0].getLocation().y < thresh){
+            people[0].setLocation(people[0].getLocation()+Vector2(0,20*dt));
+        }
+    }
+
+};
+
 int main(int argc, char** argv){
 
     srand(static_cast<unsigned int>(time(NULL)));
@@ -209,6 +226,8 @@ int main(int argc, char** argv){
         scenario = new BystanderScenario(config,scene);
     }else if(scenarioCode == 7){
         scenario = new ColorHoleScenario(config);
+    }else if(scenarioCode == 8){
+        scenario = new SourceColorScenario(config);
     }
 
     sf::RenderWindow window(sf::VideoMode(config.screenWidth(),config.screenHeight()),"Projection");
