@@ -171,7 +171,7 @@ void LightTrailScene::processPeople() {
                 lPerson->setLocation(person.getLocation());
                 lPerson->type = person.type;
 
-            } else if(person.type != None) {
+            } else if(person.type == Bystander) {
 
                 //Create a new person with randomly generated hue
                 util::Range hue = config.cornerHues()[hueCounter];

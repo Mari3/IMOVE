@@ -224,6 +224,15 @@ void Calibration::changeProjectorFromCameraLocationPerson(std::vector<scene_inte
 			point_projector.x,
 			point_projector.y
 		));
+		scene_interface::Person& person = persons.at(i);
+		if((person.type == scene_interface::StandingStill || person.type == scene_interface::Participant) &&
+					(point_projector.x < 0 ||
+					 point_projector.x > resolution_projector.width ||
+					 point_projector.y < 0 ||
+					 point_projector.y > resolution_projector.height)
+				){
+			person.type = scene_interface::Bystander;
+		}
 	}
 }
 
