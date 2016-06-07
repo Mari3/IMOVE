@@ -12,6 +12,7 @@ SceneWindow::SceneWindow(cv::Size resolution_projector) {
 	);
   this->window_scene->clear(sf::Color::Black);
   this->window_scene->display();
+	this->window_scene->setFramerateLimit(60);
 }
 
 void SceneWindow::drawScene(Scene* scene) {
