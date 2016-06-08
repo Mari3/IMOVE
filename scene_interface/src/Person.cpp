@@ -8,6 +8,7 @@ Person::Person(Vector2 location, PersonType type) : location(location), type(typ
     previousLocations = std::list<Vector2>();
     id = count;
     count++;
+    move_type = Moving;
 }
 
 /*--------------------

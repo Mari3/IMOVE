@@ -19,7 +19,7 @@ std::vector<scene_interface::Person> PeopleIdentifier::match(std::vector<scene_i
       if (detected_people[i].type == scene_interface::None) {
         detected_people.erase(detected_people.begin() + i);
         --i;
-      } else if (detected_people[i].type == scene_interface::StandingStill) {
+      } else if (detected_people[i].move_type == scene_interface::StandingStill) {
         if (!boundary.inBounds(detected_people[i].getLocation())) {
           detected_people.erase(detected_people.begin() + i);
           --i;
@@ -29,21 +29,28 @@ std::vector<scene_interface::Person> PeopleIdentifier::match(std::vector<scene_i
           detected_people[i]. decreaseNotMovedCount();
         }
       } else {
-        detected_people[i].type = scene_interface::StandingStill;
+        detected_people[i].move_type = scene_interface::StandingStill;
         detected_people[i].resetNotMovedCount();
       }
     } else {
+      if (boundary.inBounds(locations[index_closest])) {
+        detected_people[i].type = scene_interface::Participant;
+      }
+      else {
+        detected_people[i].type = scene_interface::Bystander;
+      }
       //Set location of person to new location
-      scene_interface::Vector2 new_location = locations[index_closest];
-      detected_people[i].setLocation(new_location);
+      detected_people[i].setLocation(locations[index_closest]);
       // Delete locations that have been taken
       locations.erase(locations.begin() + index_closest);
     }
   }
   // Go over all remaining locations and turn them into a new person
   for (unsigned int j = 0; j < locations.size(); j++) {
-    scene_interface::Person new_person = scene_interface::Person(locations[j], scene_interface::Participant);
-    detected_people.push_back(new_person);
+    if (!boundary.inBounds(locations[j])) {
+      scene_interface::Person new_person = scene_interface::Person(locations[j], scene_interface::Bystander);
+      detected_people.push_back(new_person);
+    }
   }
   return detected_people;
 }
