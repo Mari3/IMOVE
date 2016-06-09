@@ -18,7 +18,7 @@ void ParticipantGravityPointAction::setLocation() {
 
 bool ParticipantGravityPointAction::isDone(Action *&followUp) {
     // This action is done when the person it tracks is no longer a participant
-    if(person->type != scene_interface::Participant){
+    if(person->type != scene_interface::Person::PersonType::Participant){
         gravityPoints->scheduleForRemoval(gravityPoint);
         return true;
     }

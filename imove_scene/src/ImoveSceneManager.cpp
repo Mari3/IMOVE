@@ -77,29 +77,29 @@ void ImoveSceneManager::receiveExtractedpeopleAndUpdateScene() {
 			boost::interprocess::offset_ptr<scene_interface_sma::Person> si_person = extractedpeople_ptr->at(i);
 			
 			// create person type from shared memory person type
-			scene_interface::PersonType person_type;
+			scene_interface::Person::PersonType person_type;
 			switch (si_person->getPersonType()) {
-				case scene_interface_sma::PersonType::Bystander:
-					person_type = scene_interface::PersonType::Bystander;
+				case scene_interface_sma::Person::PersonType::Bystander:
+					person_type = scene_interface::Person::PersonType::Bystander;
 					break;
-				case scene_interface_sma::PersonType::Passerthrough:
-					person_type = scene_interface::PersonType::Passerthrough;
+				case scene_interface_sma::Person::PersonType::Passerthrough:
+					person_type = scene_interface::Person::PersonType::Passerthrough;
 					break;
-				case scene_interface_sma::PersonType::Participant:
-					person_type = scene_interface::PersonType::Participant;
+				case scene_interface_sma::Person::PersonType::Participant:
+					person_type = scene_interface::Person::PersonType::Participant;
 					break;
-				case scene_interface_sma::PersonType::None:
-					person_type = scene_interface::PersonType::None;
+				case scene_interface_sma::Person::PersonType::None:
+					person_type = scene_interface::Person::PersonType::None;
 					break;
 			}
 			// create person type from shared memory person type
-			scene_interface::MovementType movement_type;
+			scene_interface::Person::MovementType movement_type;
 			switch (si_person->getMovementType()) {
-				case scene_interface_sma::MovementType::StandingStill:
-					movement_type = scene_interface::MovementType::StandingStill;
+				case scene_interface_sma::Person::MovementType::StandingStill:
+					movement_type = scene_interface::Person::MovementType::StandingStill;
 					break;
-				case scene_interface_sma::MovementType::Moving:
-					movement_type = scene_interface::MovementType::Moving;
+				case scene_interface_sma::Person::MovementType::Moving:
+					movement_type = scene_interface::Person::MovementType::Moving;
 					break;
 			}
 			// receive locations from shared memory

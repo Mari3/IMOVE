@@ -1,6 +1,6 @@
 #include "LightPerson.h"
 
-LightPerson::LightPerson(const scene_interface::Vector2 &location, unsigned int id, scene_interface::PersonType type, util::Range hue) : location(location),
+LightPerson::LightPerson(const scene_interface::Vector2 &location, unsigned int id, scene_interface::Person::PersonType type, util::Range hue) : location(location),
                                                                                                  id(id),
                                                                                                  type(type),
     hue(hue)

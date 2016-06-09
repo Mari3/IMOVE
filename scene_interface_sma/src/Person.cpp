@@ -2,7 +2,7 @@
 
 using namespace scene_interface_sma;
 
-Person::Person(boost::interprocess::offset_ptr<Vector2Vector> locations, PersonType person_type, MovementType movement_type, unsigned int id) :
+Person::Person(boost::interprocess::offset_ptr<Vector2Vector> locations, Person::PersonType person_type, Person::MovementType movement_type, unsigned int id) :
 	locations(locations),
 	person_type(person_type),
 	movement_type(movement_type),
@@ -20,10 +20,10 @@ const unsigned int Person::getId() const {
   return this->id;
 }
 
-const PersonType Person::getPersonType() const {
+const Person::PersonType Person::getPersonType() const {
   return this->person_type;
 }
 
-const MovementType Person::getMovementType() const {
+const Person::MovementType Person::getMovementType() const {
   return this->movement_type;
 }

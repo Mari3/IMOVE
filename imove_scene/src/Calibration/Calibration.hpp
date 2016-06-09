@@ -73,13 +73,13 @@ class Calibration {
 		 **/
 
 		void createPointsFrameProjectorFromPointsFrameCamera(std::vector<cv::Point2f>& points_frame_projector, const std::vector<cv::Point2f>& points_frame_camera) const;
+		
 		/**
-		 * Changes persons location into the location on the projector based on the given camera_projector_transformation
+		 * Creates the people on the projector from people on the camera using camera projector transformation
 		 * 
-		 * @param persons locations get changed from camera frame location to projector frame location
+		 * @param people_camera The people on the camera
 		 **/
-
-		void changeProjectorFromCameraLocationPerson(std::vector<scene_interface::Person>& persons) const;
+		const std::vector<scene_interface::Person> createPeopleProjectorFromPeopleCamera(const std::vector<scene_interface::Person>& people_camera) const;
 
 		/**
 		 * Creates a projection frame from the camera frame based on the given camera_projector_transformation

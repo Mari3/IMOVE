@@ -12,7 +12,7 @@ class PersonChangedTypeCondition : public Condition {
 private:
     LightPersonRepository* lightPeople;
     GravityPointRepository* gravityPoints;
-    std::map<int,scene_interface::PersonType> oldType;
+    std::map<int,scene_interface::Person::PersonType> oldType;
     LightTrailConfiguration config;
 public:
     PersonChangedTypeCondition(LightPersonRepository* lightPeople,

@@ -5,38 +5,40 @@
 #include "Vector2.h"
 
 namespace scene_interface {
-	enum PersonType{
-	    Bystander,
-	    Passerthrough,
-	    Participant,
-	    None
-	};
-
-	enum MovementType{
-		StandingStill,
-		Moving
-	};
 
 	class Person {
+	 public:
+			enum PersonType{
+			    Bystander,
+			    Passerthrough,
+			    Participant,
+			    None
+			};
+
+			enum MovementType{
+				StandingStill,
+				Moving
+			};
+			
+			Person(unsigned int id, Vector2 location, Person::PersonType person_type, Person::MovementType movement_type);
+
+	    //Getters
+	    const unsigned int getId() const;
+	    const Vector2 getLocation() const;
+			const Person::PersonType getPersonType() const;
+			const Person::MovementType getMovementType() const;
 	 private:
-	    // List of previous locations
-	    std::list<Vector2> previousLocations;
-
-	    // Current location
-	    Vector2 location;
-
 	    // Id
 	    unsigned int id;
 
-	 public:
-	    PersonType type;
-			MovementType move_type;
-			
-			Person(unsigned int id, Vector2 location, PersonType person_type, MovementType movement_type);
+	    // Current location
+	    Vector2 location;
+	   
+			// Person type
+			PersonType person_type;
 
-	    //Getters
-	    Vector2 getLocation();
-	    unsigned int getId();
+			// Movement type
+			MovementType movement_type;
 	};
 }
 

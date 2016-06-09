@@ -5,7 +5,7 @@
 
 DetectedPeopleProjectionWindow::DetectedPeopleProjectionWindow(cv::Point2i position) : OpenCVWindow("Detected people on projection", position) { }
 
-void DetectedPeopleProjectionWindow::drawImage(cv::Mat& image_projection, std::vector<scene_interface::Person>& detectedpeople_projection) {
+void DetectedPeopleProjectionWindow::drawImage(cv::Mat& image_projection, const std::vector<scene_interface::Person>& detectedpeople_projection) {
 	// debug extracted perspective mapped people on projection
 	for (unsigned int i = 0; i < detectedpeople_projection.size(); ++i) {
 		scene_interface::Person detectedperson = detectedpeople_projection.at(i);

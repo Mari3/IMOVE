@@ -4,47 +4,30 @@
 
 using namespace scene_interface;
 
+scene_interface::Person::Person(
+	unsigned int id,
+	Vector2 location,
+	Person::PersonType person_type,
+	Person::MovementType movement_type
+) :
+	id(id),
+	location(location),
+	person_type(person_type),
+	movement_type(movement_type)
+{ }
 
-Person::Person(unsigned int id, Vector2 location, PersonType person_type, MovementType movement_type) : location(location), id(id), type(person_type), move_type(movement_type) {
-	previousLocations = std::list<Vector2>();
+const unsigned int scene_interface::Person::getId() const {
+    return this->id;
 }
 
-Person::Person(Vector2 location, PersonType type) : location(location), type(type) {
-    previousLocations = std::list<Vector2>();
-    id = count;
-    count++;
-    move_type = Moving;
+const Vector2 scene_interface::Person::getLocation() const {
+    return this->location;
 }
 
-/*--------------------
- * Getters and setters
- * -----------------*/
-Vector2 Person::getLocation() {
-    return location;
+const Person::PersonType scene_interface::Person::getPersonType() const {
+	return this->person_type;
 }
 
-void Person::setLocation(Vector2 location) {
-    if(previousLocations.size() > 10){
-        previousLocations.pop_front();
-    }
-    previousLocations.push_back(this->location);
-    this->location = location;
-}
-
-unsigned int Person::count = 0;
-
-unsigned int Person::getId() {
-    return id;
-}
-
-unsigned int Person::getNotMovedCount() {
-  return not_moved_count;
-}
-
-void Person::decreaseNotMovedCount() {
-  not_moved_count--;
-}
-
-void Person::resetNotMovedCount() {
-  not_moved_count = 100;
+const Person::MovementType scene_interface::Person::getMovementType() const {
+	return this->movement_type;
 }

@@ -44,7 +44,7 @@ void ImovePeopleextractorManager::run() {
 	cv::Mat frame_camera;
 	cv::Mat frame_projection;
 	cv::Mat detectpeople_frame;
-	std::vector<scene_interface::Person> extractedpeople;
+	std::vector<scene_interface::Person> people_camera;
 	// while no key pressed
 	while (cv::waitKey(1) == OpenCVUtil::NOKEY_ANYKEY && video_capture.read(frame_camera)) {
 		// debug projection frame
@@ -55,27 +55,27 @@ void ImovePeopleextractorManager::run() {
 
 		// extract people from camera frame
 		detectpeople_frame = frame_camera.clone();
-		extractedpeople = people_extractor->extractPeople(detectpeople_frame);
+		people_camera = people_extractor->extractPeople(detectpeople_frame);
 		people_extractor->displayResults();
 
 		// draw detected people camera image
-		detectedpeople_camera_window.drawImage(frame_camera, extractedpeople);
+		detectedpeople_camera_window.drawImage(frame_camera, people_camera);
 
 		// change extrated people to projector location from camera location
-		calibration->changeProjectorFromCameraLocationPerson(extractedpeople);
+		const std::vector<scene_interface::Person> people_projector = calibration->createPeopleProjectorFromPeopleCamera(people_camera);
 
 		// draw detected people projection image
-		detectedpeople_projection_window.drawImage(frame_projection, extractedpeople);
+		detectedpeople_projection_window.drawImage(frame_projection, people_projector);
 		
 		// send extracted people via shared memory to scene
-		sendExtractedpeople(extractedpeople);
+		sendExtractedpeople(people_projector);
 	}
 
 	// safe release video capture
 	video_capture.release();
 }
 
-void ImovePeopleextractorManager::sendExtractedpeople(std::vector<scene_interface::Person> extractedpeople) {
+void ImovePeopleextractorManager::sendExtractedpeople(const std::vector<scene_interface::Person> extractedpeople) {
 	//Initialize shared memory STL-compatible allocator
 	scene_interface_sma::PersonSMA person_sma = scene_interface_sma::PersonSMA((*this->segment).get_segment_manager());
 	
@@ -94,29 +94,29 @@ void ImovePeopleextractorManager::sendExtractedpeople(std::vector<scene_interfac
 		);
 		
 		// create shared memory allocated person type from person type
-		scene_interface_sma::PersonType person_type;
-		switch (person.type) {
-			case scene_interface::PersonType::Bystander:
-				person_type = scene_interface_sma::PersonType::Bystander;
+		scene_interface_sma::Person::PersonType person_type;
+		switch (person.getPersonType()) {
+			case scene_interface::Person::PersonType::Bystander:
+				person_type = scene_interface_sma::Person::PersonType::Bystander;
 				break;
-			case scene_interface::PersonType::Passerthrough:
-				person_type = scene_interface_sma::PersonType::Passerthrough;
+			case scene_interface::Person::PersonType::Passerthrough:
+				person_type = scene_interface_sma::Person::PersonType::Passerthrough;
 				break;
-			case scene_interface::PersonType::Participant:
-				person_type = scene_interface_sma::PersonType::Participant;
+			case scene_interface::Person::PersonType::Participant:
+				person_type = scene_interface_sma::Person::PersonType::Participant;
 				break;
-			case scene_interface::PersonType::None:
-				person_type = scene_interface_sma::PersonType::None;
+			case scene_interface::Person::PersonType::None:
+				person_type = scene_interface_sma::Person::PersonType::None;
 				break;
 		}
 		// create shared memory allocated movement type from movement type
-		scene_interface_sma::MovementType movement_type;
-		switch (person.move_type) {
-			case scene_interface::MovementType::StandingStill:
-				movement_type = scene_interface_sma::MovementType::StandingStill;
+		scene_interface_sma::Person::MovementType movement_type;
+		switch (person.getMovementType()) {
+			case scene_interface::Person::MovementType::StandingStill:
+				movement_type = scene_interface_sma::Person::MovementType::StandingStill;
 				break;
-			case scene_interface::MovementType::Moving:
-				movement_type = scene_interface_sma::MovementType::Moving;
+			case scene_interface::Person::MovementType::Moving:
+				movement_type = scene_interface_sma::Person::MovementType::Moving;
 				break;
 		}
 		// put shared memory allocated extracted person in shared memory allocated vector of extracted people

@@ -42,7 +42,7 @@ void BystanderGravityPointAction::setLocation() {
 
 bool BystanderGravityPointAction::isDone(Action *&followUp) {
     //This action is done when the person it tracks is not a bystander anymore
-    if(person->type != scene_interface::Bystander){
+    if(person->type != scene_interface::Person::PersonType::Bystander){
         gravityPoints->scheduleForRemoval(gravityPoint);
         return true;
     }

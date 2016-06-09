@@ -13,8 +13,8 @@ private:
     std::list<scene_interface::Vector2> previousLocations;
     unsigned int id;
 public:
-    scene_interface::PersonType type;
-    LightPerson(const scene_interface::Vector2 &location, unsigned int id, scene_interface::PersonType type, util::Range hue);
+    scene_interface::Person::PersonType type;
+    LightPerson(const scene_interface::Vector2 &location, unsigned int id, scene_interface::Person::PersonType type, util::Range hue);
     void shiftHue(float shift);
     void setLocation(scene_interface::Vector2 newLocation);
     scene_interface::Vector2 getLocation();

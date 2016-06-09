@@ -136,7 +136,7 @@ void LightTrailScene::processPeople() {
                 //Update the person
                 std::shared_ptr<LightPerson> lPerson = lightPeople->get(id);
                 lPerson->setLocation(person.getLocation());
-                lPerson->type = person.type;
+                lPerson->type = person.getPersonType();
 
             } else {
 
@@ -144,13 +144,13 @@ void LightTrailScene::processPeople() {
                 float startHue = hueDraw.drawRandom();
                 float endHue = startHue + 90;
                 lightPeople->add(
-                        std::shared_ptr<LightPerson>(new LightPerson(person.getLocation(), id, person.type, util::Range(startHue, endHue, true))));
+                        std::shared_ptr<LightPerson>(new LightPerson(person.getLocation(), id, person.getPersonType(), util::Range(startHue, endHue, true))));
 
             }
         }
         lightPeople->for_each([&](std::shared_ptr<LightPerson> person){
             if(existingPeople.count(person->getId()) == 0){ //If this person does not exist anymore
-                person->type = scene_interface::None;
+                person->type = scene_interface::Person::PersonType::None;
 
                 //Remove it from the list
                 lightPeople->scheduleForRemoval(person);
