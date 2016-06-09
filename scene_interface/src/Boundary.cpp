@@ -31,3 +31,15 @@ bool Boundary::inBounds(scene_interface::Vector2 location) {
     return false;
   }
 }
+const scene_interface::Vector2 Boundary::getUpperLeft() const {
+	return this->upper_left;
+}
+const scene_interface::Vector2 Boundary::getUpperRight() const {
+	return this->upper_right;
+}
+const scene_interface::Vector2 Boundary::getLowerLeft() const {
+	return this->lower_left;
+}
+const scene_interface::Vector2 Boundary::getLowerRight() const {
+	return this->lower_right;
+}

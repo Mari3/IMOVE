@@ -20,6 +20,11 @@ public:
   Boundary(scene_interface::Vector2 upleft, scene_interface::Vector2 upright, scene_interface::Vector2 lowleft, scene_interface::Vector2 lowright);
   ~Boundary();
   bool inBounds(scene_interface::Vector2 location);
+
+	const scene_interface::Vector2 getUpperLeft() const;
+	const scene_interface::Vector2 getUpperRight() const;
+	const scene_interface::Vector2 getLowerLeft() const;
+	const scene_interface::Vector2 getLowerRight() const;
 };
 
 #endif // SCENEINTERFACE_BOUNDARY_H
