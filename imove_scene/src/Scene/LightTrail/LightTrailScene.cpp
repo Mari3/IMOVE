@@ -67,12 +67,16 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
 
     });
 
-    colorHoles->for_each([&](std::shared_ptr<ColorHole> hole){
+    /*colorHoles->for_each([&](std::shared_ptr<ColorHole> hole){
         sf::CircleShape hCircle(20);
         hCircle.setFillColor(HueConverter::ToColor(hole->hue.getCenter()));
         hCircle.setPosition(sf::Vector2f(hole->location.x-20,hole->location.y-20));
         target.draw(hCircle);
-    });
+    });*/
+
+    for(auto &action : actions){
+        action->draw(target);
+    }
 
 }
 
