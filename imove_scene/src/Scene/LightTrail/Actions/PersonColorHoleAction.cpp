@@ -14,12 +14,11 @@ PersonColorHoleAction::PersonColorHoleAction(const std::shared_ptr<LightPerson> 
           colorHoles(colorHoles),
           lightTrails(
                   lightTrails), lightPeople(lightPeople), config(config) {
-    util::Range hue = person->hue;
-    hue += 180.f;
-    ColorHole* hole = new ColorHole(person->getLocation(),hue,config.colorHoleGravity(),config.colorHoleGravityRange());
+    ColorHole* hole = new ColorHole(person->getLocation(),person->hue,config.colorHoleGravity(),config.colorHoleGravityRange());
     colorHole = std::shared_ptr<ColorHole>(hole);
     colorHoles->add(colorHole);
     gravityPoints->add(colorHole);
+    person->isColorHole = true;
 }
 
 bool PersonColorHoleAction::isDone(std::vector<Action *> &followUp) {
@@ -60,5 +59,6 @@ void PersonColorHoleAction::finish() {
     }
     gravityPoints->scheduleForRemoval(colorHole);
     colorHoles->scheduleForRemoval(colorHole);
+    person->isColorHole = false;
 }
 
