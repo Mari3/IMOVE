@@ -16,6 +16,7 @@ private:
     unsigned int id;
 public:
     PersonType type;
+    bool isColorHole = false;
     LightPerson(const Vector2 &location, unsigned int id, PersonType type, util::Range hue);
     void shiftHue(float shift);
     void setLocation(Vector2 newLocation);

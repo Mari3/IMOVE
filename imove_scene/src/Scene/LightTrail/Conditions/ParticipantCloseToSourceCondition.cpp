@@ -14,7 +14,7 @@ int ParticipantCloseToSourceCondition::check(float dt, std::vector<Action *> &ac
     int i =0;
     lightPeople->for_each([&](std::shared_ptr<LightPerson> person){
         lightSources->for_each([&](std::shared_ptr<LightSource> source){
-            if(person->type == Participant || person->type == StandingStill) {
+            if((person->type == Participant || person->type == StandingStill) && !person->isColorHole) {
                 float diff = (person->getLocation() - source->getLocation()).size();
                 if (diff < 100.f) {
                     Action* newAction = new ChangeHueToSourceAction(person,source);
