@@ -37,7 +37,6 @@ namespace scene_interface {
 	 public:
 	    PersonType type;
 			MovementType move_type;
-			Person(unsigned int id, Vector2 location, PersonType person_type, MovementType movement_type);
 	    Person(Vector2 location, PersonType type);
 
 	    //Getters and setters

@@ -41,6 +41,7 @@ std::vector<scene_interface::Person> PeopleIdentifier::match(std::vector<scene_i
       }
       //Set location of person to new location
       detected_people[i].setLocation(locations[index_closest]);
+      detected_people[i].move_type = scene_interface::Moving;
       // Delete locations that have been taken
       locations.erase(locations.begin() + index_closest);
     }
