@@ -108,8 +108,15 @@ void ImovePeopleextractorManager::sendExtractedpeople(std::vector<scene_interfac
 			case scene_interface::PersonType::None:
 				person_type = scene_interface_sma::PersonType::None;
 				break;
-			case scene_interface::PersonType::StandingStill:
-				person_type = scene_interface_sma::PersonType::StandingStill;
+		}
+		// create shared memory allocated movement type from movement type
+		scene_interface_sma::MovementType movement_type;
+		switch (person.move_type) {
+			case scene_interface::MovementType::StandingStill:
+				movement_type = scene_interface_sma::MovementType::StandingStill;
+				break;
+			case scene_interface::MovementType::Moving:
+				movement_type = scene_interface_sma::MovementType::Moving;
 				break;
 		}
 		// put shared memory allocated extracted person in shared memory allocated vector of extracted people
@@ -117,6 +124,7 @@ void ImovePeopleextractorManager::sendExtractedpeople(std::vector<scene_interfac
 			this->segment->construct<scene_interface_sma::Person>(boost::interprocess::anonymous_instance)(
 				locations,
 				person_type,
+				movement_type,
 				person.getId()
 			)
 		);

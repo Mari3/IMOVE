@@ -4,6 +4,14 @@
 
 using namespace scene_interface;
 
+
+Person::Person(unsigned int id, Vector2 location, PersonType person_type, MovementType movement_type) : location(location), id(id), type(person_type), move_type(movement_type) {
+	previousLocations = std::list<Vector2>();
+	if (id >= count) {
+		count = id + 1;
+	}
+}
+
 Person::Person(Vector2 location, PersonType type) : location(location), type(type) {
     previousLocations = std::list<Vector2>();
     id = count;

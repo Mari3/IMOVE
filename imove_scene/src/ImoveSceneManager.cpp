@@ -88,11 +88,18 @@ void ImoveSceneManager::receiveExtractedpeopleAndUpdateScene() {
 				case scene_interface_sma::PersonType::Participant:
 					person_type = scene_interface::PersonType::Participant;
 					break;
-				case scene_interface_sma::PersonType::StandingStill:
-					person_type = scene_interface::PersonType::StandingStill;
-					break;
 				case scene_interface_sma::PersonType::None:
 					person_type = scene_interface::PersonType::None;
+					break;
+			}
+			// create person type from shared memory person type
+			scene_interface::MovementType movement_type;
+			switch (si_person->getMovementType()) {
+				case scene_interface_sma::MovementType::StandingStill:
+					movement_type = scene_interface::MovementType::StandingStill;
+					break;
+				case scene_interface_sma::MovementType::Moving:
+					movement_type = scene_interface::MovementType::Moving;
 					break;
 			}
 			// receive locations from shared memory
@@ -103,11 +110,13 @@ void ImoveSceneManager::receiveExtractedpeopleAndUpdateScene() {
 			// create extracted person for input of scene from received extracted person from shared memory and add extracted person to vector of extracted people
 			extractedpeople.push_back(
 				scene_interface::Person(
+					si_person->getId(),
 					scene_interface::Vector2(
 						location->getX(),
 						location->getY()
 					),
-					person_type
+					person_type,
+					movement_type
 				)
 			);
 		}
