@@ -1,7 +1,7 @@
 #include "../../../scene_interface/src/Vector2.h"
 #include "PeopleExtractor.h"
 
-PeopleExtractor::PeopleExtractor(cv::Size frame_size, float pixels_per_meter, float resolution_resize_height) {
+PeopleExtractor::PeopleExtractor(cv::Size frame_size, float pixels_per_meter, float resolution_resize_height, Boundary boundary) {
   // Calculate resize ratio
   resize_ratio = frame_size.height/resolution_resize_height;
   std::cout << pixels_per_meter/frame_size.height << std::endl;
@@ -18,12 +18,9 @@ PeopleExtractor::PeopleExtractor(cv::Size frame_size, float pixels_per_meter, fl
     // Initialize Detector with high camera if meter < 400 pixels
     detector = PeopleDetector(pixels_per_meter/resize_ratio, false);
   }
-  std::cout << (pixels_per_meter/resize_ratio)/3 << std::endl;
+  
   // Initialize Identifier
-  float boundary_edge = (pixels_per_meter/resize_ratio)/3;
-  Boundary bound = Boundary(scene_interface::Vector2(boundary_edge, boundary_edge), scene_interface::Vector2(frame_size_resized.width - boundary_edge, boundary_edge),
-                            scene_interface::Vector2(frame_size_resized.height - boundary_edge, boundary_edge), scene_interface::Vector2(frame_size_resized.width - boundary_edge, frame_size_resized.height - boundary_edge));
-  identifier = PeopleIdentifier(bound);
+  identifier = PeopleIdentifier(boundary);
 }
 
 PeopleExtractor::~PeopleExtractor() {}

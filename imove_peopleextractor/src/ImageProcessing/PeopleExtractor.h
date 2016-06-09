@@ -15,6 +15,7 @@
 #include "Identifier/PeopleIdentifier.h"
 #include "../../../scene_interface/src/Person.h"
 #include "../../../scene_interface/src/Vector2.h"
+#include "../../../scene_interface/src/Boundary.h"
 
 
 
@@ -37,7 +38,7 @@ class PeopleExtractor {
   float resize_ratio;
 
  public:
-  PeopleExtractor(cv:: Size frame_size, float pixels_per_meter, float resolution_resize_height);
+  PeopleExtractor(cv:: Size frame_size, float pixels_per_meter, float resolution_resize_height, Boundary boundary);
   ~PeopleExtractor();
 
   // Main extraction function to extract people from a frame
