@@ -13,8 +13,8 @@ PersonColorHoleAction::PersonColorHoleAction(const std::shared_ptr<LightPerson> 
                   gravityPoints),
           colorHoles(colorHoles),
           lightTrails(
-                  lightTrails), lightPeople(lightPeople), config(config) {
-    ColorHole* hole = new ColorHole(person->getLocation(),person->hue,config.colorHoleGravity(),config.colorHoleGravityRange());
+                  lightTrails), lightPeople(lightPeople), config(config), effect(person->getLocation()) {
+    ColorHole* hole = new ColorHole(person->getLocation(),util::Range(0,360,true),config.colorHoleGravity(),config.colorHoleGravityRange());
     colorHole = std::shared_ptr<ColorHole>(hole);
     colorHoles->add(colorHole);
     gravityPoints->add(colorHole);
@@ -41,6 +41,7 @@ bool PersonColorHoleAction::isDone(std::vector<Action *> &followUp) {
 }
 
 void PersonColorHoleAction::execute(float dt) {
+    //Logic
     colorHole->location.x = person->getLocation().x;
     colorHole->location.y = person->getLocation().y;
     lightTrails->for_each([&](std::shared_ptr<LightTrail> trail){
@@ -50,6 +51,10 @@ void PersonColorHoleAction::execute(float dt) {
             lightTrails->scheduleForRemoval(trail);
         }
     });
+
+    //Graphics
+    effect.update(dt);
+    effect.setLocation(person->getLocation());
 }
 
 void PersonColorHoleAction::finish() {
@@ -62,3 +67,6 @@ void PersonColorHoleAction::finish() {
     person->isColorHole = false;
 }
 
+void PersonColorHoleAction::draw(sf::RenderTarget &target) {
+    effect.draw(target);
+}
