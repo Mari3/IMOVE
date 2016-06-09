@@ -7,6 +7,7 @@
 #include <queue>
 
 #include "../../../scene_interface/src/Person.h"
+#include "../../../scene_interface/src/Boundary.h"
 
 // Mappings for projector frames and points from camera frames and points based on camera and projector properties
 class Calibration {
@@ -22,11 +23,11 @@ class Calibration {
 		 * @param resolution_projector The projector resolution
 		 * @param resolution_camera The camera resolution
 		 * @param camera_device The integer identifier of the camera by the OS
-		 * @param camera_projector_transformation The projection transformation matrix between the camera and projection
+		 * @param boundary The boundary of the projection on the camera frame
 		 * @param frames_projector_camera_delay The amount of frames delay between the projectors projection captured by the camera
 		 * @param projector_background_light The light level difference between the projectors projection light level and background level
 		 **/
-		Calibration(const cv::Size& resolution_projector, const cv::Size& resolution_camera, unsigned int camera_device, cv::Mat& camera_projector_transformation, unsigned int frames_projector_camera_delay, double projector_background_light, float meter);
+		Calibration(const cv::Size& resolution_projector, const cv::Size& resolution_camera, unsigned int camera_device, const Boundary& projection, unsigned int frames_projector_camera_delay, double projector_background_light, float meter);
 
 		/**
 		 * Creates the Calibration from a file by which the filepath is given
@@ -151,11 +152,18 @@ class Calibration {
 		 **/
 		const float getMeter() const;
 
+		/**
+		 * Gets (the boundary of) the projection
+		 **/
+		const Boundary getProjection() const;
+
 	private:
 		// The projector resolution
 		cv::Size resolution_projector;
 		// The camera resolution
 		cv::Size resolution_camera;
+		// The boundary of the projection
+		Boundary projection;
 		// The integer identifier of the camera device of the OS 
 		unsigned int camera_device;
 		// The projection transformation matrix between the camera and projection
