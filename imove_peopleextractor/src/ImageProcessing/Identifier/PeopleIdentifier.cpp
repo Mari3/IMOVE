@@ -3,9 +3,9 @@
 
 PeopleIdentifier::PeopleIdentifier() {}
 
-PeopleIdentifier::PeopleIdentifier(Boundary boundary) : boundary(boundary) {}
+PeopleIdentifier::PeopleIdentifier(Boundary projection_boundary, Boundary frame_boundary) : projection_boundary(projection_boundary), frame_boundary(frame_boundary) {}
 
-PeopleIdentifier::PeopleIdentifier(std::vector<scene_interface::Person>& people, Boundary boundary) : detected_people(people), boundary(boundary) {}
+PeopleIdentifier::PeopleIdentifier(std::vector<scene_interface::Person>& people, Boundary projection_boundary, Boundary frame_boundary) : detected_people(people), projection_boundary(projection_boundary), frame_boundary(frame_boundary) {}
 
 PeopleIdentifier::~PeopleIdentifier() {}
 
@@ -20,7 +20,7 @@ std::vector<scene_interface::Person> PeopleIdentifier::match(std::vector<scene_i
         detected_people.erase(detected_people.begin() + i);
         --i;
       } else if (detected_people[i].move_type == scene_interface::StandingStill) {
-        if (!boundary.inBounds(detected_people[i].getLocation())) {
+        if (!frame_boundary.inBounds(detected_people[i].getLocation())) {
           detected_people.erase(detected_people.begin() + i);
           --i;
         } else if (detected_people[i].getNotMovedCount() <= 0) {
@@ -33,7 +33,7 @@ std::vector<scene_interface::Person> PeopleIdentifier::match(std::vector<scene_i
         detected_people[i].resetNotMovedCount();
       }
     } else {
-      if (boundary.inBounds(locations[index_closest])) {
+      if (projection_boundary.inBounds(locations[index_closest])) {
         detected_people[i].type = scene_interface::Participant;
       }
       else {
@@ -48,7 +48,7 @@ std::vector<scene_interface::Person> PeopleIdentifier::match(std::vector<scene_i
   }
   // Go over all remaining locations and turn them into a new person
   for (unsigned int j = 0; j < locations.size(); j++) {
-    if (!boundary.inBounds(locations[j])) {
+    if (!projection_boundary.inBounds(locations[j])) {
       scene_interface::Person new_person = scene_interface::Person(locations[j], scene_interface::Bystander);
       detected_people.push_back(new_person);
     }

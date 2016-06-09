@@ -18,12 +18,13 @@ class PeopleIdentifier {
   std::vector<scene_interface::Person> detected_people;
 
   //
-  Boundary boundary;
+  Boundary projection_boundary;
+  Boundary frame_boundary;
 
  public:
   PeopleIdentifier();
-  PeopleIdentifier(Boundary boundary);
-  PeopleIdentifier(std::vector<scene_interface::Person>& people, Boundary boundary);
+  PeopleIdentifier(Boundary projection_boundary, Boundary frame_boundary);
+  PeopleIdentifier(std::vector<scene_interface::Person>& people, Boundary projection_boundary, Boundary frame_boundary);
   ~PeopleIdentifier();
 
   // Match people to new locations
