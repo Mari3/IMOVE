@@ -47,13 +47,15 @@ void MixingAction::execute(float dt) {
     shift(trails, person1->getLocation(), person1->hue, currentProgress);
     shift(trails, person2->getLocation(), person2->hue, -currentProgress);
 
+    effect.update(dt);
 }
 
 MixingAction::MixingAction(std::shared_ptr<LightPerson> person1, std::shared_ptr<LightPerson> person2,
                            LightTrailRepository* trails,
                            GravityPointRepository* gravityPoints,
                            const LightTrailConfiguration &config) :
-            person1(person1),person2(person2),config(config),trails(trails),gravityPoints(gravityPoints)
+            person1(person1),person2(person2),config(config),trails(trails),gravityPoints(gravityPoints),
+            effect(MixingEffect(person1,person2))
 {
     progress = 0;
 }
@@ -69,4 +71,8 @@ void MixingAction::shift(LightTrailRepository* trails, Vector2 location, util::R
         }
     });
     hue += amount;
+}
+
+void MixingAction::draw(sf::RenderTarget &target) {
+    effect.draw(target);
 }
