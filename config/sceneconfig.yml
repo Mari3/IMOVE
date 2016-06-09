@@ -1,6 +1,6 @@
 %YAML:1.0
-Resolution: [ 800, 600 ]
-Meter: 150
+Resolution: [ 2400, 1800 ]
+Meter: 200
 TopLeftHue: [ 0, 90 ]
 TopRightHue: [ 90, 180 ]
 BottomRightHue : [ 180, 270 ]
