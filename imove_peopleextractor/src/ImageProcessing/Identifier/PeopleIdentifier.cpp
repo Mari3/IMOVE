@@ -5,7 +5,7 @@ PeopleIdentifier::PeopleIdentifier() {}
 
 PeopleIdentifier::PeopleIdentifier(Boundary projection_boundary, Boundary frame_boundary) : projection_boundary(projection_boundary), frame_boundary(frame_boundary) {}
 
-PeopleIdentifier::PeopleIdentifier(std::vector<scene_interface::Person>& people, Boundary projection_boundary, Boundary frame_boundary) : detected_people(people), projection_boundary(projection_boundary), frame_boundary(frame_boundary) {}
+PeopleIdentifier::PeopleIdentifier(std::vector<Person>& people, Boundary projection_boundary, Boundary frame_boundary) : detected_people(people), projection_boundary(projection_boundary), frame_boundary(frame_boundary) {}
 
 PeopleIdentifier::~PeopleIdentifier() {}
 
@@ -16,32 +16,32 @@ std::vector<scene_interface::Person> PeopleIdentifier::match(std::vector<scene_i
     int index_closest = getClosest(i, locations);
     // If no close location is found, delete person
     if (index_closest < 0) {
-      if (detected_people[i].type == scene_interface::None) {
+      if (detected_people[i].person_type == None) {
         detected_people.erase(detected_people.begin() + i);
         --i;
-      } else if (detected_people[i].move_type == scene_interface::StandingStill) {
+      } else if (detected_people[i].movement_type == StandingStill) {
         if (!frame_boundary.inBounds(detected_people[i].getLocation())) {
           detected_people.erase(detected_people.begin() + i);
           --i;
         } else if (detected_people[i].getNotMovedCount() <= 0) {
-          detected_people[i].type = scene_interface::None;
+          detected_people[i].person_type = scene_interface::None;
         } else {
           detected_people[i]. decreaseNotMovedCount();
         }
       } else {
-        detected_people[i].move_type = scene_interface::StandingStill;
+        detected_people[i].movement_type = scene_interface::StandingStill;
         detected_people[i].resetNotMovedCount();
       }
     } else {
       if (projection_boundary.inBounds(locations[index_closest])) {
-        detected_people[i].type = scene_interface::Participant;
+        detected_people[i].person_type = scene_interface::Participant;
       }
       else {
-        detected_people[i].type = scene_interface::Bystander;
+        detected_people[i].person_type = scene_interface::Bystander;
       }
       //Set location of person to new location
       detected_people[i].setLocation(locations[index_closest]);
-      detected_people[i].move_type = scene_interface::Moving;
+      detected_people[i].movement_type = scene_interface::Moving;
       // Delete locations that have been taken
       locations.erase(locations.begin() + index_closest);
     }
@@ -74,4 +74,13 @@ int PeopleIdentifier::getClosest(unsigned int index, std::vector<scene_interface
   }
   // Return index of closest location
   return min_index;
+}
+
+std::vector<scene_interface::Person> PeopleIdentifier::convert(std::vector<Person> people) {
+  std::vector<scene_interface::Person interface_people;
+  for (Person person : people) {
+    scene_interface::Person new_interface_person = scene_interface::Person(person.getId(), person.getLocation(), person.getPersonType(), person.getMovementType());
+    interface_people.push_back(new_interface_person);
+  }
+  return interface_people;
 }

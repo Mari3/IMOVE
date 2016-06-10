@@ -4,16 +4,12 @@
 
 using namespace scene_interface;
 
-
-Person::Person(unsigned int id, Vector2 location, PersonType person_type, MovementType movement_type) : location(location), id(id), type(person_type), move_type(movement_type) {
-	previousLocations = std::list<Vector2>();
-}
-
-Person::Person(Vector2 location, PersonType type) : location(location), type(type) {
+Person::Person(Vector2 location, PersonType type) : location(location), person_type(type) {
     previousLocations = std::list<Vector2>();
     id = count;
     count++;
     move_type = Moving;
+		interframe_type = Moving;
 }
 
 /*--------------------

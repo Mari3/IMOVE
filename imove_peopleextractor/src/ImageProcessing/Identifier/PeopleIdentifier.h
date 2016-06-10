@@ -11,11 +11,12 @@
 
 #include "../../../../scene_interface/src/Person.h"
 #include "../../../../scene_interface/src/Boundary.h"
+#include "../../Person.h"
 
 class PeopleIdentifier {
  private:
   // Vector containing detected people in the frame
-  std::vector<scene_interface::Person> detected_people;
+  std::vector<Person> detected_people;
 
   //
   Boundary projection_boundary;
@@ -24,7 +25,7 @@ class PeopleIdentifier {
  public:
   PeopleIdentifier();
   PeopleIdentifier(Boundary projection_boundary, Boundary frame_boundary);
-  PeopleIdentifier(std::vector<scene_interface::Person>& people, Boundary projection_boundary, Boundary frame_boundary);
+  PeopleIdentifier(std::vector<Person>& people, Boundary projection_boundary, Boundary frame_boundary);
   ~PeopleIdentifier();
 
   // Match people to new locations
@@ -32,6 +33,8 @@ class PeopleIdentifier {
 
   // Get closest location to a Person
   int getClosest(unsigned int index, std::vector<scene_interface::Vector2>& new_locations);
+
+  std::vector<scene_interface::Person> convert(std::vector<Person> people);
 };
 
 

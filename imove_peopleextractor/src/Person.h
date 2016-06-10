@@ -39,10 +39,10 @@ class Person {
     unsigned int not_moved_count = 100;
 
  public:
-    PersonType type;
-		MovementType move_type;
+    PersonType person_type;
+		MovementType movement_type;
 		InterframeType interframe_type;
- 
+
 		Person(Vector2 location, PersonType type);
 
     //Getters and setters
