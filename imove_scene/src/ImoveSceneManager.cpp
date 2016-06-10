@@ -57,7 +57,9 @@ void ImoveSceneManager::run() {
 	float dt;
 	float capture_dt = 0;
 	float SPF_capture_scene = 1.f / (float) this->calibration->getFpsCaptureScene();
-	while (true) {
+	
+	// while q not pressed
+	while (window_scene.shouldKeepOpen()) {
 		this->receiveExtractedpeopleAndUpdateScene();
 		
 		// draw next Scene frame based on clock difference

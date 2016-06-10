@@ -25,3 +25,17 @@ void SceneWindow::drawScene(Scene* scene) {
 const sf::Image SceneWindow::captureFrameScene() {
 	return this->window_scene->capture();
 }
+
+bool SceneWindow::shouldKeepOpen() {
+	bool open = true;
+	sf::Event event;
+	while (this->window_scene->pollEvent(event)) {
+		if (event.type == sf::Event::Closed || (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Q)) {
+			open = false;
+		}
+	}
+	if (!open) {
+		window_scene->close();
+	}
+	return open;
+}
