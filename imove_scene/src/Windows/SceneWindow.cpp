@@ -8,7 +8,8 @@ SceneWindow::SceneWindow(cv::Size resolution_projector) {
 			resolution_projector.width,
 			resolution_projector.height
 		),
-		"Projector"
+		"Projector",
+		sf::Style::Fullscreen
 	);
   this->window_scene->clear(sf::Color::Black);
   this->window_scene->display();
