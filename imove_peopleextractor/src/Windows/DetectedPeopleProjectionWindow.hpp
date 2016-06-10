@@ -14,5 +14,5 @@ class DetectedPeopleProjectionWindow : public OpenCVWindow {
 		DetectedPeopleProjectionWindow(cv::Point2i position);
 		
 		// draw detected people in the projection image
-		void drawImage(cv::Mat& image_projection, std::vector<scene_interface::Person>& detectedpeople_projection);
+		void drawImage(cv::Mat& image_projection, const std::vector<scene_interface::Person>& detectedpeople_projection);
 };

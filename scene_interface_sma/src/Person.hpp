@@ -8,18 +8,6 @@
 #include "Vector2.hpp"
 
 namespace scene_interface_sma {
-	enum PersonType{
-	    Bystander,
-	    Passerthrough,
-	    Participant,
-	    None
-	};
-
-	enum MovementType{
-		StandingStill,
-		Moving
-	};
-	
 	//Define an STL compatible allocator of ints that allocates from the managed_shared_memory.
 	//This allocator will allow placing containers in the segment
 	typedef boost::interprocess::allocator<boost::interprocess::offset_ptr<Vector2>, boost::interprocess::managed_shared_memory::segment_manager> Vector2SMA;
@@ -30,13 +18,25 @@ namespace scene_interface_sma {
 	
 	class Person {
 	 public:
+			enum PersonType{
+			    Bystander,
+			    Passerthrough,
+			    Participant,
+			    None
+			};
+
+			enum MovementType{
+				StandingStill,
+				Moving
+			};
+	
 	    Person(boost::interprocess::offset_ptr<Vector2Vector> locations, PersonType person_type, MovementType movement_type, unsigned int id);
 	
 	    //Getters
 	    const boost::interprocess::offset_ptr<Vector2Vector> getLocations() const;
 	    const unsigned int getId() const;
-	    const scene_interface_sma::PersonType getPersonType() const;
-	    const scene_interface_sma::MovementType getMovementType() const;
+	    const PersonType getPersonType() const;
+	    const MovementType getMovementType() const;
 	 
 	 private:
 	    // List of previous locations

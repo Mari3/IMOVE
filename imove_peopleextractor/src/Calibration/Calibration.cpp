@@ -264,11 +264,11 @@ void Calibration::createPointsFrameProjectorFromPointsFrameCamera(std::vector<cv
 	}
 }
 
-void Calibration::changeProjectorFromCameraLocationPerson(std::vector<scene_interface::Person>& persons) const {
+const std::vector<scene_interface::Person> Calibration::createPeopleProjectorFromPeopleCamera(const std::vector<scene_interface::Person>& people_camera) const {
 	// map std::vector<cv::Point2f> from std::vector<scene_interface::Person> for input this->createPointsFrameProjectorFramePointsFrameCamera
-	std::vector<cv::Point2f> points_camera = std::vector<cv::Point2f>(persons.size());
-	for (unsigned int i = 0; i < persons.size(); i++) {
-		scene_interface::Vector2 location_person = persons.at(i).getLocation();
+	std::vector<cv::Point2f> points_camera = std::vector<cv::Point2f>(people_camera.size());
+	for (unsigned int i = 0; i < people_camera.size(); i++) {
+		scene_interface::Vector2 location_person = people_camera.at(i).getLocation();
 		points_camera.at(i) = cv::Point2f(
 			location_person.x,
 			location_person.y
@@ -281,13 +281,47 @@ void Calibration::changeProjectorFromCameraLocationPerson(std::vector<scene_inte
 		points_camera
 	);
 	// set scene_interface::Persons location based on mapped projector frame points
-	for (unsigned int i = 0; i < persons.size(); i++) {
+	std::vector<scene_interface::Person> people_projector(people_camera.size());
+	for (unsigned int i = 0; i < people_camera.size(); ++i) {
+		scene_interface::Person person_camera = people_camera.at(i);
+		// create person type from shared memory person type
+		scene_interface::Person::PersonType person_type;
+		switch (person_camera.getPersonType()) {
+			case scene_interface::Person::PersonType::Bystander:
+				person_type = scene_interface::Person::PersonType::Bystander;
+				break;
+			case scene_interface::Person::PersonType::Passerthrough:
+				person_type = scene_interface::Person::PersonType::Passerthrough;
+				break;
+			case scene_interface::Person::PersonType::Participant:
+				person_type = scene_interface::Person::PersonType::Participant;
+				break;
+			case scene_interface::Person::PersonType::None:
+				person_type = scene_interface::Person::PersonType::None;
+				break;
+		}
+		// create person type from shared memory person type
+		scene_interface::Person::MovementType movement_type;
+		switch (person_camera.getMovementType()) {
+			case scene_interface::Person::MovementType::StandingStill:
+				movement_type = scene_interface::Person::MovementType::StandingStill;
+				break;
+			case scene_interface::Person::MovementType::Moving:
+				movement_type = scene_interface::Person::MovementType::Moving;
+				break;
+		}
 		cv::Point2f point_projector = points_projector.at(i);
-		persons.at(i).setLocation(scene_interface::Vector2(
-			point_projector.x,
-			point_projector.y
+		people_projector.push_back(scene_interface::Person(
+			person_camera.getId(),
+			scene_interface::Vector2(
+				point_projector.x,
+				point_projector.y
+			),
+			person_type,
+			movement_type
 		));
 	}
+	return people_projector;
 }
 
 void Calibration::createFrameProjectionFromFrameCamera(cv::Mat& frame_projection, const cv::Mat& frame_camera) const {

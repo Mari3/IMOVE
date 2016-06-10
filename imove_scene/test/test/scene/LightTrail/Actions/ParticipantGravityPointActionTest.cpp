@@ -16,7 +16,7 @@ LightTrailConfiguration pgpat_config(800,600,util::Range(0,0),util::Range(0,0),u
 
 TEST (ParticipantGravityPointActionTest, UpdateLocation) {
 
-    std::shared_ptr<LightPerson> person(new LightPerson(scene_interface::Vector2(50,60),1,scene_interface::Participant,util::Range(20,40)));
+    std::shared_ptr<LightPerson> person(new LightPerson(scene_interface::Vector2(50,60),1,scene_interface::Person::PersonType::Participant,util::Range(20,40)));
 
     GravityPointRepository* gravityPoints = new GravityPointVectorRepository();
 
@@ -39,13 +39,13 @@ TEST (ParticipantGravityPointActionTest, UpdateLocation) {
 }
 
 TEST (ParticipantGravityPointActionTest, DoneWhenStatusChanged) {
-    std::shared_ptr<LightPerson> person(new LightPerson(scene_interface::Vector2(50,60),1,scene_interface::Participant,util::Range(20,40)));
+    std::shared_ptr<LightPerson> person(new LightPerson(scene_interface::Vector2(50,60),1,scene_interface::Person::PersonType::Participant,util::Range(20,40)));
 
     GravityPointRepository* gravityPoints = new GravityPointVectorRepository();
 
     ParticipantGravityPointAction action(person,gravityPoints,pgpat_config);
 
-    person->type = scene_interface::Bystander;
+    person->type = scene_interface::Person::PersonType::Bystander;
 
     Action* followup = nullptr;
     ASSERT_TRUE(action.isDone(followup));
