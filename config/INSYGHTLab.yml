@@ -1,7 +1,8 @@
 %YAML:1.0
 Camera_device: 1
 Resolution_camera: [ 640, 480 ]
-Resolution_projector: [ 1024, 750 ]
+Resolution_projector: [ 1024, 768 ]
+Fullscreen_projector: 1
 Camera_projector_transformation: !!opencv-matrix
    rows: 3
    cols: 3

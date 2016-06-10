@@ -11,7 +11,7 @@ class SceneWindow {
 		 * 
 		 * @param resoltuion_projector The resolution of the projector which the Scene should be rendering in.
 		 **/
-		SceneWindow(cv::Size resolution_projector);
+		SceneWindow(cv::Size resolution_projector, const bool& fullscreen_projector);
 		
 		// draw the Scene on the render window
 		void drawScene(Scene* scene);

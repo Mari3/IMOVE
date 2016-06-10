@@ -47,7 +47,7 @@ ImoveSceneManager::ImoveSceneManager(Calibration* calibration, LightTrailConfigu
 
 void ImoveSceneManager::run() {
 	// setup scene window
-	SceneWindow window_scene(this->calibration->getResolutionProjector());
+	SceneWindow window_scene(this->calibration->getResolutionProjector(), this->calibration->getFullscreenProjector());
 
 	// setup clock
 	sf::Clock clock;
