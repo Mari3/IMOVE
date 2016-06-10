@@ -149,7 +149,7 @@ void ImovePeopleextractorManager::sendExtractedpeople(std::vector<scene_interfac
 	}
 
 	// push shared memory allocated extracted people on the queue
-	this->extractedpeople_queue->push(
+	this->extractedpeople_queue->push_back(
 		si_extractedpeople
 	);
 }

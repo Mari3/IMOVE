@@ -40,7 +40,8 @@ ImoveSceneManager::ImoveSceneManager(Calibration* calibration, LightTrailConfigu
 	boost::interprocess::shared_memory_object::remove(scene_interface_sma::NAME_SHARED_MEMORY);
 	segment = new boost::interprocess::managed_shared_memory(boost::interprocess::create_only, scene_interface_sma::NAME_SHARED_MEMORY, SIZE_SHAREDMEMORY);
 	// Construct the people extracted queue in shared memory
-	this->extractedpeople_queue = segment->construct<scene_interface_sma::ExtractedpeopleQueue>(scene_interface_sma::NAME_EXTRACTEDPEOPLE_QUEUE)(128);
+	const scene_interface_sma::ExtractedpeopleQueueSMA extractedpeople_queue_sma(this->segment->get_segment_manager());
+	this->extractedpeople_queue = segment->construct<scene_interface_sma::ExtractedpeopleQueue>(scene_interface_sma::NAME_EXTRACTEDPEOPLE_QUEUE)(extractedpeople_queue_sma);
 	const peopleextractor_interface_sma::SceneframeQueueSMA sceneframe_queue_sma(this->segment->get_segment_manager());
 	this->pi_sceneframe_queue = segment->construct<peopleextractor_interface_sma::SceneframeQueue>(peopleextractor_interface_sma::NAME_SCENEFRAME_QUEUE)(sceneframe_queue_sma);
 }
@@ -90,7 +91,7 @@ void ImoveSceneManager::receiveExtractedpeopleAndUpdateScene() {
 		std::vector<scene_interface::Person> extractedpeople;
 		
 		// receive extracted people from shared memory from peopleextractor
-		boost::interprocess::offset_ptr<scene_interface_sma::PersonVector> extractedpeople_ptr = this->extractedpeople_queue->pop();
+		boost::interprocess::offset_ptr<scene_interface_sma::PersonVector> extractedpeople_ptr = this->extractedpeople_queue->front();
 		
 		extractedpeople = std::vector<scene_interface::Person>();
 		for (unsigned int i = 0; i < extractedpeople_ptr->size(); ++i) {
@@ -136,6 +137,9 @@ void ImoveSceneManager::receiveExtractedpeopleAndUpdateScene() {
 		
 		// update scene with extracted people from peopleextractor
 		this->scene->updatePeople(extractedpeople);
+
+		// Remove last extracted people from queue
+		this->extractedpeople_queue->pop_front();
 	}
 }
 
