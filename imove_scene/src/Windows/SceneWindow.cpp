@@ -2,14 +2,16 @@
 
 #include "SceneWindow.hpp"
 
-SceneWindow::SceneWindow(cv::Size resolution_projector) {
+SceneWindow::SceneWindow(cv::Size resolution_projector, const bool& fullscreen_projector) {
 	this->window_scene = new sf::RenderWindow(
 		sf::VideoMode(
 			resolution_projector.width,
 			resolution_projector.height
 		),
 		"Projector",
-		sf::Style::Fullscreen
+		fullscreen_projector
+			? sf::Style::Fullscreen
+			: sf::Style::Titlebar | sf::Style::Resize | sf::Style::Close
 	);
   this->window_scene->clear(sf::Color::Black);
   this->window_scene->display();
