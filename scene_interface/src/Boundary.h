@@ -2,6 +2,7 @@
 #define SCENEINTERFACE_BOUNDARY_H
 
 #include "Vector2.h"
+#include <iostream>
 
 class Boundary {
 private:

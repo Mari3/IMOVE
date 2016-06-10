@@ -4,7 +4,6 @@
 PeopleExtractor::PeopleExtractor(cv::Size frame_size, float pixels_per_meter, float resolution_resize_height, Boundary boundary) {
   // Calculate resize ratio
   resize_ratio = frame_size.height/resolution_resize_height;
-  std::cout << pixels_per_meter/frame_size.height << std::endl;
 
   // Initialize empty frame
   frame = cv::Mat::zeros(resolution_resize_height, frame_size.width/resize_ratio, CV_8UC1);
@@ -20,10 +19,17 @@ PeopleExtractor::PeopleExtractor(cv::Size frame_size, float pixels_per_meter, fl
   }
 
   // Initialize Identifier
-  float boundary_edge = (pixels_per_meter/resize_ratio)/3;
-  Boundary frame_bound = Boundary(scene_interface::Vector2(boundary_edge, boundary_edge), scene_interface::Vector2(frame_size_resized.width - boundary_edge, boundary_edge),
-                            scene_interface::Vector2(frame_size_resized.height - boundary_edge, boundary_edge), scene_interface::Vector2(frame_size_resized.width - boundary_edge, frame_size_resized.height - boundary_edge));
-  identifier = PeopleIdentifier(boundary, frame_bound);
+  float boundary_edge = (pixels_per_meter/resize_ratio)/2;
+  Boundary frame_bound = Boundary(scene_interface::Vector2(boundary_edge, boundary_edge),
+                            scene_interface::Vector2(frame_size_resized.width - boundary_edge, boundary_edge),
+                            scene_interface::Vector2(boundary_edge, frame_size_resized.height - boundary_edge),
+                            scene_interface::Vector2(frame_size_resized.width - boundary_edge, frame_size_resized.height - boundary_edge));
+  Boundary proj_bound = Boundary(scene_interface::Vector2(boundary.getUpperLeft().x/resize_ratio, boundary.getUpperLeft().y/resize_ratio),
+                            scene_interface::Vector2(boundary.getUpperRight().x/resize_ratio, boundary.getUpperRight().y/resize_ratio),
+                            scene_interface::Vector2(boundary.getLowerLeft().x/resize_ratio, boundary.getLowerLeft().y/resize_ratio),
+                            scene_interface::Vector2(boundary.getLowerRight().x/resize_ratio, boundary.getLowerRight().y/resize_ratio));
+
+  identifier = PeopleIdentifier(proj_bound, frame_bound);
 }
 
 PeopleExtractor::~PeopleExtractor() {}
@@ -48,6 +54,8 @@ std::vector<scene_interface::Person> PeopleExtractor::extractPeople(cv::Mat& new
     cv::putText(results_frame, std::to_string(p.getId()), cv::Point(location.x, location.y), cv::FONT_HERSHEY_SIMPLEX, 1, cv::Scalar(0, 0, 255));
     p.setLocation(scene_interface::Vector2(location.x*resize_ratio,location.y*resize_ratio));
   }
+
+
 
   // Return vector containing all people in the Scene
   return people;

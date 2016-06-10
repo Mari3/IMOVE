@@ -52,7 +52,7 @@ std::vector<scene_interface::Vector2> PeopleDetector::detect(cv::Mat& frame) {
   blob_detector->detect(thresh_frame, keypoints);
   cvtColor(thresh_frame, thresh_frame, CV_GRAY2RGB);
   // Draw circle around keypoints
-  //cv::drawKeypoints(thresh_frame, keypoints, keypoints_frame, cv::Scalar(0, 0, 255), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+  cv::drawKeypoints(thresh_frame, keypoints, keypoints_frame, cv::Scalar(0, 0, 255), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 
   float frame_height = frame.rows;
   float frame_width = frame.cols;
@@ -76,14 +76,24 @@ std::vector<scene_interface::Vector2> PeopleDetector::detect(cv::Mat& frame) {
       xco = keypoint.pt.x-(pixels_per_meter/6);
     }
 
-    cv::circle(thresh_frame, cv::Point(xco, yco), 5, cv::Scalar(0, 0, 255));
+    cv::circle(keypoints_frame, cv::Point(xco, yco), 5, cv::Scalar(0, 0, 255));
 
     // Add location to locations vector
     scene_interface::Vector2 new_location = scene_interface::Vector2(xco, yco);
     new_locations.push_back(new_location);
   }
 
-  display_frame = thresh_frame;
+  cv::line(keypoints_frame, cv::Point(54, 37), cv::Point(272, 44), cv::Scalar(255, 0, 0));
+  cv::line(keypoints_frame, cv::Point(272, 44), cv::Point(282, 192), cv::Scalar(255, 0, 0));
+  cv::line(keypoints_frame, cv::Point(282, 192), cv::Point(49, 190), cv::Scalar(255, 0, 0));
+  cv::line(keypoints_frame, cv::Point(49, 190), cv::Point(54, 37), cv::Scalar(255, 0, 0));
+
+  cv::line(keypoints_frame, cv::Point(33, 33), cv::Point(350, 33), cv::Scalar(0, 255, 0));
+  cv::line(keypoints_frame, cv::Point(350, 33), cv::Point(350, 182), cv::Scalar(0, 255, 0));
+  cv::line(keypoints_frame, cv::Point(350, 182), cv::Point(33, 182), cv::Scalar(0, 255, 0));
+  cv::line(keypoints_frame, cv::Point(33, 182), cv::Point(33, 33), cv::Scalar(0, 255, 0));
+
+  display_frame = keypoints_frame;
 
   // Return all new locations
   return new_locations;
