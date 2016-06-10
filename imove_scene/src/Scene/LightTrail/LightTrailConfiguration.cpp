@@ -77,7 +77,9 @@ LightTrailConfiguration::LightTrailConfiguration(unsigned int _screenWidth, unsi
                                                  float _explosionGravity, float _explosionExTime,
                                                  float _explosionInTime, float _lightSourceGravity,
                                                  float _colorHoleDelay, float _colorHoleGravity,
-                                                 float _colorHoleRange, float _colorHoleGravityRange)
+                                                 float _colorHoleRange, float _colorHoleGravityRange,
+                                                 float _mixingEffectThickness, float _colorHoleEffectThickness,
+                                                 float _colorHoleEffectPeriod)
         : _screenWidth(_screenWidth), _screenHeight(_screenHeight),
           _sendOutDelay(_sendOutDelay), _trailCap(_trailCap), _sendOutSpeed(_sendOutSpeed), _participantGravity(_participantGravity),
           _participantAntigravity(_participantAntigravity), _participantGravityRange(_participantGravityRange),
@@ -90,7 +92,8 @@ LightTrailConfiguration::LightTrailConfiguration(unsigned int _screenWidth, unsi
           _explosionExTime(_explosionExTime), _explosionInTime(_explosionInTime),
           _lightSourceGravity(_lightSourceGravity), _colorHoleDelay(_colorHoleDelay),
           _colorHoleGravity(_colorHoleGravity), _colorHoleRange(_colorHoleRange),
-          _colorHoleGravityRange(_colorHoleGravityRange) {
+          _colorHoleGravityRange(_colorHoleGravityRange), _mixingEffectThickness(_mixingEffectThickness),
+          _colorHoleEffectThickness(_colorHoleEffectThickness), _colorHoleEffectPeriod(_colorHoleEffectPeriod) {
     _cornerHues.push_back(_corner1Hue);
     _cornerHues.push_back(_corner2Hue);
     _cornerHues.push_back(_corner3Hue);
@@ -126,6 +129,8 @@ LightTrailConfiguration LightTrailConfiguration::readFromFile(char *fileName) {
     int fadeint;
     float trailThickness;
     float lightSourceGravity,colorHoleDelay,colorHoleGravity,colorHoleRange,colorHoleGravityRange;
+
+    float mixingEffectThickness, colorHoleEffectThickness, colorHoleEffectPeriod;
 
     fs["Resolution"] >> resolution;
     fs["Meter"] >> meter;
@@ -163,6 +168,9 @@ LightTrailConfiguration LightTrailConfiguration::readFromFile(char *fileName) {
     fs["ColorHoleGravity"] >> colorHoleGravity;
     fs["ColorHoleRange"] >> colorHoleRange;
     fs["ColorHoleGravityRange"] >> colorHoleGravityRange;
+    fs["MixingEffectThickness"] >> mixingEffectThickness;
+    fs["ColorHoleEffectThickness"] >> colorHoleEffectThickness;
+    fs["ColorHoleEffectPeriod"] >> colorHoleEffectPeriod;
 
     uint8_t fade = static_cast<uint8_t>(fadeint > 255 ? 255 : fadeint);
 
@@ -183,7 +191,8 @@ LightTrailConfiguration LightTrailConfiguration::readFromFile(char *fileName) {
                                    mixingDistance * meter, mixingRevertTime, explosionAntigravity * meter * meter,
                                    explosionGravity * meter * meter, explosionExTime, explosionInTime,
                                    lightSourceGravity * meter * meter, colorHoleDelay, colorHoleGravity * meter * meter,
-                                   colorHoleRange * meter, colorHoleGravityRange*meter);
+                                   colorHoleRange * meter, colorHoleGravityRange * meter, mixingEffectThickness, colorHoleEffectThickness,
+                                   colorHoleEffectPeriod);
 }
 
 int LightTrailConfiguration::trailThickness() const {
@@ -252,4 +261,16 @@ float LightTrailConfiguration::colorHoleRange() const {
 
 float LightTrailConfiguration::colorHoleGravityRange() const {
     return _colorHoleGravityRange;
+}
+
+float LightTrailConfiguration::mixingEffectThickness() const {
+    return _mixingEffectThickness;
+}
+
+float LightTrailConfiguration::colorHoleEffectThickness() const {
+    return _colorHoleEffectThickness;
+}
+
+float LightTrailConfiguration::colorHoleEffectPeriod() const {
+    return _colorHoleEffectPeriod;
 }

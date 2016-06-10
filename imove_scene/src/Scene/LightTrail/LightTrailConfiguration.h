@@ -53,6 +53,9 @@ private:
 
     float _colorHoleDelay, _colorHoleGravity, _colorHoleRange, _colorHoleGravityRange;
 
+    // Effects
+    float _mixingEffectThickness, _colorHoleEffectThickness, _colorHoleEffectPeriod;
+
 public:
 
 
@@ -72,7 +75,9 @@ public:
                                 float _explosionGravity, float _explosionExTime,
                                 float _explosionInTime, float _lightSourceGravity,
                                 float _colorHoleDelay, float _colorHoleGravity,
-                                float _colorHoleRange, float _colorHoleGravityRange);
+                                float _colorHoleRange, float _colorHoleGravityRange,
+                                float _mixingEffectThickness, float _colorHoleEffectThickness,
+                                float _colorHoleEffectPeriod);
 
     static LightTrailConfiguration readFromFile(char* fileName);
 
@@ -143,6 +148,13 @@ public:
 
 
     float colorHoleGravityRange() const;
+
+
+    float mixingEffectThickness() const;
+
+    float colorHoleEffectThickness() const;
+
+    float colorHoleEffectPeriod() const;
 };
 
 
