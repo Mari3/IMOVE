@@ -39,9 +39,10 @@ void MixingEffect::draw(sf::RenderTarget &target) {
     //Calculate the axes
     Vector2 diff = person2->getLocation()-person1->getLocation();
     float dist = diff.size();
+
     sf::Vector2f x(diff.x/dist,diff.y/dist);
     sf::Vector2f y(-x.y,x.x);
-    float amountPerStep = dist/6.f;
+
     sf::VertexArray vertices(sf::Quads);
 
     sf::Vector2f p1Loc(person1->getLocation().x,person1->getLocation().y);
