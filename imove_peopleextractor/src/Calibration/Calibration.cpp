@@ -9,8 +9,9 @@
 #include "../../../scene_interface/src/Person.h"
 #include "../../../scene_interface/src/Vector2.h"
 
-Calibration::Calibration(const cv::Size& resolution_projector, const cv::Size& resolution_camera, unsigned int camera_device, cv::Mat& camera_projector_transformation, unsigned int frames_projector_camera_delay, float projector_background_light, float meter, unsigned int maximum_fps_scene, unsigned int fps_capture_scene, unsigned int iterations_delay_peopleextracting, unsigned int factor_resize_capture_scene) :
+Calibration::Calibration(const cv::Size& resolution_projector, const bool& fullscreen_projector, const cv::Size& resolution_camera, unsigned int camera_device, cv::Mat& camera_projector_transformation, unsigned int frames_projector_camera_delay, float projector_background_light, float meter, unsigned int maximum_fps_scene, unsigned int fps_capture_scene, unsigned int iterations_delay_peopleextracting, unsigned int factor_resize_capture_scene) :
 	resolution_projector(resolution_projector),
+	fullscreen_projector(fullscreen_projector),
 	resolution_camera(resolution_camera),
 	camera_device(camera_device),
 	camera_projector_transformation(camera_projector_transformation),
@@ -34,6 +35,9 @@ Calibration* Calibration::readFile(const char* filepath) {
 	// read resolution_projector from yml using OpenCV FileNode
 	cv::Size resolution_projector;
 	fs["Resolution_projector"] >> resolution_projector;
+	// read fullscreen_projector from yml using OpenCV FileNode
+	bool fullscreen_projector;
+	fs["Fullscreen_projector"] >> fullscreen_projector;
 	// read camera_projector_transformation from yml using OpenCV FileNode
 	cv::Mat camera_projector_transformation;
 	fs["Camera_projector_transformation"] >> camera_projector_transformation;
@@ -46,6 +50,7 @@ Calibration* Calibration::readFile(const char* filepath) {
 
 	Calibration* calibration = new Calibration(
 		resolution_projector,
+		fullscreen_projector,
 		resolution_camera,
 		Calibration::read(fs, "Camera_device"),
 		camera_projector_transformation,
@@ -73,6 +78,13 @@ Calibration* Calibration::createFromFile(const char* filepath, unsigned int came
 		projector_background_light = Calibration::DEFAULT_PROJECTOR_BACKGROUND_LIGHT;
 	} else {
 		read_config["Projector_background_light"] >> projector_background_light;
+	}
+	// read fullscreen_projector from yml using OpenCV FileNode; default if not existing
+	bool fullscreen_projector;
+	if (read_config["Fullscreen_projector"].isNone()) {
+		fullscreen_projector = Calibration::DEFAULT_FULLSCREEN_PROJECTOR;
+	} else {
+		read_config["Fullscreen_projector"] >> fullscreen_projector;
 	}
 	// read meter from yml using OpenCV FileNode; default if not existing
 	float meter;
@@ -119,6 +131,7 @@ Calibration* Calibration::createFromFile(const char* filepath, unsigned int came
  	// create initial Calibration based on configuration, arguments and defaults
 	Calibration* calibration = new Calibration(
 		resolution_projector,
+		fullscreen_projector,
 		resolution_camera,
 		cameradevice,
 		camera_projector_transformation,
@@ -143,6 +156,7 @@ void Calibration::writeFile(const char* filepath) const {
 	write_config << "Camera_device"                     << (int) this->camera_device;
 	write_config << "Resolution_camera"                 <<       this->resolution_camera;
 	write_config << "Resolution_projector"              <<       this->resolution_projector;
+	write_config << "Fullscreen_projector"              <<       this->fullscreen_projector;
 	write_config << "Camera_projector_transformation"   <<       this->camera_projector_transformation;
 	write_config << "Frames_projector_camera_delay"     << (int) this->frames_projector_camera_delay;
 	write_config << "Projector_background_light"        <<       this->projector_background_light;
@@ -251,6 +265,9 @@ cv::Mat Calibration::getCameraProjectorTransformation() const {
 }
 void Calibration::setCameraProjectorTransformation(cv::Mat& camera_projector_transformation) {
 	this->camera_projector_transformation = camera_projector_transformation;
+}
+bool Calibration::getFullscreenProjector() const {
+	return this->fullscreen_projector;
 }
 cv::Size Calibration::getResolutionProjector() const {
 	return this->resolution_projector;

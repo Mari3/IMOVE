@@ -19,11 +19,13 @@ class Calibration {
 		static constexpr unsigned int    DEFAULT_FPS_CAPTURE_SCENE                 = 8;
 		static constexpr unsigned int    DEFAULT_ITERATIONS_DELAY_PEOPLEEXTRACTING = 5000;
 		static constexpr unsigned int    DEFAULT_FACTOR_RESIZE_CAPTURE_SCENE       = 10;
+		static constexpr          bool   DEFAULT_FULLSCREEN_PROJECTOR              = true;
 		
 		/**
 		 * Setup properties for mapping projector from camera.
 		 * 
 		 * @param resolution_projector The projector resolution
+		 * @param fullscreen_projector The projector fullscreen or not
 		 * @param resolution_camera The camera resolution
 		 * @param camera_device The integer identifier of the camera by the OS
 		 * @param camera_projector_transformation The projection transformation matrix between the camera and projection
@@ -34,7 +36,7 @@ class Calibration {
 		 * @param iterations_delay_peopleextracting The amount of iterations to stall for syncing people extracting and slow scene capture image
 		 * @param factor_resize_capture_scene The factor to resize the captured scene before sending over to people extractor
 		 **/
-		Calibration(const cv::Size& resolution_projector, const cv::Size& resolution_camera, unsigned int camera_device, cv::Mat& camera_projector_transformation, unsigned int frames_projector_camera_delay, float projector_background_light, float meter, unsigned int maximum_fps_scene, unsigned int fps_capture_scene, unsigned int iterations_delay_peopleextracting, unsigned int factor_resize_capture_scene);
+		Calibration(const cv::Size& resolution_projector, const bool& fullscreen_projector, const cv::Size& resolution_camera, unsigned int camera_device, cv::Mat& camera_projector_transformation, unsigned int frames_projector_camera_delay, float projector_background_light, float meter, unsigned int maximum_fps_scene, unsigned int fps_capture_scene, unsigned int iterations_delay_peopleextracting, unsigned int factor_resize_capture_scene);
 
 		/**
 		 * Creates the Calibration from a file by which the filepath is given
@@ -136,6 +138,11 @@ class Calibration {
 		 * Gets the resolution of the projector.
 		 **/
 		cv::Size getResolutionProjector() const;
+
+		/**
+		 * Gets whether the scene should be fullscreen on projector.
+		 **/
+		bool getFullscreenProjector() const;
 
 		/**
 		 * Gets the resolution of the camera.
@@ -250,6 +257,8 @@ class Calibration {
 
 		// The projector resolution
 		cv::Size resolution_projector;
+		// Whether to put scene fullscreen or not
+		bool fullscreen_projector;
 		// The camera resolution
 		cv::Size resolution_camera;
 		// The integer identifier of the camera device of the OS 
