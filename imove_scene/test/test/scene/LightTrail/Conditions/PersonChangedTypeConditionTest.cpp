@@ -26,7 +26,7 @@ TEST(PersonChangedTypeConditionTest, BystanderTurnedParticipant) {
     std::shared_ptr<LightPerson> person(new LightPerson(Location(0,0),0,Person::PersonType::Bystander,util::Range(0,180,true)));
     lightPeople->add(person);
 
-    PersonChangedTypeCondition condition(lightPeople,gravityPoints,config_pctc);
+    PersonChangedTypeCondition condition(lightPeople, gravityPoints, nullptr, nullptr, config_pctc, <#initializer#>);
 
     std::vector<Action*> actions;
     condition.check(0,actions);
@@ -58,7 +58,7 @@ TEST(PersonChangedTypeConditionTest, ParticipantTurnedBystander) {
     std::shared_ptr<LightPerson> person(new LightPerson(Location(0,0),0,Person::PersonType::Participant,util::Range(0,180,true)));
     lightPeople->add(person);
 
-    PersonChangedTypeCondition condition(lightPeople,gravityPoints,config_pctc);
+    PersonChangedTypeCondition condition(lightPeople, gravityPoints, nullptr, nullptr, config_pctc, <#initializer#>);
 
     std::vector<Action*> actions;
     condition.check(0,actions);
@@ -91,7 +91,7 @@ TEST(PersonChangedTypeConditionTest, TwoPeople) {
     lightPeople->add(person1);
     lightPeople->add(person2);
 
-    PersonChangedTypeCondition condition(lightPeople,gravityPoints,config_pctc);
+    PersonChangedTypeCondition condition(lightPeople, gravityPoints, nullptr, nullptr, config_pctc, <#initializer#>);
 
     std::vector<Action*> actions;
     condition.check(0,actions);

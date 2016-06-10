@@ -5,11 +5,12 @@
 #include "LightSourceEffectAction.h"
 
 LightSourceEffectAction::LightSourceEffectAction(std::shared_ptr<LightSource> source, LightTrailRepository *myLightTrails,
-                                                 const LightTrailConfiguration& config
+                                                 const LightTrailConfiguration& config, sf::RenderTexture &texture
 )
         : gravityPoint(source->getLocation(),source->getHue(),20000),
           myLightTrails(myLightTrails),
-          config(config)
+          config(config),
+          effect(myLightTrails,config,texture)
 {
     util::Range range(-40,40);
     for(int i=0;i<10;++i){
@@ -33,4 +34,8 @@ void LightSourceEffectAction::execute(float dt) {
         Vector2 force = gravityPoint.calculateForce(*trail,config);
         trail->applyForce(force,dt,config.speedCap(),config.sidesEnabled(),config.screenWidth(),config.screenHeight());
     });
+}
+
+void LightSourceEffectAction::draw(sf::RenderTarget &target) {
+    effect.draw(target);
 }

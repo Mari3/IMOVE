@@ -9,20 +9,24 @@
 #include "../../Action.h"
 #include "../GravityPoint.h"
 #include "../Repositories/LightsSceneRepositories.h"
+#include "../Effects/LightTrailEffect.h"
 
 class LightSourceEffectAction : public Action {
 private:
     GravityPoint gravityPoint;
     LightTrailRepository* myLightTrails;
     LightTrailConfiguration config;
+    LightTrailEffect effect;
 public:
     LightSourceEffectAction(std::shared_ptr<LightSource> source, LightTrailRepository *myLightTrails,
-                            const LightTrailConfiguration& config
+                            const LightTrailConfiguration& config, sf::RenderTexture &texture
     );
 
-    bool isDone(std::vector<Action *> &followUp);
+    bool isDone(std::vector<Action *> &followUp) override;
 
-    void execute(float dt);
+    void execute(float dt) override;
+
+    void draw(sf::RenderTarget &target) override;
 
 
 };
