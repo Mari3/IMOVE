@@ -18,6 +18,9 @@ class SceneWindow {
 		
 		// capture the drawn scene to image
 		const sf::Image captureFrameScene();
+		
+		// checks wether to close window or not and closes if needed
+		bool shouldKeepOpen();
 
 	protected:
 		sf::RenderWindow* window_scene;
