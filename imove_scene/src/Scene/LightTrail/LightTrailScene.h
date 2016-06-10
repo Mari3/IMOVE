@@ -9,6 +9,8 @@
 #include "Repositories/LightPersonMapRepository.h"
 #include "Repositories/LightsSceneRepositories.h"
 #include "LightTrailConfiguration.h"
+#include "Effects/Effect.h"
+#include "Effects/LightTrailEffect.h"
 
 using namespace scene_interface;
 
@@ -22,6 +24,7 @@ private:
     std::vector<LightTrailRepository*> sourceTrails;
     LightTrailConfiguration config;
     sf::RenderTexture texture;
+    LightTrailEffect effect;
     int hueCounter;
 public:
     LightTrailScene(const LightTrailConfiguration &config,

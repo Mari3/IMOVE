@@ -25,23 +25,7 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
     rect.setFillColor(sf::Color(0, 0, 0, config.fade()));
     texture.draw(rect);
 
-    std::function<void(std::shared_ptr<LightTrail>)> func = [&](std::shared_ptr<LightTrail> trail){
-        Vector2 size = trail->getSize()*config.trailThickness();
-
-        sf::RectangleShape circle(sf::Vector2f(size.x, size.y) );
-        circle.setRotation(trail->getAngle());
-        circle.setPosition(trail->getLocation().x,trail->getLocation().y);
-        circle.setFillColor(HueConverter::ToColor(trail->hue));
-        texture.draw(circle);
-
-    };
-
-    //Draw all light trails on the texture
-    lightTrails->for_each(func);
-
-    for(auto &trails : sourceTrails){
-        trails->for_each(func);
-    }
+    effect.draw(target);
 
     //Draw the texture onto the target
     texture.display();
@@ -89,7 +73,8 @@ LightPersonRepository* lightPeople) : Scene(),
                                      gravityPoints(gravityPoints),
                                      colorHoles(colorHoles),
                                      lightPeople(lightPeople),
-                                     config(config)
+                                     config(config),
+                                      effect(lightTrails,config,texture)
 {
     //Make sure that the repostories are not null
     assert(lightSources);
@@ -120,7 +105,7 @@ LightPersonRepository* lightPeople) : Scene(),
 
     for(int i=0;i<4;++i){
         LightTrailRepository* sourceRepo = new LightTrailVectorRepository();
-        Action* sourceAction = new LightSourceEffectAction(lightSources->get(i),sourceRepo,config);
+        Action* sourceAction = new LightSourceEffectAction(lightSources->get(i),sourceRepo,config,texture);
         sourceTrails.push_back(sourceRepo);
         actions.push_back(std::unique_ptr<Action>(sourceAction));
     }
@@ -139,7 +124,8 @@ LightPersonRepository* lightPeople) : Scene(),
 
     //Add all conditions
     conditions.push_back(std::unique_ptr<Condition>(
-            static_cast<Condition*>(new PersonChangedTypeCondition(lightPeople,gravityPoints,config))));
+            static_cast<Condition*>(new PersonChangedTypeCondition(lightPeople, gravityPoints, lightTrails,
+                                                                   lightSources, config, texture))));
     conditions.push_back(std::unique_ptr<Condition>(
             static_cast<Condition*>(new PeopleEnteredMixingRangeCondition(lightPeople,lightTrails,gravityPoints,config))
     ));
