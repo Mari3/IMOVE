@@ -2,7 +2,7 @@
 Camera_device: 0
 Resolution_camera: [ 640, 480 ]
 Resolution_projector: [ 800, 600 ]
-Fullscreen_projector 1
+Fullscreen_projector: 0
 Camera_projector_transformation: !!opencv-matrix
    rows: 3
    cols: 3
