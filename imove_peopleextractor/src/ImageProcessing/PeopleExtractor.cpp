@@ -50,6 +50,6 @@ std::vector<scene_interface::Person> PeopleExtractor::extractPeople(cv::Mat& new
   return people;
 }
 
-void PeopleExtractor::displayResults() {
-  cv::imshow("Frame", results_frame);
+const cv::Mat PeopleExtractor::getDebugFrame() const {
+  return results_frame;
 }
