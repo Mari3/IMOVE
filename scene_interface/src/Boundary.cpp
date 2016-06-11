@@ -3,7 +3,7 @@
 
 Boundary::Boundary() {}
 
-Boundary::Boundary(scene_interface::Vector2 upleft, scene_interface::Vector2 upright, scene_interface::Vector2 lowleft, scene_interface::Vector2 lowright) :
+Boundary::Boundary(Vector2 upleft, Vector2 upright, Vector2 lowleft, Vector2 lowright) :
   upper_left(upleft), upper_right(upright), lower_left(lowleft), lower_right(lowright) {
     if ((upper_right.y - upper_left.y) == 0) {
       a1 = upper_left.y;
@@ -40,7 +40,7 @@ Boundary::Boundary(scene_interface::Vector2 upleft, scene_interface::Vector2 upr
 
 Boundary::~Boundary() {}
 
-bool Boundary::inBounds(scene_interface::Vector2 location) {
+bool Boundary::inBounds(Vector2 location) {
   float projection_edge1;
   float projection_edge2;
   float projection_edge3;
@@ -81,18 +81,18 @@ bool Boundary::inBounds(scene_interface::Vector2 location) {
   }
 }
 
-const scene_interface::Vector2 Boundary::getUpperLeft() const {
+const Vector2 Boundary::getUpperLeft() const {
 	return this->upper_left;
 }
 
-const scene_interface::Vector2 Boundary::getUpperRight() const {
+const Vector2 Boundary::getUpperRight() const {
 	return this->upper_right;
 }
 
-const scene_interface::Vector2 Boundary::getLowerLeft() const {
+const Vector2 Boundary::getLowerLeft() const {
 	return this->lower_left;
 }
 
-const scene_interface::Vector2 Boundary::getLowerRight() const {
+const Vector2 Boundary::getLowerRight() const {
 	return this->lower_right;
 }

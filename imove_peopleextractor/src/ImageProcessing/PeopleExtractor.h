@@ -42,7 +42,7 @@ class PeopleExtractor {
   ~PeopleExtractor();
 
   // Main extraction function to extract people from a frame
-  std::vector<scene_interface::Person> extractPeople(cv::Mat& new_frame);
+  scene_interface::People extractPeople(cv::Mat& new_frame);
 
   // Display image processing results
   void displayResults();

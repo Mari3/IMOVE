@@ -5,8 +5,7 @@
 
 #include "../OpenCVUtil.hpp"
 #include "Calibration.hpp"
-#include "../../../scene_interface/src/Person.h"
-#include "../../../scene_interface/src/Vector2.h"
+#include "../../../scene_interface/src/People.h"
 
 Calibration::Calibration(const cv::Size& resolution_projector, const cv::Size& resolution_camera, unsigned int camera_device, const Boundary& projection, unsigned int frames_projector_camera_delay, double projector_background_light, float meter) {
 	this->resolution_projector = resolution_projector;
@@ -46,10 +45,10 @@ Calibration::Calibration(const cv::Size& resolution_projector, const cv::Size& r
  **/
 const Boundary createBoundaryFrameCamera(cv::Size resolution_camera) {
 	return Boundary(
-		scene_interface::Vector2(        OpenCVUtil::ORIGIN2D.x,          OpenCVUtil::ORIGIN2D.y),
-		scene_interface::Vector2(resolution_camera.width - 1,          OpenCVUtil::ORIGIN2D.y),
-		scene_interface::Vector2(		  	OpenCVUtil::ORIGIN2D.x, resolution_camera.height - 1),
-		scene_interface::Vector2(resolution_camera.width - 1, resolution_camera.height - 1)
+		Vector2(        OpenCVUtil::ORIGIN2D.x,          OpenCVUtil::ORIGIN2D.y),
+		Vector2(resolution_camera.width - 1,          OpenCVUtil::ORIGIN2D.y),
+		Vector2(		  	OpenCVUtil::ORIGIN2D.x, resolution_camera.height - 1),
+		Vector2(resolution_camera.width - 1, resolution_camera.height - 1)
 	);
 }
 
@@ -78,10 +77,10 @@ const Boundary createBoundaryProjectionFromCameraProjectorTransformation(const c
 	const unsigned int BOTTOMLEFT       = 2;
 	const unsigned int BOTTOMRIGHT      = 3;
 	return Boundary(
-		scene_interface::Vector2(coordinate_corners_projection.at(TOPLEFT).x, coordinate_corners_projection.at(TOPLEFT).y),
-		scene_interface::Vector2(coordinate_corners_projection.at(TOPRIGHT).x, coordinate_corners_projection.at(TOPRIGHT).y),
-		scene_interface::Vector2(coordinate_corners_projection.at(BOTTOMLEFT).x, coordinate_corners_projection.at(BOTTOMLEFT).y),
-		scene_interface::Vector2(coordinate_corners_projection.at(BOTTOMRIGHT).x, coordinate_corners_projection.at(BOTTOMRIGHT).y)
+		Vector2(coordinate_corners_projection.at(TOPLEFT).x, coordinate_corners_projection.at(TOPLEFT).y),
+		Vector2(coordinate_corners_projection.at(TOPRIGHT).x, coordinate_corners_projection.at(TOPRIGHT).y),
+		Vector2(coordinate_corners_projection.at(BOTTOMLEFT).x, coordinate_corners_projection.at(BOTTOMLEFT).y),
+		Vector2(coordinate_corners_projection.at(BOTTOMRIGHT).x, coordinate_corners_projection.at(BOTTOMRIGHT).y)
 	);
 }
 
@@ -264,14 +263,14 @@ void Calibration::createPointsFrameProjectorFromPointsFrameCamera(std::vector<cv
 	}
 }
 
-const std::vector<scene_interface::Person> Calibration::createPeopleProjectorFromPeopleCamera(const std::vector<scene_interface::Person>& people_camera) const {
+const scene_interface::People Calibration::createPeopleProjectorFromPeopleCamera(const scene_interface::People& people_camera) const {
 	// map std::vector<cv::Point2f> from std::vector<scene_interface::Person> for input this->createPointsFrameProjectorFramePointsFrameCamera
 	std::vector<cv::Point2f> points_camera = std::vector<cv::Point2f>(people_camera.size());
 	for (unsigned int i = 0; i < people_camera.size(); i++) {
-		scene_interface::Vector2 location_person = people_camera.at(i).getLocation();
+		scene_interface::Location location_person = people_camera.at(i).getLocation();
 		points_camera.at(i) = cv::Point2f(
-			location_person.x,
-			location_person.y
+			location_person.getX(),
+			location_person.getY()
 		);
 	}
 	// fill projector frame points from camera frame points using perspective map
@@ -280,8 +279,9 @@ const std::vector<scene_interface::Person> Calibration::createPeopleProjectorFro
 		points_projector,
 		points_camera
 	);
-	// set scene_interface::Persons location based on mapped projector frame points
-	std::vector<scene_interface::Person> people_projector(people_camera.size());
+	// set scene_interface::People location based on mapped projector frame points
+	//scene_interface::People people_projector(people_camera.size());
+	scene_interface::People people_projector;
 	for (unsigned int i = 0; i < people_camera.size(); ++i) {
 		scene_interface::Person person_camera = people_camera.at(i);
 		// create person type from shared memory person type
@@ -313,7 +313,7 @@ const std::vector<scene_interface::Person> Calibration::createPeopleProjectorFro
 		cv::Point2f point_projector = points_projector.at(i);
 		people_projector.push_back(scene_interface::Person(
 			person_camera.getId(),
-			scene_interface::Vector2(
+			scene_interface::Location(
 				point_projector.x,
 				point_projector.y
 			),

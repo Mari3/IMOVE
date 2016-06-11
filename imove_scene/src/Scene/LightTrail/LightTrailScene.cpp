@@ -76,16 +76,16 @@ LightPersonRepository* lightPeople) : Scene(),
 
     //Add Light sources on every corner
     lightSources->add(std::shared_ptr<LightSource>(
-            new LightSource(scene_interface::Vector2(0, 0),config.corner1Hue(),
+            new LightSource(Vector2(0, 0),config.corner1Hue(),
                             util::Range(0, 90,true),config.sendOutSpeed())));
     lightSources->add(std::shared_ptr<LightSource>(
-            new LightSource(scene_interface::Vector2(config.screenWidth(),0),config.corner2Hue(),
+            new LightSource(Vector2(config.screenWidth(),0),config.corner2Hue(),
                             util::Range(90, 180,true),config.sendOutSpeed())));
     lightSources->add(std::shared_ptr<LightSource>(
-            new LightSource(scene_interface::Vector2(0, config.screenHeight()),config.corner3Hue(),
+            new LightSource(Vector2(0, config.screenHeight()),config.corner3Hue(),
                             util::Range(270, 0,true),config.sendOutSpeed())));
     lightSources->add(std::shared_ptr<LightSource>(
-            new LightSource(scene_interface::Vector2(config.screenWidth(), config.screenHeight()),config.corner4Hue(),
+            new LightSource(Vector2(config.screenWidth(), config.screenHeight()),config.corner4Hue(),
                             util::Range(180, 270,true),config.sendOutSpeed())));
 
 
@@ -135,7 +135,11 @@ void LightTrailScene::processPeople() {
 
                 //Update the person
                 std::shared_ptr<LightPerson> lPerson = lightPeople->get(id);
-                lPerson->setLocation(person.getLocation());
+								scene_interface::Location llocation = person.getLocation();
+                lPerson->setLocation(Vector2(
+									llocation.getX(),
+									llocation.getY()
+								));
                 lPerson->type = person.getPersonType();
 
             } else {
@@ -143,8 +147,12 @@ void LightTrailScene::processPeople() {
                 //Create a new person with randomly generated hue
                 float startHue = hueDraw.drawRandom();
                 float endHue = startHue + 90;
+								scene_interface::Location llocation = person.getLocation();
                 lightPeople->add(
-                        std::shared_ptr<LightPerson>(new LightPerson(person.getLocation(), id, person.getPersonType(), util::Range(startHue, endHue, true))));
+                        std::shared_ptr<LightPerson>(new LightPerson(Vector2(
+													llocation.getX(),
+													llocation.getY()
+												), id, person.getPersonType(), util::Range(startHue, endHue, true))));
 
             }
         }

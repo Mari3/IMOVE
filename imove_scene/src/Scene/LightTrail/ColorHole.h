@@ -10,7 +10,7 @@ class ColorHole : public GravityPoint {
 private:
     std::vector<LightTrail> consumedTrails;
 public:
-    ColorHole(scene_interface::Vector2 location, util::Range hue, float gravity);
+    ColorHole(Vector2 location, util::Range hue, float gravity);
     void consume(LightTrail &trail);
     std::vector<LightTrail> explode();
 };

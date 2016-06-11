@@ -8,15 +8,14 @@
 #include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneRepositories.h"
 #include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 #include "../../../../../src/Scene/LightTrail/Actions/ParticipantGravityPointAction.h"
-#include "../../../../../../scene_interface/src/Vector2.h"
-#include "../../../../../../scene_interface/src/Person.h"
+#include "../../../../../../scene_interface/src/People.h"
 
 LightTrailConfiguration pgpat_config(800,600,util::Range(0,0),util::Range(0,0),util::Range(0,0),util::Range(0,0),
 0,0,util::Range(0,0),500,100,0,0,0,0,0,0,0,0,0,0);
 
 TEST (ParticipantGravityPointActionTest, UpdateLocation) {
 
-    std::shared_ptr<LightPerson> person(new LightPerson(scene_interface::Vector2(50,60),1,scene_interface::Person::PersonType::Participant,util::Range(20,40)));
+    std::shared_ptr<LightPerson> person(new LightPerson(Vector2(50,60),1,scene_interface::Person::PersonType::Participant,util::Range(20,40)));
 
     GravityPointRepository* gravityPoints = new GravityPointVectorRepository();
 
@@ -29,7 +28,7 @@ TEST (ParticipantGravityPointActionTest, UpdateLocation) {
     ASSERT_FLOAT_EQ(gPoint->location.x,50);
     ASSERT_FLOAT_EQ(gPoint->location.y,60);
 
-    person->setLocation(scene_interface::Vector2(43,75));
+    person->setLocation(Vector2(43,75));
     action.execute(6);
     Action* followup = nullptr;
     ASSERT_FALSE(action.isDone(followup));
@@ -39,7 +38,7 @@ TEST (ParticipantGravityPointActionTest, UpdateLocation) {
 }
 
 TEST (ParticipantGravityPointActionTest, DoneWhenStatusChanged) {
-    std::shared_ptr<LightPerson> person(new LightPerson(scene_interface::Vector2(50,60),1,scene_interface::Person::PersonType::Participant,util::Range(20,40)));
+    std::shared_ptr<LightPerson> person(new LightPerson(Vector2(50,60),1,scene_interface::Person::PersonType::Participant,util::Range(20,40)));
 
     GravityPointRepository* gravityPoints = new GravityPointVectorRepository();
 

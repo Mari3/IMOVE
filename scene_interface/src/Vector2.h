@@ -1,9 +1,7 @@
-#ifndef SCENEINTERFACE_VECTOR2_H
-#define SCENEINTERFACE_VECTOR2_H
+#ifndef VECTOR2_H
+#define VECTOR2_H
 
-namespace scene_interface {
-	class Vector2
-	{
+class Vector2 {
 	public:
 	    float x,y;
 			Vector2();
@@ -18,7 +16,6 @@ namespace scene_interface {
 	    void operator+=(const Vector2& v);
 	    bool operator==(const Vector2 v) const;
 	    //bool closeToEdge(cv::Size edges);
-	};
-}
+};
 
-#endif //SCENEINTERFACE_VECTOR2_H
+#endif //VECTOR2_H

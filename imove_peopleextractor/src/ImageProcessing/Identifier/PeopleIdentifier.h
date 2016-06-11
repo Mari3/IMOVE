@@ -29,12 +29,12 @@ class PeopleIdentifier {
   ~PeopleIdentifier();
 
   // Match people to new locations
-  std::vector<scene_interface::Person> match(std::vector<scene_interface::Vector2>& locations);
+  scene_interface::People match(std::vector<Vector2>& locations);
 
   // Get closest location to a Person
-  int getClosest(unsigned int index, std::vector<scene_interface::Vector2>& new_locations);
+  int getClosest(unsigned int index, std::vector<Vector2>& new_locations);
 
-  std::vector<scene_interface::Person> convert(std::vector<Person> people);
+  scene_interface::People convert(std::vector<Person> people);
 };
 
 

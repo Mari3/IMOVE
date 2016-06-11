@@ -9,7 +9,7 @@ PeopleIdentifier::PeopleIdentifier(std::vector<Person>& people, Boundary project
 
 PeopleIdentifier::~PeopleIdentifier() {}
 
-std::vector<scene_interface::Person> PeopleIdentifier::match(std::vector<scene_interface::Vector2>& locations) {
+scene_interface::People PeopleIdentifier::match(std::vector<Vector2>& locations) {
   // Go over all people detected in the previous frame and determine their new location or delete them
   for (unsigned int i = 0; i < detected_people.size(); i++) {
     // Get closest location to a person
@@ -56,7 +56,7 @@ std::vector<scene_interface::Person> PeopleIdentifier::match(std::vector<scene_i
   return detected_people;
 }
 
-int PeopleIdentifier::getClosest(unsigned int index, std::vector<scene_interface::Vector2>& new_locations) {
+int PeopleIdentifier::getClosest(unsigned int index, std::vector<Vector2>& new_locations) {
   scene_interface::Person person = detected_people[index];
   // Initialize minimum distance
   float min_distance = std::numeric_limits<float>::max();
@@ -76,7 +76,7 @@ int PeopleIdentifier::getClosest(unsigned int index, std::vector<scene_interface
   return min_index;
 }
 
-std::vector<scene_interface::Person> PeopleIdentifier::convert(std::vector<Person> people) {
+scene_interface::People PeopleIdentifier::convert(std::vector<Person> people) {
   std::vector<scene_interface::Person interface_people;
   for (Person person : people) {
     scene_interface::Person new_interface_person = scene_interface::Person(person.getId(), person.getLocation(), person.getPersonType(), person.getMovementType());

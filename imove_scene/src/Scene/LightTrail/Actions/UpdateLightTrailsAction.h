@@ -14,7 +14,7 @@ class UpdateLightTrailsAction : public Action {
 private:
     LightTrailRepository* lightTrails;
     GravityPointRepository* gravityPoints;
-    scene_interface::Vector2 calculateForce(LightTrail trail);
+    Vector2 calculateForce(LightTrail trail);
     const LightTrailConfiguration& config;
 public:
     UpdateLightTrailsAction(LightTrailRepository* lightTrails, GravityPointRepository* gravityPoints,
