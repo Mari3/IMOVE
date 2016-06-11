@@ -32,9 +32,9 @@ PeopleDetector::PeopleDetector(float pixels_per_meter, bool low_camera) : pixels
 PeopleDetector::~PeopleDetector() {}
 
 // Detect people in frame
-std::vector<scene_interface::Vector2> PeopleDetector::detect(cv::Mat& frame) {
+std::vector<Vector2> PeopleDetector::detect(cv::Mat& frame) {
   // Vector to store newly detected locations
-  std::vector<scene_interface::Vector2> new_locations;
+  std::vector<Vector2> new_locations;
 
   // Initialize frames for operations
   cv::Mat background_subtr_frame;
@@ -79,7 +79,7 @@ std::vector<scene_interface::Vector2> PeopleDetector::detect(cv::Mat& frame) {
     cv::circle(keypoints_frame, cv::Point(xco, yco), 5, cv::Scalar(0, 0, 255));
 
     // Add location to locations vector
-    scene_interface::Vector2 new_location = scene_interface::Vector2(xco, yco);
+    Vector2 new_location = Vector2(xco, yco);
     new_locations.push_back(new_location);
   }
 

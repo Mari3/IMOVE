@@ -21,7 +21,7 @@ TEST (UpdateLightSourceTest, LightTrailMadeAfterTime) {
     LightTrailRepository* trails = new LightTrailVectorRepository();
 
     LightSourceRepository* sources = new LightSourceVectorRepository();
-    sources->add(std::shared_ptr<LightSource>(new LightSource(scene_interface::Vector2(0,0),util::Range(0,0,true),util::Range(0,0,true),util::Range(0,0,true))));
+    sources->add(std::shared_ptr<LightSource>(new LightSource(Vector2(0,0),util::Range(0,0,true),util::Range(0,0,true),util::Range(0,0,true))));
 
     UpdateLightSourcesAction action(sources,trails,config_ulsat);
 
@@ -39,11 +39,11 @@ TEST (UpdateLightSourceTest, LightTrailMadeAfterTime) {
 TEST (UpdateLightSourceTest, StayWithinCap) {
     LightTrailRepository* trails = new LightTrailVectorRepository();
     for(int i=0;i<10;++i){
-        trails->add(std::shared_ptr<LightTrail>(new LightTrail(scene_interface::Vector2(0,0),scene_interface::Vector2(0,0),0)));
+        trails->add(std::shared_ptr<LightTrail>(new LightTrail(Vector2(0,0),Vector2(0,0),0)));
     }
 
     LightSourceRepository* sources = new LightSourceVectorRepository();
-    sources->add(std::shared_ptr<LightSource>(new LightSource(scene_interface::Vector2(0,0),util::Range(0,0,true),util::Range(0,0,true),util::Range(0,0,true))));
+    sources->add(std::shared_ptr<LightSource>(new LightSource(Vector2(0,0),util::Range(0,0,true),util::Range(0,0,true),util::Range(0,0,true))));
 
     UpdateLightSourcesAction action(sources,trails,config_ulsat);
 

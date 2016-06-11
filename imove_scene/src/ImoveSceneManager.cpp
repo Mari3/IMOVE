@@ -111,7 +111,7 @@ void ImoveSceneManager::receiveExtractedpeopleAndUpdateScene() {
 			extractedpeople.push_back(
 				scene_interface::Person(
 					si_person->getId(),
-					scene_interface::Vector2(
+					Vector2(
 						location->getX(),
 						location->getY()
 					),

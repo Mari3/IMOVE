@@ -76,16 +76,16 @@ LightPersonRepository* lightPeople) : Scene(),
 
     //Add Light sources on every corner
     lightSources->add(std::shared_ptr<LightSource>(
-            new LightSource(scene_interface::Vector2(0, 0),config.corner1Hue(),
+            new LightSource(Vector2(0, 0),config.corner1Hue(),
                             util::Range(0, 90,true),config.sendOutSpeed())));
     lightSources->add(std::shared_ptr<LightSource>(
-            new LightSource(scene_interface::Vector2(config.screenWidth(),0),config.corner2Hue(),
+            new LightSource(Vector2(config.screenWidth(),0),config.corner2Hue(),
                             util::Range(90, 180,true),config.sendOutSpeed())));
     lightSources->add(std::shared_ptr<LightSource>(
-            new LightSource(scene_interface::Vector2(0, config.screenHeight()),config.corner3Hue(),
+            new LightSource(Vector2(0, config.screenHeight()),config.corner3Hue(),
                             util::Range(270, 0,true),config.sendOutSpeed())));
     lightSources->add(std::shared_ptr<LightSource>(
-            new LightSource(scene_interface::Vector2(config.screenWidth(), config.screenHeight()),config.corner4Hue(),
+            new LightSource(Vector2(config.screenWidth(), config.screenHeight()),config.corner4Hue(),
                             util::Range(180, 270,true),config.sendOutSpeed())));
 
 

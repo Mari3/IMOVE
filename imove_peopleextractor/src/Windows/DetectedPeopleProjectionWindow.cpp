@@ -9,7 +9,7 @@ void DetectedPeopleProjectionWindow::drawImage(cv::Mat& image_projection, const 
 	// debug extracted perspective mapped people on projection
 	for (unsigned int i = 0; i < detectedpeople_projection.size(); ++i) {
 		scene_interface::Person detectedperson = detectedpeople_projection.at(i);
-		scene_interface::Vector2 vector2_location_detectedperson = detectedperson.getLocation();
+		Vector2 vector2_location_detectedperson = detectedperson.getLocation();
 		// opencv point on location detected person
 		cv::Point2f cv_location_detectedperson = cv::Point2f(
 			vector2_location_detectedperson.x,

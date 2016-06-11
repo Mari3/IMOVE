@@ -1,8 +1,6 @@
 #include "Vector2.h"
 #include "math.h"
 
-using namespace scene_interface;
-
 Vector2::Vector2(float x, float y) : x(x), y(y)
 {
 }

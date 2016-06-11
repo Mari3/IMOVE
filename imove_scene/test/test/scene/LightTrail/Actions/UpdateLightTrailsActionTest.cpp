@@ -18,10 +18,10 @@ TEST (UpdateLightTrailsActionTest, OutsideProximityRange) {
     LightTrailRepository* trails = new LightTrailVectorRepository();
     GravityPointRepository* gravityPoints = new GravityPointVectorRepository();
 
-    std::shared_ptr<LightTrail> trail(new LightTrail(scene_interface::Vector2(300,300),scene_interface::Vector2(0,0),0));
+    std::shared_ptr<LightTrail> trail(new LightTrail(Vector2(300,300),Vector2(0,0),0));
     trails->add(trail);
 
-    gravityPoints->add(std::shared_ptr<GravityPoint>(new GravityPoint(scene_interface::Vector2(600,700),util::Range(0,0),20000)));
+    gravityPoints->add(std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(600,700),util::Range(0,0),20000)));
 
     UpdateLightTrailsAction action(trails,gravityPoints,config2);
 

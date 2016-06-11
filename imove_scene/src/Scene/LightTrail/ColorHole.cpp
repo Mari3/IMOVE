@@ -1,6 +1,6 @@
 #include "ColorHole.h"
 
-ColorHole::ColorHole(scene_interface::Vector2 location, util::Range hue, float gravity) : GravityPoint(location, hue, gravity)
+ColorHole::ColorHole(Vector2 location, util::Range hue, float gravity) : GravityPoint(location, hue, gravity)
 {
     consumedTrails = std::vector<LightTrail>();
 }

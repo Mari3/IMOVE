@@ -9,7 +9,7 @@ BystanderGravityPointAction::BystanderGravityPointAction(std::shared_ptr<LightPe
 		timer(Timer(config.bystanderGravityDelay(), true)),
 		config(config)
 {
-    gravityPoint = std::shared_ptr<GravityPoint>(new GravityPoint(scene_interface::Vector2(0,0),person->hue,config.bystanderGravity()));
+    gravityPoint = std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(0,0),person->hue,config.bystanderGravity()));
     setLocation();
 
     // Register the gravity point

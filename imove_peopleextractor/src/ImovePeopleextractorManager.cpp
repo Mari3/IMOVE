@@ -85,7 +85,7 @@ void ImovePeopleextractorManager::sendExtractedpeople(const std::vector<scene_in
 	for (scene_interface::Person person : extractedpeople) {
 		//Initialize shared memory STL-compatible allocator
 		scene_interface_sma::Vector2SMA vector2_sma(this->segment->get_segment_manager());
-		scene_interface::Vector2 location = person.getLocation();
+		Vector2 location = person.getLocation();
 		// create shared memory vector of locations
 		boost::interprocess::offset_ptr<scene_interface_sma::Vector2Vector> locations = this->segment->construct<scene_interface_sma::Vector2Vector>(boost::interprocess::anonymous_instance)(vector2_sma);
 		// put shared memory allocated location in shared memory allocated vector of locations
