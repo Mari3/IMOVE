@@ -17,7 +17,10 @@ private:
     std::shared_ptr<GravityPoint> antigravityPoint;
     std::shared_ptr<LightPerson> person;
     LightTrailConfiguration config;
-    void setLocation();
+    Vector2 prevLocation;
+    Vector2 prevDirection, baseDirection;
+    bool fixed = false;
+    void setLocation(float dt);
 public:
     explicit ParticipantGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints,
     const LightTrailConfiguration& config);
