@@ -51,7 +51,7 @@ void ColorHoleEffect::addCircle() {
 }
 
 ColorHoleEffect::ColorHoleEffect(const Vector2 &location, const LightTrailConfiguration &config)
-        : location(location), timer(config.colorHoleEffectPeriod(), true), config(config) {
+        : timer(config.colorHoleEffectPeriod(), true), location(location), config(config) {
     addCircle();
 }
 

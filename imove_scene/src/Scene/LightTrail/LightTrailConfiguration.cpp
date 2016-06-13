@@ -99,7 +99,7 @@ LightTrailConfiguration::LightTrailConfiguration(unsigned int _screenWidth, unsi
 >>>>>>> Implement configuration for mixing and color hole effect
         : _screenWidth(_screenWidth), _screenHeight(_screenHeight),
           _sendOutDelay(_sendOutDelay), _trailCap(_trailCap), _sendOutSpeed(_sendOutSpeed), _participantGravity(_participantGravity),
-          _participantAntigravity(_participantAntigravity), _participantGravityRange(_participantGravityRange),
+          _participantAntigravity(_participantAntigravity), _participantGravityRange(_participantGravityRange), _participantGravityDistance(_participantGravityDistance),
           _bystanderGravity(_bystanderGravity), _bystanderGravityDelay(_bystanderGravityDelay), _bystanderGravityRange(_bystanderGravityRange),
           _alternatingGravity(_alternatingGravity), _gravityPointDelay(_gravityPointDelay), _alternatingGravityRange(_alternatingGravityRange),
           _proximityRange(_proximityRange), _proximityModifier(_proximityModifier), _sidesEnabled(_sidesEnabled),
@@ -111,11 +111,15 @@ LightTrailConfiguration::LightTrailConfiguration(unsigned int _screenWidth, unsi
           _colorHoleGravity(_colorHoleGravity), _colorHoleRange(_colorHoleRange),
           _colorHoleGravityRange(_colorHoleGravityRange), _mixingEffectThickness(_mixingEffectThickness),
           _colorHoleEffectThickness(_colorHoleEffectThickness), _colorHoleEffectPeriod(_colorHoleEffectPeriod),
+<<<<<<< 7442b68cfad3d4b62ddc83cf67bb1d7c71c9b72e
 <<<<<<< a433a11f63b8a09e98546efa02c2aedebd785d20
           _participantGravityDistance(_participantGravityDistance) {
 =======
           _starAmount(_starAmount), _starSpeed(_starSpeed) {
 >>>>>>> Add configuration for star effect
+=======
+          _starAmount(_starAmount), _starSpeed(_starSpeed) {
+>>>>>>> Fix linux: will be initialized after [-Werror=reorder]
     _cornerHues.push_back(_corner1Hue);
     _cornerHues.push_back(_corner2Hue);
     _cornerHues.push_back(_corner3Hue);
@@ -322,5 +326,13 @@ float LightTrailConfiguration::starAmount() const {
 
 float LightTrailConfiguration::starSpeed() const {
     return _starSpeed;
+<<<<<<< 7442b68cfad3d4b62ddc83cf67bb1d7c71c9b72e
 >>>>>>> Add configuration for star effect
 }
+=======
+}
+
+float LightTrailConfiguration::participantGravityDistance() const {
+    return _participantGravityDistance;
+}
+>>>>>>> Fix linux: will be initialized after [-Werror=reorder]
