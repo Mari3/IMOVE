@@ -5,7 +5,7 @@
 #ifndef IMOVE_EFFECT_H
 #define IMOVE_EFFECT_H
 
-#include <SFML/graphics.hpp>
+#include <SFML/Graphics.hpp>
 
 class Effect {
 public:
