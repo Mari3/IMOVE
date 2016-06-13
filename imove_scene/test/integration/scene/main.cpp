@@ -261,6 +261,21 @@ struct StandingStillScenario : public Scenario {
 
 };
 
+namespace SceneIntegration {
+    enum ScenarioCode {
+        Standard,
+        Mixing,
+        MixingFails,
+        Many,
+        FirstPerson,
+        RestartAlternating,
+        Bystander,
+        ColorHole,
+        SourceColor,
+        StandingStill
+    };
+}
+
 int main(int argc, char** argv){
 
     srand(static_cast<unsigned int>(time(NULL)));
@@ -282,26 +297,37 @@ int main(int argc, char** argv){
     );
 
     Scenario* scenario;
-    if(scenarioCode == 0){
-        scenario = new Scenario();
-    }else if(scenarioCode == 1){
-        scenario = new MixingScenario(config);
-    }else if(scenarioCode == 2){
-        scenario = new MixingFailsScenario(config);
-    }else if(scenarioCode == 3){
-        scenario = new ManyScenario(config);
-    }else if(scenarioCode == 4){
-        scenario = new FirstPersonScenario(config);
-    }else if(scenarioCode == 5){
-        scenario = new RestartAlternatingScenario(config);
-    }else if(scenarioCode == 6){
-        scenario = new BystanderScenario(config,scene);
-    }else if(scenarioCode == 7){
-        scenario = new ColorHoleScenario(config);
-    }else if(scenarioCode == 8){
-        scenario = new SourceColorScenario(config);
-    }else if(scenarioCode == 9){
-        scenario = new StandingStillScenario(config);
+    switch(scenarioCode){
+        case SceneIntegration::Standard:
+            scenario = new Scenario();
+            break;
+        case SceneIntegration::Mixing:
+            scenario = new MixingScenario(config);
+            break;
+        case SceneIntegration::MixingFails:
+            scenario = new MixingFailsScenario(config);
+            break;
+        case SceneIntegration::Many:
+            scenario = new ManyScenario(config);
+            break;
+        case SceneIntegration::FirstPerson:
+            scenario = new FirstPersonScenario(config);
+            break;
+        case SceneIntegration::RestartAlternating:
+            scenario = new RestartAlternatingScenario(config);
+            break;
+        case SceneIntegration::Bystander:
+            scenario = new BystanderScenario(config,scene);
+            break;
+        case SceneIntegration::ColorHole:
+            scenario = new ColorHoleScenario(config);
+            break;
+        case SceneIntegration::SourceColor:
+            scenario = new SourceColorScenario(config);
+            break;
+        case SceneIntegration::StandingStill:
+            scenario = new StandingStillScenario(config);
+            break;
     }
 
     sf::RenderWindow window(sf::VideoMode(config.screenWidth(),config.screenHeight()),"Projection");
