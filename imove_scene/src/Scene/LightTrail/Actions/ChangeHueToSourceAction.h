@@ -11,6 +11,7 @@
 #include "../LightPerson.h"
 #include "../../Action.h"
 
+// Changes the hue of a person to that of a light source
 class ChangeHueToSourceAction : public Action {
 private:
     float progressLeft;

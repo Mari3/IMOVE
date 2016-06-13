@@ -12,6 +12,7 @@
 #include "../Repositories/LightsSceneRepositories.h"
 #include "../Effects/MixingEffect.h"
 
+// Causes mixing between two participants, moving their hues closer together
 class MixingAction : public Action {
 private:
     std::shared_ptr<LightPerson> person1, person2;

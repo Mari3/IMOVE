@@ -18,7 +18,8 @@ struct ColorCircle {
     ColorCircle(sf::Color color, float radius) : color(color), radius(radius) {}
 };
 
-
+// Draws circles around the person that get smaller,
+// creating the effect that the person is sucking them in
 class ColorHoleEffect : public Effect {
 private:
     float hue = 0;

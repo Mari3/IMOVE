@@ -10,6 +10,8 @@
 #include "../../Action.h"
 #include "../Effects/LightTrailEffect.h"
 
+// Sends a certain amount of trails to a person,
+// ignoring the rest of the scene.
 class InitiateParticipantAction : public Action {
 private:
     LightTrailRepository* globalTrails;

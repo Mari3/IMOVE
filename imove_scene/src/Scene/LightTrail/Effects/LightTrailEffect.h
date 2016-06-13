@@ -9,6 +9,7 @@
 #include "Effect.h"
 #include "../Repositories/LightsSceneRepositories.h"
 
+// Draws light trails on a texture
 class LightTrailEffect : public Effect {
 private:
     LightTrailRepository *trails;

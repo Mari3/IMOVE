@@ -19,6 +19,7 @@ struct Star {
     Star(Vector2 location, float speed, int size) : location(location), speed(speed), size(size) {}
 };
 
+// Draws horizontally moving 'stars' on the scene
 class StarEffect : public Effect {
 private:
     std::vector<Star> stars;

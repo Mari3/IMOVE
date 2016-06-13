@@ -7,6 +7,8 @@
 
 #include <SFML/Graphics.hpp>
 
+// A basic effect, responsible for the visual
+// representation of things happening in the scene
 class Effect {
 public:
     virtual void update(float dt) = 0;

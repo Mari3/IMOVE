@@ -12,6 +12,8 @@
 #include "../Configuration/LightTrailConfiguration.h"
 #include "../../Util/Timer.h"
 
+// Causes an explosion around a person by temporarily
+// pushing trails away and then pulling them back in
 class ExplosionAction : public Action {
 private:
     std::shared_ptr<LightPerson> person;

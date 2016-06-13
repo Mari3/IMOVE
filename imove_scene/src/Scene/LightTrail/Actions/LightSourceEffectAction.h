@@ -11,6 +11,8 @@
 #include "../Repositories/LightsSceneRepositories.h"
 #include "../Effects/LightTrailEffect.h"
 
+// Creates the effect of light trails bouncing around
+// a light source
 class LightSourceEffectAction : public Action {
 private:
     GravityPoint gravityPoint;

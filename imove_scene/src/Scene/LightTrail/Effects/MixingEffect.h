@@ -11,6 +11,8 @@
 #include "Effect.h"
 #include "../Configuration/LightTrailConfiguration.h"
 
+// Draws two 'progress bars' between two people,
+// wherein they send their colors to each other
 class MixingEffect : public Effect{
 private:
     std::shared_ptr<LightPerson> person1,person2;
