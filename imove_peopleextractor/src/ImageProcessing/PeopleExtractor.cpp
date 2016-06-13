@@ -61,6 +61,15 @@ scene_interface::People PeopleExtractor::extractPeople(cv::Mat& new_frame) {
   return people;
 }
 
+scene_interface::People PeopleExtractor::convert(std::vector<Person> people) {
+  std::vector<scene_interface::Person interface_people;
+  for (Person person : people) {
+    scene_interface::Person new_interface_person = scene_interface::Person(person.getId(), person.getLocation(), person.getPersonType(), person.getMovementType());
+    interface_people.push_back(new_interface_person);
+  }
+  return interface_people;
+}
+
 void PeopleExtractor::displayResults() {
   cv::imshow("Frame", results_frame);
 }

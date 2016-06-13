@@ -1,5 +1,5 @@
 #include "PeopleIdentifier.h"
-#include "../../../../scene_interface/src/Person.h"
+
 
 PeopleIdentifier::PeopleIdentifier() {}
 
@@ -9,7 +9,7 @@ PeopleIdentifier::PeopleIdentifier(std::vector<Person>& people, Boundary project
 
 PeopleIdentifier::~PeopleIdentifier() {}
 
-scene_interface::People PeopleIdentifier::match(std::vector<Vector2>& locations) {
+std::vector<Person> PeopleIdentifier::match(std::vector<Vector2>& locations) {
   // Go over all people detected in the previous frame and determine their new location or delete them
   for (unsigned int i = 0; i < detected_people.size(); i++) {
     // Get closest location to a person
@@ -24,24 +24,24 @@ scene_interface::People PeopleIdentifier::match(std::vector<Vector2>& locations)
           detected_people.erase(detected_people.begin() + i);
           --i;
         } else if (detected_people[i].getNotMovedCount() <= 0) {
-          detected_people[i].person_type = scene_interface::None;
+          detected_people[i].person_type = None;
         } else {
           detected_people[i]. decreaseNotMovedCount();
         }
       } else {
-        detected_people[i].movement_type = scene_interface::StandingStill;
+        detected_people[i].movement_type = StandingStill;
         detected_people[i].resetNotMovedCount();
       }
     } else {
       if (projection_boundary.inBounds(locations[index_closest])) {
-        detected_people[i].person_type = scene_interface::Participant;
+        detected_people[i].person_type = Participant;
       }
       else {
-        detected_people[i].person_type = scene_interface::Bystander;
+        detected_people[i].person_type = Bystander;
       }
       //Set location of person to new location
       detected_people[i].setLocation(locations[index_closest]);
-      detected_people[i].movement_type = scene_interface::Moving;
+      detected_people[i].movement_type = Moving;
       // Delete locations that have been taken
       locations.erase(locations.begin() + index_closest);
     }
@@ -49,7 +49,7 @@ scene_interface::People PeopleIdentifier::match(std::vector<Vector2>& locations)
   // Go over all remaining locations and turn them into a new person
   for (unsigned int j = 0; j < locations.size(); j++) {
     if (!projection_boundary.inBounds(locations[j])) {
-      scene_interface::Person new_person = scene_interface::Person(locations[j], scene_interface::Bystander);
+      Person new_person = Person(locations[j], Bystander);
       detected_people.push_back(new_person);
     }
   }
@@ -57,7 +57,7 @@ scene_interface::People PeopleIdentifier::match(std::vector<Vector2>& locations)
 }
 
 int PeopleIdentifier::getClosest(unsigned int index, std::vector<Vector2>& new_locations) {
-  scene_interface::Person person = detected_people[index];
+  Person person = detected_people[index];
   // Initialize minimum distance
   float min_distance = std::numeric_limits<float>::max();
   // Initialize min index
@@ -74,13 +74,4 @@ int PeopleIdentifier::getClosest(unsigned int index, std::vector<Vector2>& new_l
   }
   // Return index of closest location
   return min_index;
-}
-
-scene_interface::People PeopleIdentifier::convert(std::vector<Person> people) {
-  std::vector<scene_interface::Person interface_people;
-  for (Person person : people) {
-    scene_interface::Person new_interface_person = scene_interface::Person(person.getId(), person.getLocation(), person.getPersonType(), person.getMovementType());
-    interface_people.push_back(new_interface_person);
-  }
-  return interface_people;
 }

@@ -2,14 +2,12 @@
 
 #include "Person.h"
 
-using namespace scene_interface;
-
 Person::Person(Vector2 location, PersonType type) : location(location), person_type(type) {
     previousLocations = std::list<Vector2>();
     id = count;
     count++;
-    move_type = Moving;
-		interframe_type = Moving;
+    movement_type = Moving;
+		interframe_type = Visible;
 }
 
 /*--------------------

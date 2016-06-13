@@ -2,7 +2,7 @@
 #define PERSON_H
 
 #include <list>
-#include "Vector2.h"
+#include "../../scene_interface/src/Vector2.h"
 
 enum PersonType{
     Bystander,
@@ -17,8 +17,8 @@ enum MovementType{
 };
 
 enum InterframeType{
-	StandingStill,
-	Moving
+	Visible,
+  Invisible
 };
 
 class Person {
