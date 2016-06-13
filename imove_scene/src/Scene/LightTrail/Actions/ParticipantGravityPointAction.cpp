@@ -1,10 +1,9 @@
 #include "ParticipantGravityPointAction.h"
 #include "../../../../../scene_interface/src/Person.h"
-#include "../../../../../scene_interface/src/Vector2.h"
 
 ParticipantGravityPointAction::ParticipantGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints, const LightTrailConfiguration& config)
 	: gravityPoints(gravityPoints), person(person) {
-    gravityPoint = std::shared_ptr<GravityPoint>(new GravityPoint(scene_interface::Vector2(0,0),person->hue,config.participantGravity()));
+    gravityPoint = std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(0,0),person->hue,config.participantGravity()));
     setLocation();
     // Register the gravity point
     gravityPoints->add(gravityPoint);

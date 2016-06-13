@@ -3,8 +3,7 @@
 #include "ImoveSceneManager.hpp"
 
 #include "OpenCVUtil.hpp"
-#include "../../scene_interface/src/Person.h"
-#include "../../scene_interface/src/Vector2.h"
+#include "../../scene_interface/src/People.h"
 #include "Scene/LightTrail/LightTrailScene.h"
 #include "Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 #include "Windows/SceneWindow.hpp"
@@ -66,12 +65,12 @@ void ImoveSceneManager::run() {
 void ImoveSceneManager::receiveExtractedpeopleAndUpdateScene() {
 	if (!this->extractedpeople_queue->empty()) {
 		//create vector of extracted people for input of scene
-		std::vector<scene_interface::Person> extractedpeople;
+		scene_interface::People extractedpeople;
 		
 		// receive extracted people from shared memory from peopleextractor
 		boost::interprocess::offset_ptr<scene_interface_sma::PersonVector> extractedpeople_ptr = this->extractedpeople_queue->pop();
 		
-		extractedpeople = std::vector<scene_interface::Person>();
+		extractedpeople = scene_interface::People();
 		for (unsigned int i = 0; i < extractedpeople_ptr->size(); ++i) {
 			// receive extracted person from shared memory
 			boost::interprocess::offset_ptr<scene_interface_sma::Person> si_person = extractedpeople_ptr->at(i);
@@ -111,7 +110,7 @@ void ImoveSceneManager::receiveExtractedpeopleAndUpdateScene() {
 			extractedpeople.push_back(
 				scene_interface::Person(
 					si_person->getId(),
-					scene_interface::Vector2(
+					scene_interface::Location(
 						location->getX(),
 						location->getY()
 					),

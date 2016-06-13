@@ -1,12 +1,10 @@
-#include <list>
-
 #include "Person.h"
 
 using namespace scene_interface;
 
 scene_interface::Person::Person(
 	unsigned int id,
-	Vector2 location,
+	Location location,
 	Person::PersonType person_type,
 	Person::MovementType movement_type
 ) :
@@ -20,7 +18,7 @@ const unsigned int scene_interface::Person::getId() const {
     return this->id;
 }
 
-const Vector2 scene_interface::Person::getLocation() const {
+const Location scene_interface::Person::getLocation() const {
     return this->location;
 }
 

@@ -10,8 +10,7 @@
 #include "../../../../../src/Scene/LightTrail/Conditions/PersonChangedTypeCondition.h"
 #include "../../../../../src/Scene/LightTrail/Actions/BystanderGravityPointAction.h"
 #include "../../../../../src/Scene/LightTrail/Actions/ParticipantGravityPointAction.h"
-#include "../../../../../../scene_interface/src/Vector2.h"
-#include "../../../../../../scene_interface/src/Person.h"
+#include "../../../../../../scene_interface/src/People.h"
 
 LightTrailConfiguration config_pctc(800, 600, util::Range(0, 0), util::Range(0, 0), util::Range(0, 0), util::Range(0, 0),
                                     2.f, 10, util::Range(0,400), 0, 0, 0, 0, 0, 0, 400, .5, true, 200, 0, 0);
@@ -21,7 +20,7 @@ TEST(PersonChangedTypeConditionTest, Person::PersonType::BystanderTurnedPerson::
     LightPersonRepository* lightPeople = new LightPersonMapRepository();
     GravityPointRepository* gravityPoints = new GravityPointVectorRepository();
 
-    std::shared_ptr<LightPerson> person(new LightPerson(scene_interface::Vector2(0,0),0,scene_interface::Person::PersonType::Bystander,util::Range(0,180,true)));
+    std::shared_ptr<LightPerson> person(new LightPerson(Vector2(0,0),0,scene_interface::Person::PersonType::Bystander,util::Range(0,180,true)));
     lightPeople->add(person);
 
     PersonChangedTypeCondition condition(lightPeople,gravityPoints,config_pctc);
@@ -53,7 +52,7 @@ TEST(PersonChangedTypeConditionTest, Person::PersonType::ParticipantTurnedPerson
     LightPersonRepository* lightPeople = new LightPersonMapRepository();
     GravityPointRepository* gravityPoints = new GravityPointVectorRepository();
 
-    std::shared_ptr<LightPerson> person(new LightPerson(scene_interface::Vector2(0,0),0,scene_interface::Person::PersonType::Participant,util::Range(0,180,true)));
+    std::shared_ptr<LightPerson> person(new LightPerson(Vector2(0,0),0,scene_interface::Person::PersonType::Participant,util::Range(0,180,true)));
     lightPeople->add(person);
 
     PersonChangedTypeCondition condition(lightPeople,gravityPoints,config_pctc);
@@ -84,8 +83,8 @@ TEST(PersonChangedTypeConditionTest, TwoPeople) {
     LightPersonRepository* lightPeople = new LightPersonMapRepository();
     GravityPointRepository* gravityPoints = new GravityPointVectorRepository();
 
-    std::shared_ptr<LightPerson> person1(new LightPerson(scene_interface::Vector2(0,0),0,scene_interface::Person::PersonType::Participant,util::Range(0,180,true)));
-    std::shared_ptr<LightPerson> person2(new LightPerson(scene_interface::Vector2(0,0),1,scene_interface::Person::PersonType::Bystander,util::Range(0,180,true)));
+    std::shared_ptr<LightPerson> person1(new LightPerson(Vector2(0,0),0,scene_interface::Person::PersonType::Participant,util::Range(0,180,true)));
+    std::shared_ptr<LightPerson> person2(new LightPerson(Vector2(0,0),1,scene_interface::Person::PersonType::Bystander,util::Range(0,180,true)));
     lightPeople->add(person1);
     lightPeople->add(person2);
 

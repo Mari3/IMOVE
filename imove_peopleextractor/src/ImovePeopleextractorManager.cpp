@@ -4,7 +4,7 @@
 #include "ImovePeopleextractorManager.hpp"
 
 #include "OpenCVUtil.hpp"
-#include "../../scene_interface/src/Person.h"
+#include "../../scene_interface/src/People.h"
 #include "../../scene_interface/src/Vector2.h"
 #include "Windows/FrameWindow.hpp"
 #include "Windows/DetectedPeopleCameraWindow.hpp"
@@ -44,7 +44,7 @@ void ImovePeopleextractorManager::run() {
 	cv::Mat frame_camera;
 	cv::Mat frame_projection;
 	cv::Mat detectpeople_frame;
-	std::vector<scene_interface::Person> people_camera;
+	scene_interface::People people_camera;
 	// while no key pressed
 	while (cv::waitKey(1) == OpenCVUtil::NOKEY_ANYKEY && video_capture.read(frame_camera)) {
 		// debug projection frame
@@ -62,7 +62,7 @@ void ImovePeopleextractorManager::run() {
 		detectedpeople_camera_window.drawImage(frame_camera, people_camera);
 
 		// change extrated people to projector location from camera location
-		const std::vector<scene_interface::Person> people_projector = calibration->createPeopleProjectorFromPeopleCamera(people_camera);
+		const scene_interface::People people_projector = calibration->createPeopleProjectorFromPeopleCamera(people_camera);
 
 		// draw detected people projection image
 		detectedpeople_projection_window.drawImage(frame_projection, people_projector);
@@ -75,7 +75,7 @@ void ImovePeopleextractorManager::run() {
 	video_capture.release();
 }
 
-void ImovePeopleextractorManager::sendExtractedpeople(const std::vector<scene_interface::Person> extractedpeople) {
+void ImovePeopleextractorManager::sendExtractedpeople(const scene_interface::People extractedpeople) {
 	//Initialize shared memory STL-compatible allocator
 	scene_interface_sma::PersonSMA person_sma = scene_interface_sma::PersonSMA((*this->segment).get_segment_manager());
 	
@@ -85,7 +85,7 @@ void ImovePeopleextractorManager::sendExtractedpeople(const std::vector<scene_in
 	for (scene_interface::Person person : extractedpeople) {
 		//Initialize shared memory STL-compatible allocator
 		scene_interface_sma::Vector2SMA vector2_sma(this->segment->get_segment_manager());
-		scene_interface::Vector2 location = person.getLocation();
+		Vector2 location = person.getLocation();
 		// create shared memory vector of locations
 		boost::interprocess::offset_ptr<scene_interface_sma::Vector2Vector> locations = this->segment->construct<scene_interface_sma::Vector2Vector>(boost::interprocess::anonymous_instance)(vector2_sma);
 		// put shared memory allocated location in shared memory allocated vector of locations
