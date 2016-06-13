@@ -14,7 +14,12 @@
 LightTrailConfiguration pgpat_config(800, 600, util::Range(0, 0), util::Range(0, 0), util::Range(0, 0),
                                      util::Range(0, 0), 0, 0, util::Range(0, 0),
                                      500, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+<<<<<<< a433a11f63b8a09e98546efa02c2aedebd785d20
                                      0, 0, 0, 0, 0);
+=======
+                                     0, 0, 0, 0, 0,
+                                     0);
+>>>>>>> Add configuration for star effect
 
 TEST (ParticipantGravityPointActionTest, UpdateLocation) {
 

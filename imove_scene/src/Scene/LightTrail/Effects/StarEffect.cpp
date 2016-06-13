@@ -7,9 +7,9 @@
 StarEffect::StarEffect(const LightTrailConfiguration &config) : config(config) {
     util::Range xRange(0,config.screenWidth());
     util::Range yRange(0,config.screenHeight());
-    util::Range speedRange(-40,40);
+    util::Range speedRange(-config.starSpeed(),config.starSpeed());
 
-    for(int i=0;i<40;++i){
+    for(int i=0;i<config.starAmount();++i){
         float speed = speedRange.drawRandom();
         Vector2 loc(xRange.drawRandom(),yRange.drawRandom());
         int size = rand()%4+1;

@@ -39,3 +39,5 @@ ColorHoleRange: .2
 MixingEffectThickness: .01
 ColorHoleEffectThickness: .01
 ColorHoleEffectPeriod: .35
+StarAmount: 0
+StarSpeed: .15

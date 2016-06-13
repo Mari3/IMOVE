@@ -56,6 +56,9 @@ private:
     // Effects
     float _mixingEffectThickness, _colorHoleEffectThickness, _colorHoleEffectPeriod;
 
+    // Star background
+    float _starAmount, _starSpeed;
+
 public:
 
 
@@ -68,6 +71,7 @@ public:
                                 float _participantGravityDistance, float _bystanderGravityDelay,
                                 float _bystanderGravityRange, float _alternatingGravity,
                                 float _gravityPointDelay, float _alternatingGravityRange,
+<<<<<<< a433a11f63b8a09e98546efa02c2aedebd785d20
                                 float _proximityRange, float _bystanderGravity, bool _sidesEnabled,
                                 float _speedCap, int _trailThickness, uint8_t _fade,
                                 float _mixingSpeed, float _mixingDistance, float _mixingRevertTime,
@@ -78,6 +82,18 @@ public:
                                 float _colorHoleGravityRange, float _mixingEffectThickness,
                                 float _colorHoleEffectThickness, float _colorHoleEffectPeriod,
                                 float _proximityModifier);
+=======
+                                float _proximityRange, float _proximityModifier,
+                                bool _sidesEnabled, float _speedCap, int _trailThickness,
+                                uint8_t _fade, float _mixingSpeed, float _mixingDistance,
+                                float _mixingRevertTime, float _explosionAntigravity,
+                                float _explosionGravity, float _explosionExTime,
+                                float _explosionInTime, float _lightSourceGravity,
+                                float _colorHoleDelay, float _colorHoleGravity,
+                                float _colorHoleRange, float _colorHoleGravityRange,
+                                float _mixingEffectThickness, float _colorHoleEffectThickness,
+                                float _colorHoleEffectPeriod, float _starAmount, float _starSpeed);
+>>>>>>> Add configuration for star effect
 
     static LightTrailConfiguration readFromFile(char* fileName);
 
@@ -156,7 +172,14 @@ public:
 
     float colorHoleEffectPeriod() const;
 
+<<<<<<< a433a11f63b8a09e98546efa02c2aedebd785d20
     float participantGravityDistance() const;
+=======
+
+    float starAmount() const;
+
+    float starSpeed() const;
+>>>>>>> Add configuration for star effect
 };
 
 
