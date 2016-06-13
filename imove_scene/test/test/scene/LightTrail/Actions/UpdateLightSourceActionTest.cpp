@@ -16,7 +16,7 @@ using namespace fakeit;
 LightTrailConfiguration config_ulsat(800, 600, util::Range(0, 0), util::Range(0, 0), util::Range(0, 0),
                                      util::Range(0, 0), 2.f, 10, util::Range(0, 100),
                                      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                                     0, 0);
+                                     0, 0, 0);
 
 TEST (UpdateLightSourceTest, LightTrailMadeAfterTime) {
 

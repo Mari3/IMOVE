@@ -14,7 +14,7 @@
 LightTrailConfiguration pgpat_config(800, 600, util::Range(0, 0), util::Range(0, 0), util::Range(0, 0),
                                      util::Range(0, 0), 0, 0, util::Range(0, 0),
                                      500, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                                     0, 0, 0, 0);
+                                     0, 0, 0, 0, 0);
 
 TEST (ParticipantGravityPointActionTest, UpdateLocation) {
 
