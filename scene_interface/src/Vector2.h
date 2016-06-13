@@ -1,5 +1,5 @@
-#ifndef SCENEINTERFACE_VECTOR2_H
-#define SCENEINTERFACE_VECTOR2_H
+#ifndef VECTOR2_H
+#define VECTOR2_H
 
 class Vector2 {
 	public:
@@ -18,4 +18,4 @@ class Vector2 {
 	    //bool closeToEdge(cv::Size edges);
 };
 
-#endif //SCENEINTERFACE_VECTOR2_H
+#endif //VECTOR2_H

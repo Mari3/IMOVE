@@ -1,7 +1,6 @@
 #include "BystanderGravityPointAction.h"
 #include "../LightTrailConfiguration.h"
 #include "../../../../../scene_interface/src/Person.h"
-#include "../../../../../scene_interface/src/Vector2.h"
 
 BystanderGravityPointAction::BystanderGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints, const LightTrailConfiguration &config)
   : gravityPoints(gravityPoints),

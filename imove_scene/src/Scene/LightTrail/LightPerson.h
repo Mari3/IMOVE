@@ -3,8 +3,8 @@
 
 #include <list>
 
-#include "../../../../scene_interface/src/Vector2.h"
 #include "../../../../scene_interface/src/Person.h"
+#include "../../../../scene_interface/src/Vector2.h"
 #include "../Util/Range.h"
 
 class LightPerson{

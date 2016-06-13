@@ -33,7 +33,7 @@ PeopleExtractor::PeopleExtractor(cv::Size frame_size, float pixels_per_meter, fl
 
 PeopleExtractor::~PeopleExtractor() {}
 
-const std::vector<scene_interface::Person> PeopleExtractor::extractPeople(cv::Mat& new_frame) {
+const scene_interface::People PeopleExtractor::extractPeople(cv::Mat& new_frame) {
   // Convert frame to grayscale
   cvtColor(new_frame, new_frame, CV_RGB2GRAY);
   // Downscale frame
@@ -89,9 +89,14 @@ const std::vector<scene_interface::Person> PeopleExtractor::convert(std::vector<
 			  interface_movement_type = scene_interface::Person::MovementType::Moving;
 			  break;
       }
+		
+		Vector2 location = person.getLocation();
 	  interface_people.push_back(scene_interface::Person(
 	      person.getId(),
-	      person.getLocation(),
+	      scene_interface::Location(
+					location.x,
+					location.y
+				),
 	      interface_person_type,
 	      interface_movement_type
 	  ));

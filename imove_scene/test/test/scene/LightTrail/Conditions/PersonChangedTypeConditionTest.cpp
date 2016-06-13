@@ -10,8 +10,7 @@
 #include "../../../../../src/Scene/LightTrail/Conditions/PersonChangedTypeCondition.h"
 #include "../../../../../src/Scene/LightTrail/Actions/BystanderGravityPointAction.h"
 #include "../../../../../src/Scene/LightTrail/Actions/ParticipantGravityPointAction.h"
-#include "../../../../../../scene_interface/src/Vector2.h"
-#include "../../../../../../scene_interface/src/Person.h"
+#include "../../../../../../scene_interface/src/People.h"
 
 LightTrailConfiguration config_pctc(800, 600, util::Range(0, 0), util::Range(0, 0), util::Range(0, 0), util::Range(0, 0),
                                     2.f, 10, util::Range(0,400), 0, 0, 0, 0, 0, 0, 400, .5, true, 200, 0, 0);

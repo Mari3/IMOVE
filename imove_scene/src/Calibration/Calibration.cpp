@@ -5,6 +5,7 @@
 
 #include "../OpenCVUtil.hpp"
 #include "Calibration.hpp"
+#include "../../../scene_interface/src/People.h"
 
 Calibration::Calibration(const cv::Size& resolution_projector, const cv::Size& resolution_camera, unsigned int camera_device, const Boundary& projection, unsigned int frames_projector_camera_delay, double projector_background_light, float meter) {
 	this->resolution_projector = resolution_projector;
@@ -262,14 +263,14 @@ void Calibration::createPointsFrameProjectorFromPointsFrameCamera(std::vector<cv
 	}
 }
 
-const std::vector<scene_interface::Person> Calibration::createPeopleProjectorFromPeopleCamera(const std::vector<scene_interface::Person>& people_camera) const {
+const scene_interface::People Calibration::createPeopleProjectorFromPeopleCamera(const scene_interface::People& people_camera) const {
 	// map std::vector<cv::Point2f> from std::vector<scene_interface::Person> for input this->createPointsFrameProjectorFramePointsFrameCamera
 	std::vector<cv::Point2f> points_camera = std::vector<cv::Point2f>(people_camera.size());
 	for (unsigned int i = 0; i < people_camera.size(); i++) {
-		Vector2 location_person = people_camera.at(i).getLocation();
+		scene_interface::Location location_person = people_camera.at(i).getLocation();
 		points_camera.at(i) = cv::Point2f(
-			location_person.x,
-			location_person.y
+			location_person.getX(),
+			location_person.getY()
 		);
 	}
 	// fill projector frame points from camera frame points using perspective map
@@ -278,15 +279,16 @@ const std::vector<scene_interface::Person> Calibration::createPeopleProjectorFro
 		points_projector,
 		points_camera
 	);
-	// set scene_interface::Persons location based on mapped projector frame points
-	std::vector<scene_interface::Person> people_projector;
+	// set scene_interface::People location based on mapped projector frame points
+	//scene_interface::People people_projector(people_camera.size());
+	scene_interface::People people_projector;
 	for (unsigned int i = 0; i < people_camera.size(); ++i) {
 		scene_interface::Person person_camera = people_camera.at(i);
 		// create person type from shared memory person type
 		cv::Point2f point_projector = points_projector.at(i);
 		people_projector.push_back(scene_interface::Person(
 			person_camera.getId(),
-			Vector2(
+			scene_interface::Location(
 				point_projector.x,
 				point_projector.y
 			),

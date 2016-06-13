@@ -2,19 +2,20 @@
 
 #include "../OpenCVUtil.hpp"
 #include "DetectedPeopleCameraWindow.hpp"
+#include "../../../scene_interface/src/People.h"
 
 DetectedPeopleCameraWindow::DetectedPeopleCameraWindow(cv::Point2i position) : OpenCVWindow("Detected people on camera", position) { }
 
-void DetectedPeopleCameraWindow::drawImage(cv::Mat& image_camera, std::vector<scene_interface::Person>& detectedpeople) {
+void DetectedPeopleCameraWindow::drawImage(cv::Mat& image_camera, scene_interface::People& detectedpeople) {
 	// debug people drawing on camera frame
 	for (unsigned int i = 0; i < detectedpeople.size(); ++i) {
-		Vector2 location_detectedperson = detectedpeople.at(i).getLocation();
+		scene_interface::Location location_detectedperson = detectedpeople.at(i).getLocation();
 		// draw circle on each detected person location
 		cv::circle(
 			image_camera,
 			cv::Point2f(
-				location_detectedperson.x,
-				location_detectedperson.y
+				location_detectedperson.getX(),
+				location_detectedperson.getY()
 			),
 			DetectedPeopleCameraWindow::SIZE_CIRCLE_CAMERA_DEBUG,
 			OpenCVUtil::Color::DARKBLUE,

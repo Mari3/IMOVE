@@ -135,7 +135,11 @@ void LightTrailScene::processPeople() {
 
                 //Update the person
                 std::shared_ptr<LightPerson> lPerson = lightPeople->get(id);
-                lPerson->setLocation(person.getLocation());
+								scene_interface::Location llocation = person.getLocation();
+                lPerson->setLocation(Vector2(
+									llocation.getX(),
+									llocation.getY()
+								));
                 lPerson->type = person.getPersonType();
 
             } else {
@@ -143,8 +147,12 @@ void LightTrailScene::processPeople() {
                 //Create a new person with randomly generated hue
                 float startHue = hueDraw.drawRandom();
                 float endHue = startHue + 90;
+								scene_interface::Location llocation = person.getLocation();
                 lightPeople->add(
-                        std::shared_ptr<LightPerson>(new LightPerson(person.getLocation(), id, person.getPersonType(), util::Range(startHue, endHue, true))));
+                        std::shared_ptr<LightPerson>(new LightPerson(Vector2(
+													llocation.getX(),
+													llocation.getY()
+												), id, person.getPersonType(), util::Range(startHue, endHue, true))));
 
             }
         }

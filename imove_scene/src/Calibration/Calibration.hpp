@@ -6,7 +6,7 @@
 #include <vector>
 #include <queue>
 
-#include "../../../scene_interface/src/Person.h"
+#include "../../../scene_interface/src/People.h"
 #include "../../../scene_interface/src/Boundary.h"
 
 // Mappings for projector frames and points from camera frames and points based on camera and projector properties
@@ -79,7 +79,7 @@ class Calibration {
 		 * 
 		 * @param people_camera The people on the camera
 		 **/
-		const std::vector<scene_interface::Person> createPeopleProjectorFromPeopleCamera(const std::vector<scene_interface::Person>& people_camera) const;
+		const scene_interface::People createPeopleProjectorFromPeopleCamera(const scene_interface::People& people_camera) const;
 
 		/**
 		 * Creates a projection frame from the camera frame based on the given camera_projector_transformation

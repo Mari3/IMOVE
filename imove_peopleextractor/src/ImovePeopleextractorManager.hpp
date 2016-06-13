@@ -34,5 +34,5 @@ class ImovePeopleextractorManager {
 		 * 
 		 * @param extractedpeople Extracted people for scene input
 		 **/
-		void sendExtractedpeople(std::vector<scene_interface::Person> extractedpeople);
+		void sendExtractedpeople(scene_interface::People extractedpeople);
 };
