@@ -2,24 +2,7 @@
 #define PERSON_H
 
 #include <list>
-#include "Vector2.h"
-
-enum PersonType{
-    Bystander,
-    Passerthrough,
-    Participant,
-    None
-};
-
-enum MovementType{
-	StandingStill,
-	Moving
-};
-
-enum InterframeType{
-	StandingStill,
-	Moving
-};
+#include "../../scene_interface/src/Vector2.h"
 
 class Person {
  private:
@@ -39,6 +22,23 @@ class Person {
     unsigned int not_moved_count = 100;
 
  public:
+		enum PersonType{
+		    Bystander,
+		    Passerthrough,
+		    Participant,
+		    None
+		};
+		
+		enum MovementType{
+			StandingStill,
+			Moving
+		};
+		
+		enum InterframeType{
+			InterStandingStill,
+			InterMoving
+		};
+
     PersonType person_type;
 		MovementType movement_type;
 		InterframeType interframe_type;

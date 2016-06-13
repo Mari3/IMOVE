@@ -285,31 +285,6 @@ const scene_interface::People Calibration::createPeopleProjectorFromPeopleCamera
 	for (unsigned int i = 0; i < people_camera.size(); ++i) {
 		scene_interface::Person person_camera = people_camera.at(i);
 		// create person type from shared memory person type
-		scene_interface::Person::PersonType person_type;
-		switch (person_camera.getPersonType()) {
-			case scene_interface::Person::PersonType::Bystander:
-				person_type = scene_interface::Person::PersonType::Bystander;
-				break;
-			case scene_interface::Person::PersonType::Passerthrough:
-				person_type = scene_interface::Person::PersonType::Passerthrough;
-				break;
-			case scene_interface::Person::PersonType::Participant:
-				person_type = scene_interface::Person::PersonType::Participant;
-				break;
-			case scene_interface::Person::PersonType::None:
-				person_type = scene_interface::Person::PersonType::None;
-				break;
-		}
-		// create person type from shared memory person type
-		scene_interface::Person::MovementType movement_type;
-		switch (person_camera.getMovementType()) {
-			case scene_interface::Person::MovementType::StandingStill:
-				movement_type = scene_interface::Person::MovementType::StandingStill;
-				break;
-			case scene_interface::Person::MovementType::Moving:
-				movement_type = scene_interface::Person::MovementType::Moving;
-				break;
-		}
 		cv::Point2f point_projector = points_projector.at(i);
 		people_projector.push_back(scene_interface::Person(
 			person_camera.getId(),
@@ -317,8 +292,8 @@ const scene_interface::People Calibration::createPeopleProjectorFromPeopleCamera
 				point_projector.x,
 				point_projector.y
 			),
-			person_type,
-			movement_type
+			person_camera.getPersonType(),
+			person_camera.getMovementType()
 		));
 	}
 	return people_projector;

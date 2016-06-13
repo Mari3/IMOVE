@@ -9,7 +9,6 @@
 #include <vector>
 #include <iostream>
 
-#include "../../../../scene_interface/src/Person.h"
 #include "../../../../scene_interface/src/Boundary.h"
 #include "../../Person.h"
 
@@ -29,12 +28,10 @@ class PeopleIdentifier {
   ~PeopleIdentifier();
 
   // Match people to new locations
-  scene_interface::People match(std::vector<Vector2>& locations);
+  std::vector<Person> match(std::vector<Vector2>& locations);
 
   // Get closest location to a Person
   int getClosest(unsigned int index, std::vector<Vector2>& new_locations);
-
-  scene_interface::People convert(std::vector<Person> people);
 };
 
 
