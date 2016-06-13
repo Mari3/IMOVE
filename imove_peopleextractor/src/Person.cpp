@@ -2,12 +2,13 @@
 
 #include "Person.h"
 
-Person::Person(Vector2 location, PersonType type) : location(location), person_type(type) {
+
+Person::Person(Vector2 location, PersonType person_type) : location(location), person_type(person_type) {
     previousLocations = std::list<Vector2>();
     id = count;
     count++;
-    movement_type = Moving;
-		interframe_type = Visible;
+    movement_type = Person::MovementType::Moving;
+		interframe_type = Person::InterframeType::InterMoving;
 }
 
 /*--------------------

@@ -13,6 +13,7 @@
 #include "opencv2/videoio.hpp"
 #include "Detector/PeopleDetector.h"
 #include "Identifier/PeopleIdentifier.h"
+#include "../Person.h"
 #include "../../../scene_interface/src/People.h"
 #include "../../../scene_interface/src/Vector2.h"
 #include "../../../scene_interface/src/Boundary.h"
@@ -42,13 +43,16 @@ class PeopleExtractor {
   ~PeopleExtractor();
 
   // Main extraction function to extract people from a frame
-  scene_interface::People extractPeople(cv::Mat& new_frame);
+  const scene_interface::People extractPeople(cv::Mat& new_frame);
 
   // Convert people from the People class to the scene interface People class
   scene_interface::People convert(std::vector<Person> people);
 
   // Display image processing results
   void displayResults();
+
+  // convert internal Person to scene_interface::Person
+  const std::vector<scene_interface::Person> convert(std::vector<Person> people);
 };
 
 #endif  // IMOVE_SRC_IMAGE_PROCESSING_PEOPLEEXTRACTOR_H_

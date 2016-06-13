@@ -32,7 +32,6 @@ class PeopleIdentifier {
 
   // Get closest location to a Person
   int getClosest(unsigned int index, std::vector<Vector2>& new_locations);
-
 };
 
 
