@@ -10,6 +10,7 @@
 #include "Effect.h"
 #include "../LightPerson.h"
 #include "../../Util/Timer.h"
+#include "../LightTrailConfiguration.h"
 
 struct ColorCircle {
     sf::Color color;
@@ -24,9 +25,10 @@ private:
     std::deque<ColorCircle> circles;
     Timer timer;
     Vector2 location;
+    LightTrailConfiguration config;
     void addCircle();
 public:
-    ColorHoleEffect(const Vector2 &loc);
+    ColorHoleEffect(const Vector2 &loc, const LightTrailConfiguration &config);
     void setLocation(const Vector2 &loc);
     void update(float dt) override;
     void draw(sf::RenderTarget &target) override;

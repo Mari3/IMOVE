@@ -5,15 +5,15 @@
 #include "MixingEffect.h"
 #include "../../Util/HueConverter.h"
 
-MixingEffect::MixingEffect(const std::shared_ptr<LightPerson> &person1, const std::shared_ptr<LightPerson> &person2)
+MixingEffect::MixingEffect(const std::shared_ptr<LightPerson> &person1, const std::shared_ptr<LightPerson> &person2,
+                           const LightTrailConfiguration &config)
         : person1(person1), person2(person2),
           prevColor1(sf::Color::Transparent),
           currentColor1(HueConverter::ToColor(person1->hue.getCenter())),
           prevColor2(sf::Color::Transparent),
           currentColor2(HueConverter::ToColor(person2->hue.getCenter())),
           stepColor1(currentColor1),
-          stepColor2(currentColor2)
-{ }
+          stepColor2(currentColor2), config(config) { }
 
 void MixingEffect::update(float dt) {
     leftInCycle -= dt;
@@ -49,7 +49,7 @@ void MixingEffect::draw(sf::RenderTarget &target) {
     sf::Vector2f p2Loc(person2->getLocation().x,person2->getLocation().y);
 
     float split = (1-leftInCycle/cycle)*dist;
-    float thickness = 10.f;
+    float thickness = config.mixingEffectThickness();
 
     vertices.append(sf::Vertex(p1Loc,currentColor1));
     vertices.append(sf::Vertex(p1Loc+x*split,currentColor1));

@@ -11,7 +11,7 @@ TrailCap: 75
 ParticipantGravity: 3.46
 ParticipantAntiGravity: 0.46
 ParticipantGravityRange: 2.
-ParticipantGravityDistance: 1.
+ParticipantGravityDistance: .25
 BystanderGravity: 10
 BystanderGravityDelay: 4.
 BystanderGravityRange: -2.
@@ -32,12 +32,12 @@ ExplosionGravity: 10.38
 ExplosionExTime: .2
 ExplosionInTime: .3
 LightSourceGravity: 3.46
-ColorHoleDelay: 150.
+ColorHoleDelay: 4.
 ColorHoleGravity: 5
 ColorHoleGravityRange: 1.2
 ColorHoleRange: .2
-MixingEffectThickness: .01
+MixingEffectThickness: .05
 ColorHoleEffectThickness: .01
 ColorHoleEffectPeriod: .35
-StarAmount: 0
-StarSpeed: .15
+StarAmount: 10
+StarSpeed: .10

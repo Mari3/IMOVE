@@ -80,6 +80,7 @@ LightTrailConfiguration::LightTrailConfiguration(unsigned int _screenWidth, unsi
                                                  float _colorHoleGravity, float _colorHoleRange,
                                                  float _colorHoleGravityRange, float _mixingEffectThickness,
                                                  float _colorHoleEffectThickness, float _colorHoleEffectPeriod,
+<<<<<<< 07adec7b4bf098b55d2dadfb6ad5494df0ee7f05
                                                  float _proximityModifier)
 =======
                                                  float _proximityRange, float _proximityModifier,
@@ -93,6 +94,9 @@ LightTrailConfiguration::LightTrailConfiguration(unsigned int _screenWidth, unsi
                                                  float _mixingEffectThickness, float _colorHoleEffectThickness,
                                                  float _colorHoleEffectPeriod, float _starAmount, float _starSpeed)
 >>>>>>> Add configuration for star effect
+=======
+                                                 float _proximityModifier, int _starAmount, float _starSpeed)
+>>>>>>> Implement configuration for mixing and color hole effect
         : _screenWidth(_screenWidth), _screenHeight(_screenHeight),
           _sendOutDelay(_sendOutDelay), _trailCap(_trailCap), _sendOutSpeed(_sendOutSpeed), _participantGravity(_participantGravity),
           _participantAntigravity(_participantAntigravity), _participantGravityRange(_participantGravityRange),
@@ -214,11 +218,16 @@ LightTrailConfiguration LightTrailConfiguration::readFromFile(char *fileName) {
                                    mixingRevertTime, explosionAntigravity * meter * meter,
                                    explosionGravity * meter * meter, explosionExTime, explosionInTime,
                                    lightSourceGravity * meter * meter, colorHoleDelay, colorHoleGravity * meter * meter,
+<<<<<<< 07adec7b4bf098b55d2dadfb6ad5494df0ee7f05
                                    colorHoleRange * meter, colorHoleGravityRange * meter, mixingEffectThickness,
 <<<<<<< a433a11f63b8a09e98546efa02c2aedebd785d20
                                    colorHoleEffectThickness, colorHoleEffectPeriod, proximityModifier);
 =======
                                    colorHoleEffectThickness, colorHoleEffectPeriod, starAmount,
+=======
+                                   colorHoleRange * meter, colorHoleGravityRange * meter, mixingEffectThickness*meter,
+                                   colorHoleEffectThickness, colorHoleEffectPeriod, proximityModifier, starAmount,
+>>>>>>> Implement configuration for mixing and color hole effect
                                    starSpeed*meter);
 >>>>>>> Add configuration for star effect
 }

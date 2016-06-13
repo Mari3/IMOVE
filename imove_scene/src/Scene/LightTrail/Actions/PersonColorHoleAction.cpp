@@ -13,7 +13,7 @@ PersonColorHoleAction::PersonColorHoleAction(const std::shared_ptr<LightPerson> 
                   gravityPoints),
           colorHoles(colorHoles),
           lightTrails(
-                  lightTrails), lightPeople(lightPeople), config(config), effect(person->getLocation()) {
+                  lightTrails), lightPeople(lightPeople), config(config), effect(person->getLocation(), config) {
     ColorHole* hole = new ColorHole(person->getLocation(),util::Range(0,360,true),config.colorHoleGravity(),config.colorHoleGravityRange());
     colorHole = std::shared_ptr<ColorHole>(hole);
     colorHoles->add(colorHole);

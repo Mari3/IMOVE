@@ -23,8 +23,15 @@
 void LightTrailScene::draw(sf::RenderTarget &target) {
     //Slightly fade the current texture
     sf::RectangleShape rect(sf::Vector2f(config.screenWidth(), config.screenHeight()));
-    rect.setFillColor(sf::Color(0, 0, 0, config.fade()));
-    texture.draw(rect);
+    rect.setFillColor(sf::Color(0,0,0,config.fade()));
+
+    sf::BlendMode subtract(sf::BlendMode::Zero,sf::BlendMode::Factor::OneMinusSrcAlpha,sf::BlendMode::Add);
+
+    texture.draw(rect,subtract);
+
+    for(auto &action : actions){
+        action->draw(target);
+    }
 
     effect.draw(target);
 
@@ -58,10 +65,6 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
         hCircle.setPosition(sf::Vector2f(hole->location.x-20,hole->location.y-20));
         target.draw(hCircle);
     });*/
-
-    for(auto &action : actions){
-        action->draw(target);
-    }
 
 }
 

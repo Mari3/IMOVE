@@ -55,7 +55,8 @@ MixingAction::MixingAction(std::shared_ptr<LightPerson> person1, std::shared_ptr
                            GravityPointRepository* gravityPoints,
                            const LightTrailConfiguration &config) :
             person1(person1),person2(person2),config(config),trails(trails),gravityPoints(gravityPoints),
-            effect(MixingEffect(person1,person2))
+            effect(MixingEffect(person1, person2,
+                                config))
 {
     progress = 0;
 }
