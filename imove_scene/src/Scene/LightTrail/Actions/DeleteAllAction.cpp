@@ -4,7 +4,7 @@
 
 #include "DeleteAllAction.h"
 
-bool DeleteAllAction::isDone(Action *&followUp) {
+bool DeleteAllAction::isDone(std::vector<Action*> &followUp) {
     // This action is never done
     return false;
 }

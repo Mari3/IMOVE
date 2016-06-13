@@ -2,6 +2,7 @@
 #include <memory>
 #include <assert.h>
 #include "../../../../scene_interface/src/Vector2.h"
+#include "../../../../scene_interface/src/People.h"
 #include "LightTrailScene.h"
 #include "Actions/UpdateLightTrailsAction.h"
 #include "../Util/HueConverter.h"
@@ -9,6 +10,13 @@
 #include "Actions/AlternatingGravityPointAction.h"
 #include "Conditions/PersonChangedTypeCondition.h"
 #include "Actions/DeleteAllAction.h"
+#include "Conditions/PeopleEnteredMixingRangeCondition.h"
+#include "Repositories/LightsSceneVectorRepositories.h"
+#include "Actions/LightSourceEffectAction.h"
+#include "Conditions/FirstParticipantCondition.h"
+#include "Conditions/NoPeopleCondition.h"
+#include "Actions/LightSourceGravityPointAction.h"
+#include "Conditions/ColorHoleTimerCondition.h"
 
 void LightTrailScene::draw(sf::RenderTarget &target) {
 
@@ -17,15 +25,23 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
     rect.setFillColor(sf::Color(0, 0, 0, config.fade()));
     texture.draw(rect);
 
-    //Draw all light trails on the texture
-    lightTrails->for_each([&](std::shared_ptr<LightTrail> trail){
+    std::function<void(std::shared_ptr<LightTrail>)> func = [&](std::shared_ptr<LightTrail> trail){
+        Vector2 size = trail->getSize()*config.trailThickness();
 
-        sf::RectangleShape circle(sf::Vector2f(config.trailThickness(), config.trailThickness()) );
+        sf::RectangleShape circle(sf::Vector2f(size.x, size.y) );
+        circle.setRotation(trail->getAngle());
         circle.setPosition(trail->getLocation().x,trail->getLocation().y);
         circle.setFillColor(HueConverter::ToColor(trail->hue));
         texture.draw(circle);
 
-    });
+    };
+
+    //Draw all light trails on the texture
+    lightTrails->for_each(func);
+
+    for(auto &trails : sourceTrails){
+        trails->for_each(func);
+    }
 
     //Draw the texture onto the target
     texture.display();
@@ -51,6 +67,13 @@ void LightTrailScene::draw(sf::RenderTarget &target) {
 
     });
 
+    colorHoles->for_each([&](std::shared_ptr<ColorHole> hole){
+        sf::CircleShape hCircle(20);
+        hCircle.setFillColor(HueConverter::ToColor(hole->hue.getCenter()));
+        hCircle.setPosition(sf::Vector2f(hole->location.x-20,hole->location.y-20));
+        target.draw(hCircle);
+    });
+
 }
 
 LightTrailScene::LightTrailScene(const LightTrailConfiguration &config,
@@ -70,23 +93,33 @@ LightPersonRepository* lightPeople) : Scene(),
     assert(gravityPoints);
     assert(colorHoles);
     assert(lightPeople);
+    hueCounter = 0;
 
     //Initialize the light trail texture
     texture.create(config.screenWidth(),config.screenHeight());
+    texture.clear(sf::Color::Black);
 
     //Add Light sources on every corner
     lightSources->add(std::shared_ptr<LightSource>(
-            new LightSource(Vector2(0, 0),config.corner1Hue(),
-                            util::Range(0, 90,true),config.sendOutSpeed())));
+            new LightSource(Vector2(0, 0), config.cornerHues()[0], util::Range(0, 90, true),
+                            config.sendOutSpeed(), config.sendOutDelay()*config.trailCap()/4.f)));
     lightSources->add(std::shared_ptr<LightSource>(
-            new LightSource(Vector2(config.screenWidth(),0),config.corner2Hue(),
-                            util::Range(90, 180,true),config.sendOutSpeed())));
+            new LightSource(Vector2(config.screenWidth(), 0), config.cornerHues()[1], util::Range(90, 180, true),
+                            config.sendOutSpeed(), config.sendOutDelay()*config.trailCap()/4.f)));
     lightSources->add(std::shared_ptr<LightSource>(
-            new LightSource(Vector2(0, config.screenHeight()),config.corner3Hue(),
-                            util::Range(270, 0,true),config.sendOutSpeed())));
+            new LightSource(Vector2(0, config.screenHeight()), config.cornerHues()[2], util::Range(270, 0, true),
+                            config.sendOutSpeed(), config.sendOutDelay()*config.trailCap()/4.f)));
     lightSources->add(std::shared_ptr<LightSource>(
-            new LightSource(Vector2(config.screenWidth(), config.screenHeight()),config.corner4Hue(),
-                            util::Range(180, 270,true),config.sendOutSpeed())));
+            new LightSource(Vector2(config.screenWidth(), config.screenHeight()), config.cornerHues()[3],
+                            util::Range(180, 270, true),
+                            config.sendOutSpeed(), config.sendOutDelay()*config.trailCap()/4.f)));
+
+    for(int i=0;i<4;++i){
+        LightTrailRepository* sourceRepo = new LightTrailVectorRepository();
+        Action* sourceAction = new LightSourceEffectAction(lightSources->get(i),sourceRepo,config);
+        sourceTrails.push_back(sourceRepo);
+        actions.push_back(std::unique_ptr<Action>(sourceAction));
+    }
 
 
     //Add all the basic actions
@@ -97,30 +130,32 @@ LightPersonRepository* lightPeople) : Scene(),
     actions.push_back(std::unique_ptr<Action>(
             static_cast<Action*>(new UpdateLightSourcesAction(lightSources,lightTrails,config))));
     actions.push_back(std::unique_ptr<Action>(
-            static_cast<Action*>(new AlternatingGravityPointAction(util::Range(0,180,true),
-                                                        util::Range(0,config.screenWidth()),
-                                                        util::Range(0,config.screenHeight()),
-                                                        gravityPoints,lightPeople,config))));
-    actions.push_back(std::unique_ptr<Action>(
-            static_cast<Action*>(new AlternatingGravityPointAction(util::Range(180,0,true),
-                                                        util::Range(0,config.screenWidth()),
-                                                        util::Range(0,config.screenHeight()),
-                                                        gravityPoints,lightPeople,config))));
+            static_cast<Action*>(new LightSourceGravityPointAction(lightPeople,gravityPoints,config))
+    ));
 
     //Add all conditions
     conditions.push_back(std::unique_ptr<Condition>(
             static_cast<Condition*>(new PersonChangedTypeCondition(lightPeople,gravityPoints,config))));
+    conditions.push_back(std::unique_ptr<Condition>(
+            static_cast<Condition*>(new PeopleEnteredMixingRangeCondition(lightPeople,lightTrails,gravityPoints,config))
+    ));
+    /*conditions.push_back(std::unique_ptr<Condition>(
+            static_cast<Condition*>(new FirstParticipantCondition(lightPeople,config,gravityPoints))
+    ));*/
+    conditions.push_back(std::unique_ptr<Condition>(
+            static_cast<Condition*>(new NoPeopleCondition(lightPeople, gravityPoints, config, lightTrails))
+    ));
+    conditions.push_back(std::unique_ptr<Condition>(
+            static_cast<Condition*>(new ColorHoleTimerCondition(colorHoles,lightPeople,config,lightTrails,gravityPoints))
+    ));
 }
 
 void LightTrailScene::processPeople() {
     if(!peopleQueue.empty()) { //If people have been updated
 
         //Get the first update and pop it.
-        std::vector<scene_interface::Person> newPeople = peopleQueue.front();
+        scene_interface::People newPeople = peopleQueue.front();
         peopleQueue.pop();
-
-        //Set up tracking of people that are gone
-        std::map<unsigned int,bool> existingPeople;
 
         //Set up range for generating new hues
         util::Range hueDraw(0, 360, true);
@@ -129,7 +164,6 @@ void LightTrailScene::processPeople() {
 
             scene_interface::Person person = newPeople[i];
             unsigned int id = person.getId();
-            existingPeople[id] = true;
 
             if (lightPeople->has(id)) { //If the person currently exists
 
@@ -140,33 +174,30 @@ void LightTrailScene::processPeople() {
 									llocation.getX(),
 									llocation.getY()
 								));
-                lPerson->type = person.getPersonType();
+                lPerson->person_type = person.getPersonType();
 
-            } else {
+            } else if(person.getPersonType() != scene_interface::Person::PersonType::None) {
 
                 //Create a new person with randomly generated hue
-                float startHue = hueDraw.drawRandom();
-                float endHue = startHue + 90;
+                util::Range hue = config.cornerHues()[hueCounter];
+								std::cerr << "lb :" << hue.lowerBound << "ub: " << hue.upperBound << "hueCounter: " << hueCounter << std::endl;
 								scene_interface::Location llocation = person.getLocation();
                 lightPeople->add(
                         std::shared_ptr<LightPerson>(new LightPerson(Vector2(
 													llocation.getX(),
 													llocation.getY()
-												), id, person.getPersonType(), util::Range(startHue, endHue, true))));
+											  ), id, person.getPersonType(), person.getMovementType(), hue)));
+								hueCounter = (hueCounter + 1) % 4;
 
             }
         }
         lightPeople->for_each([&](std::shared_ptr<LightPerson> person){
-            if(existingPeople.count(person->getId()) == 0){ //If this person does not exist anymore
-                person->type = scene_interface::Person::PersonType::None;
-
+            if(person->person_type == scene_interface::Person::PersonType::None){ //If this person does not exist anymore
                 //Remove it from the list
                 lightPeople->scheduleForRemoval(person);
             }
         });
     }
-
-    //TODO remove people when they're gone
 }
 
 

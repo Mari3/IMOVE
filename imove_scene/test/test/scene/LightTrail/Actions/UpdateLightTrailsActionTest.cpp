@@ -11,7 +11,8 @@
 #include "../../../../../../scene_interface/src/Vector2.h"
 
 LightTrailConfiguration config2(800, 600, util::Range(0, 0), util::Range(0, 0), util::Range(0, 0), util::Range(0, 0),
-                               2.f,10,util::Range(0,400),0,0,0,0,0,0,400,.5,true,200,0,0);
+                                2.f, 10, util::Range(0, 400),
+                                0, 0, 0, 0, 0, 0, 400, .5, true, 200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 TEST (UpdateLightTrailsActionTest, OutsideProximityRange) {
 

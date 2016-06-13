@@ -3,8 +3,8 @@
 #include "Calibration/Calibration.hpp"
 #include "Scene/LightTrail/LightTrailConfiguration.h"
 #include "Scene/Scene.h"
-//#include <scene_interface/ExtractedpeopleQueue.hpp>
-#include "../../scene_interface_sma/src/ExtractedpeopleQueue.hpp"
+#include "../../scene_interface_sma/src/PeopleQueue.hpp"
+#include "../../peopleextractor_interface_sma/src/SceneframeQueue.hpp"
 
 // Setups people extractor and Scene, can let the Scene run using constant input of people extractor
 class ImoveSceneManager {
@@ -27,10 +27,19 @@ class ImoveSceneManager {
 		// shared memory segment
 		boost::interprocess::managed_shared_memory* segment;
 		// People extractor queue
-		boost::interprocess::offset_ptr<scene_interface_sma::ExtractedpeopleQueue> extractedpeople_queue;
+		boost::interprocess::offset_ptr<scene_interface_sma::PeopleQueue> si_people_queue;
+		// Scene frames queue
+		boost::interprocess::offset_ptr<peopleextractor_interface_sma::SceneframeQueue> pi_sceneframe_queue;
 		
 		/**
 		 * Receive extracted people from people extractor in shared memory queue and update scene
 		 **/
 		void receiveExtractedpeopleAndUpdateScene();
+
+		static void sendSceneFrameThread(ImoveSceneManager* imove_scene_manager, sf::Image sf_image);
+		
+		/**
+		 * Send scene frame to people extractor via shared memory queue
+		 **/
+		void sendSceneFrame(const sf::Image& frame_scene);
 };

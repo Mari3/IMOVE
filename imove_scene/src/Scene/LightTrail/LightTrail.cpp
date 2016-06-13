@@ -1,14 +1,23 @@
+#include <cmath>
 #include "LightTrail.h"
 
-LightTrail::LightTrail(Vector2 location, Vector2 speed, float hue) :
-    location(location),
+LightTrail::LightTrail(Vector2 location, Vector2 speed, float hue, float lifespan) :
+	  location(location),
+    hue(hue),
+    prevLocation(location),
+    prevPrevLocation(location),
     speed(speed),
-    hue(hue)
+    lifespan(lifespan)
 {
+    hasLifespan = lifespan > 0;
 }
 
 void LightTrail::applyForce(Vector2 force, float dt, float speedCap, bool sidesEnabled,
     unsigned int screenWidth, unsigned int screenHeight) {
+
+    prevPrevLocation = prevLocation;
+    prevLocation = location;
+
     //Increase the speed based on the force and delta time
     speed += force*dt;
 
@@ -46,6 +55,42 @@ Vector2 LightTrail::getLocation() {
 Vector2 LightTrail::getSpeed() {
     return speed;
 }
+
+bool LightTrail::tick(float dt) {
+    return hasLifespan && lifespan.update(dt);
+}
+
+float LightTrail::getAngle() {
+    Vector2 diff = location-prevLocation;
+    return static_cast<float>(atan2f(diff.y,diff.x)*180.f/M_PI);
+}
+
+Vector2 LightTrail::getSize() {
+    float sp = speed.size()/340.f*3.f;
+
+
+    Vector2 diff = location-prevLocation;
+    diff = diff/diff.size();
+    Vector2 prevDiff = prevLocation-prevPrevLocation;
+    prevDiff = prevDiff/prevDiff.size();
+
+    if(sp<1) sp = 1;
+    float th = 1.f/sp;
+
+    float angle = acosf(diff.x*prevDiff.x+diff.y*prevDiff.y);
+    if(angle > .2*M_PI){
+        //th *= 2;
+        //TODO do something with quick turning
+    }
+
+    return Vector2(sp,th);
+}
+
+
+
+
+
+
 
 
 

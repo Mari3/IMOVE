@@ -7,6 +7,7 @@
 
 #include <cstdint>
 #include <string>
+#include <vector>
 #include "../Util/Range.h"
 
 class LightTrailConfiguration {
@@ -15,7 +16,7 @@ private:
     unsigned int _screenWidth, _screenHeight;
 
     // Light source hues
-    util::Range _corner1Hue, _corner2Hue, _corner3Hue, _corner4Hue;
+    std::vector<util::Range> _cornerHues;
 
     // Light sources
     float _sendOutDelay;
@@ -23,10 +24,11 @@ private:
     util::Range _sendOutSpeed;
 
     // Player gravitation
-    float _participantGravity, _participantAntigravity, _bystanderGravity, _bystanderGravityDelay;
+    float _participantGravity, _participantAntigravity, _participantGravityRange,
+            _bystanderGravity, _bystanderGravityDelay, _bystanderGravityRange;
 
     // Other gravitation
-    float _alternatingGravity, _gravityPointDelay;
+    float _alternatingGravity, _gravityPointDelay, _alternatingGravityRange;
 
     // Orbiting
     float _proximityRange, _proximityModifier;
@@ -41,15 +43,36 @@ private:
     // Display
     uint8_t _fade;
 
+    // Mixing
+    float _mixingSpeed, _mixingDistance, _mixingRevertTime;
+
+    // Explosion
+    float _explosionAntigravity, _explosionGravity, _explosionExTime, _explosionInTime;
+
+    float _lightSourceGravity;
+
+    float _colorHoleDelay, _colorHoleGravity, _colorHoleRange, _colorHoleGravityRange;
+
 public:
 
 
-    LightTrailConfiguration(unsigned int _screenWidth, unsigned int _screenHeight, const util::Range &_corner1Hue,
-                            const util::Range &_corner2Hue, const util::Range &_corner3Hue,
-                            const util::Range &_corner4Hue, float _sendOutDelay, int _trailCap, const util::Range &_sendOutSpeed,
-                            float _participantGravity, float _participantAntigravity, float _bystanderGravity, float _bystanderGravityDelay,
-                            float _alternatingGravity, float _gravityPointDelay, float _proximityRange,
-                            float _proximityModifier, bool _sidesEnabled, float _speedCap, int _trailThickness, uint8_t _fade);
+    LightTrailConfiguration(unsigned int _screenWidth, unsigned int _screenHeight,
+                                const util::Range &_corner1Hue, const util::Range &_corner2Hue,
+                                const util::Range &_corner3Hue, const util::Range &_corner4Hue,
+                                float _sendOutDelay, int _trailCap,
+                                const util::Range &_sendOutSpeed, float _participantGravity,
+                                float _participantAntigravity, float _participantGravityRange,
+                                float _bystanderGravity, float _bystanderGravityDelay,
+                                float _bystanderGravityRange, float _alternatingGravity,
+                                float _gravityPointDelay, float _alternatingGravityRange,
+                                float _proximityRange, float _proximityModifier,
+                                bool _sidesEnabled, float _speedCap, int _trailThickness,
+                                uint8_t _fade, float _mixingSpeed, float _mixingDistance,
+                                float _mixingRevertTime, float _explosionAntigravity,
+                                float _explosionGravity, float _explosionExTime,
+                                float _explosionInTime, float _lightSourceGravity,
+                                float _colorHoleDelay, float _colorHoleGravity,
+                                float _colorHoleRange, float _colorHoleGravityRange);
 
     static LightTrailConfiguration readFromFile(char* fileName);
 
@@ -57,13 +80,7 @@ public:
 
     unsigned int screenHeight() const;
 
-    const util::Range & corner1Hue() const;
-
-    const util::Range & corner2Hue() const;
-
-    const util::Range & corner3Hue() const;
-
-    const util::Range & corner4Hue() const;
+    const std::vector<util::Range> & cornerHues() const;
 
     float sendOutDelay() const;
 
@@ -94,6 +111,38 @@ public:
     const util::Range & sendOutSpeed() const;
 
     int trailThickness() const;
+
+    float mixingSpeed() const;
+
+    float mixingDistance() const;
+
+    float mixingRevertTime() const;
+
+    float explosionAntigravity() const;
+
+    float explosionGravity() const;
+
+    float explosionExTime() const;
+
+    float explosionInTime() const;
+
+    float participantGravityRange() const;
+
+    float bystanderGravityRange() const;
+
+    float alternatingGravityRange() const;
+
+
+    float lightSourceGravity() const;
+
+    float colorHoleDelay() const;
+
+    float colorHoleGravity() const;
+
+    float colorHoleRange() const;
+
+
+    float colorHoleGravityRange() const;
 };
 
 

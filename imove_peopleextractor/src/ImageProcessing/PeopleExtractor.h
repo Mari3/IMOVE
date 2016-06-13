@@ -49,7 +49,7 @@ class PeopleExtractor {
   const scene_interface::People convert(std::vector<Person> people);
 
   // Display image processing results
-  void displayResults();
+  const cv::Mat getDebugFrame() const;
 };
 
 #endif  // IMOVE_SRC_IMAGE_PROCESSING_PEOPLEEXTRACTOR_H_

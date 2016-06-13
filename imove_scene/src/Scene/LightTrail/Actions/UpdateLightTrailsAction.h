@@ -9,7 +9,6 @@
 #include "../LightTrailConfiguration.h"
 #include "../../../../../scene_interface/src/Vector2.h"
 
-
 class UpdateLightTrailsAction : public Action {
 private:
     LightTrailRepository* lightTrails;
@@ -20,7 +19,7 @@ public:
     UpdateLightTrailsAction(LightTrailRepository* lightTrails, GravityPointRepository* gravityPoints,
     const LightTrailConfiguration& config);
 
-    bool isDone(Action *&followUp) override;
+    bool isDone(std::vector<Action*> &followUp) override;
     void execute(float dt) override;
 };
 

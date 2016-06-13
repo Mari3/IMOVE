@@ -11,8 +11,10 @@
 
 using namespace fakeit;
 
-LightTrailConfiguration agpat_config(800,600,util::Range(0,0),util::Range(0,0),util::Range(0,0),util::Range(0,0),
-                                     0,0,util::Range(0,0),500,100,0,2,400,5,0,0,0,0,0,0);
+LightTrailConfiguration agpat_config(800, 600, util::Range(0, 0), util::Range(0, 0), util::Range(0, 0),
+                                     util::Range(0, 0), 0, 0, util::Range(0, 0),
+                                     500, 100, 0, 2, 400, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                     0);
 
 TEST (AlternatingGravityPointActionTest, UpdateLocation) {
 
@@ -28,7 +30,8 @@ TEST (AlternatingGravityPointActionTest, UpdateLocation) {
     util::Range xRange(0,0,&xRandom.get());
     util::Range yRange(0,0,&yRandom.get());
 
-    AlternatingGravityPointAction action(util::Range(0,180),xRange,yRange,gravityPoints,lightPeople,agpat_config);
+    AlternatingGravityPointAction action(util::Range(0, 180), xRange,
+                                         yRange, gravityPoints, lightPeople, nullptr, agpat_config);
 
     ASSERT_EQ(gravityPoints->size(),1);
 

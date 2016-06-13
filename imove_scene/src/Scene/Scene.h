@@ -17,7 +17,7 @@ protected:
     virtual void processPeople() = 0;
 public:
     Scene();
-    void updatePeople(scene_interface::People newPeople);
+    void updatePeople(const scene_interface::People& newPeople);
     void update(float dt);
     virtual void draw(sf::RenderTarget &target) = 0;
 };

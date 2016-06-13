@@ -1,3 +1,3 @@
 #!/bin/bash
 set -e
-./dist/imove-peopleextractor ./config/test.yml
+./build/imove_peopleextractor/src/imove_peopleextractor ./config/test.yml

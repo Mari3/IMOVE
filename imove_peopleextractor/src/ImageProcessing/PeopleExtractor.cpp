@@ -100,6 +100,6 @@ const scene_interface::People PeopleExtractor::convert(std::vector<Person> peopl
   return interface_people;
 }
 
-void PeopleExtractor::displayResults() {
-  cv::imshow("Frame", results_frame);
+const cv::Mat PeopleExtractor::getDebugFrame() const {
+  return results_frame;
 }

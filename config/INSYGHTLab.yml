@@ -1,15 +1,20 @@
 %YAML:1.0
 Camera_device: 1
 Resolution_camera: [ 640, 480 ]
-Resolution_projector: [ 1024, 750 ]
+Resolution_projector: [ 1024, 768 ]
+Fullscreen_projector: 1
 Camera_projector_transformation: !!opencv-matrix
    rows: 3
    cols: 3
    dt: d
-   data: [ -3.3306444445123917e+00, -1.6732902711665134e+00,
-       1.8548661697348111e+03, 1.9639060287587879e+00,
-       -3.0446353818627325e+00, 4.3817183858212337e+02,
-       5.1679396744463892e-05, 5.8797712290749402e-04, 1. ]
-Frames_projector_camera_delay: 5
-Projector_background_light: 3.9000000000000001e-01
-Meter: 1.7700282287597656e+02
+   data: [ -3.1970687841633634e+00, -1.7778821531445050e+00,
+       1.7874577640395121e+03, 1.9898442129252283e+00,
+       -2.9056247881919548e+00, 3.9606944583634504e+02,
+       1.2719265575771022e-05, 5.3931494758457715e-04, 1. ]
+Frames_projector_camera_delay: 0
+Projector_background_light: 3.7999999523162842e-01
+Meter: 6.2369865417480469e+01
+Maximum_FPS_scene: 60
+FPS_capture_scene: 8
+Iterations_delay_peopleextracting: 5000
+Factor_resize_capture_scene: 10
