@@ -83,16 +83,6 @@ std::vector<Vector2> PeopleDetector::detect(cv::Mat& frame) {
     new_locations.push_back(new_location);
   }
 
-  cv::line(keypoints_frame, cv::Point(54, 37), cv::Point(272, 44), cv::Scalar(255, 0, 0));
-  cv::line(keypoints_frame, cv::Point(272, 44), cv::Point(282, 192), cv::Scalar(255, 0, 0));
-  cv::line(keypoints_frame, cv::Point(282, 192), cv::Point(49, 190), cv::Scalar(255, 0, 0));
-  cv::line(keypoints_frame, cv::Point(49, 190), cv::Point(54, 37), cv::Scalar(255, 0, 0));
-
-  cv::line(keypoints_frame, cv::Point(33, 33), cv::Point(350, 33), cv::Scalar(0, 255, 0));
-  cv::line(keypoints_frame, cv::Point(350, 33), cv::Point(350, 182), cv::Scalar(0, 255, 0));
-  cv::line(keypoints_frame, cv::Point(350, 182), cv::Point(33, 182), cv::Scalar(0, 255, 0));
-  cv::line(keypoints_frame, cv::Point(33, 182), cv::Point(33, 33), cv::Scalar(0, 255, 0));
-
   display_frame = keypoints_frame;
 
   // Return all new locations
