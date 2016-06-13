@@ -86,8 +86,8 @@ void ParticipantGravityPointAction::setLocation(float dt) {
                 gPointDirection = Vector2(0,-1);
         }
 
-        float x = px + 200.f*gPointDirection.x;
-        float y = py + 200.f*gPointDirection.y;
+        float x = px + config.participantGravityDistance()*gPointDirection.x;
+        float y = py + config.participantGravityDistance()*gPointDirection.y;
         gravityPoint->location.x = x;
         gravityPoint->location.y = y;
         antigravityPoint->location.x = x;
