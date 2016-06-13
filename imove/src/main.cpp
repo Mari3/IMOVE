@@ -21,6 +21,9 @@ int main(int argc, char* argv[]) {
 		std::cerr << "Usage: <path to configuration file> <path to configuration scene>" << std::endl;
 		return EXIT_SUCCESS;
 	}
+
+	std::string argv_str(argv[0]);
+  std::string base = argv_str.substr(0, argv_str.find_last_of("/"));
 	
 	// Newly create a new shared memory segment with certain size
 	boost::interprocess::shared_memory_object::remove(scene_interface_sma::NAME_SHARED_MEMORY);
@@ -35,10 +38,9 @@ int main(int argc, char* argv[]) {
 	pid_t pID_scene = fork();
 	if (pID_scene == 0) {
 		// replace process with imove_scene process
-		std::cerr << "Starting Scene" << std::endl;
-		//execl("./build/imove_scene/src/imove_scene", argv[CONFIGURATION_CALIBRATION_ARGN], argv[CONFIGURATION_LIGHTTRAIL_ARGN]);
-		system(("./build/imove_scene/src/imove_scene " + (std::string)argv[CONFIGURATION_CALIBRATION_ARGN] + " " + (std::string) argv[CONFIGURATION_LIGHTTRAIL_ARGN]).c_str());
-		std::cerr << "Ended Scene" << std::endl;
+		std::cout << "Starting Scene" << std::endl;
+		system((base + "/imove_scene " + (std::string)argv[CONFIGURATION_CALIBRATION_ARGN] + " " + (std::string) argv[CONFIGURATION_LIGHTTRAIL_ARGN]).c_str());
+		std::cout << "Ended Scene" << std::endl;
 		_exit(0);
 	} else if (pID_scene < 0) {
 		std::cerr << "Failing to create subprocess scene" << std::endl;
@@ -46,11 +48,10 @@ int main(int argc, char* argv[]) {
 		// fork to create subprocess peopleextractor
 		pid_t pID_peopleextractor = fork();
 		if (pID_peopleextractor == 0) {
-			std::cerr << "Starting Peopleextractor" << std::endl;
+			std::cout << "Starting Peopleextractor" << std::endl;
 			// replace process with imove_peopleextractor process
-			//execl("./build/imove_peopleextractor/src/imove_peopleextractor", argv[CONFIGURATION_CALIBRATION_ARGN]);
-			system(("./build/imove_peopleextractor/src/imove_peopleextractor " + (std::string) argv[CONFIGURATION_CALIBRATION_ARGN]).c_str());
-			std::cerr << "Ended Peopleextractor" << std::endl;
+			system((base + "/imove_peopleextractor " + (std::string) argv[CONFIGURATION_CALIBRATION_ARGN]).c_str());
+			std::cout << "Ended Peopleextractor" << std::endl;
 			_exit(0);
 		} else if (pID_peopleextractor < 0) {
 			std::cerr << "Failing to create subprocess people extractor" << std::endl;
