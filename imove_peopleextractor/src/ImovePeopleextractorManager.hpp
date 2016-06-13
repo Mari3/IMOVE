@@ -7,6 +7,7 @@
 //#include <scene_interface_sma/ExtractedpeopleQueue.hpp>
 #include "../../scene_interface_sma/src/ExtractedpeopleQueue.hpp"
 #include "../../peopleextractor_interface_sma/src/SceneframeQueue.hpp"
+#include "../../imove/src/Running.hpp"
 
 // Setups people extractor and Scene, can let the Scene run using constant input of people extractor
 class ImovePeopleextractorManager {
@@ -31,6 +32,7 @@ class ImovePeopleextractorManager {
 		boost::interprocess::offset_ptr<scene_interface_sma::ExtractedpeopleQueue> extractedpeople_queue;
 		// shared memory people extractor scene frame queue
 		boost::interprocess::offset_ptr<peopleextractor_interface_sma::SceneframeQueue> pi_sceneframe_queue;
+		boost::interprocess::offset_ptr<Running> running;
 
 		bool still_run_receive_scene_frames = true;
 		
