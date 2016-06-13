@@ -5,6 +5,7 @@
 #ifndef IMOVE_MIXINGEFFECT_H
 #define IMOVE_MIXINGEFFECT_H
 
+#include <memory>
 
 #include "../LightPerson.h"
 #include "Effect.h"
