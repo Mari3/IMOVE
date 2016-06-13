@@ -58,21 +58,8 @@ const scene_interface::People PeopleExtractor::extractPeople(cv::Mat& new_frame)
   return this->convert(people);
 }
 
-scene_interface::People PeopleExtractor::convert(std::vector<Person> people) {
-  std::vector<scene_interface::Person interface_people;
-  for (Person person : people) {
-    scene_interface::Person new_interface_person = scene_interface::Person(person.getId(), person.getLocation(), person.getPersonType(), person.getMovementType());
-    interface_people.push_back(new_interface_person);
-  }
-  return interface_people;
-}
-
-void PeopleExtractor::displayResults() {
-  cv::imshow("Frame", results_frame);
-}
-
-const std::vector<scene_interface::Person> PeopleExtractor::convert(std::vector<Person> people) {
-  std::vector<scene_interface::Person> interface_people;
+const scene_interface::People PeopleExtractor::convert(std::vector<Person> people) {
+  scene_interface::People interface_people;
   for (Person person : people) {
 	  scene_interface::Person::PersonType interface_person_type;
       switch (person.person_type) {
@@ -98,7 +85,7 @@ const std::vector<scene_interface::Person> PeopleExtractor::convert(std::vector<
 			  interface_movement_type = scene_interface::Person::MovementType::Moving;
 			  break;
       }
-		
+
 		Vector2 location = person.getLocation();
 	  interface_people.push_back(scene_interface::Person(
 	      person.getId(),
@@ -111,4 +98,8 @@ const std::vector<scene_interface::Person> PeopleExtractor::convert(std::vector<
 	  ));
   }
   return interface_people;
+}
+
+void PeopleExtractor::displayResults() {
+  cv::imshow("Frame", results_frame);
 }
