@@ -7,7 +7,7 @@
 #include "OpenCVUtil.hpp"
 #include "../../scene_interface/src/Person.h"
 #include "../../scene_interface/src/Vector2.h"
-#include "Windows/FrameWindow.hpp"
+#include "Windows/PeopleextractorWindow.hpp"
 #include "Windows/DetectedPeopleCameraWindow.hpp"
 #include "Windows/DetectedPeopleProjectionWindow.hpp"
 #include "Windows/ImageWindow.hpp"
@@ -41,7 +41,7 @@ void ImovePeopleextractorManager::receiveSceneFrameAndFeedProjectionThread(Imove
 
 void ImovePeopleextractorManager::run() {
 	// debug windows
-	FrameWindow window_frame(cv::Size(0, 0));
+	PeopleextractorWindow window_peopleextractor(cv::Size(0, 0), this->people_extractor);
 	DetectedPeopleCameraWindow detectedpeople_camera_window(cv::Size(300, 0));
 	ImageWindow eliminatedprojection_camera_window("Eliminated projection camera frame", cv::Size(600, 0));
 	DetectedPeopleProjectionWindow detectedpeople_projection_window(cv::Size(900, 0));
@@ -78,7 +78,7 @@ void ImovePeopleextractorManager::run() {
 		// extract people from camera frame
 		detectpeople_frame = frame_eliminatedprojection.clone();
 		extractedpeople = this->people_extractor->extractPeople(detectpeople_frame);
-		this->people_extractor->displayResults();
+		window_peopleextractor.drawFrame();
 
 		// draw detected people camera image
 		detectedpeople_camera_window.drawImage(frame_camera, extractedpeople);
