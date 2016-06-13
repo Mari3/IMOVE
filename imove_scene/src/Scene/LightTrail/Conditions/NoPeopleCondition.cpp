@@ -25,6 +25,6 @@ int NoPeopleCondition::check(float dt, std::vector<Action *> &actions) {
 }
 
 NoPeopleCondition::NoPeopleCondition(LightPersonRepository *lightPeople, GravityPointRepository *gravityPoints,
-                                     const LightTrailConfiguration &config, LightTrailRepository *lightTrails)
+                                     const LightTrailSceneConfiguration &config, LightTrailRepository *lightTrails)
         : lightPeople(lightPeople), gravityPoints(gravityPoints),
           config(config), lightTrails(lightTrails) { }

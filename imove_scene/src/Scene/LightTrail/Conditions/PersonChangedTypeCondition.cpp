@@ -34,7 +34,7 @@ PersonChangedTypeCondition::PersonChangedTypeCondition(LightPersonRepository *li
                                                        GravityPointRepository *gravityPoints,
                                                        LightTrailRepository *lightTrails,
                                                        LightSourceRepository *lightSources,
-                                                       const LightTrailConfiguration &config,
+                                                       const LightTrailSceneConfiguration &config,
                                                        sf::RenderTexture &texture) :
         lightPeople(lightPeople),
         gravityPoints(gravityPoints),

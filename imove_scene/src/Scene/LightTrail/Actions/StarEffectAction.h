@@ -6,7 +6,7 @@
 #define IMOVE_STAREFFECTACTION_H
 
 
-#include "../Configuration/LightTrailConfiguration.h"
+#include "../Configuration/LightTrailSceneConfiguration.h"
 #include "../Effects/StarEffect.h"
 #include "../../Action.h"
 
@@ -14,7 +14,7 @@ class StarEffectAction : public Action{
 private:
     StarEffect effect;
 public:
-    StarEffectAction(const LightTrailConfiguration &config);
+    StarEffectAction(const LightTrailSceneConfiguration &config);
 
     bool isDone(std::vector<Action *> &followUp) override;
 

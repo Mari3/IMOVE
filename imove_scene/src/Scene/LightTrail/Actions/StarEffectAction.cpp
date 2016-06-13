@@ -16,7 +16,7 @@ void StarEffectAction::draw(sf::RenderTarget &target) {
     effect.draw(target);
 }
 
-StarEffectAction::StarEffectAction(const LightTrailConfiguration &config) : effect(config) {
+StarEffectAction::StarEffectAction(const LightTrailSceneConfiguration &config) : effect(config) {
 
 }
 

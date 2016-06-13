@@ -11,7 +11,7 @@ void UpdateLightTrailsAction::execute(float dt) {
         // Calculate the force based on the gravity points
         Vector2 force = calculateForce(*(lightTrail.get()));
         // Apply said force
-        lightTrail->applyForce(force,dt,config.speedCap(),config.sidesEnabled(),config.screenWidth(),config.screenHeight());
+        lightTrail->applyForce(force,dt,config.trail().trail().speedCap,config.trail().sidesEnabled(),config.screenWidth(),config.screenHeight());
         if(lightTrail->tick(dt)){
             lightTrails->scheduleForRemoval(lightTrail);
         }
@@ -19,7 +19,7 @@ void UpdateLightTrailsAction::execute(float dt) {
 }
 
 UpdateLightTrailsAction::UpdateLightTrailsAction(LightTrailRepository* lightTrails, GravityPointRepository* gravityPoints,
-                                                 const LightTrailConfiguration& config) :
+                                                 const LightTrailSceneConfiguration& config) :
     lightTrails(lightTrails), gravityPoints(gravityPoints), config(config)
 {
 }

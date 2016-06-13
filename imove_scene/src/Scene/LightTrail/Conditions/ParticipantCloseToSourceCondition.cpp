@@ -7,7 +7,7 @@
 
 ParticipantCloseToSourceCondition::ParticipantCloseToSourceCondition(LightPersonRepository *lightPeople,
                                                                      LightSourceRepository *lightSources,
-                                                                     const LightTrailConfiguration &config)
+                                                                     const LightTrailSceneConfiguration &config)
         : lightPeople(lightPeople), lightSources(lightSources), config(config) { }
 
 int ParticipantCloseToSourceCondition::check(float dt, std::vector<Action *> &actions) {

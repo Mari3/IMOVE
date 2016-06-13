@@ -17,11 +17,11 @@ class LightSourceEffectAction : public Action {
 private:
     GravityPoint gravityPoint;
     LightTrailRepository* myLightTrails;
-    LightTrailConfiguration config;
+    LightTrailSceneConfiguration config;
     LightTrailEffect effect;
 public:
     LightSourceEffectAction(std::shared_ptr<LightSource> source, LightTrailRepository *myLightTrails,
-                            const LightTrailConfiguration& config, sf::RenderTexture &texture
+                            const LightTrailSceneConfiguration& config, sf::RenderTexture &texture
     );
 
     bool isDone(std::vector<Action *> &followUp) override;

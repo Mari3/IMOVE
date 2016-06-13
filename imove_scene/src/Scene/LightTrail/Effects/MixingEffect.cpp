@@ -6,7 +6,7 @@
 #include "../../Util/HueConverter.h"
 
 MixingEffect::MixingEffect(const std::shared_ptr<LightPerson> &person1, const std::shared_ptr<LightPerson> &person2,
-                           const LightTrailConfiguration &config)
+                           const LightTrailSceneConfiguration &config)
         : person1(person1), person2(person2),
           prevColor1(sf::Color::Transparent),
           currentColor1(HueConverter::ToColor(person1->hue.getCenter())),
@@ -49,7 +49,7 @@ void MixingEffect::draw(sf::RenderTarget &target) {
     sf::Vector2f p2Loc(person2->getLocation().x,person2->getLocation().y);
 
     float split = (1-leftInCycle/cycle)*dist;
-    float thickness = config.mixingEffectThickness();
+    float thickness = config.effect().mixing().thickness;
 
     vertices.append(sf::Vertex(p1Loc,currentColor1));
     vertices.append(sf::Vertex(p1Loc+x*split,currentColor1));

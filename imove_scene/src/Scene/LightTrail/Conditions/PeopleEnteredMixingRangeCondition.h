@@ -7,7 +7,7 @@
 
 
 #include <set>
-#include "../Configuration/LightTrailConfiguration.h"
+#include "../Configuration/LightTrailSceneConfiguration.h"
 #include "../Repositories/LightsSceneRepositories.h"
 #include "../../Condition.h"
 
@@ -16,11 +16,11 @@ private:
     LightPersonRepository* lightPeople;
     LightTrailRepository* lightTrails;
     GravityPointRepository* gravityPoints;
-    LightTrailConfiguration config;
+    LightTrailSceneConfiguration config;
     std::set<std::pair<int,int>> withinRange;
 public:
     PeopleEnteredMixingRangeCondition(LightPersonRepository* lightPeople, LightTrailRepository* lightTrails,
-                                      GravityPointRepository* gravityPoints, const LightTrailConfiguration& config);
+                                      GravityPointRepository* gravityPoints, const LightTrailSceneConfiguration& config);
     int check(float dt, std::vector<Action *> &actions) override;
 
 };

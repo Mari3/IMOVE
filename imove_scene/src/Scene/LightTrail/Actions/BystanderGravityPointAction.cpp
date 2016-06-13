@@ -1,15 +1,15 @@
 #include "BystanderGravityPointAction.h"
-#include "../Configuration/LightTrailConfiguration.h"
+#include "../Configuration/LightTrailSceneConfiguration.h"
 #include "../../../../../scene_interface/src/Person.h"
 
-BystanderGravityPointAction::BystanderGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints, const LightTrailConfiguration &config)
+BystanderGravityPointAction::BystanderGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints, const LightTrailSceneConfiguration &config)
   : gravityPoints(gravityPoints),
 		person(person),
-		timer(Timer(config.bystanderGravityDelay(), true)),
+		timer(Timer(config.gravity().bystander().delay, true)),
 		config(config)
 {
-    gravityPoint = std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(0,0),person->hue,config.bystanderGravity(),
-    config.bystanderGravityRange()));
+    gravityPoint = std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(0,0),person->hue,config.gravity().bystander().gravity,
+    config.gravity().bystander().range));
     setLocation();
 
     // Register the gravity point
@@ -60,7 +60,7 @@ void BystanderGravityPointAction::execute(float dt) {
             gravityPointActive = false;
         }else{
             //gravityPoints->add(gravityPoint);
-            gravityPoint->gravity = config.bystanderGravity();
+            gravityPoint->gravity = config.gravity().bystander().gravity;
             gravityPointActive = true;
         }
     }

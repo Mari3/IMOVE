@@ -5,7 +5,7 @@
 #include <math.h>
 #include "ColorHoleEffect.h"
 #include "../../Util/HueConverter.h"
-#include "../Configuration/LightTrailConfiguration.h"
+#include "../Configuration/LightTrailSceneConfiguration.h"
 
 void ColorHoleEffect::update(float dt) {
     int removecount = 0;
@@ -33,7 +33,7 @@ void ColorHoleEffect::draw(sf::RenderTarget &target) {
     for(auto &circle : circles){
         sf::CircleShape circleShape(circle.radius);
         circleShape.setFillColor(sf::Color::Transparent);
-        int thickness = static_cast<int>(config.colorHoleEffectThickness()*circle.radius);
+        int thickness = static_cast<int>(config.effect().colorHole().thickness*circle.radius);
         if(thickness == 0) thickness = 1;
         circleShape.setOutlineThickness(thickness);
         circleShape.setOutlineColor(circle.color);
@@ -50,8 +50,8 @@ void ColorHoleEffect::addCircle() {
     circles.push_back(ColorCircle(color,200));
 }
 
-ColorHoleEffect::ColorHoleEffect(const Vector2 &location, const LightTrailConfiguration &config)
-        : timer(config.colorHoleEffectPeriod(), true), location(location), config(config) {
+ColorHoleEffect::ColorHoleEffect(const Vector2 &location, const LightTrailSceneConfiguration &config)
+        : timer(config.effect().colorHole().period, true), location(location), config(config) {
     addCircle();
 }
 

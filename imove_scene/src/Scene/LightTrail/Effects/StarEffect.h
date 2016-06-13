@@ -8,7 +8,7 @@
 
 #include "Effect.h"
 #include "../../../../../scene_interface/src/Vector2.h"
-#include "../Configuration/LightTrailConfiguration.h"
+#include "../Configuration/LightTrailSceneConfiguration.h"
 
 using namespace scene_interface;
 
@@ -23,9 +23,9 @@ struct Star {
 class StarEffect : public Effect {
 private:
     std::vector<Star> stars;
-    LightTrailConfiguration config;
+    LightTrailSceneConfiguration config;
 public:
-    StarEffect(const LightTrailConfiguration &config);
+    StarEffect(const LightTrailSceneConfiguration &config);
 
     void update(float dt) override;
 

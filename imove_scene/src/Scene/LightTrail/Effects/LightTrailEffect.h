@@ -13,11 +13,11 @@
 class LightTrailEffect : public Effect {
 private:
     LightTrailRepository *trails;
-    LightTrailConfiguration config;
+    LightTrailSceneConfiguration config;
     sf::RenderTexture &texture;
 public:
 
-    LightTrailEffect(LightTrailRepository *trails, const LightTrailConfiguration &config,
+    LightTrailEffect(LightTrailRepository *trails, const LightTrailSceneConfiguration &config,
                          sf::RenderTexture &texture);
 
     void update(float dt) override;

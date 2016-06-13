@@ -8,7 +8,7 @@
 
 #include "../../Action.h"
 #include "../LightPerson.h"
-#include "../Configuration/LightTrailConfiguration.h"
+#include "../Configuration/LightTrailSceneConfiguration.h"
 #include "../Repositories/LightsSceneRepositories.h"
 #include "../Effects/MixingEffect.h"
 
@@ -17,14 +17,14 @@ class MixingAction : public Action {
 private:
     std::shared_ptr<LightPerson> person1, person2;
     float progress;
-    LightTrailConfiguration config;
+    LightTrailSceneConfiguration config;
     LightTrailRepository* trails;
     GravityPointRepository* gravityPoints;
     bool mixingComplete = false;
     MixingEffect effect;
 public:
     MixingAction(std::shared_ptr<LightPerson> person1, std::shared_ptr<LightPerson> person2, LightTrailRepository* trails,
-                 GravityPointRepository* gravityPoints, const LightTrailConfiguration& config);
+                 GravityPointRepository* gravityPoints, const LightTrailSceneConfiguration& config);
     bool isDone(std::vector<Action*> &followUp) override;
 
     void execute(float dt) override;

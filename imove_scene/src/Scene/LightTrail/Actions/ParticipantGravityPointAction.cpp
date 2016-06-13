@@ -5,7 +5,7 @@
 
 ParticipantGravityPointAction::ParticipantGravityPointAction(std::shared_ptr<LightPerson> person,
                                                              GravityPointRepository* gravityPoints,
-                                                             const LightTrailConfiguration& config)
+                                                             const LightTrailSceneConfiguration& config)
 	: gravityPoints(gravityPoints), person(person), config(config), prevLocation(person->getLocation()),
       prevDirection(0,0), baseDirection(0,0)
 {
@@ -13,14 +13,14 @@ ParticipantGravityPointAction::ParticipantGravityPointAction(std::shared_ptr<Lig
 
     //Create the gravity point
     gravityPoint = std::shared_ptr<GravityPoint>(new GravityPoint(
-            Vector2(0,0),person->hue,config.participantGravity(),config.participantGravityRange()));
+            Vector2(0,0),person->hue,config.gravity().participant().gravity,config.gravity().participant().range));
 
     //Create the anti gravity point
     util::Range antiHue = person->hue;
     // Set the hue to the other side of the spectrum
     antiHue += 180;
     antigravityPoint = std::shared_ptr<GravityPoint>(
-            new GravityPoint(Vector2(0,0),antiHue,-config.participantAntigravity(),config.participantGravityRange())
+            new GravityPoint(Vector2(0,0),antiHue,-config.gravity().participant().antigravity,config.gravity().participant().range)
     );
 
     // Register the gravity point
@@ -86,8 +86,8 @@ void ParticipantGravityPointAction::setLocation(float dt) {
                 gPointDirection = Vector2(0,-1);
         }
 
-        float x = px + config.participantGravityDistance()*gPointDirection.x;
-        float y = py + config.participantGravityDistance()*gPointDirection.y;
+        float x = px + config.gravity().participant().distance*gPointDirection.x;
+        float y = py + config.gravity().participant().distance*gPointDirection.y;
         gravityPoint->location.x = x;
         gravityPoint->location.y = y;
         antigravityPoint->location.x = x;
@@ -115,13 +115,13 @@ void ParticipantGravityPointAction::execute(float dt) {
     setLocation(dt);
 
     if(person->type == StandingStill){
-        gravityPoint->gravity -= config.participantGravity()/config.standingStillFadeTime()*dt;
-        antigravityPoint->gravity += config.participantAntigravity()/config.standingStillFadeTime()*dt;
+        gravityPoint->gravity -= config.gravity().participant().gravity/config.effect().standingStillFadeTime()*dt;
+        antigravityPoint->gravity += config.gravity().participant().antigravity/config.effect().standingStillFadeTime()*dt;
         if(gravityPoint->gravity < 0)gravityPoint->gravity = 0;
         if(antigravityPoint->gravity > 0)antigravityPoint->gravity = 0;
     }else{
-        gravityPoint->gravity = config.participantGravity();
-        antigravityPoint->gravity = -config.participantAntigravity();
+        gravityPoint->gravity = config.gravity().participant().gravity;
+        antigravityPoint->gravity = -config.gravity().participant().antigravity;
     }
 
     gravityPoint->hue = person->hue;

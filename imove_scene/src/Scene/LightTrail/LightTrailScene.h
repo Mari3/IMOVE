@@ -10,7 +10,7 @@
 #include "Repositories/LightsSceneRepositories.h"
 #include "Effects/Effect.h"
 #include "Effects/LightTrailEffect.h"
-#include "Configuration/LightTrailConfiguration.h"
+#include "Configuration/LightTrailSceneConfiguration.h"
 
 class LightTrailScene : public Scene{
 private:
@@ -20,12 +20,12 @@ private:
     ColorHoleRepository* colorHoles;
     LightPersonRepository* lightPeople;
     std::vector<LightTrailRepository*> sourceTrails;
-    LightTrailConfiguration config;
+    LightTrailSceneConfiguration config;
     sf::RenderTexture texture;
     LightTrailEffect effect;
     int hueCounter;
 public:
-    LightTrailScene(const LightTrailConfiguration &config,
+    LightTrailScene(const LightTrailSceneConfiguration &config,
                     LightSourceRepository* lightSources, LightTrailRepository* lightTrails,
                     GravityPointRepository* gravityPoints, ColorHoleRepository* colorHoles,
                     LightPersonRepository* lightPeople);

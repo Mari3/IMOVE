@@ -5,14 +5,14 @@
 #include <time.h>
 #include <cstdlib>
 #include <sstream>
-#include "../../src/Scene/LightTrail/Configuration/LightTrailConfiguration.h"
+#include "../../src/Scene/LightTrail/Configuration/LightTrailSceneConfiguration.h"
 #include "../../src/Scene/LightTrail/LightTrailScene.h"
 #include "../../src/Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 
 int main(int argc, char* argv[]){
     srand(static_cast<unsigned int>(time(NULL)));
 
-    LightTrailConfiguration config = LightTrailConfiguration::readFromFile(argv[1]);
+    LightTrailSceneConfiguration config = LightTrailSceneConfiguration::readFromFile(argv[1]);
 
     int controllercount = 1;
     if(argc == 3){

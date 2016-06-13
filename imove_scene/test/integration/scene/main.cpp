@@ -5,7 +5,7 @@
 #include <sstream>
 #include <vector>
 #include "SFML/Graphics.hpp"
-#include "../../../src/Scene/LightTrail/Configuration/LightTrailConfiguration.h"
+#include "../../../src/Scene/LightTrail/Configuration/LightTrailSceneConfiguration.h"
 #include "../../../src/Scene/LightTrail/LightTrailScene.h"
 #include "../../../src/Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 #include "../../../src/Scene/Util/Timer.h"
@@ -33,7 +33,7 @@ struct MixingFailsScenario : public Scenario {
     Timer timer;
     bool timerDone = false;
 
-    MixingFailsScenario(const LightTrailConfiguration& config): timer(10.f){
+    MixingFailsScenario(const LightTrailSceneConfiguration& config): timer(10.f){
         unsigned int y = config.screenHeight()/2;
         thresh = config.screenWidth()/4.f;
         people.push_back(TestingPerson(0,si::Location(0,y),si::Person::PersonType::Participant,si::Person::MovementType::Moving));
@@ -62,7 +62,7 @@ struct MixingScenario : public Scenario {
 
     float thresh;
 
-    MixingScenario(const LightTrailConfiguration& config){
+    MixingScenario(const LightTrailSceneConfiguration& config){
         unsigned int y = config.screenHeight()/2;
         thresh = 340.f;
         people.push_back(TestingPerson(0,si::Location(0,y),si::Person::PersonType::Participant,si::Person::MovementType::Moving));
@@ -81,7 +81,7 @@ struct MixingScenario : public Scenario {
 
 struct ManyScenario : public Scenario {
 
-    ManyScenario(const LightTrailConfiguration &config){
+    ManyScenario(const LightTrailSceneConfiguration &config){
         util::Range xRange(0,config.screenWidth());
         util::Range yRange(0,config.screenHeight());
         for(int i=0;i<10;++i){
@@ -101,7 +101,7 @@ struct FirstPersonScenario : public Scenario {
     bool timer2Done = false;
     float sh;
 
-    FirstPersonScenario(const LightTrailConfiguration &config) : timer(5.f) {
+    FirstPersonScenario(const LightTrailSceneConfiguration &config) : timer(5.f) {
         sh = config.screenHeight();
     }
 
@@ -139,7 +139,7 @@ struct RestartAlternatingScenario : public Scenario {
     bool timer2Done = false;
     float sh;
 
-    RestartAlternatingScenario(const LightTrailConfiguration &config) : timer(10.f) {
+    RestartAlternatingScenario(const LightTrailSceneConfiguration &config) : timer(10.f) {
         sh = config.screenHeight();
     }
 
@@ -173,7 +173,7 @@ struct RestartAlternatingScenario : public Scenario {
 
 struct BystanderScenario : public Scenario {
 
-    BystanderScenario(const LightTrailConfiguration &config, Scene *scene) {
+    BystanderScenario(const LightTrailSceneConfiguration &config, Scene *scene) {
         for(int i=0;i<300;++i)
             scene->update(.1f);
         people.push_back(TestingPerson(0,
@@ -194,7 +194,7 @@ struct ColorHoleScenario : public Scenario {
     float thresh;
     Timer timer;
 
-    ColorHoleScenario(const LightTrailConfiguration& config) : timer(20.f) {
+    ColorHoleScenario(const LightTrailSceneConfiguration& config) : timer(20.f) {
         srand(36);
         unsigned int y = config.screenHeight()/4*3;
         thresh = 340.f;
@@ -232,7 +232,7 @@ struct SourceColorScenario : public Scenario {
 
     float thresh;
 
-    SourceColorScenario(const LightTrailConfiguration& config) {
+    SourceColorScenario(const LightTrailSceneConfiguration& config) {
         people.push_back(Person(Vector2(20,config.screenHeight()/2),Participant));
         thresh = config.screenHeight()-50;
     }
@@ -249,7 +249,7 @@ struct StandingStillScenario : public Scenario {
 
     Timer timer;
 
-    StandingStillScenario(const LightTrailConfiguration& config) : timer (30.f) {
+    StandingStillScenario(const LightTrailSceneConfiguration& config) : timer (30.f) {
         people.push_back(Person(Vector2(config.screenWidth()/2,config.screenHeight()/2),Participant));
     }
 
@@ -280,7 +280,7 @@ int main(int argc, char** argv){
 
     srand(static_cast<unsigned int>(time(NULL)));
 
-    LightTrailConfiguration config = LightTrailConfiguration::readFromFile(argv[1]);
+    LightTrailSceneConfiguration config = LightTrailSceneConfiguration::readFromFile(argv[1]);
 
     int scenarioCode = 0;
     if(argc == 3){

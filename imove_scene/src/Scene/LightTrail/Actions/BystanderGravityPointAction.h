@@ -7,7 +7,7 @@
 #include "../LightPerson.h"
 #include "../../Util/Timer.h"
 #include "../Repositories/LightsSceneRepositories.h"
-#include "../Configuration/LightTrailConfiguration.h"
+#include "../Configuration/LightTrailSceneConfiguration.h"
 
 class BystanderGravityPointAction : public Action {
 private:
@@ -16,11 +16,11 @@ private:
     std::shared_ptr<LightPerson> person;
     Timer timer;
     bool gravityPointActive;
-    LightTrailConfiguration config;
+    LightTrailSceneConfiguration config;
     void setLocation();
 public:
     explicit BystanderGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints,
-    const LightTrailConfiguration &config);
+    const LightTrailSceneConfiguration &config);
 
     bool isDone(std::vector<Action*> &followUp) override;
 

@@ -7,9 +7,9 @@
 
 InitiateParticipantAction::InitiateParticipantAction(LightTrailRepository *globalTrails, LightTrailRepository *myTrails,
                                                      LightSourceRepository *sources, const std::shared_ptr<LightPerson> &person,
-                                                     const LightTrailConfiguration& config, sf::RenderTexture &texture
+                                                     const LightTrailSceneConfiguration& config, sf::RenderTexture &texture
 ) : globalTrails(globalTrails), myTrails(myTrails), sources(sources), person(person),
-    gravityPoint(person->getLocation(),person->hue,config.participantGravity()),
+    gravityPoint(person->getLocation(),person->hue,config.gravity().participant().gravity),
     config(config), effect(myTrails,config,texture) {
 
     sources->for_each([&](std::shared_ptr<LightSource> source){
@@ -48,7 +48,7 @@ void InitiateParticipantAction::execute(float dt) {
 
     myTrails->for_each([&](std::shared_ptr<LightTrail> trail){
         Vector2 force = gravityPoint.calculateForce(*trail,config);
-        trail->applyForce(force,dt,config.speedCap(),config.sidesEnabled(),config.screenWidth(),config.screenHeight());
+        trail->applyForce(force,dt,config.trail().trail().speedCap,config.trail().sidesEnabled(),config.screenWidth(),config.screenHeight());
     });
 
 }

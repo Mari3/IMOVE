@@ -6,7 +6,7 @@
 #include "../../Action.h"
 #include "../LightPerson.h"
 #include "../Repositories/LightsSceneRepositories.h"
-#include "../Configuration/LightTrailConfiguration.h"
+#include "../Configuration/LightTrailSceneConfiguration.h"
 
 class ParticipantGravityPointAction : public Action {
 private:
@@ -14,14 +14,14 @@ private:
     std::shared_ptr<GravityPoint> gravityPoint;
     std::shared_ptr<GravityPoint> antigravityPoint;
     std::shared_ptr<LightPerson> person;
-    LightTrailConfiguration config;
+    LightTrailSceneConfiguration config;
     Vector2 prevLocation;
     Vector2 prevDirection, baseDirection;
     bool fixed = false;
     void setLocation(float dt);
 public:
     explicit ParticipantGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints,
-    const LightTrailConfiguration& config);
+    const LightTrailSceneConfiguration& config);
 
     bool isDone(std::vector<Action*> &followUp) override;
 

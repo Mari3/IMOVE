@@ -4,12 +4,12 @@
 
 #include "StarEffect.h"
 
-StarEffect::StarEffect(const LightTrailConfiguration &config) : config(config) {
+StarEffect::StarEffect(const LightTrailSceneConfiguration &config) : config(config) {
     util::Range xRange(0,config.screenWidth());
     util::Range yRange(0,config.screenHeight());
-    util::Range speedRange(-config.starSpeed(),config.starSpeed());
+    util::Range speedRange(-config.effect().star().speed,config.effect().star().speed);
 
-    for(int i=0;i<config.starAmount();++i){
+    for(int i=0;i<config.effect().star().amount;++i){
         float speed = speedRange.drawRandom();
         Vector2 loc(xRange.drawRandom(),yRange.drawRandom());
         int size = rand()%4+1;

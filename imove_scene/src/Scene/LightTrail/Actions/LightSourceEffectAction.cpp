@@ -5,7 +5,7 @@
 #include "LightSourceEffectAction.h"
 
 LightSourceEffectAction::LightSourceEffectAction(std::shared_ptr<LightSource> source, LightTrailRepository *myLightTrails,
-                                                 const LightTrailConfiguration& config, sf::RenderTexture &texture
+                                                 const LightTrailSceneConfiguration& config, sf::RenderTexture &texture
 )
         : gravityPoint(source->getLocation(),source->getHue(),20000),
           myLightTrails(myLightTrails),
@@ -32,7 +32,7 @@ bool LightSourceEffectAction::isDone(std::vector<Action *> &followUp) {
 void LightSourceEffectAction::execute(float dt) {
     myLightTrails->for_each([&](std::shared_ptr<LightTrail> trail){
         Vector2 force = gravityPoint.calculateForce(*trail,config);
-        trail->applyForce(force,dt,config.speedCap(),config.sidesEnabled(),config.screenWidth(),config.screenHeight());
+        trail->applyForce(force,dt,config.trail().trail().speedCap,config.trail().sidesEnabled(),config.screenWidth(),config.screenHeight());
     });
 }
 

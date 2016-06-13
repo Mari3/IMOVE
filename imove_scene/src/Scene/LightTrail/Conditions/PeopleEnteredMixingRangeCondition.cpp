@@ -9,7 +9,7 @@
 PeopleEnteredMixingRangeCondition::PeopleEnteredMixingRangeCondition(LightPersonRepository *lightPeople,
                                                                      LightTrailRepository *lightTrails,
                                                                      GravityPointRepository* gravityPoints,
-                                                                     const LightTrailConfiguration &config) :
+                                                                     const LightTrailSceneConfiguration &config) :
 lightPeople(lightPeople), lightTrails(lightTrails), gravityPoints(gravityPoints), config(config)
 {
 }
@@ -41,7 +41,7 @@ int PeopleEnteredMixingRangeCondition::check(float dt, std::vector<Action *> &ac
                     float huediff = fabsf(person1->hue.getCenter() - person2->hue.getCenter());
                     if (huediff > 180) huediff = 360 - huediff;
 
-                    if (dist < config.mixingDistance() && huediff > mixingThreshold
+                    if (dist < config.effect().mixing().distance && huediff > mixingThreshold
                         && huediff < 170) {
                         if (loc != withinRange.end()) {
                             j++;
@@ -50,7 +50,7 @@ int PeopleEnteredMixingRangeCondition::check(float dt, std::vector<Action *> &ac
                         Action *newAction = new MixingAction(person1, person2, lightTrails, gravityPoints, config);
                         actions.push_back(newAction);
                         withinRange.insert(pair);
-                    } else if (loc != withinRange.end() && (dist > config.mixingDistance() ||
+                    } else if (loc != withinRange.end() && (dist > config.effect().mixing().distance ||
                                                             fabs(person1->hue.getCenter() - person2->hue.getCenter()) <
                                                             0.001f))
                         withinRange.erase(loc);

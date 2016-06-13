@@ -6,7 +6,7 @@
 #define IMOVE_PARTICIPANTCLOSETOSOURCECONDITION_H
 
 
-#include "../Configuration/LightTrailConfiguration.h"
+#include "../Configuration/LightTrailSceneConfiguration.h"
 #include "../Repositories/LightsSceneRepositories.h"
 #include "../../Condition.h"
 
@@ -14,12 +14,12 @@ class ParticipantCloseToSourceCondition : public Condition {
 private:
     LightPersonRepository* lightPeople;
     LightSourceRepository* lightSources;
-    LightTrailConfiguration config;
+    LightTrailSceneConfiguration config;
 public:
 
     ParticipantCloseToSourceCondition(LightPersonRepository *lightPeople,
                                           LightSourceRepository *lightSources,
-                                          const LightTrailConfiguration &config);
+                                          const LightTrailSceneConfiguration &config);
 
     int check(float dt, std::vector<Action *> &actions) override;
 

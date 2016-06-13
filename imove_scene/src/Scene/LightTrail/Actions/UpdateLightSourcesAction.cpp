@@ -5,9 +5,9 @@
 #include "UpdateLightSourcesAction.h"
 
 UpdateLightSourcesAction::UpdateLightSourcesAction(LightSourceRepository* lightSources, LightTrailRepository* lightTrails,
-                                                   const LightTrailConfiguration& config)
-        :   sources(lightSources), trails(lightTrails), timer(Timer(config.sendOutDelay(),true)),
-            cap(config.trailCap())
+                                                   const LightTrailSceneConfiguration& config)
+        :   sources(lightSources), trails(lightTrails), timer(Timer(config.trail().lightSource().sendOutDelay,true)),
+            cap(static_cast<unsigned int>(config.trail().lightSource().trailCap))
 {
 }
 

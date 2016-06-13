@@ -9,7 +9,7 @@
 
 #include "../LightPerson.h"
 #include "Effect.h"
-#include "../Configuration/LightTrailConfiguration.h"
+#include "../Configuration/LightTrailSceneConfiguration.h"
 
 // Draws two 'progress bars' between two people,
 // wherein they send their colors to each other
@@ -18,10 +18,10 @@ private:
     std::shared_ptr<LightPerson> person1,person2;
     float leftInCycle = 1.f, cycle = 1.f;
     sf::Color prevColor1, currentColor1, prevColor2, currentColor2, stepColor1, stepColor2;
-    LightTrailConfiguration config;
+    LightTrailSceneConfiguration config;
 public:
     MixingEffect(const std::shared_ptr<LightPerson> &person1, const std::shared_ptr<LightPerson> &person2,
-                     const LightTrailConfiguration &config);
+                     const LightTrailSceneConfiguration &config);
 
     void update(float dt) override;
 

@@ -6,7 +6,7 @@
 #include "../Repositories/LightPersonMapRepository.h"
 #include "../../Condition.h"
 #include "../Repositories/LightsSceneRepositories.h"
-#include "../Configuration/LightTrailConfiguration.h"
+#include "../Configuration/LightTrailSceneConfiguration.h"
 #include "../../../../../scene_interface/src/Person.h"
 
 class PersonChangedTypeCondition : public Condition {
@@ -17,14 +17,14 @@ private:
     std::map<int,scene_interface::Person::MovementType> oldMovementType;
     LightTrailRepository* lightTrails;
     LightSourceRepository* lightSources;
-    LightTrailConfiguration config;
+    LightTrailSceneConfiguration config;
     sf::RenderTexture& texture;
 public:
     PersonChangedTypeCondition(LightPersonRepository *lightPeople,
                                    GravityPointRepository *gravityPoints,
                                    LightTrailRepository *lightTrails,
                                    LightSourceRepository *lightSources,
-                                   const LightTrailConfiguration &config,
+                                   const LightTrailSceneConfiguration &config,
                                    sf::RenderTexture &texture);
     int check(float dt, std::vector<Action*> &actions) override;
 };

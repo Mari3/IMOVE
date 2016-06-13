@@ -23,7 +23,7 @@ private:
     ColorHoleRepository* colorHoles;
     LightTrailRepository* lightTrails;
     LightPersonRepository* lightPeople;
-    LightTrailConfiguration config;
+    LightTrailSceneConfiguration config;
     ColorHoleEffect effect;
     void finish();
 public:
@@ -31,7 +31,7 @@ public:
     PersonColorHoleAction(const std::shared_ptr<LightPerson> &person,
                               GravityPointRepository *gravityPoints, ColorHoleRepository *colorHoles,
                               LightTrailRepository *lightTrails, LightPersonRepository *lightPeople,
-                              LightTrailConfiguration config);
+                              LightTrailSceneConfiguration config);
 
     bool isDone(std::vector<Action *> &followUp) override;
 
