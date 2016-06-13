@@ -8,7 +8,7 @@
 
 #include "Effect.h"
 #include "../../../../../scene_interface/src/Vector2.h"
-#include "../LightTrailConfiguration.h"
+#include "../Configuration/LightTrailConfiguration.h"
 
 using namespace scene_interface;
 

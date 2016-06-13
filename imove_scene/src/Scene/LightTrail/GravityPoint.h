@@ -5,7 +5,7 @@
 #include "../Util/Range.h"
 #include "../../../../scene_interface/src/Vector2.h"
 #include "LightTrail.h"
-#include "LightTrailConfiguration.h"
+#include "Configuration/LightTrailConfiguration.h"
 
 class GravityPoint {
 private:

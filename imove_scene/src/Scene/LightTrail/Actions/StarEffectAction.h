@@ -6,7 +6,7 @@
 #define IMOVE_STAREFFECTACTION_H
 
 
-#include "../LightTrailConfiguration.h"
+#include "../Configuration/LightTrailConfiguration.h"
 #include "../Effects/StarEffect.h"
 #include "../../Action.h"
 

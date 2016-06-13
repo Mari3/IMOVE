@@ -5,7 +5,7 @@
 #include <math.h>
 #include "ColorHoleEffect.h"
 #include "../../Util/HueConverter.h"
-#include "../LightTrailConfiguration.h"
+#include "../Configuration/LightTrailConfiguration.h"
 
 void ColorHoleEffect::update(float dt) {
     int removecount = 0;

@@ -8,7 +8,7 @@
 
 #include "../../Action.h"
 #include "../LightPerson.h"
-#include "../LightTrailConfiguration.h"
+#include "../Configuration/LightTrailConfiguration.h"
 #include "../Repositories/LightsSceneRepositories.h"
 #include "../Effects/MixingEffect.h"
 

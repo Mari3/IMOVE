@@ -5,7 +5,7 @@
 #include <time.h>
 #include <cstdlib>
 #include <sstream>
-#include "../../src/Scene/LightTrail/LightTrailConfiguration.h"
+#include "../../src/Scene/LightTrail/Configuration/LightTrailConfiguration.h"
 #include "../../src/Scene/LightTrail/LightTrailScene.h"
 #include "../../src/Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 

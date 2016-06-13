@@ -16,7 +16,9 @@ bool MixingAction::isDone(std::vector<Action*> &followUp) {
         return true;
     }
     float dist = (person1->getLocation()-person2->getLocation()).size();
-    if(dist > config.mixingDistance() || person1->person_type != scene_interface::Person::PersonType::Participant
+    if(dist > config.mixingDistance() || person1->isColorHole ||
+            person1->person_type != scene_interface::Person::PersonType::Participant ||
+            person2->isColorHole
             || person2->person_type != scene_interface::Person::PersonType::Participant) {
         Action* revertFollowUp = new RevertMixingAction(person1,person2,progress,trails,config);
         followUp.push_back(revertFollowUp);

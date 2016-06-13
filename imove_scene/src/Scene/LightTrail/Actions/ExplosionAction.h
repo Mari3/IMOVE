@@ -9,7 +9,7 @@
 #include "../../Action.h"
 #include "../LightPerson.h"
 #include "../Repositories/LightsSceneRepositories.h"
-#include "../LightTrailConfiguration.h"
+#include "../Configuration/LightTrailConfiguration.h"
 #include "../../Util/Timer.h"
 
 class ExplosionAction : public Action {

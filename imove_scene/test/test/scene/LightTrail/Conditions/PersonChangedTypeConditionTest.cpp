@@ -3,7 +3,7 @@
 //
 
 #include <gtest/gtest.h>
-#include "../../../../../src/Scene/LightTrail/LightTrailConfiguration.h"
+#include "../../../../../src/Scene/LightTrail/Configuration/LightTrailConfiguration.h"
 #include "../../../../../src/Scene/LightTrail/Repositories/LightPersonMapRepository.h"
 #include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneRepositories.h"
 #include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
@@ -13,6 +13,7 @@
 #include "../../../../../../scene_interface/src/Vector2.h"
 #include "../../../../../../scene_interface/src/Person.h"
 
+<<<<<<< e14e2fad4a34a757ed2f93aabb12006ddb542b15
 LightTrailConfiguration config_pctc(800, 600, util::Range(0, 0), util::Range(0, 0), util::Range(0, 0),
                                     util::Range(0, 0), 2.f, 10, util::Range(0, 400),
                                     0, 0, 0, 0, 0, 0, 400, .5, true, 200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -22,6 +23,11 @@ LightTrailConfiguration config_pctc(800, 600, util::Range(0, 0), util::Range(0, 
                                     0, 0, 0, 0, 0, 0,
                                     0);
 >>>>>>> Add configuration for star effect
+=======
+LightTrailConfiguration config_pctc(0, 0, util::Range(0, 0), util::Range(0, 0), util::Range(0, 0), util::Range(0, 0), 0,
+                                    0, util::Range(0, 0), 0, 0, 0, 0, 0,
+                                    0, (StarConfig()));
+>>>>>>> Refactor configuration from sig feedback
 
 TEST(PersonChangedTypeConditionTest, BystanderTurnedParticipant) {
 

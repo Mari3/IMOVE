@@ -4,13 +4,14 @@
 
 #include <gtest/gtest.h>
 #include <fakeit.hpp>
-#include "../../../../../src/Scene/LightTrail/LightTrailConfiguration.h"
+#include "../../../../../src/Scene/LightTrail/Configuration/LightTrailConfiguration.h"
 #include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneRepositories.h"
 #include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 #include "../../../../../src/Scene/LightTrail/Actions/AlternatingGravityPointAction.h"
 
 using namespace fakeit;
 
+<<<<<<< e14e2fad4a34a757ed2f93aabb12006ddb542b15
 LightTrailConfiguration agpat_config(800, 600, util::Range(0, 0), util::Range(0, 0), util::Range(0, 0),
                                      util::Range(0, 0), 0, 0, util::Range(0, 0),
 <<<<<<< a433a11f63b8a09e98546efa02c2aedebd785d20
@@ -21,6 +22,12 @@ LightTrailConfiguration agpat_config(800, 600, util::Range(0, 0), util::Range(0,
                                      0, 0, 0, 0, 0,
                                      0);
 >>>>>>> Add configuration for star effect
+=======
+LightTrailConfiguration agpat_config(0, 0, util::Range(0, 0), util::Range(0, 0), util::Range(0, 0), util::Range(0, 0),
+                                     0,
+                                     0, util::Range(0, 0), 0, 0, 0, 0, 0,
+                                     0, (StarConfig()));
+>>>>>>> Refactor configuration from sig feedback
 
 TEST (AlternatingGravityPointActionTest, UpdateLocation) {
 

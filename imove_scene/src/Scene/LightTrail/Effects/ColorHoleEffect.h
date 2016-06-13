@@ -10,7 +10,7 @@
 #include "Effect.h"
 #include "../LightPerson.h"
 #include "../../Util/Timer.h"
-#include "../LightTrailConfiguration.h"
+#include "../Configuration/LightTrailConfiguration.h"
 
 struct ColorCircle {
     sf::Color color;

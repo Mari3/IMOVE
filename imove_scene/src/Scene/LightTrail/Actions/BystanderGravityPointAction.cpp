@@ -1,5 +1,5 @@
 #include "BystanderGravityPointAction.h"
-#include "../LightTrailConfiguration.h"
+#include "../Configuration/LightTrailConfiguration.h"
 #include "../../../../../scene_interface/src/Person.h"
 
 BystanderGravityPointAction::BystanderGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints, const LightTrailConfiguration &config)

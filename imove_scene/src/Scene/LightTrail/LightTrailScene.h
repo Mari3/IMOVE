@@ -8,9 +8,9 @@
 #include "ColorHole.h"
 #include "Repositories/LightPersonMapRepository.h"
 #include "Repositories/LightsSceneRepositories.h"
-#include "LightTrailConfiguration.h"
 #include "Effects/Effect.h"
 #include "Effects/LightTrailEffect.h"
+#include "Configuration/LightTrailConfiguration.h"
 
 class LightTrailScene : public Scene{
 private:

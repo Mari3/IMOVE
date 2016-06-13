@@ -17,6 +17,7 @@ class util::Range
 {
 private:
 public:
+	Range();
     Range(float start, float end, RangeRandom* random, bool bounds=false, float lowerBound=0.f, float upperBound=360.f);
     Range(float start, float end, bool bounds=false, float lowerBound=0.f, float upperBound=360.f);
     float start, end;

@@ -10,7 +10,7 @@
 #include "../LightSource.h"
 #include "../../Util/Timer.h"
 #include "../Repositories/LightsSceneRepositories.h"
-#include "../LightTrailConfiguration.h"
+#include "../Configuration/LightTrailConfiguration.h"
 
 class UpdateLightSourcesAction : public Action {
 private:

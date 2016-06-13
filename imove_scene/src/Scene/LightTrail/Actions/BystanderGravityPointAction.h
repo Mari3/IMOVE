@@ -7,7 +7,7 @@
 #include "../LightPerson.h"
 #include "../../Util/Timer.h"
 #include "../Repositories/LightsSceneRepositories.h"
-#include "../LightTrailConfiguration.h"
+#include "../Configuration/LightTrailConfiguration.h"
 
 class BystanderGravityPointAction : public Action {
 private:

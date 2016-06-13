@@ -6,7 +6,7 @@
 #include "../Repositories/LightPersonMapRepository.h"
 #include "../../Condition.h"
 #include "../Repositories/LightsSceneRepositories.h"
-#include "../LightTrailConfiguration.h"
+#include "../Configuration/LightTrailConfiguration.h"
 #include "../../../../../scene_interface/src/Person.h"
 
 class PersonChangedTypeCondition : public Condition {

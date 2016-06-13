@@ -5,7 +5,7 @@
 #include <sstream>
 #include <vector>
 #include "SFML/Graphics.hpp"
-#include "../../../src/Scene/LightTrail/LightTrailConfiguration.h"
+#include "../../../src/Scene/LightTrail/Configuration/LightTrailConfiguration.h"
 #include "../../../src/Scene/LightTrail/LightTrailScene.h"
 #include "../../../src/Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 #include "../../../src/Scene/Util/Timer.h"

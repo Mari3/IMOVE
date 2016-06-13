@@ -7,7 +7,7 @@
 
 
 #include <set>
-#include "../LightTrailConfiguration.h"
+#include "../Configuration/LightTrailConfiguration.h"
 #include "../Repositories/LightsSceneRepositories.h"
 #include "../../Condition.h"
 

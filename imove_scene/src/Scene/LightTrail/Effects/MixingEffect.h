@@ -9,7 +9,7 @@
 
 #include "../LightPerson.h"
 #include "Effect.h"
-#include "../LightTrailConfiguration.h"
+#include "../Configuration/LightTrailConfiguration.h"
 
 class MixingEffect : public Effect{
 private:

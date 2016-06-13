@@ -4,7 +4,7 @@
 
 #include <gtest/gtest.h>
 #include <fakeit.hpp>
-#include "../../../../../src/Scene/LightTrail/LightTrailConfiguration.h"
+#include "../../../../../src/Scene/LightTrail/Configuration/LightTrailConfiguration.h"
 #include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneRepositories.h"
 #include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 #include "../../../../../src/Scene/LightTrail/Actions/UpdateLightSourcesAction.h"
@@ -13,6 +13,7 @@
 
 using namespace fakeit;
 
+<<<<<<< e14e2fad4a34a757ed2f93aabb12006ddb542b15
 LightTrailConfiguration config_ulsat(800, 600, util::Range(0, 0), util::Range(0, 0), util::Range(0, 0),
                                      util::Range(0, 0), 2.f, 10, util::Range(0, 100),
                                      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -22,6 +23,12 @@ LightTrailConfiguration config_ulsat(800, 600, util::Range(0, 0), util::Range(0,
                                      0, 0, 0,
                                      0);
 >>>>>>> Add configuration for star effect
+=======
+LightTrailConfiguration config_ulsat(0, 0, util::Range(0, 0), util::Range(0, 0), util::Range(0, 0), util::Range(0, 0),
+                                     0,
+                                     0, util::Range(0, 0), 0, 0, 0, 0, 0,
+                                     0, (StarConfig()));
+>>>>>>> Refactor configuration from sig feedback
 
 TEST (UpdateLightSourceTest, LightTrailMadeAfterTime) {
 

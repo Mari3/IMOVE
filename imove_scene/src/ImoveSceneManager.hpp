@@ -1,7 +1,7 @@
 #include <boost/interprocess/offset_ptr.hpp>
 
 #include "Calibration/Calibration.hpp"
-#include "Scene/LightTrail/LightTrailConfiguration.h"
+#include "Scene/LightTrail/Configuration/LightTrailConfiguration.h"
 #include "Scene/Scene.h"
 #include "../../scene_interface_sma/src/PeopleQueue.hpp"
 #include "../../peopleextractor_interface_sma/src/SceneframeQueue.hpp"
