@@ -18,9 +18,9 @@
 #include "Actions/LightSourceGravityPointAction.h"
 #include "Conditions/ColorHoleTimerCondition.h"
 #include "Conditions/ParticipantCloseToSourceCondition.h"
+#include "Actions/StarEffectAction.h"
 
 void LightTrailScene::draw(sf::RenderTarget &target) {
-
     //Slightly fade the current texture
     sf::RectangleShape rect(sf::Vector2f(config.screenWidth(), config.screenHeight()));
     rect.setFillColor(sf::Color(0, 0, 0, config.fade()));
@@ -115,6 +115,9 @@ LightPersonRepository* lightPeople) : Scene(),
     //Add all the basic actions
     actions.push_back(std::unique_ptr<Action>(
             static_cast<Action*>(new DeleteAllAction(colorHoles,gravityPoints,lightPeople,lightSources,lightTrails))));
+    actions.push_back(std::unique_ptr<Action>(
+            static_cast<Action*>(new StarEffectAction(config))
+    ));
     actions.push_back(std::unique_ptr<Action>(
             static_cast<Action*>(new UpdateLightTrailsAction(lightTrails,gravityPoints,config))));
     actions.push_back(std::unique_ptr<Action>(
