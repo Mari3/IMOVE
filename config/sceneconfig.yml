@@ -41,3 +41,4 @@ ColorHoleEffectThickness: .01
 ColorHoleEffectPeriod: .35
 StarAmount: 10
 StarSpeed: .10
+StandingStillFadeTime: 40

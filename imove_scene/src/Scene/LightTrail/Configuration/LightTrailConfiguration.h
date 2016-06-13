@@ -96,6 +96,8 @@ private:
 
     StarConfig _starConfig;
 
+    float _standingStillFadeTime;
+
 public:
 
 
@@ -110,7 +112,8 @@ public:
                                 const MixingConfig &_mixingConfig,
                                 const ExplosionConfig &_explosionConfig,
                                 const GravityConfig &_lightSourceGravityConfig,
-                                const ColorHoleConfig &_colorHoleConfig, const StarConfig &_starConfig);
+                                const ColorHoleConfig &_colorHoleConfig,
+                                const StarConfig &_starConfig, float _standingStillFadeTime);
 
     static LightTrailConfiguration readFromFile(char* fileName);
 
@@ -193,6 +196,9 @@ public:
     int starAmount() const;
 
     float starSpeed() const;
+
+
+    float standingStillFadeTime() const;
 };
 
 

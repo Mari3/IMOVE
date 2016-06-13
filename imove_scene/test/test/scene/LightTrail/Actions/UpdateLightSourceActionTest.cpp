@@ -13,22 +13,10 @@
 
 using namespace fakeit;
 
-<<<<<<< e14e2fad4a34a757ed2f93aabb12006ddb542b15
-LightTrailConfiguration config_ulsat(800, 600, util::Range(0, 0), util::Range(0, 0), util::Range(0, 0),
-                                     util::Range(0, 0), 2.f, 10, util::Range(0, 100),
-                                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-<<<<<<< a433a11f63b8a09e98546efa02c2aedebd785d20
-                                     0, 0, 0);
-=======
-                                     0, 0, 0,
-                                     0);
->>>>>>> Add configuration for star effect
-=======
-LightTrailConfiguration config_ulsat(0, 0, util::Range(0, 0), util::Range(0, 0), util::Range(0, 0), util::Range(0, 0),
-                                     0,
-                                     0, util::Range(0, 0), 0, 0, 0, 0, 0,
-                                     0, (StarConfig()));
->>>>>>> Refactor configuration from sig feedback
+LightTrailConfiguration config_ulsat(0, 0, std::vector<util::Range>(), LightSourceConfig(), ParticipantGravityConfig(),
+        DelayGravityConfig(), DelayGravityConfig(), ProximityConfig(), false, TrailConfig(),
+0, MixingConfig(), ExplosionConfig(), GravityConfig(), ColorHoleConfig(),
+        StarConfig(), 0);
 
 TEST (UpdateLightSourceTest, LightTrailMadeAfterTime) {
 

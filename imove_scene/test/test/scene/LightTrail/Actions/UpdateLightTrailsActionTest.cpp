@@ -4,27 +4,17 @@
 
 
 #include <gtest/gtest.h>
+#include <vector>
 #include "../../../../../src/Scene/LightTrail/Configuration/LightTrailConfiguration.h"
 #include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 #include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneRepositories.h"
 #include "../../../../../src/Scene/LightTrail/Actions/UpdateLightTrailsAction.h"
 #include "../../../../../../scene_interface/src/Vector2.h"
 
-<<<<<<< e14e2fad4a34a757ed2f93aabb12006ddb542b15
-LightTrailConfiguration config2(800, 600, util::Range(0, 0), util::Range(0, 0), util::Range(0, 0), util::Range(0, 0),
-                                2.f, 10, util::Range(0, 400),
-                                0, 0, 0, 0, 0, 0, 400, .5, true, 200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-<<<<<<< a433a11f63b8a09e98546efa02c2aedebd785d20
-                                0, 0, 0, 0);
-=======
-                                0, 0, 0, 0,
-                                0);
->>>>>>> Add configuration for star effect
-=======
-LightTrailConfiguration config2(0, 0, util::Range(0, 0), util::Range(0, 0), util::Range(0, 0), util::Range(0, 0), 0,
-                                0, util::Range(0, 0), 0, 0, 0, 0, 0,
-                                0, (StarConfig()));
->>>>>>> Refactor configuration from sig feedback
+LightTrailConfiguration config2(0, 0, std::vector<util::Range>(), LightSourceConfig(), ParticipantGravityConfig(),
+        DelayGravityConfig(), DelayGravityConfig(), ProximityConfig(), false, TrailConfig(),
+0, MixingConfig(), ExplosionConfig(), GravityConfig(), ColorHoleConfig(),
+        StarConfig(), 0);
 
 TEST (UpdateLightTrailsActionTest, OutsideProximityRange) {
 

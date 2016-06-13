@@ -179,6 +179,9 @@ LightTrailConfiguration LightTrailConfiguration::readFromFile(char *fileName) {
     fs["MixingEffectThickness"] >> mixingConfig.thickness;
     mixingConfig.thickness *= meter;
 
+    float standingStillFadeTime;
+    fs["StandingStillFadeTime"] >> standingStillFadeTime;
+
     uint8_t fade = static_cast<uint8_t>(fadeint > 255 ? 255 : fadeint);
 
     unsigned int w = static_cast<unsigned int>(resolution.width);
@@ -188,7 +191,7 @@ LightTrailConfiguration LightTrailConfiguration::readFromFile(char *fileName) {
                                    bystanderGravityConfig, alternatingGravityConfig,
                                    proximityConfig, sidesEnabled, trailConfig, fade, mixingConfig, explosionConfig,
                                    lightSourceGravityConfig,
-                                   colorHoleConfig, starConfig);
+                                   colorHoleConfig, starConfig, standingStillFadeTime);
 }
 
 int LightTrailConfiguration::trailThickness() const {
@@ -282,7 +285,8 @@ LightTrailConfiguration::LightTrailConfiguration(unsigned int _screenWidth, unsi
                                                  const MixingConfig &_mixingConfig,
                                                  const ExplosionConfig &_explosionConfig,
                                                  const GravityConfig &_lightSourceGravityConfig,
-                                                 const ColorHoleConfig &_colorHoleConfig, const StarConfig &_starConfig)
+                                                 const ColorHoleConfig &_colorHoleConfig,
+                                                 const StarConfig &_starConfig, float _standingStillFadeTime)
         : _screenWidth(_screenWidth),
           _screenHeight(_screenHeight),
           _cornerHues(_cornerHues),
@@ -299,7 +303,7 @@ LightTrailConfiguration::LightTrailConfiguration(unsigned int _screenWidth, unsi
           _explosionConfig(_explosionConfig),
           _lightSourceGravityConfig(
                                                                                                     _lightSourceGravityConfig),
-          _colorHoleConfig(_colorHoleConfig), _starConfig(_starConfig) { }
+          _colorHoleConfig(_colorHoleConfig), _starConfig(_starConfig), _standingStillFadeTime(_standingStillFadeTime) { }
 
 float LightTrailConfiguration::colorHoleEffectThickness() const {
     return _colorHoleConfig.thickness;
@@ -314,6 +318,6 @@ float LightTrailConfiguration::mixingEffectThickness() const {
 }
 
 
-
-
-
+float LightTrailConfiguration::standingStillFadeTime() const {
+    return _standingStillFadeTime;
+}

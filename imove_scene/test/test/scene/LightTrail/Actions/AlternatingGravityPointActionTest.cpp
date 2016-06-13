@@ -3,6 +3,7 @@
 //
 
 #include <gtest/gtest.h>
+#include <vector>
 #include <fakeit.hpp>
 #include "../../../../../src/Scene/LightTrail/Configuration/LightTrailConfiguration.h"
 #include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneRepositories.h"
@@ -11,23 +12,11 @@
 
 using namespace fakeit;
 
-<<<<<<< e14e2fad4a34a757ed2f93aabb12006ddb542b15
-LightTrailConfiguration agpat_config(800, 600, util::Range(0, 0), util::Range(0, 0), util::Range(0, 0),
-                                     util::Range(0, 0), 0, 0, util::Range(0, 0),
-<<<<<<< a433a11f63b8a09e98546efa02c2aedebd785d20
-                                     500, 100, 0, 0, 400, 5, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                                     0, 0, 0, 0, 0);
-=======
-                                     500, 100, 0, 2, 400, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                                     0, 0, 0, 0, 0,
-                                     0);
->>>>>>> Add configuration for star effect
-=======
-LightTrailConfiguration agpat_config(0, 0, util::Range(0, 0), util::Range(0, 0), util::Range(0, 0), util::Range(0, 0),
-                                     0,
-                                     0, util::Range(0, 0), 0, 0, 0, 0, 0,
-                                     0, (StarConfig()));
->>>>>>> Refactor configuration from sig feedback
+LightTrailConfiguration agpat_config(0, 0, std::vector<util::Range>(), LightSourceConfig(), ParticipantGravityConfig(),
+                                   DelayGravityConfig(), DelayGravityConfig(), ProximityConfig(), false, TrailConfig(),
+                                   0, MixingConfig(), ExplosionConfig(), GravityConfig(), ColorHoleConfig(),
+                                   StarConfig(), 0);
+
 
 TEST (AlternatingGravityPointActionTest, UpdateLocation) {
 
