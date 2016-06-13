@@ -2,7 +2,7 @@
 
 using namespace scene_interface_sma;
 
-Person::Person(boost::interprocess::offset_ptr<Vector2Vector> locations, PersonType type, unsigned int id) :
+Person::Person(boost::interprocess::offset_ptr<Locations> locations, PersonType type, unsigned int id) :
 	locations(locations),
 	type(type),
 	id(id)
@@ -11,7 +11,7 @@ Person::Person(boost::interprocess::offset_ptr<Vector2Vector> locations, PersonT
 /*--------------------
  * Getters
  * -----------------*/
-const boost::interprocess::offset_ptr<Vector2Vector> Person::getLocations() const {
+const boost::interprocess::offset_ptr<Locations> Person::getLocations() const {
   return this->locations;
 }
 
