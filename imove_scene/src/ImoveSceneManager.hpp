@@ -3,8 +3,7 @@
 #include "Calibration/Calibration.hpp"
 #include "Scene/LightTrail/LightTrailConfiguration.h"
 #include "Scene/Scene.h"
-//#include <scene_interface/ExtractedpeopleQueue.hpp>
-#include "../../scene_interface_sma/src/ExtractedpeopleQueue.hpp"
+#include "../../scene_interface_sma/src/PeopleQueue.hpp"
 #include "../../peopleextractor_interface_sma/src/SceneframeQueue.hpp"
 #include "../../imove/src/Running.hpp"
 
@@ -29,7 +28,7 @@ class ImoveSceneManager {
 		// shared memory segment
 		boost::interprocess::managed_shared_memory* segment;
 		// People extractor queue
-		boost::interprocess::offset_ptr<scene_interface_sma::ExtractedpeopleQueue> extractedpeople_queue;
+		boost::interprocess::offset_ptr<scene_interface_sma::PeopleQueue> si_people_queue;
 		// Scene frames queue
 		boost::interprocess::offset_ptr<peopleextractor_interface_sma::SceneframeQueue> pi_sceneframe_queue;
 		// whole application running

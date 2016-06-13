@@ -10,12 +10,7 @@
 #include "Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 #include "Windows/SceneWindow.hpp"
 
-//#include <scene_interface_sma/SharedMemory.hpp>
-//#include <scene_interface_sma/Person.hpp>
-//#include <scene_interface_sma/Vector2.hpp>
 #include "../../scene_interface_sma/src/SharedMemory.hpp"
-#include "../../scene_interface_sma/src/Person.hpp"
-#include "../../scene_interface_sma/src/Vector2.hpp"
 
 void ImoveSceneManager::sendSceneFrameThread(ImoveSceneManager* imove_scene_manager, sf::Image sf_image) {
 	imove_scene_manager->sendSceneFrame(sf_image);
@@ -33,12 +28,10 @@ ImoveSceneManager::ImoveSceneManager(Calibration* calibration, LightTrailConfigu
     new ColorHoleVectorRepository(),
     new LightPersonMapRepository()
   );
-
 	// Shared memory segment
-	this->segment = new boost::interprocess::managed_shared_memory(boost::interprocess::open_only, scene_interface_sma::NAME_SHARED_MEMORY);
-	// Get the extracted people queue in the segment
-	this->extractedpeople_queue = this->segment->find<scene_interface_sma::ExtractedpeopleQueue>(scene_interface_sma::NAME_EXTRACTEDPEOPLE_QUEUE).first;
-	// Get the people extractor scene frames queue in the segment
+  this->segment = new boost::interprocess::managed_shared_memory(boost::interprocess::open_only, scene_interface_sma::NAME_SHARED_MEMORY);
+	// Construct the people extracted queue in shared memory
+	this->si_people_queue = this->segment->find<scene_interface_sma::PeopleQueue>(scene_interface_sma::NAME_PEOPLE_QUEUE).first;
 	this->pi_sceneframe_queue = this->segment->find<peopleextractor_interface_sma::SceneframeQueue>(peopleextractor_interface_sma::NAME_SCENEFRAME_QUEUE).first;
 	// Get the whole running class
 	this->running = this->segment->find<Running>(NAME_SHARED_MEMORY_RUNNING).first;
@@ -80,17 +73,17 @@ void ImoveSceneManager::run() {
 }
 
 void ImoveSceneManager::receiveExtractedpeopleAndUpdateScene() {
-	if (!this->extractedpeople_queue->empty()) {
+	if (!this->si_people_queue->empty()) {
 		//create vector of extracted people for input of scene
 		std::vector<scene_interface::Person> extractedpeople;
 		
 		// receive extracted people from shared memory from peopleextractor
-		boost::interprocess::offset_ptr<scene_interface_sma::PersonVector> extractedpeople_ptr = this->extractedpeople_queue->pop();
+		boost::interprocess::offset_ptr<scene_interface_sma::People> si_people = this->si_people_queue->front();
 		
 		extractedpeople = std::vector<scene_interface::Person>();
-		for (unsigned int i = 0; i < extractedpeople_ptr->size(); ++i) {
+		for (unsigned int i = 0; i < si_people->size(); ++i) {
 			// receive extracted person from shared memory
-			boost::interprocess::offset_ptr<scene_interface_sma::Person> si_person = extractedpeople_ptr->at(i);
+			boost::interprocess::offset_ptr<scene_interface_sma::Person> si_person = si_people->at(i);
 			
 			// create person type from shared memory person type
 			scene_interface::PersonType person_type;
@@ -112,9 +105,9 @@ void ImoveSceneManager::receiveExtractedpeopleAndUpdateScene() {
 					break;
 			}
 			// receive locations from shared memory
-			boost::interprocess::offset_ptr<scene_interface_sma::Vector2Vector> locations = si_person->getLocations();
+			boost::interprocess::offset_ptr<scene_interface_sma::Locations> locations = si_person->getLocations();
 			// receive location from shared memory
-			boost::interprocess::offset_ptr<scene_interface_sma::Vector2> location = locations->front();
+			boost::interprocess::offset_ptr<scene_interface_sma::Location> location = locations->front();
 
 			// create extracted person for input of scene from received extracted person from shared memory and add extracted person to vector of extracted people
 			extractedpeople.push_back(
@@ -131,6 +124,9 @@ void ImoveSceneManager::receiveExtractedpeopleAndUpdateScene() {
 		
 		// update scene with extracted people from peopleextractor
 		this->scene->updatePeople(extractedpeople);
+
+		// Remove last extracted people from queue
+		this->si_people_queue->pop_front();
 	}
 }
 

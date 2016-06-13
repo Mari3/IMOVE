@@ -5,7 +5,7 @@
 #include <string>
 
 #include "../../scene_interface_sma/src/SharedMemory.hpp"
-#include "../../scene_interface_sma/src/ExtractedpeopleQueue.hpp"
+#include "../../scene_interface_sma/src/PeopleQueue.hpp"
 #include "../../peopleextractor_interface_sma/src/SceneframeQueue.hpp"
 #include "Running.hpp"
 
@@ -29,7 +29,8 @@ int main(int argc, char* argv[]) {
 	boost::interprocess::shared_memory_object::remove(scene_interface_sma::NAME_SHARED_MEMORY);
 	boost::interprocess::managed_shared_memory* segment = new boost::interprocess::managed_shared_memory(boost::interprocess::create_only, scene_interface_sma::NAME_SHARED_MEMORY, SIZE_SHAREDMEMORY);
 	// Construct the people extracted queue in shared memory
-	segment->construct<scene_interface_sma::ExtractedpeopleQueue>(scene_interface_sma::NAME_EXTRACTEDPEOPLE_QUEUE)(128);
+	const scene_interface_sma::PeopleQueueSMA people_queue_sma(segment->get_segment_manager());
+	segment->construct<scene_interface_sma::PeopleQueue>(scene_interface_sma::NAME_PEOPLE_QUEUE)(people_queue_sma);
 	const peopleextractor_interface_sma::SceneframeQueueSMA sceneframe_queue_sma(segment->get_segment_manager());
 	segment->construct<peopleextractor_interface_sma::SceneframeQueue>(peopleextractor_interface_sma::NAME_SCENEFRAME_QUEUE)(sceneframe_queue_sma);
 	boost::interprocess::offset_ptr<Running> running = segment->construct<Running>(NAME_SHARED_MEMORY_RUNNING)();
@@ -39,7 +40,7 @@ int main(int argc, char* argv[]) {
 	if (pID_scene == 0) {
 		// replace process with imove_scene process
 		std::cout << "Starting Scene" << std::endl;
-		system((base + "/imove_scene " + (std::string)argv[CONFIGURATION_CALIBRATION_ARGN] + " " + (std::string) argv[CONFIGURATION_LIGHTTRAIL_ARGN]).c_str());
+		system(("\"" + base + "/imove_scene\" " + (std::string)argv[CONFIGURATION_CALIBRATION_ARGN] + " " + (std::string) argv[CONFIGURATION_LIGHTTRAIL_ARGN]).c_str());
 		std::cout << "Ended Scene" << std::endl;
 		_exit(0);
 	} else if (pID_scene < 0) {
@@ -50,7 +51,7 @@ int main(int argc, char* argv[]) {
 		if (pID_peopleextractor == 0) {
 			std::cout << "Starting Peopleextractor" << std::endl;
 			// replace process with imove_peopleextractor process
-			system((base + "/imove_peopleextractor " + (std::string) argv[CONFIGURATION_CALIBRATION_ARGN]).c_str());
+			system(("\"" + base + "/imove_peopleextractor\" " + (std::string) argv[CONFIGURATION_CALIBRATION_ARGN]).c_str());
 			std::cout << "Ended Peopleextractor" << std::endl;
 			_exit(0);
 		} else if (pID_peopleextractor < 0) {

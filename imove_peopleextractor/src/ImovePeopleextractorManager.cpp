@@ -7,17 +7,11 @@
 #include "OpenCVUtil.hpp"
 #include "../../scene_interface/src/Person.h"
 #include "../../scene_interface/src/Vector2.h"
-#include "Windows/FrameWindow.hpp"
+#include "Windows/PeopleextractorWindow.hpp"
 #include "Windows/DetectedPeopleCameraWindow.hpp"
 #include "Windows/DetectedPeopleProjectionWindow.hpp"
 #include "Windows/ImageWindow.hpp"
-
-//#include <scene_interface_sma/SharedMemory.hpp>
-//#include <scene_interface_sma/Person.hpp>
-//#include <scene_interface_sma/Vector2.hpp>
 #include "../../scene_interface_sma/src/SharedMemory.hpp"
-#include "../../scene_interface_sma/src/Person.hpp"
-#include "../../scene_interface_sma/src/Vector2.hpp"
 
 ImovePeopleextractorManager::ImovePeopleextractorManager(Calibration* calibration) {
 	this->calibration = calibration;
@@ -28,7 +22,7 @@ ImovePeopleextractorManager::ImovePeopleextractorManager(Calibration* calibratio
 	//Open the managed segment
 	this->segment = new boost::interprocess::managed_shared_memory(boost::interprocess::open_only, scene_interface_sma::NAME_SHARED_MEMORY);
 	// Get the extracted people queue in the segment
-	this->extractedpeople_queue = this->segment->find<scene_interface_sma::ExtractedpeopleQueue>(scene_interface_sma::NAME_EXTRACTEDPEOPLE_QUEUE).first;
+	this->si_people_queue = this->segment->find<scene_interface_sma::PeopleQueue>(scene_interface_sma::NAME_PEOPLE_QUEUE).first;
 	// Get the people extractor scene frames queue in the segment
 	this->pi_sceneframe_queue = this->segment->find<peopleextractor_interface_sma::SceneframeQueue>(peopleextractor_interface_sma::NAME_SCENEFRAME_QUEUE).first;
 	this->running = this->segment->find<Running>(NAME_SHARED_MEMORY_RUNNING).first;
@@ -42,7 +36,7 @@ void ImovePeopleextractorManager::receiveSceneFrameAndFeedProjectionThread(Imove
 
 void ImovePeopleextractorManager::run() {
 	// debug windows
-	FrameWindow window_frame(cv::Size(0, 0));
+	PeopleextractorWindow window_peopleextractor(cv::Size(0, 0), this->people_extractor);
 	DetectedPeopleCameraWindow detectedpeople_camera_window(cv::Size(300, 0));
 	ImageWindow eliminatedprojection_camera_window("Eliminated projection camera frame", cv::Size(600, 0));
 	DetectedPeopleProjectionWindow detectedpeople_projection_window(cv::Size(900, 0));
@@ -78,7 +72,7 @@ void ImovePeopleextractorManager::run() {
 		// extract people from camera frame
 		detectpeople_frame = frame_eliminatedprojection.clone();
 		extractedpeople = this->people_extractor->extractPeople(detectpeople_frame);
-		this->people_extractor->displayResults();
+		window_peopleextractor.drawFrame();
 
 		// draw detected people camera image
 		detectedpeople_camera_window.drawImage(frame_camera, extractedpeople);
@@ -103,20 +97,20 @@ void ImovePeopleextractorManager::run() {
 
 void ImovePeopleextractorManager::sendExtractedpeople(std::vector<scene_interface::Person> extractedpeople) {
 	//Initialize shared memory STL-compatible allocator
-	scene_interface_sma::PersonSMA person_sma = scene_interface_sma::PersonSMA((*this->segment).get_segment_manager());
+	scene_interface_sma::PeopleSMA people_sma = scene_interface_sma::PeopleSMA((*this->segment).get_segment_manager());
 	
 	// create shared memory vector of extracted people
-  boost::interprocess::offset_ptr<scene_interface_sma::PersonVector> si_extractedpeople = this->segment->construct<scene_interface_sma::PersonVector>(boost::interprocess::anonymous_instance)(person_sma);
+  boost::interprocess::offset_ptr<scene_interface_sma::People> si_people = this->segment->construct<scene_interface_sma::People>(boost::interprocess::anonymous_instance)(people_sma);
 
 	for (scene_interface::Person person : extractedpeople) {
 		//Initialize shared memory STL-compatible allocator
-		scene_interface_sma::Vector2SMA vector2_sma(this->segment->get_segment_manager());
+		scene_interface_sma::LocationsSMA locations_sma(this->segment->get_segment_manager());
 		scene_interface::Vector2 location = person.getLocation();
 		// create shared memory vector of locations
-		boost::interprocess::offset_ptr<scene_interface_sma::Vector2Vector> locations = this->segment->construct<scene_interface_sma::Vector2Vector>(boost::interprocess::anonymous_instance)(vector2_sma);
+		boost::interprocess::offset_ptr<scene_interface_sma::Locations> locations = this->segment->construct<scene_interface_sma::Locations>(boost::interprocess::anonymous_instance)(locations_sma);
 		// put shared memory allocated location in shared memory allocated vector of locations
 		locations->push_back(
-			this->segment->construct<scene_interface_sma::Vector2>(boost::interprocess::anonymous_instance)(location.x, location.y)
+			this->segment->construct<scene_interface_sma::Location>(boost::interprocess::anonymous_instance)(location.x, location.y)
 		);
 		
 		// create shared memory allocated person type from person type
@@ -139,7 +133,7 @@ void ImovePeopleextractorManager::sendExtractedpeople(std::vector<scene_interfac
 				break;
 		}
 		// put shared memory allocated extracted person in shared memory allocated vector of extracted people
-		si_extractedpeople->push_back(
+		si_people->push_back(
 			this->segment->construct<scene_interface_sma::Person>(boost::interprocess::anonymous_instance)(
 				locations,
 				person_type,
@@ -149,8 +143,8 @@ void ImovePeopleextractorManager::sendExtractedpeople(std::vector<scene_interfac
 	}
 
 	// push shared memory allocated extracted people on the queue
-	this->extractedpeople_queue->push(
-		si_extractedpeople
+	this->si_people_queue->push_back(
+		si_people
 	);
 }
 
