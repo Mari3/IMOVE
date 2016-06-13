@@ -51,7 +51,7 @@ void ParticipantGravityPointAction::setLocation(float dt) {
     float py = person->getLocation().y;
 
     if(!fixed) {
-        float diffThreshold = 50*dt;
+        float diffThreshold = 10*dt;
 
         Vector2 diff = person->getLocation() - prevLocation;
 
@@ -61,7 +61,7 @@ void ParticipantGravityPointAction::setLocation(float dt) {
             // If the direction differs enough
             float angle = acosf(direction.x*baseDirection.x+direction.y*baseDirection.y);
             if(angle > .2*M_PI){ // If the angle is big enough
-                fixed = true;
+                //fixed = true;
             }
             prevDirection = direction;
         }
@@ -85,8 +85,8 @@ void ParticipantGravityPointAction::setLocation(float dt) {
                 gPointDirection = Vector2(0,-1);
         }
 
-        float x = px + 50.f*gPointDirection.x;
-        float y = py + 50.f*gPointDirection.y;
+        float x = px + 200.f*gPointDirection.x;
+        float y = py + 200.f*gPointDirection.y;
         gravityPoint->location.x = x;
         gravityPoint->location.y = y;
         antigravityPoint->location.x = x;
