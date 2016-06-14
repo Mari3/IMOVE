@@ -16,10 +16,6 @@ void LightTrailEffect::update(float dt) {
 }
 
 void LightTrailEffect::draw(sf::RenderTarget &target) {
-    sf::RectangleShape rect(sf::Vector2f(config.screenWidth(),config.screenHeight()));
-    uint8_t comp = static_cast<uint8_t>(255-config.trail().fade());
-    rect.setFillColor(sf::Color(comp,comp,comp,255));
-    texture.draw(rect,sf::BlendMultiply);
 
     trails->for_each([&](std::shared_ptr<LightTrail> trail){
         Vector2 size = trail->getSize()*config.trail().trail().thickness;

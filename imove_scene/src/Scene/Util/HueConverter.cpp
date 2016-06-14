@@ -8,20 +8,35 @@
 
 namespace HueConverter {
     sf::Color ToColor(float hue) {
-        float x = (1 - fabsf(fmodf(hue / 60.f, 2.f) - 1));
-        uint8_t xval = (uint8_t) (255 * x);
+
+        float l = .5f;
+        if(hue < 90 && hue > 30) {
+            l = .5f * (1 - (hue - 30) / 120.f);
+        }else if(hue < 150 && hue > 90){
+            l = .5f * (1 - (hue - 90) / 120.f);
+        }else if(hue < 210 && hue > 150){
+            l = .5f*(1 - (hue-150)/120.f);
+        }
+
+        float c = 1 - fabsf(2*l-1);
+        float x = c*(1 - fabsf(fmodf(hue / 60.f, 2.f) - 1));
+        float m = l - c/2;
+
+        uint8_t xval = (uint8_t) (255 * (x + m));
+        uint8_t cval = (uint8_t) (255 * (c + m));
+        uint8_t mval = (uint8_t) (255 * m);
 
         if (hue < 60)
-            return sf::Color(255, xval, 0);
+            return sf::Color(cval, xval, mval);
         if (hue < 120)
-            return sf::Color(xval, 255, 0);
+            return sf::Color(xval, cval, mval);
         if (hue < 180)
-            return sf::Color(0, 255, xval);
+            return sf::Color(mval, cval, xval);
         if (hue < 240)
-            return sf::Color(0, xval, 255);
+            return sf::Color(mval, xval, cval);
         if (hue < 300)
-            return sf::Color(xval, 0, 255);
+            return sf::Color(xval, mval, cval);
 
-        return sf::Color(255, 0, xval);
+        return sf::Color(cval, mval, xval);
     }
 } // namespace HueConverter

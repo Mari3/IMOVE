@@ -30,7 +30,7 @@ void StarEffect::update(float dt) {
 void StarEffect::draw(sf::RenderTarget &target) {
     for(auto &star : stars){
         sf::RectangleShape rect(sf::Vector2f(star.size,star.size));
-        rect.setFillColor(sf::Color::White);
+        rect.setFillColor(sf::Color::Black);
         rect.setPosition(star.location.x,star.location.y);
         target.draw(rect);
     }
