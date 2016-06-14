@@ -6,6 +6,7 @@
 #define IMOVE_TRAILCONFIGURATION_H
 
 #include <vector>
+#include <stdint.h>
 #include "../../Util/Range.h"
 
 struct LightSourceConfig {
