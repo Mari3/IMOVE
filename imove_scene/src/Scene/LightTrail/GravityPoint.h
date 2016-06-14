@@ -7,8 +7,6 @@
 #include "LightTrail.h"
 #include "LightTrailConfiguration.h"
 
-using namespace scene_interface;
-
 class GravityPoint {
 private:
     bool existing = true;

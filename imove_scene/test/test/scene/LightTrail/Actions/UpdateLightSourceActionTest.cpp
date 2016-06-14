@@ -42,7 +42,7 @@ TEST (UpdateLightSourceTest, LightTrailMadeAfterTime) {
 TEST (UpdateLightSourceTest, StayWithinCap) {
     LightTrailRepository* trails = new LightTrailVectorRepository();
     for(int i=0;i<10;++i){
-        trails->add(std::shared_ptr<LightTrail>(new LightTrail(scene_interface::Vector2(0,0),scene_interface::Vector2(0,0),0)));
+        trails->add(std::shared_ptr<LightTrail>(new LightTrail(Vector2(0,0),Vector2(0,0),0)));
     }
 
     LightSourceRepository* sources = new LightSourceVectorRepository();

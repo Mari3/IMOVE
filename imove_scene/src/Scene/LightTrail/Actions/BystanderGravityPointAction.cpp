@@ -1,7 +1,6 @@
 #include "BystanderGravityPointAction.h"
 #include "../LightTrailConfiguration.h"
 #include "../../../../../scene_interface/src/Person.h"
-#include "../../../../../scene_interface/src/Vector2.h"
 
 BystanderGravityPointAction::BystanderGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints, const LightTrailConfiguration &config)
   : gravityPoints(gravityPoints),
@@ -43,7 +42,7 @@ void BystanderGravityPointAction::setLocation() {
 
 bool BystanderGravityPointAction::isDone(std::vector<Action*> &followUp) {
     //This action is done when the person it tracks is not a bystander anymore
-    if(person->type != Bystander){
+    if(person->person_type != scene_interface::Person::PersonType::Bystander){
         gravityPoints->scheduleForRemoval(gravityPoint);
         return true;
     }

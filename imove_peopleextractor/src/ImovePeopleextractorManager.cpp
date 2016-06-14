@@ -5,7 +5,7 @@
 #include "ImovePeopleextractorManager.hpp"
 
 #include "OpenCVUtil.hpp"
-#include "../../scene_interface/src/Person.h"
+#include "../../scene_interface/src/People.h"
 #include "../../scene_interface/src/Vector2.h"
 #include "Windows/PeopleextractorWindow.hpp"
 #include "Windows/DetectedPeopleCameraWindow.hpp"
@@ -17,7 +17,7 @@ ImovePeopleextractorManager::ImovePeopleextractorManager(Calibration* calibratio
 	this->calibration = calibration;
 
 	// setup people extractor
-	this->people_extractor = new PeopleExtractor(this->calibration->getResolutionCamera(), this->calibration->getMeter(), 210);
+	this->people_extractor = new PeopleExtractor(this->calibration->getResolutionCamera(), this->calibration->getMeter(), 216, this->calibration->getProjection());
 
 	//Open the managed segment
 	this->segment = new boost::interprocess::managed_shared_memory(boost::interprocess::open_only, scene_interface_sma::NAME_SHARED_MEMORY);
@@ -51,7 +51,7 @@ void ImovePeopleextractorManager::run() {
 	cv::Mat frame_camera;
 	cv::Mat frame_projection;
 	cv::Mat detectpeople_frame;
-	std::vector<scene_interface::Person> extractedpeople;
+	scene_interface::People people_camera;
 	this->still_run_receive_scene_frames = true;
 	// while no key pressed
 	while (cv::waitKey(1) == OpenCVUtil::NOKEY_ANYKEY && video_capture.read(frame_camera)) {
@@ -71,20 +71,20 @@ void ImovePeopleextractorManager::run() {
 
 		// extract people from camera frame
 		detectpeople_frame = frame_eliminatedprojection.clone();
-		extractedpeople = this->people_extractor->extractPeople(detectpeople_frame);
+		people_camera = this->people_extractor->extractPeople(detectpeople_frame);
 		window_peopleextractor.drawFrame();
 
 		// draw detected people camera image
-		detectedpeople_camera_window.drawImage(frame_camera, extractedpeople);
+		detectedpeople_camera_window.drawImage(frame_camera, people_camera);
 
 		// change extrated people to projector location from camera location
-		this->calibration->changeProjectorFromCameraLocationPerson(extractedpeople);
+		const scene_interface::People people_projector = this->calibration->createPeopleProjectorFromPeopleCamera(people_camera);
 
 		// draw detected people projection image
-		detectedpeople_projection_window.drawImage(frame_projection, extractedpeople);
+		detectedpeople_projection_window.drawImage(frame_projection, people_projector);
 		
 		// send extracted people via shared memory to scene
-		this->sendExtractedpeople(extractedpeople);
+		this->sendExtractedpeople(people_projector);
 	}
 
 	// make other thread stop
@@ -95,7 +95,7 @@ void ImovePeopleextractorManager::run() {
 	video_capture.release();
 }
 
-void ImovePeopleextractorManager::sendExtractedpeople(std::vector<scene_interface::Person> extractedpeople) {
+void ImovePeopleextractorManager::sendExtractedpeople(const scene_interface::People extractedpeople) {
 	//Initialize shared memory STL-compatible allocator
 	scene_interface_sma::PeopleSMA people_sma = scene_interface_sma::PeopleSMA((*this->segment).get_segment_manager());
 	
@@ -105,31 +105,38 @@ void ImovePeopleextractorManager::sendExtractedpeople(std::vector<scene_interfac
 	for (scene_interface::Person person : extractedpeople) {
 		//Initialize shared memory STL-compatible allocator
 		scene_interface_sma::LocationsSMA locations_sma(this->segment->get_segment_manager());
-		scene_interface::Vector2 location = person.getLocation();
+		scene_interface::Location location = person.getLocation();
 		// create shared memory vector of locations
 		boost::interprocess::offset_ptr<scene_interface_sma::Locations> locations = this->segment->construct<scene_interface_sma::Locations>(boost::interprocess::anonymous_instance)(locations_sma);
 		// put shared memory allocated location in shared memory allocated vector of locations
 		locations->push_back(
-			this->segment->construct<scene_interface_sma::Location>(boost::interprocess::anonymous_instance)(location.x, location.y)
+			this->segment->construct<scene_interface_sma::Location>(boost::interprocess::anonymous_instance)(location.getX(), location.getY())
 		);
 		
 		// create shared memory allocated person type from person type
-		scene_interface_sma::PersonType person_type;
-		switch (person.type) {
-			case scene_interface::PersonType::Bystander:
-				person_type = scene_interface_sma::PersonType::Bystander;
+		scene_interface_sma::Person::PersonType person_type;
+		switch (person.getPersonType()) {
+			case scene_interface::Person::PersonType::Bystander:
+				person_type = scene_interface_sma::Person::PersonType::Bystander;
 				break;
-			case scene_interface::PersonType::Passerthrough:
-				person_type = scene_interface_sma::PersonType::Passerthrough;
+			case scene_interface::Person::PersonType::Passerthrough:
+				person_type = scene_interface_sma::Person::PersonType::Passerthrough;
 				break;
-			case scene_interface::PersonType::Participant:
-				person_type = scene_interface_sma::PersonType::Participant;
+			case scene_interface::Person::PersonType::Participant:
+				person_type = scene_interface_sma::Person::PersonType::Participant;
 				break;
-			case scene_interface::PersonType::None:
-				person_type = scene_interface_sma::PersonType::None;
+			case scene_interface::Person::PersonType::None:
+				person_type = scene_interface_sma::Person::PersonType::None;
 				break;
-			case scene_interface::PersonType::StandingStill:
-				person_type = scene_interface_sma::PersonType::StandingStill;
+		}
+		// create shared memory allocated movement type from movement type
+		scene_interface_sma::Person::MovementType movement_type;
+		switch (person.getMovementType()) {
+			case scene_interface::Person::MovementType::StandingStill:
+				movement_type = scene_interface_sma::Person::MovementType::StandingStill;
+				break;
+			case scene_interface::Person::MovementType::Moving:
+				movement_type = scene_interface_sma::Person::MovementType::Moving;
 				break;
 		}
 		// put shared memory allocated extracted person in shared memory allocated vector of extracted people
@@ -137,6 +144,7 @@ void ImovePeopleextractorManager::sendExtractedpeople(std::vector<scene_interfac
 			this->segment->construct<scene_interface_sma::Person>(boost::interprocess::anonymous_instance)(
 				locations,
 				person_type,
+				movement_type,
 				person.getId()
 			)
 		);

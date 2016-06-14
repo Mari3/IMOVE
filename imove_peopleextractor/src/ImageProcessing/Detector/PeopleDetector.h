@@ -36,7 +36,7 @@ class PeopleDetector {
   ~PeopleDetector();
 
   // Detect people in frame
-  std::vector<scene_interface::Vector2> detect(cv::Mat& frame);
+  std::vector<Vector2> detect(cv::Mat& frame);
 
   cv::Mat getDisplayFrame();
 };

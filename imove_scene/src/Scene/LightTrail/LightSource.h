@@ -10,8 +10,6 @@
 #include "../Util/Range.h"
 #include "LightTrail.h"
 
-using namespace scene_interface;
-
 class LightSource {
 private:
     Vector2 location;

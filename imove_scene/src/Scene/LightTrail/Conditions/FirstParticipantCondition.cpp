@@ -9,7 +9,7 @@ int FirstParticipantCondition::check(float dt, std::vector<Action *> &actions) {
     int i=0;
     int size = 0;
     lightPeople->for_each([&](std::shared_ptr<LightPerson> person){
-        if(person->type == Participant || person->type == StandingStill)
+        if(person->person_type == scene_interface::Person::PersonType::Participant)
             size++;
     });
 

@@ -6,7 +6,8 @@
 #include <vector>
 #include <queue>
 
-#include "../../../scene_interface/src/Person.h"
+#include "../../../scene_interface/src/People.h"
+#include "../../../scene_interface/src/Boundary.h"
 
 // Mappings for projector frames and points from camera frames and points based on camera and projector properties
 class Calibration {
@@ -28,15 +29,16 @@ class Calibration {
 		 * @param fullscreen_projector The projector fullscreen or not
 		 * @param resolution_camera The camera resolution
 		 * @param camera_device The integer identifier of the camera by the OS
-		 * @param camera_projector_transformation The projection transformation matrix between the camera and projection
+		 * @param boundary The boundary of the projection on the camera frame
 		 * @param frames_projector_camera_delay The amount of frames delay between the projectors projection captured by the camera
 		 * @param projector_background_light The light level difference between the projectors projection light level and background level
+		 * @param meter The amount of pixels measured as 1 meter on camere frame
 		 * @param maximum_fps_scene The maximum fps for the scene
 		 * @param fps_capture_scene The fps capture scene for projection elimination
 		 * @param iterations_delay_peopleextracting The amount of iterations to stall for syncing people extracting and slow scene capture image
 		 * @param factor_resize_capture_scene The factor to resize the captured scene before sending over to people extractor
 		 **/
-		Calibration(const cv::Size& resolution_projector, const bool& fullscreen_projector, const cv::Size& resolution_camera, unsigned int camera_device, cv::Mat& camera_projector_transformation, unsigned int frames_projector_camera_delay, float projector_background_light, float meter, unsigned int maximum_fps_scene, unsigned int fps_capture_scene, unsigned int iterations_delay_peopleextracting, unsigned int factor_resize_capture_scene);
+		Calibration(const cv::Size& resolution_projector, const bool& fullscreen_projector, const cv::Size& resolution_camera, unsigned int camera_device, const Boundary& projection, unsigned int frames_projector_camera_delay, float projector_background_light, float meter, unsigned int maximum_fps_scene, unsigned int fps_capture_scene, unsigned int iterations_delay_peopleextracting, unsigned int factor_resize_capture_scene);
 
 		/**
 		 * Creates the Calibration from a file by which the filepath is given
@@ -82,13 +84,13 @@ class Calibration {
 		 **/
 
 		void createPointsFrameProjectorFromPointsFrameCamera(std::vector<cv::Point2f>& points_frame_projector, const std::vector<cv::Point2f>& points_frame_camera) const;
+		
 		/**
-		 * Changes persons location into the location on the projector based on the given camera_projector_transformation
+		 * Creates the people on the projector from people on the camera using camera projector transformation
 		 * 
-		 * @param persons locations get changed from camera frame location to projector frame location
+		 * @param people_camera The people on the camera
 		 **/
-
-		void changeProjectorFromCameraLocationPerson(std::vector<scene_interface::Person>& persons) const;
+		const scene_interface::People createPeopleProjectorFromPeopleCamera(const scene_interface::People& people_camera) const;
 
 		/**
 		 * Creates a projection frame from the camera frame based on the given camera_projector_transformation
@@ -165,6 +167,11 @@ class Calibration {
 		 * Gets the one meter in pixels on a camera image.
 		 **/
 		const float getMeter() const;
+
+		/**
+		 * Gets (the boundary of) the projection
+		 **/
+		const Boundary getProjection() const;
 
 		/**
 		 * Sets the maximum FPS of the scene
@@ -263,6 +270,8 @@ class Calibration {
 		cv::Size resolution_camera;
 		// The integer identifier of the camera device of the OS 
 		unsigned int camera_device;
+		// The boundary of the projection
+		Boundary projection;
 		// The projection transformation matrix between the camera and projection
 		cv::Mat camera_projector_transformation;
 		// The queue with the projector frames which are not yet expected to be captured by the camera frame

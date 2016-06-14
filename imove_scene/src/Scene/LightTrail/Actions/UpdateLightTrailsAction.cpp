@@ -28,9 +28,7 @@ Vector2 UpdateLightTrailsAction::calculateForce(LightTrail trail) {
     Vector2 totalForce(0,0);
 
     gravityPoints->for_each([&](std::shared_ptr<GravityPoint> gravityPoint){
-
         totalForce += gravityPoint->calculateForce(trail,config);
-
     });
     return totalForce;
 }

@@ -9,8 +9,6 @@
 #include "../../Util/VectorRepository.h"
 #include "../LightSource.h"
 
-using namespace scene_interface;
-
 typedef VectorRepository<ColorHole> ColorHoleVectorRepository;
 typedef VectorRepository<GravityPoint> GravityPointVectorRepository;
 typedef VectorRepository<LightSource> LightSourceVectorRepository;

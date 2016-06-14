@@ -1,7 +1,6 @@
 #include <iostream>
 #include "ParticipantGravityPointAction.h"
 #include "../../../../../scene_interface/src/Person.h"
-#include "../../../../../scene_interface/src/Vector2.h"
 
 ParticipantGravityPointAction::ParticipantGravityPointAction(std::shared_ptr<LightPerson> person,
                                                              GravityPointRepository* gravityPoints,
@@ -33,7 +32,7 @@ void ParticipantGravityPointAction::setLocation() {
 
 bool ParticipantGravityPointAction::isDone(std::vector<Action*> &followUp) {
     // This action is done when the person it tracks is no longer a participant
-    if(person->type != Participant && person->type != StandingStill){
+    if(person->person_type != scene_interface::Person::PersonType::Participant){
         gravityPoints->scheduleForRemoval(gravityPoint);
         gravityPoints->scheduleForRemoval(antigravityPoint);
         return true;

@@ -23,7 +23,7 @@ PersonColorHoleAction::PersonColorHoleAction(const std::shared_ptr<LightPerson> 
 }
 
 bool PersonColorHoleAction::isDone(std::vector<Action *> &followUp) {
-    if(person->type == None){
+    if(person->person_type == scene_interface::Person::PersonType::None){
         finish();
         return true;
     }

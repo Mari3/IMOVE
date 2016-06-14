@@ -10,8 +10,6 @@
 #include "../Repositories/LightPersonMapRepository.h"
 #include "../Repositories/LightsSceneRepositories.h"
 
-using namespace scene_interface;
-
 class DeleteAllAction : public Action {
 private:
     ColorHoleRepository* colorHoles;

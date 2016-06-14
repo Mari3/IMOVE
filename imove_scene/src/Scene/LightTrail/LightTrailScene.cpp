@@ -2,6 +2,7 @@
 #include <memory>
 #include <assert.h>
 #include "../../../../scene_interface/src/Vector2.h"
+#include "../../../../scene_interface/src/People.h"
 #include "LightTrailScene.h"
 #include "Actions/UpdateLightTrailsAction.h"
 #include "../Util/HueConverter.h"
@@ -153,7 +154,7 @@ void LightTrailScene::processPeople() {
     if(!peopleQueue.empty()) { //If people have been updated
 
         //Get the first update and pop it.
-        std::vector<Person> newPeople = peopleQueue.front();
+        scene_interface::People newPeople = peopleQueue.front();
         peopleQueue.pop();
 
         //Set up range for generating new hues
@@ -161,30 +162,37 @@ void LightTrailScene::processPeople() {
 
         for (unsigned int i = 0; i < newPeople.size(); ++i) {
 
-            Person person = newPeople[i];
+            scene_interface::Person person = newPeople[i];
             unsigned int id = person.getId();
 
             if (lightPeople->has(id)) { //If the person currently exists
 
                 //Update the person
                 std::shared_ptr<LightPerson> lPerson = lightPeople->get(id);
-                lPerson->setLocation(person.getLocation());
-                lPerson->type = person.type;
+								scene_interface::Location llocation = person.getLocation();
+                lPerson->setLocation(Vector2(
+									llocation.getX(),
+									llocation.getY()
+								));
+                lPerson->person_type = person.getPersonType();
 
-            } else if(person.type != None) {
+            } else if(person.getPersonType() != scene_interface::Person::PersonType::None) {
 
                 //Create a new person with randomly generated hue
                 util::Range hue = config.cornerHues()[hueCounter];
 								std::cerr << "lb :" << hue.lowerBound << "ub: " << hue.upperBound << "hueCounter: " << hueCounter << std::endl;
+								scene_interface::Location llocation = person.getLocation();
                 lightPeople->add(
-                        std::shared_ptr<LightPerson>(new LightPerson(person.getLocation(), id, person.type, hue)));
+                        std::shared_ptr<LightPerson>(new LightPerson(Vector2(
+													llocation.getX(),
+													llocation.getY()
+											  ), id, person.getPersonType(), person.getMovementType(), hue)));
 								hueCounter = (hueCounter + 1) % 4;
 
             }
         }
         lightPeople->for_each([&](std::shared_ptr<LightPerson> person){
-            if(person->type == None){ //If this person does not exist anymore
-
+            if(person->person_type == scene_interface::Person::PersonType::None){ //If this person does not exist anymore
                 //Remove it from the list
                 lightPeople->scheduleForRemoval(person);
             }

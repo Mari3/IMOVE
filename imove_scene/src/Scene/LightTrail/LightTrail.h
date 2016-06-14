@@ -4,8 +4,6 @@
 #include "../../../../scene_interface/src/Vector2.h"
 #include "../Util/Timer.h"
 
-using namespace scene_interface;
-
 class LightTrail {
 public:
     Vector2 location;

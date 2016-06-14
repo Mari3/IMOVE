@@ -9,8 +9,6 @@
 #include "../LightTrailConfiguration.h"
 #include "../../../../../scene_interface/src/Vector2.h"
 
-using namespace scene_interface;
-
 class UpdateLightTrailsAction : public Action {
 private:
     LightTrailRepository* lightTrails;

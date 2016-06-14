@@ -7,8 +7,6 @@
 #include "LightTrail.h"
 #include "../../../../scene_interface/src/Vector2.h"
 
-using namespace scene_interface;
-
 class ColorHole : public GravityPoint {
 private:
     std::vector<std::shared_ptr<LightTrail>> consumedTrails;

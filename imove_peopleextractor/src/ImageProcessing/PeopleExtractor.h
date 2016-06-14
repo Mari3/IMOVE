@@ -13,8 +13,10 @@
 #include "opencv2/videoio.hpp"
 #include "Detector/PeopleDetector.h"
 #include "Identifier/PeopleIdentifier.h"
-#include "../../../scene_interface/src/Person.h"
+#include "../Person.h"
+#include "../../../scene_interface/src/People.h"
 #include "../../../scene_interface/src/Vector2.h"
+#include "../../../scene_interface/src/Boundary.h"
 
 
 
@@ -37,11 +39,14 @@ class PeopleExtractor {
   float resize_ratio;
 
  public:
-  PeopleExtractor(cv:: Size frame_size, float pixels_per_meter, float resolution_resize_height);
+  PeopleExtractor(cv:: Size frame_size, float pixels_per_meter, float resolution_resize_height, Boundary boundary);
   ~PeopleExtractor();
 
   // Main extraction function to extract people from a frame
-  std::vector<scene_interface::Person> extractPeople(cv::Mat& new_frame);
+  const scene_interface::People extractPeople(cv::Mat& new_frame);
+
+  // Convert people from the People class to the scene interface People class
+  const scene_interface::People convert(std::vector<Person> people);
 
   // Display image processing results
   const cv::Mat getDebugFrame() const;

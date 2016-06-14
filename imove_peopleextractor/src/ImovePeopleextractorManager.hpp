@@ -36,9 +36,9 @@ class ImovePeopleextractorManager {
 		/**
 		 * Push extractedpeople on shared memory query for scene to pop.
 		 * 
-		 * @param extractedpeople Extracted people for scene input
+		 * @param people Extracted people for scene input
 		 **/
-		void sendExtractedpeople(std::vector<scene_interface::Person> extractedpeople);
+		void sendExtractedpeople(scene_interface::People people);
 
 		// Receive scene frame and feed projection for later projection subtraction
 		void receiveSceneFrameAndFeedProjection();

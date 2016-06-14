@@ -8,8 +8,6 @@
 #include "../Repositories/LightsSceneRepositories.h"
 #include "../LightTrailConfiguration.h"
 
-using namespace scene_interface;
-
 class ParticipantGravityPointAction : public Action {
 private:
     GravityPointRepository* gravityPoints;
