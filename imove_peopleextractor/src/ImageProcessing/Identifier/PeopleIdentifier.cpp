@@ -21,8 +21,7 @@ std::vector<Person> PeopleIdentifier::match(std::vector<Vector2>& locations) {
         --i;
       } else if (detected_people[i].movement_type == Person::MovementType::StandingStill) {
         if (!frame_boundary.inBounds(detected_people[i].getLocation())) {
-          detected_people.erase(detected_people.begin() + i);
-          --i;
+          detected_people[i].person_type = Person::PersonType::None;
         } else if (detected_people[i].getNotMovedCount() <= 0) {
           detected_people[i].person_type = Person::PersonType::None;
         } else {

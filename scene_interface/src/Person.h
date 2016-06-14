@@ -30,9 +30,11 @@ namespace scene_interface {
 	    // Id
 	    unsigned int id;
 
-	    // Current location
-	    Location location;
-	   
+	protected:
+		// Current location
+		Location location;
+
+	private:
 			// Person type
 			PersonType person_type;
 

@@ -23,7 +23,7 @@ class CalibrationMeterWindow : public OpenCVWindow {
 		 **/
 		void drawImage(cv::Mat image);
 		
-		float getMeter() const;
+		float getMeterCamera() const;
 
 	protected:
 		enum METER { A, B };

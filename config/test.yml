@@ -12,8 +12,9 @@ Camera_projector_transformation: !!opencv-matrix
        1.7189699911903524e+00, -1.0543015945967504e+02,
        -1.1895278627920160e-04, -1.8397469618804471e-04, 1. ]
 Frames_projector_camera_delay: 0
-Projector_background_light: 3.9000000000000001e-01
-Meter: 100.
+Projector_background_light: 3.8999998569488525e-01
+Meter_camera: 100.
+Meter_projector: 1.8315229797363281e+02
 Maximum_FPS_scene: 60
 FPS_capture_scene: 8
 Iterations_delay_peopleextracting: 5000

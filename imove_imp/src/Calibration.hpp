@@ -15,7 +15,7 @@ class Calibration {
 		// Default configuration parameters if not given when createFromFile
 		static constexpr unsigned int    DEFAULT_FRAMES_PROJECTOR_CAMERA_DELAY     = 5;
 		static constexpr          double DEFAULT_PROJECTOR_BACKGROUND_LIGHT        = 39;
-		static constexpr          float  DEFAULT_METER                             = 100.f;
+		static constexpr          float  DEFAULT_METER_CAMERA                      = 100.f;
 		static constexpr unsigned int    DEFAULT_MAXIMUM_FPS_SCENE                 = 60;
 		static constexpr unsigned int    DEFAULT_FPS_CAPTURE_SCENE                 = 8;
 		static constexpr unsigned int    DEFAULT_ITERATIONS_DELAY_PEOPLEEXTRACTING = 5000;
@@ -157,16 +157,21 @@ class Calibration {
 		unsigned int getCameraDevice() const;
 
 		/**
-		 * Sets the one meter in pixels on a camera image.
+		 * Sets the one meter in pixels on a camera image and calculates the one meter in pixels on a projector meter
 		 * 
 		 * @param meter The one meter in pixel on a camera image
 		 **/
-		void setMeter(float meter);
+		void setMeterCamera(float meter_camera);
 
 		/**
 		 * Gets the one meter in pixels on a camera image.
 		 **/
-		const float getMeter() const;
+		const float getMeterCamera() const;
+
+		/**
+		 * Gets the one meter in pixels on a projector image.
+		 **/
+		const float getProjectorMeter() const;
 
 		/**
 		 * Gets (the boundary of) the projection
@@ -281,7 +286,9 @@ class Calibration {
 		// The light level difference between the projectors projection light level and background level
 		float projector_background_light;
 		// 1 meter in pixels on camera image
-		float meter;
+		float meter_camera;
+		// 1 meter in pixels on camera image
+		float meter_projector;
 		// fps scene
 		unsigned int maximum_fps_scene;
 		// fps capture scene for projection elimination
