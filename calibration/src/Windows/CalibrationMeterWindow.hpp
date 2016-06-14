@@ -1,8 +1,8 @@
 #include <opencv2/core/core.hpp>
 
-#include "../../../imove_peopleextractor/src/OpenCVWindow.hpp"
-#include "../../../imove_peopleextractor/src/OpenCVUtil.hpp"
-#include "../../../imove_peopleextractor/src/Calibration/Calibration.hpp"
+#include "../../../imove_imp/src/OpenCVWindow.hpp"
+#include "../../../imove_imp/src/OpenCVUtil.hpp"
+#include "../../../imove_imp/src/Calibration.hpp"
 
 // Window to calibrete the width of a meter on the camera
 class CalibrationMeterWindow : public OpenCVWindow {

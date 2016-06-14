@@ -2,7 +2,7 @@
 #include <string>
 
 #include "ImovePeopleextractorManager.hpp"
-#include "Calibration/Calibration.hpp"
+#include "../../imove_imp/src/Calibration.hpp"
 
 const unsigned int CONFIGURATION_CALIBRATION_ARGN = 1;
 

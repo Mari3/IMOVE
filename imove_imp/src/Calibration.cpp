@@ -4,9 +4,9 @@
 #include <opencv2/core/persistence.hpp>
 #include <assert.h>
 
-#include "../OpenCVUtil.hpp"
+#include "OpenCVUtil.hpp"
 #include "Calibration.hpp"
-#include "../../../scene_interface/src/People.h"
+#include "../../scene_interface/src/People.h"
 
 Calibration::Calibration(const cv::Size& resolution_projector, const bool& fullscreen_projector, const cv::Size& resolution_camera, unsigned int camera_device, const Boundary& projection, unsigned int frames_projector_camera_delay, float projector_background_light, float meter_camera, unsigned int maximum_fps_scene, unsigned int fps_capture_scene, unsigned int iterations_delay_peopleextracting, unsigned int factor_resize_capture_scene) :
 	resolution_projector(resolution_projector),

@@ -1,4 +1,4 @@
-#include "./OpenCVWindow.hpp"
+#include "OpenCVWindow.hpp"
 
 #include <opencv2/highgui/highgui.hpp>
 

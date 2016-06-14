@@ -8,7 +8,7 @@ find_package(OpenCV REQUIRED HINTS ${OpenCV_DIR})
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 
 
-file(GLOB_RECURSE SOURCE_FILES "*.cpp" "../../scene_interface/src/*.cpp" "../../scene_interface_sma/src/*.cpp" "../../peopleextractor_interface_sma/src/*.cpp" "../../imove/src/Running.cpp")
+file(GLOB_RECURSE SOURCE_FILES "*.cpp" "../../scene_interface/src/*.cpp" "../../scene_interface_sma/src/*.cpp" "../../peopleextractor_interface_sma/src/*.cpp" "../../imove/src/Running.cpp" "../../imove_imp/src/*.cpp")
 ADD_EXECUTABLE(imove_peopleextractor ${SOURCE_FILES})
 SET_TARGET_PROPERTIES(imove_peopleextractor PROPERTIES ENABLE_EXPORTS true)
 SET_TARGET_PROPERTIES(imove_peopleextractor PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
