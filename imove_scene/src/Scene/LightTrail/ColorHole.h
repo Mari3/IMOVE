@@ -5,7 +5,7 @@
 #include <memory>
 #include "GravityPoint.h"
 #include "LightTrail.h"
-#include "../../../../scene_interface/src/Vector2.h"
+#include "../../../../imove_imp/src/Vector2.h"
 
 class ColorHole : public GravityPoint {
 private:

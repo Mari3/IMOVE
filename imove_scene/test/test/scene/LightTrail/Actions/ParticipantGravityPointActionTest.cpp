@@ -8,7 +8,7 @@
 #include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneRepositories.h"
 #include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 #include "../../../../../src/Scene/LightTrail/Actions/ParticipantGravityPointAction.h"
-#include "../../../../../../scene_interface/src/Vector2.h"
+#include "../../../../../../imove_imp/src/Vector2.h"
 #include "../../../../../../scene_interface/src/Person.h"
 
 LightTrailConfiguration pgpat_config(800, 600, util::Range(0, 0), util::Range(0, 0), util::Range(0, 0),

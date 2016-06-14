@@ -6,7 +6,7 @@
 
 #include "../../imove_imp/src/OpenCVUtil.hpp"
 #include "../../scene_interface/src/People.h"
-#include "../../scene_interface/src/Vector2.h"
+#include "../../imove_imp/src/Vector2.h"
 #include "Windows/PeopleextractorWindow.hpp"
 #include "Windows/DetectedPeopleCameraWindow.hpp"
 #include "Windows/DetectedPeopleProjectionWindow.hpp"
