@@ -113,6 +113,8 @@ LightTrailSceneConfiguration LightTrailSceneConfiguration::readFromFile(char *fi
     fs["MixingEffectThickness"] >> mixingConfig.thickness;
     mixingConfig.thickness *= meter;
 
+    fs["TrailMaxLength"] >> trailConfig.maxLength;
+
     float standingStillFadeTime;
     fs["StandingStillFadeTime"] >> standingStillFadeTime;
 

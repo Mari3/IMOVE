@@ -1,6 +1,6 @@
 %YAML:1.0
-Resolution: [ 800, 500 ]
-Meter: 100
+Resolution: [ 1280, 720 ]
+Meter: 1.8366783142089844e+02
 TopLeftHue: [ 0, 90 ]
 TopRightHue: [ 90, 180 ]
 BottomRightHue : [ 180, 270 ]
@@ -21,11 +21,10 @@ AlternatingGravityRange: -1
 ProximityRange: .7
 ProximityModifier: .7
 SidesEnabled: 1
-SpeedCap: 2.
-Fade: 2
-TrailThickness: .11
-TrailMaxLength: 2
-MixingSpeed: 3.
+SpeedCap: 3.
+Fade: 8
+TrailThickness: .055
+MixingSpeed: 2.
 MixingDistance: 2.
 MixingRevertTime: 1.
 ExplosionAntigravity: 27.68
@@ -33,7 +32,7 @@ ExplosionGravity: 10.38
 ExplosionExTime: .2
 ExplosionInTime: .3
 LightSourceGravity: 3.46
-ColorHoleDelay: 140.
+ColorHoleDelay: 120.
 ColorHoleGravity: 5
 ColorHoleGravityRange: 1.2
 ColorHoleRange: .2
