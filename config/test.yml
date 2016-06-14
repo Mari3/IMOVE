@@ -3,14 +3,10 @@ Camera_device: 0
 Resolution_camera: [ 640, 480 ]
 Resolution_projector: [ 800, 600 ]
 Fullscreen_projector: 0
-Camera_projector_transformation: !!opencv-matrix
-   rows: 3
-   cols: 3
-   dt: d
-   data: [ 1.6348723011774815e+00, -1.1239747070595069e-01,
-       -1.5584420210974321e+02, -1.1459799941269233e-01,
-       1.7189699911903524e+00, -1.0543015945967504e+02,
-       -1.1895278627920160e-04, -1.8397469618804471e-04, 1. ]
+Projection_top_left: [ 100., 68. ]
+Projection_top_right: [ 550., 98. ]
+Projection_bottom_left: [ 122., 388. ]
+Projection_bottom_right: [ 544., 398. ]
 Frames_projector_camera_delay: 0
 Projector_background_light: 3.8999998569488525e-01
 Meter_camera: 100.
