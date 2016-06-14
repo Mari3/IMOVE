@@ -6,7 +6,7 @@
 #define IMOVE_NOPEOPLECONDITION_H
 
 
-#include "../LightTrailConfiguration.h"
+#include "../Configuration/LightTrailSceneConfiguration.h"
 #include "../Repositories/LightsSceneRepositories.h"
 #include "../../Condition.h"
 
@@ -15,14 +15,14 @@ private:
     int prevSize = -1;
     LightPersonRepository *lightPeople;
     GravityPointRepository *gravityPoints;
-    LightTrailConfiguration config;
+    LightTrailSceneConfiguration config;
     LightTrailRepository *lightTrails;
 public:
     int check(float dt, std::vector<Action *> &actions) override;
     NoPeopleCondition(
     	LightPersonRepository *lightPeople,
     	GravityPointRepository *gravityPoints,
-        const LightTrailConfiguration &config,
+        const LightTrailSceneConfiguration &config,
         LightTrailRepository *lightTrails
     );
 };

@@ -2,10 +2,11 @@
 #define IMOVE_PERSONTURNEDBYSTANDERCONDITION_H
 
 #include <vector>
+#include <SFML/Graphics/RenderTexture.hpp>
 #include "../Repositories/LightPersonMapRepository.h"
 #include "../../Condition.h"
 #include "../Repositories/LightsSceneRepositories.h"
-#include "../LightTrailConfiguration.h"
+#include "../Configuration/LightTrailSceneConfiguration.h"
 #include "../../../../../scene_interface/src/Person.h"
 
 class PersonChangedTypeCondition : public Condition {
@@ -14,11 +15,17 @@ private:
     GravityPointRepository* gravityPoints;
     std::map<int,scene_interface::Person::PersonType> oldPersonType;
     std::map<int,scene_interface::Person::MovementType> oldMovementType;
-    LightTrailConfiguration config;
+    LightTrailRepository* lightTrails;
+    LightSourceRepository* lightSources;
+    LightTrailSceneConfiguration config;
+    sf::RenderTexture& texture;
 public:
-    PersonChangedTypeCondition(LightPersonRepository* lightPeople,
-                               GravityPointRepository* gravityPoints,
-                                const LightTrailConfiguration& config);
+    PersonChangedTypeCondition(LightPersonRepository *lightPeople,
+                                   GravityPointRepository *gravityPoints,
+                                   LightTrailRepository *lightTrails,
+                                   LightSourceRepository *lightSources,
+                                   const LightTrailSceneConfiguration &config,
+                                   sf::RenderTexture &texture);
     int check(float dt, std::vector<Action*> &actions) override;
 };
 

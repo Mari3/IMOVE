@@ -13,12 +13,12 @@ class LightSourceGravityPointAction : public Action {
 private:
     LightPersonRepository* lightPeople;
     GravityPointRepository* gravityPoints;
-    LightTrailConfiguration config;
+    LightTrailSceneConfiguration config;
     std::shared_ptr<GravityPoint> gPoints[4];
 
 public:
     LightSourceGravityPointAction(LightPersonRepository *lightPeople, GravityPointRepository *gravityPoints,
-                                  const LightTrailConfiguration &config);
+                                  const LightTrailSceneConfiguration &config);
 
     bool isDone(std::vector<Action *> &followUp) override;
 

@@ -5,7 +5,7 @@
 #include "../Util/Range.h"
 #include "../../../../scene_interface/src/Vector2.h"
 #include "LightTrail.h"
-#include "LightTrailConfiguration.h"
+#include "Configuration/LightTrailSceneConfiguration.h"
 
 class GravityPoint {
 private:
@@ -16,7 +16,7 @@ public:
     util::Range hue;
     float gravity, range;
     GravityPoint(Vector2 location, util::Range hue, float gravity, float range = -1, bool isColorHole=false);
-    Vector2 calculateForce(LightTrail trail, const LightTrailConfiguration& config);
+    Vector2 calculateForce(LightTrail trail, const LightTrailSceneConfiguration& config);
     bool isColorHole();
 };
 

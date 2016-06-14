@@ -15,12 +15,12 @@ private:
     LightPersonRepository* lightPeople;
     LightTrailRepository* lightTrails;
     GravityPointRepository* gravityPoints;
-    LightTrailConfiguration config;
+    LightTrailSceneConfiguration config;
     Timer timer;
 public:
     ColorHoleTimerCondition(ColorHoleRepository *colorHoles,
                                 LightPersonRepository *lightPeople,
-                                const LightTrailConfiguration &config,
+                                const LightTrailSceneConfiguration &config,
                                 LightTrailRepository *lightTrails,
                                 GravityPointRepository *gravityPoints);
 

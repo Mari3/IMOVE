@@ -7,19 +7,18 @@
 PersonColorHoleAction::PersonColorHoleAction(const std::shared_ptr<LightPerson> &person,
                                              GravityPointRepository *gravityPoints, ColorHoleRepository *colorHoles,
                                              LightTrailRepository *lightTrails, LightPersonRepository *lightPeople,
-                                             LightTrailConfiguration config)
+                                             LightTrailSceneConfiguration config)
         : person(person),
           gravityPoints(
                   gravityPoints),
           colorHoles(colorHoles),
           lightTrails(
-                  lightTrails), lightPeople(lightPeople), config(config) {
-    util::Range hue = person->hue;
-    hue += 180.f;
-    ColorHole* hole = new ColorHole(person->getLocation(),hue,config.colorHoleGravity(),config.colorHoleGravityRange());
+                  lightTrails), lightPeople(lightPeople), config(config), effect(person->getLocation(), config) {
+    ColorHole* hole = new ColorHole(person->getLocation(),util::Range(0,360,true),config.effect().colorHole().gravity,config.effect().colorHole().range);
     colorHole = std::shared_ptr<ColorHole>(hole);
     colorHoles->add(colorHole);
     gravityPoints->add(colorHole);
+    person->isColorHole = true;
 }
 
 bool PersonColorHoleAction::isDone(std::vector<Action *> &followUp) {
@@ -31,7 +30,7 @@ bool PersonColorHoleAction::isDone(std::vector<Action *> &followUp) {
     lightPeople->for_each([&](std::shared_ptr<LightPerson> person){
         if(!done && person != this->person) {
             float diff = (person->getLocation() - colorHole->location).size();
-            if (diff < config.colorHoleRange()) {
+            if (diff < config.effect().colorHole().consumeRange) {
                 finish();
                 //TODO create followup
                 done = true;
@@ -42,15 +41,20 @@ bool PersonColorHoleAction::isDone(std::vector<Action *> &followUp) {
 }
 
 void PersonColorHoleAction::execute(float dt) {
+    //Logic
     colorHole->location.x = person->getLocation().x;
     colorHole->location.y = person->getLocation().y;
     lightTrails->for_each([&](std::shared_ptr<LightTrail> trail){
         float diff = (trail->getLocation()-colorHole->location).size();
-        if(diff < config.colorHoleRange() && colorHole->hue.contains(trail->hue)){
+        if(diff < config.effect().colorHole().consumeRange && colorHole->hue.contains(trail->hue)){
             colorHole->consume(trail);
             lightTrails->scheduleForRemoval(trail);
         }
     });
+
+    //Graphics
+    effect.update(dt);
+    effect.setLocation(person->getLocation());
 }
 
 void PersonColorHoleAction::finish() {
@@ -60,5 +64,9 @@ void PersonColorHoleAction::finish() {
     }
     gravityPoints->scheduleForRemoval(colorHole);
     colorHoles->scheduleForRemoval(colorHole);
+    person->isColorHole = false;
 }
 
+void PersonColorHoleAction::draw(sf::RenderTarget &target) {
+    effect.draw(target);
+}

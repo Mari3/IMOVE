@@ -74,6 +74,12 @@ float util::Range::getCenter() {
     return center;
 }
 
+util::Range::Range() {
+
+}
+
+
+
 
 
 

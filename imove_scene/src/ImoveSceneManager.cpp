@@ -14,7 +14,7 @@ void ImoveSceneManager::sendSceneFrameThread(ImoveSceneManager* imove_scene_mana
 	imove_scene_manager->sendSceneFrame(sf_image);
 }
 
-ImoveSceneManager::ImoveSceneManager(Calibration* calibration, LightTrailConfiguration& configuration_lighttrail) {
+ImoveSceneManager::ImoveSceneManager(Calibration* calibration, LightTrailSceneConfiguration& configuration_lighttrail) {
 	this->calibration = calibration;
 
 	// setup scene
