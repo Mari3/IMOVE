@@ -6,7 +6,7 @@
 // Window to display people extractor debug frame
 class PeopleextractorWindow : public OpenCVWindow {
 	public:
-		PeopleextractorWindow(cv::Point2i position, PeopleExtractor* peopleextractor);
+		PeopleextractorWindow(cv::Point2i position, cv::Size size, PeopleExtractor* peopleextractor);
 		
 		// Draw people extractor debug frame
 		void drawFrame();

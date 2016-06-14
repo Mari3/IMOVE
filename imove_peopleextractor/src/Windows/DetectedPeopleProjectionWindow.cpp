@@ -3,7 +3,7 @@
 #include "../../../imove_imp/src/OpenCVUtil.hpp"
 #include "DetectedPeopleProjectionWindow.hpp"
 
-DetectedPeopleProjectionWindow::DetectedPeopleProjectionWindow(cv::Point2i position) : OpenCVWindow("Detected people on projection", position) { }
+DetectedPeopleProjectionWindow::DetectedPeopleProjectionWindow(cv::Point2i position, cv::Size size) : OpenCVWindow("Detected people on projection", position, size) { }
 
 void DetectedPeopleProjectionWindow::drawImage(cv::Mat& image_projection, const scene_interface::People& detectedpeople_projection) {
 	// debug extracted perspective mapped people on projection
