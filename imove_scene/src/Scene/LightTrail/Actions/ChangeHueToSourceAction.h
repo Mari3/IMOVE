@@ -14,7 +14,7 @@
 // Changes the hue of a person to that of a light source
 class ChangeHueToSourceAction : public Action {
 private:
-    float progressLeft;
+    util::Range sourceHue;
     std::shared_ptr<LightPerson> person;
 public:
     ChangeHueToSourceAction(std::shared_ptr<LightPerson> person, std::shared_ptr<LightSource> source);
