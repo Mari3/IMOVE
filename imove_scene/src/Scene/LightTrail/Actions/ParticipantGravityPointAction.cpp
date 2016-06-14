@@ -114,7 +114,7 @@ bool ParticipantGravityPointAction::isDone(std::vector<Action*> &followUp) {
 void ParticipantGravityPointAction::execute(float dt) {
     setLocation(dt);
 
-    if(person->type == StandingStill){
+    if(person->movement_type == scene_interface::Person::StandingStill){
         gravityPoint->gravity -= config.gravity().participant().gravity/config.effect().standingStillFadeTime()*dt;
         antigravityPoint->gravity += config.gravity().participant().antigravity/config.effect().standingStillFadeTime()*dt;
         if(gravityPoint->gravity < 0)gravityPoint->gravity = 0;

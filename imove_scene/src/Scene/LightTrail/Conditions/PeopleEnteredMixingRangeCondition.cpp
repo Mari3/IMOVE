@@ -17,10 +17,10 @@ lightPeople(lightPeople), lightTrails(lightTrails), gravityPoints(gravityPoints)
 int PeopleEnteredMixingRangeCondition::check(float dt, std::vector<Action *> &actions) {
     int i = 0;
     lightPeople->for_each([&](std::shared_ptr<LightPerson> person1){
-        if((person1->type == Participant || person1->type == StandingStill) && !person1->isColorHole ){
+        if(person1->person_type == scene_interface::Person::Participant && !person1->isColorHole ){
             int j = 0;
             lightPeople->for_each([&](std::shared_ptr<LightPerson> person2) {
-                if (j > i && !person2->isColorHole && (person2->type == Participant || person2->type == StandingStill)) {
+                if (j > i && !person2->isColorHole && person2->person_type == scene_interface::Person::Participant) {
                     // If the people aren't the same and haven't been matched yet
                     Vector2 diff = person1->getLocation() - person2->getLocation();
                     float dist = diff.size();

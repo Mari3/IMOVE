@@ -4,6 +4,7 @@
 
 #include <math.h>
 #include "ChangeHueToSourceAction.h"
+#include "../../../../../imove_peopleextractor/src/Person.h"
 
 void ChangeHueToSourceAction::execute(float dt) {
     float progress = progressLeft < 0 ? -45*dt : 45*dt;
@@ -15,7 +16,8 @@ void ChangeHueToSourceAction::execute(float dt) {
 }
 
 bool ChangeHueToSourceAction::isDone(std::vector<Action *> &followUp) {
-    return fabsf(progressLeft) < 0.001 || person->type == None || person->type == Bystander;
+    return fabsf(progressLeft) < 0.001 || person->person_type == scene_interface::Person::None ||
+            person->person_type == scene_interface::Person::Bystander;
 }
 
 ChangeHueToSourceAction::ChangeHueToSourceAction(std::shared_ptr<LightPerson> person,

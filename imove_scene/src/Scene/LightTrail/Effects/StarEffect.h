@@ -10,8 +10,6 @@
 #include "../../../../../scene_interface/src/Vector2.h"
 #include "../Configuration/LightTrailSceneConfiguration.h"
 
-using namespace scene_interface;
-
 struct Star {
     Vector2 location;
     float speed;
