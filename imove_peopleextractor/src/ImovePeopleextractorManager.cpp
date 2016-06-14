@@ -4,7 +4,7 @@
 
 #include "ImovePeopleextractorManager.hpp"
 
-#include "OpenCVUtil.hpp"
+#include "../../imove_imp/src/OpenCVUtil.hpp"
 #include "../../scene_interface/src/People.h"
 #include "../../scene_interface/src/Vector2.h"
 #include "Windows/PeopleextractorWindow.hpp"

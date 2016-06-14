@@ -3,7 +3,6 @@
 
 #include "ImoveSceneManager.hpp"
 
-#include "OpenCVUtil.hpp"
 #include "../../scene_interface/src/People.h"
 #include "Scene/LightTrail/LightTrailScene.h"
 #include "Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"

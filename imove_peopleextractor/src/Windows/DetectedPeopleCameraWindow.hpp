@@ -1,6 +1,6 @@
 #include <opencv2/opencv.hpp>
 
-#include "../OpenCVWindow.hpp"
+#include "../../../imove_imp/src/OpenCVWindow.hpp"
 #include "../../../scene_interface/src/People.h"
 
 // Window to display camera frame for debugging information 

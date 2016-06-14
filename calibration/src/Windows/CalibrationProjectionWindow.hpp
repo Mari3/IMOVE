@@ -1,7 +1,7 @@
 #include <opencv2/core/core.hpp>
 
-#include "../../../imove_peopleextractor/src/OpenCVWindow.hpp"
-#include "../../../imove_peopleextractor/src/Calibration/Calibration.hpp"
+#include "../../../imove_imp/src/OpenCVWindow.hpp"
+#include "../../../imove_imp/src/Calibration.hpp"
 
 // window to calibrate the projection coordinates on the camera and provide the transformation matrix to the projector coordinates
 class CalibrationProjectionWindow : public OpenCVWindow {
