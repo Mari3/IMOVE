@@ -25,6 +25,7 @@ ImovePeopleextractorManager::ImovePeopleextractorManager(Calibration* calibratio
 	this->si_people_queue = this->segment->find<scene_interface_sma::PeopleQueue>(scene_interface_sma::NAME_PEOPLE_QUEUE).first;
 	// Get the people extractor scene frames queue in the segment
 	this->pi_sceneframe_queue = this->segment->find<peopleextractor_interface_sma::SceneframeQueue>(peopleextractor_interface_sma::NAME_SCENEFRAME_QUEUE).first;
+	this->running = this->segment->find<Running>(NAME_SHARED_MEMORY_RUNNING).first;
 }
 
 void ImovePeopleextractorManager::receiveSceneFrameAndFeedProjectionThread(ImovePeopleextractorManager* imove_peopleextractor_manager) {
@@ -54,8 +55,7 @@ void ImovePeopleextractorManager::run() {
 	scene_interface::People people_camera;
 	this->still_run_receive_scene_frames = true;
 	// while no key pressed
-	while (cv::waitKey(1) == OpenCVUtil::NOKEY_ANYKEY && video_capture.read(frame_camera)) {
-	
+	while (cv::waitKey(1) == OpenCVUtil::NOKEY_ANYKEY && video_capture.read(frame_camera) && this->running->running) {
 		// debug projection frame
 		this->calibration->createFrameProjectionFromFrameCamera(
 			frame_projection,
