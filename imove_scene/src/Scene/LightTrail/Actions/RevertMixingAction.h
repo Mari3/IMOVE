@@ -8,19 +8,19 @@
 
 #include "../../Action.h"
 #include "../LightPerson.h"
-#include "../LightTrailConfiguration.h"
+#include "../Configuration/LightTrailSceneConfiguration.h"
 #include "../Repositories/LightsSceneRepositories.h"
 
 class RevertMixingAction : public Action {
 private:
     std::shared_ptr<LightPerson> person1,person2;
     LightTrailRepository* trails;
-    LightTrailConfiguration config;
+    LightTrailSceneConfiguration config;
     float progPerSecond, progressLeft;
 public:
     RevertMixingAction(const std::shared_ptr<LightPerson> &person1, const std::shared_ptr<LightPerson> &person2,
                        float progress,
-                       LightTrailRepository *trails, const LightTrailConfiguration &config);
+                       LightTrailRepository *trails, const LightTrailSceneConfiguration &config);
 
     bool isDone(std::vector<Action*> &followUp) override;
 

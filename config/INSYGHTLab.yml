@@ -10,7 +10,7 @@ Projection_bottom_right: [249., 24.]
 Frames_projector_camera_delay: 0
 Projector_background_light: 3.7999999523162842e-01
 Meter_camera: 1.9432962036132812e+02
-Meter_projector: 6.3187634277343750e+02
+Meter_projector: 5.8712823486328125e+02
 Maximum_FPS_scene: 60
 FPS_capture_scene: 8
 Iterations_delay_peopleextracting: 5000

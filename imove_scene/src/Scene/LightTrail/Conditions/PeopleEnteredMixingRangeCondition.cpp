@@ -9,7 +9,7 @@
 PeopleEnteredMixingRangeCondition::PeopleEnteredMixingRangeCondition(LightPersonRepository *lightPeople,
                                                                      LightTrailRepository *lightTrails,
                                                                      GravityPointRepository* gravityPoints,
-                                                                     const LightTrailConfiguration &config) :
+                                                                     const LightTrailSceneConfiguration &config) :
 lightPeople(lightPeople), lightTrails(lightTrails), gravityPoints(gravityPoints), config(config)
 {
 }
@@ -17,40 +17,47 @@ lightPeople(lightPeople), lightTrails(lightTrails), gravityPoints(gravityPoints)
 int PeopleEnteredMixingRangeCondition::check(float dt, std::vector<Action *> &actions) {
     int i = 0;
     lightPeople->for_each([&](std::shared_ptr<LightPerson> person1){
-        int j = 0;
-        lightPeople->for_each([&](std::shared_ptr<LightPerson> person2) {
-            if (j > i) { // If the people aren't the same and haven't been matched yet
-                Vector2 diff = person1->getLocation() - person2->getLocation();
-                float dist = diff.size();
+        if(person1->person_type == scene_interface::Person::Participant && !person1->isColorHole ){
+            int j = 0;
+            lightPeople->for_each([&](std::shared_ptr<LightPerson> person2) {
+                if (j > i && !person2->isColorHole && person2->person_type == scene_interface::Person::Participant) {
+                    // If the people aren't the same and haven't been matched yet
+                    Vector2 diff = person1->getLocation() - person2->getLocation();
+                    float dist = diff.size();
 
-                int id1 = person1->getId();
-                int id2 = person2->getId();
-                if(id2 < id1){
-                    int temp = id2;
-                    id2 = id1;
-                    id1 = temp;
-                }
+                    int id1 = person1->getId();
+                    int id2 = person2->getId();
+                    if (id2 < id1) {
+                        int temp = id2;
+                        id2 = id1;
+                        id1 = temp;
+                    }
 
-                std::pair<int, int> pair(id1, id2);
-                std::set<std::pair<int, int>>::iterator loc = withinRange.find(pair);
+                    std::pair<int, int> pair(id1, id2);
+                    std::set<std::pair<int, int>>::iterator loc = withinRange.find(pair);
 
-                float mixingThreshold = 20;
+                    float mixingThreshold = 20;
 
-                float huediff = fabs(person1->hue.getCenter() - person2->hue.getCenter());
-                if(huediff > 180) huediff = 360-huediff;
+                    float huediff = fabsf(person1->hue.getCenter() - person2->hue.getCenter());
+                    if (huediff > 180) huediff = 360 - huediff;
 
-                if (dist < config.mixingDistance() && huediff > mixingThreshold
+                    if (dist < config.effect().mixing().distance && huediff > mixingThreshold
                         && huediff < 170) {
-                    if (loc != withinRange.end())
-                        return;
-                    Action* newAction = new MixingAction(person1,person2,lightTrails,gravityPoints,config);
-                    actions.push_back(newAction);
-                    withinRange.insert(pair);
-                } else if (loc != withinRange.end() && (dist > config.mixingDistance() || fabs(person1->hue.getCenter() - person2->hue.getCenter()) < 0.001f))
-                    withinRange.erase(loc);
-            }
-            j++;
-        });
+                        if (loc != withinRange.end()) {
+                            j++;
+                            return;
+                        }
+                        Action *newAction = new MixingAction(person1, person2, lightTrails, gravityPoints, config);
+                        actions.push_back(newAction);
+                        withinRange.insert(pair);
+                    } else if (loc != withinRange.end() && (dist > config.effect().mixing().distance ||
+                                                            fabs(person1->hue.getCenter() - person2->hue.getCenter()) <
+                                                            0.001f))
+                        withinRange.erase(loc);
+                }
+                j++;
+            });
+        }
         i++;
     });
     return static_cast<int>(actions.size());

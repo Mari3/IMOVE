@@ -5,7 +5,7 @@
 #include <sstream>
 #include <vector>
 #include "SFML/Graphics.hpp"
-#include "../../../src/Scene/LightTrail/LightTrailConfiguration.h"
+#include "../../../src/Scene/LightTrail/Configuration/LightTrailSceneConfiguration.h"
 #include "../../../src/Scene/LightTrail/LightTrailScene.h"
 #include "../../../src/Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 #include "../../../src/Scene/Util/Timer.h"
@@ -33,7 +33,7 @@ struct MixingFailsScenario : public Scenario {
     Timer timer;
     bool timerDone = false;
 
-    MixingFailsScenario(const LightTrailConfiguration& config): timer(10.f){
+    MixingFailsScenario(const LightTrailSceneConfiguration& config): timer(10.f){
         unsigned int y = config.screenHeight()/2;
         thresh = config.screenWidth()/4.f;
         people.push_back(TestingPerson(0,si::Location(0,y),si::Person::PersonType::Participant,si::Person::MovementType::Moving));
@@ -62,7 +62,7 @@ struct MixingScenario : public Scenario {
 
     float thresh;
 
-    MixingScenario(const LightTrailConfiguration& config){
+    MixingScenario(const LightTrailSceneConfiguration& config){
         unsigned int y = config.screenHeight()/2;
         thresh = 340.f;
         people.push_back(TestingPerson(0,si::Location(0,y),si::Person::PersonType::Participant,si::Person::MovementType::Moving));
@@ -81,7 +81,7 @@ struct MixingScenario : public Scenario {
 
 struct ManyScenario : public Scenario {
 
-    ManyScenario(const LightTrailConfiguration &config){
+    ManyScenario(const LightTrailSceneConfiguration &config){
         util::Range xRange(0,config.screenWidth());
         util::Range yRange(0,config.screenHeight());
         for(int i=0;i<10;++i){
@@ -101,7 +101,7 @@ struct FirstPersonScenario : public Scenario {
     bool timer2Done = false;
     float sh;
 
-    FirstPersonScenario(const LightTrailConfiguration &config) : timer(5.f) {
+    FirstPersonScenario(const LightTrailSceneConfiguration &config) : timer(5.f) {
         sh = config.screenHeight();
     }
 
@@ -139,7 +139,7 @@ struct RestartAlternatingScenario : public Scenario {
     bool timer2Done = false;
     float sh;
 
-    RestartAlternatingScenario(const LightTrailConfiguration &config) : timer(10.f) {
+    RestartAlternatingScenario(const LightTrailSceneConfiguration &config) : timer(10.f) {
         sh = config.screenHeight();
     }
 
@@ -173,7 +173,7 @@ struct RestartAlternatingScenario : public Scenario {
 
 struct BystanderScenario : public Scenario {
 
-    BystanderScenario(const LightTrailConfiguration &config, Scene *scene) {
+    BystanderScenario(const LightTrailSceneConfiguration &config, Scene *scene) {
         for(int i=0;i<300;++i)
             scene->update(.1f);
         people.push_back(TestingPerson(0,
@@ -194,7 +194,7 @@ struct ColorHoleScenario : public Scenario {
     float thresh;
     Timer timer;
 
-    ColorHoleScenario(const LightTrailConfiguration& config) : timer(20.f) {
+    ColorHoleScenario(const LightTrailSceneConfiguration& config) : timer(20.f) {
         srand(36);
         unsigned int y = config.screenHeight()/4*3;
         thresh = 340.f;
@@ -228,11 +228,59 @@ struct ColorHoleScenario : public Scenario {
 
 };
 
+struct SourceColorScenario : public Scenario {
+
+    float thresh;
+
+    SourceColorScenario(const LightTrailSceneConfiguration& config) {
+        people.push_back(Person(Vector2(20,config.screenHeight()/2),Participant));
+        thresh = config.screenHeight()-50;
+    }
+
+    void update(float dt) override {
+        if(people[0].getLocation().y < thresh){
+            people[0].setLocation(people[0].getLocation()+Vector2(0,20*dt));
+        }
+    }
+
+};
+
+struct StandingStillScenario : public Scenario {
+
+    Timer timer;
+
+    StandingStillScenario(const LightTrailSceneConfiguration& config) : timer (30.f) {
+        people.push_back(Person(Vector2(config.screenWidth()/2,config.screenHeight()/2),Participant));
+    }
+
+    void update(float dt) override {
+        if(timer.update(dt)){
+            people[0].type = StandingStill;
+        }
+    }
+
+};
+
+namespace SceneIntegration {
+    enum ScenarioCode {
+        Standard,
+        Mixing,
+        MixingFails,
+        Many,
+        FirstPerson,
+        RestartAlternating,
+        Bystander,
+        ColorHole,
+        SourceColor,
+        StandingStill
+    };
+}
+
 int main(int argc, char** argv){
 
     srand(static_cast<unsigned int>(time(NULL)));
 
-    LightTrailConfiguration config = LightTrailConfiguration::readFromFile(argv[1]);
+    LightTrailSceneConfiguration config = LightTrailSceneConfiguration::readFromFile(argv[1]);
 
     int scenarioCode = 0;
     if(argc == 3){
@@ -249,22 +297,37 @@ int main(int argc, char** argv){
     );
 
     Scenario* scenario;
-    if(scenarioCode == 0){
-        scenario = new Scenario();
-    }else if(scenarioCode == 1){
-        scenario = new MixingScenario(config);
-    }else if(scenarioCode == 2){
-        scenario = new MixingFailsScenario(config);
-    }else if(scenarioCode == 3){
-        scenario = new ManyScenario(config);
-    }else if(scenarioCode == 4){
-        scenario = new FirstPersonScenario(config);
-    }else if(scenarioCode == 5){
-        scenario = new RestartAlternatingScenario(config);
-    }else if(scenarioCode == 6){
-        scenario = new BystanderScenario(config,scene);
-    }else if(scenarioCode == 7){
-        scenario = new ColorHoleScenario(config);
+    switch(scenarioCode){
+        case SceneIntegration::Standard:
+            scenario = new Scenario();
+            break;
+        case SceneIntegration::Mixing:
+            scenario = new MixingScenario(config);
+            break;
+        case SceneIntegration::MixingFails:
+            scenario = new MixingFailsScenario(config);
+            break;
+        case SceneIntegration::Many:
+            scenario = new ManyScenario(config);
+            break;
+        case SceneIntegration::FirstPerson:
+            scenario = new FirstPersonScenario(config);
+            break;
+        case SceneIntegration::RestartAlternating:
+            scenario = new RestartAlternatingScenario(config);
+            break;
+        case SceneIntegration::Bystander:
+            scenario = new BystanderScenario(config,scene);
+            break;
+        case SceneIntegration::ColorHole:
+            scenario = new ColorHoleScenario(config);
+            break;
+        case SceneIntegration::SourceColor:
+            scenario = new SourceColorScenario(config);
+            break;
+        case SceneIntegration::StandingStill:
+            scenario = new StandingStillScenario(config);
+            break;
     }
 
     sf::RenderWindow window(sf::VideoMode(config.screenWidth(),config.screenHeight()),"Projection");

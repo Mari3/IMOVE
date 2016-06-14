@@ -8,7 +8,7 @@
 #include "../../Util/Timer.h"
 #include "../Repositories/LightPersonMapRepository.h"
 #include "../Repositories/LightsSceneRepositories.h"
-#include "../LightTrailConfiguration.h"
+#include "../Configuration/LightTrailSceneConfiguration.h"
 
 class AlternatingGravityPointAction : public Action{
 private:
@@ -28,7 +28,7 @@ public:
         GravityPointRepository *gravityPoints,
         LightPersonRepository *lightPeople,
         LightTrailRepository *lightTrails,
-        const LightTrailConfiguration &config
+        const LightTrailSceneConfiguration &config
     );
 
     bool isDone(std::vector<Action*> &followUp);

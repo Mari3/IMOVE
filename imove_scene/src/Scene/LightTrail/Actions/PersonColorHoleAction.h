@@ -10,7 +10,10 @@
 #include "../LightPerson.h"
 #include "../ColorHole.h"
 #include "../Repositories/LightsSceneRepositories.h"
+#include "../Effects/ColorHoleEffect.h"
 #include <vector>
+
+
 
 class PersonColorHoleAction : public Action {
 private:
@@ -20,18 +23,21 @@ private:
     ColorHoleRepository* colorHoles;
     LightTrailRepository* lightTrails;
     LightPersonRepository* lightPeople;
-    LightTrailConfiguration config;
+    LightTrailSceneConfiguration config;
+    ColorHoleEffect effect;
     void finish();
 public:
 
     PersonColorHoleAction(const std::shared_ptr<LightPerson> &person,
                               GravityPointRepository *gravityPoints, ColorHoleRepository *colorHoles,
                               LightTrailRepository *lightTrails, LightPersonRepository *lightPeople,
-                              LightTrailConfiguration config);
+                              LightTrailSceneConfiguration config);
 
     bool isDone(std::vector<Action *> &followUp) override;
 
     void execute(float dt) override;
+
+    void draw(sf::RenderTarget &target) override;
 
 
 };

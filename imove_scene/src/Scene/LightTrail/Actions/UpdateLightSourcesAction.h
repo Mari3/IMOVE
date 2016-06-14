@@ -10,7 +10,7 @@
 #include "../LightSource.h"
 #include "../../Util/Timer.h"
 #include "../Repositories/LightsSceneRepositories.h"
-#include "../LightTrailConfiguration.h"
+#include "../Configuration/LightTrailSceneConfiguration.h"
 
 class UpdateLightSourcesAction : public Action {
 private:
@@ -20,7 +20,7 @@ private:
     unsigned int cap;
 public:
     UpdateLightSourcesAction(LightSourceRepository* lightSources, LightTrailRepository* lightTrails,
-        const LightTrailConfiguration& config);
+        const LightTrailSceneConfiguration& config);
     bool isDone(std::vector<Action*> &followUp) override;
     void execute(float dt) override;
 };

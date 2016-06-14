@@ -17,7 +17,7 @@ int main(int argc, char* argv[]) {
 
 	Calibration* calibration = Calibration::readFile(argv[CONFIGURATION_CALIBRATION_ARGN]);
   
-	LightTrailConfiguration configuration_lighttrail = LightTrailConfiguration::readFromFile(argv[CONFIGURATION_LIGHTTRAIL_ARGN]);
+	LightTrailSceneConfiguration configuration_lighttrail = LightTrailSceneConfiguration::readFromFile(argv[CONFIGURATION_LIGHTTRAIL_ARGN]);
 
 	ImoveSceneManager manager(calibration, configuration_lighttrail);
 	manager.run();

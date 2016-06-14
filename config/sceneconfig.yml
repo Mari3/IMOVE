@@ -1,6 +1,6 @@
 %YAML:1.0
-Resolution: [ 800, 600 ]
-Meter: 150
+Resolution: [ 2400, 1500 ]
+Meter: 200
 TopLeftHue: [ 0, 90 ]
 TopRightHue: [ 90, 180 ]
 BottomRightHue : [ 180, 270 ]
@@ -11,6 +11,7 @@ TrailCap: 75
 ParticipantGravity: 3.46
 ParticipantAntiGravity: 0.46
 ParticipantGravityRange: 2.
+ParticipantGravityDistance: .25
 BystanderGravity: 10
 BystanderGravityDelay: 4.
 BystanderGravityRange: -2.
@@ -31,7 +32,13 @@ ExplosionGravity: 10.38
 ExplosionExTime: .2
 ExplosionInTime: .3
 LightSourceGravity: 3.46
-ColorHoleDelay: 10.
-ColorHoleGravity: 3.46
-ColorHoleGravityRange: .5
-ColorHoleRange: .1
+ColorHoleDelay: 4.
+ColorHoleGravity: 5
+ColorHoleGravityRange: 1.2
+ColorHoleRange: .2
+MixingEffectThickness: .05
+ColorHoleEffectThickness: .01
+ColorHoleEffectPeriod: .35
+StarAmount: 10
+StarSpeed: .10
+StandingStillFadeTime: 40

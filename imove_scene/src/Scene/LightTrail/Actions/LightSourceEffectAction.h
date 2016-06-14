@@ -9,20 +9,26 @@
 #include "../../Action.h"
 #include "../GravityPoint.h"
 #include "../Repositories/LightsSceneRepositories.h"
+#include "../Effects/LightTrailEffect.h"
 
+// Creates the effect of light trails bouncing around
+// a light source
 class LightSourceEffectAction : public Action {
 private:
     GravityPoint gravityPoint;
     LightTrailRepository* myLightTrails;
-    LightTrailConfiguration config;
+    LightTrailSceneConfiguration config;
+    LightTrailEffect effect;
 public:
     LightSourceEffectAction(std::shared_ptr<LightSource> source, LightTrailRepository *myLightTrails,
-                            const LightTrailConfiguration& config
+                            const LightTrailSceneConfiguration& config, sf::RenderTexture &texture
     );
 
-    bool isDone(std::vector<Action *> &followUp);
+    bool isDone(std::vector<Action *> &followUp) override;
 
-    void execute(float dt);
+    void execute(float dt) override;
+
+    void draw(sf::RenderTarget &target) override;
 
 
 };
