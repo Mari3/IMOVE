@@ -38,7 +38,7 @@ ColorHoleGravity: 5
 ColorHoleGravityRange: 1.2
 ColorHoleRange: .2
 MixingEffectThickness: .05
-ColorHoleEffectThickness: .01
+ColorHoleEffectThickness: .03
 ColorHoleEffectPeriod: .35
 StarAmount: 10
 StarSpeed: .10
