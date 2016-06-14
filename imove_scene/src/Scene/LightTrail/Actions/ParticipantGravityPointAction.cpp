@@ -32,7 +32,7 @@ void ParticipantGravityPointAction::setLocation() {
 
 bool ParticipantGravityPointAction::isDone(std::vector<Action*> &followUp) {
     // This action is done when the person it tracks is no longer a participant
-    if(person->person_type != scene_interface::Person::PersonType::Participant && person->movement_type != scene_interface::Person::MovementType::StandingStill){
+    if(person->person_type != scene_interface::Person::PersonType::Participant){
         gravityPoints->scheduleForRemoval(gravityPoint);
         gravityPoints->scheduleForRemoval(antigravityPoint);
         return true;
