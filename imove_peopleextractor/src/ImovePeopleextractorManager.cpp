@@ -40,9 +40,6 @@ void ImovePeopleextractorManager::run() {
 	ImageWindow eliminatedprojection_camera_window("Eliminated projection camera frame", cv::Size(600, 0));
 	DetectedPeopleProjectionWindow detectedpeople_projection_window(cv::Size(900, 0));
 
-	// setup clock
-	sf::Clock clock;
-
 	// setup camera
 	cv::VideoCapture video_capture(this->calibration->getCameraDevice());
 
