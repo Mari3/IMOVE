@@ -3,7 +3,12 @@
 //
 
 #include <gtest/gtest.h>
-#include "../../../../../src/Scene/LightTrail/LightTrailConfiguration.h"
+<<<<<<< 06aee995ed42b7f05c320c1bec41f7877dc357ba
+#include <vector>
+#include "../../../../../src/Scene/LightTrail/Configuration/LightTrailConfiguration.h"
+=======
+#include "../../../../../src/Scene/LightTrail/Configuration/LightTrailSceneConfiguration.h"
+>>>>>>> Refactor configuration
 #include "../../../../../src/Scene/LightTrail/Repositories/LightPersonMapRepository.h"
 #include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneRepositories.h"
 #include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
@@ -13,10 +18,16 @@
 #include "../../../../../../imove_imp/src/Vector2.h"
 #include "../../../../../../scene_interface/src/Person.h"
 
-LightTrailConfiguration config_pctc(800, 600, util::Range(0, 0), util::Range(0, 0), util::Range(0, 0),
-                                    util::Range(0, 0), 2.f, 10, util::Range(0, 400),
-                                    0, 0, 0, 0, 0, 0, 400, .5, true, 200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                                    0, 0);
+<<<<<<< 06aee995ed42b7f05c320c1bec41f7877dc357ba
+LightTrailConfiguration config_pctc(0, 0, std::vector<util::Range>(), LightSourceConfig(), ParticipantGravityConfig(),
+        DelayGravityConfig(), DelayGravityConfig(), ProximityConfig(), false, TrailConfig(),
+0, MixingConfig(), ExplosionConfig(), GravityConfig(), ColorHoleConfig(),
+        StarConfig(), 0);
+=======
+LightTrailSceneConfiguration config_pctc(0, 0, util::Range(0, 0), util::Range(0, 0), util::Range(0, 0), util::Range(0, 0), 0,
+                                    0, util::Range(0, 0), 0, 0, 0, 0, 0,
+                                    0, (StarConfig()), 0);
+>>>>>>> Refactor configuration
 
 TEST(PersonChangedTypeConditionTest, BystanderTurnedParticipant) {
 
@@ -26,7 +37,7 @@ TEST(PersonChangedTypeConditionTest, BystanderTurnedParticipant) {
     std::shared_ptr<LightPerson> person(new LightPerson(Location(0,0),0,Person::PersonType::Bystander,util::Range(0,180,true)));
     lightPeople->add(person);
 
-    PersonChangedTypeCondition condition(lightPeople,gravityPoints,config_pctc);
+    PersonChangedTypeCondition condition(lightPeople, gravityPoints, nullptr, nullptr, config_pctc, <#initializer#>);
 
     std::vector<Action*> actions;
     condition.check(0,actions);
@@ -58,7 +69,7 @@ TEST(PersonChangedTypeConditionTest, ParticipantTurnedBystander) {
     std::shared_ptr<LightPerson> person(new LightPerson(Location(0,0),0,Person::PersonType::Participant,util::Range(0,180,true)));
     lightPeople->add(person);
 
-    PersonChangedTypeCondition condition(lightPeople,gravityPoints,config_pctc);
+    PersonChangedTypeCondition condition(lightPeople, gravityPoints, nullptr, nullptr, config_pctc, <#initializer#>);
 
     std::vector<Action*> actions;
     condition.check(0,actions);
@@ -91,7 +102,7 @@ TEST(PersonChangedTypeConditionTest, TwoPeople) {
     lightPeople->add(person1);
     lightPeople->add(person2);
 
-    PersonChangedTypeCondition condition(lightPeople,gravityPoints,config_pctc);
+    PersonChangedTypeCondition condition(lightPeople, gravityPoints, nullptr, nullptr, config_pctc, <#initializer#>);
 
     std::vector<Action*> actions;
     condition.check(0,actions);

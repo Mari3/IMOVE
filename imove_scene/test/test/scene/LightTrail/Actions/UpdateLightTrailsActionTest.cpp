@@ -4,15 +4,27 @@
 
 
 #include <gtest/gtest.h>
-#include "../../../../../src/Scene/LightTrail/LightTrailConfiguration.h"
+<<<<<<< 06aee995ed42b7f05c320c1bec41f7877dc357ba
+#include <vector>
+#include "../../../../../src/Scene/LightTrail/Configuration/LightTrailConfiguration.h"
+=======
+#include "../../../../../src/Scene/LightTrail/Configuration/LightTrailSceneConfiguration.h"
+>>>>>>> Refactor configuration
 #include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 #include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneRepositories.h"
 #include "../../../../../src/Scene/LightTrail/Actions/UpdateLightTrailsAction.h"
 #include "../../../../../../imove_imp/src/Vector2.h"
 
-LightTrailConfiguration config2(800, 600, util::Range(0, 0), util::Range(0, 0), util::Range(0, 0), util::Range(0, 0),
-                                2.f, 10, util::Range(0, 400),
-                                0, 0, 0, 0, 0, 0, 400, .5, true, 200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+<<<<<<< 06aee995ed42b7f05c320c1bec41f7877dc357ba
+LightTrailConfiguration config2(0, 0, std::vector<util::Range>(), LightSourceConfig(), ParticipantGravityConfig(),
+        DelayGravityConfig(), DelayGravityConfig(), ProximityConfig(), false, TrailConfig(),
+0, MixingConfig(), ExplosionConfig(), GravityConfig(), ColorHoleConfig(),
+        StarConfig(), 0);
+=======
+LightTrailSceneConfiguration config2(0, 0, util::Range(0, 0), util::Range(0, 0), util::Range(0, 0), util::Range(0, 0), 0,
+                                0, util::Range(0, 0), 0, 0, 0, 0, 0,
+                                0, (StarConfig()), 0);
+>>>>>>> Refactor configuration
 
 TEST (UpdateLightTrailsActionTest, OutsideProximityRange) {
 

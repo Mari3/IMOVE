@@ -3,7 +3,12 @@
 //
 
 #include <gtest/gtest.h>
-#include "../../../../../src/Scene/LightTrail/LightTrailConfiguration.h"
+<<<<<<< 06aee995ed42b7f05c320c1bec41f7877dc357ba
+#include <vector>
+#include "../../../../../src/Scene/LightTrail/Configuration/LightTrailConfiguration.h"
+=======
+#include "../../../../../src/Scene/LightTrail/Configuration/LightTrailSceneConfiguration.h"
+>>>>>>> Refactor configuration
 #include "../../../../../src/Scene/LightTrail/LightPerson.h"
 #include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneRepositories.h"
 #include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
@@ -11,10 +16,17 @@
 #include "../../../../../../imove_imp/src/Vector2.h"
 #include "../../../../../../scene_interface/src/Person.h"
 
-LightTrailConfiguration bgpat_config(800, 600, util::Range(0, 0), util::Range(0, 0), util::Range(0, 0),
-                                     util::Range(0, 0), 0, 0, util::Range(0, 0),
-                                     500, 100, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                                     0);
+<<<<<<< 06aee995ed42b7f05c320c1bec41f7877dc357ba
+LightTrailConfiguration bgpat_config(0, 0, std::vector<util::Range>(), LightSourceConfig(), ParticipantGravityConfig(),
+                                                                         DelayGravityConfig(), DelayGravityConfig(), ProximityConfig(), false, TrailConfig(),
+                                                                         0, MixingConfig(), ExplosionConfig(), GravityConfig(), ColorHoleConfig(),
+                                                                         StarConfig(), 0);
+=======
+LightTrailSceneConfiguration bgpat_config(0, 0, util::Range(0, 0), util::Range(0, 0), util::Range(0, 0), util::Range(0, 0),
+                                     0,
+                                     0, util::Range(0, 0), 0, 0, 0, 0, 0,
+                                     0, (StarConfig()), 0);
+>>>>>>> Refactor configuration
 
 TEST (BystanderGravityPointActionTest, UpdateLocation) {
 

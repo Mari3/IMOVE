@@ -9,19 +9,21 @@
 #include "../../Action.h"
 #include "../LightPerson.h"
 #include "../Repositories/LightsSceneRepositories.h"
-#include "../LightTrailConfiguration.h"
+#include "../Configuration/LightTrailSceneConfiguration.h"
 #include "../../Util/Timer.h"
 
+// Causes an explosion around a person by temporarily
+// pushing trails away and then pulling them back in
 class ExplosionAction : public Action {
 private:
     std::shared_ptr<LightPerson> person;
     GravityPointRepository* gravityPoints;
-    LightTrailConfiguration config;
+    LightTrailSceneConfiguration config;
     std::shared_ptr<GravityPoint> gPoint;
     Timer exTimer,inTimer;
     int phase = 0;
 public:
-    ExplosionAction(std::shared_ptr<LightPerson> person, GravityPointRepository *gravityPoints, const LightTrailConfiguration& config);
+    ExplosionAction(std::shared_ptr<LightPerson> person, GravityPointRepository *gravityPoints, const LightTrailSceneConfiguration& config);
 
     bool isDone(std::vector<Action*> &followUp) override;
 
