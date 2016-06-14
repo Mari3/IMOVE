@@ -114,7 +114,7 @@ Calibration* Calibration::readFile(const char* filepath) {
 	Vector2 top_left     (cv_top_left.x,    cv_top_left.y    );
 	Vector2 top_right    (cv_top_right.x,   cv_top_right.y   );
 	Vector2 bottom_left  (cv_bottom_left.x, cv_bottom_left.y );
-	Vector2 bottom_right (cv_bottom_left.x, cv_bottom_right.y);
+	Vector2 bottom_right (cv_bottom_right.x, cv_bottom_right.y);
 	// read projector_background_light from yml using OpenCV FileNode
 	float projector_background_light;
 	fs["Projector_background_light"] >> projector_background_light;
