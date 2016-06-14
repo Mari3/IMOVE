@@ -8,7 +8,7 @@ It also contains the Google test (@ imove/test/lib/googletest) and fakeit source
 We use Cmake to build the project. It has been successfully built on OS X with gcc 4.2.1 and on Ubuntu with g++ 5.3.0.
 
 ### Dependencies
-To build this project you will need to have OpenCV 3.1.0, SFML 2.3.1, libboost 1.54.0 installed on your system, and OpenCV_DIR specified in your path.
+To build this project you will need to have OpenCV 3.1.0, SFML 2.3.0, libboost 1.54.0 installed on your system, and OpenCV_DIR specified in your path.
 
 ## Applications
 The following applications are built:

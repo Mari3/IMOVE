@@ -1,6 +1,6 @@
 project(scene-controllers)
 
-find_package(SFML 2.3.1 REQUIRED system window graphics network audio)
+find_package(SFML 2.3.0 REQUIRED system window graphics network audio)
 include_directories(${SFML_INCLUDE_DIR})
 find_package(OpenCV REQUIRED HINTS ${OpenCV_DIR})
 include_directories( ${OpenCV_INCLUDE_DIRS} )
