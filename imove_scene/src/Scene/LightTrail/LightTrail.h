@@ -3,6 +3,7 @@
 
 #include "../../../../scene_interface/src/Vector2.h"
 #include "../Util/Timer.h"
+#include "Configuration/LightTrailSceneConfiguration.h"
 
 class LightTrail {
 public:
@@ -14,7 +15,7 @@ public:
     bool tick(float dt);
     Vector2 getLocation();
     float getAngle();
-    Vector2 getSize();
+    Vector2 getSize(const LightTrailSceneConfiguration &config);
     Vector2 getSpeed();
 private:
     Vector2 prevLocation, prevPrevLocation, speed;
