@@ -3,15 +3,12 @@
 
 #include "ImoveSceneManager.hpp"
 
-#include "OpenCVUtil.hpp"
 #include "../../scene_interface/src/People.h"
 #include "Scene/LightTrail/LightTrailScene.h"
 #include "Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 #include "Windows/SceneWindow.hpp"
 
 #include "../../scene_interface_sma/src/SharedMemory.hpp"
-
-const unsigned int SIZE_SHAREDMEMORY = 100000000; // 100MB
 
 void ImoveSceneManager::sendSceneFrameThread(ImoveSceneManager* imove_scene_manager, sf::Image sf_image) {
 	imove_scene_manager->sendSceneFrame(sf_image);
@@ -29,15 +26,13 @@ ImoveSceneManager::ImoveSceneManager(Calibration* calibration, LightTrailSceneCo
     new ColorHoleVectorRepository(),
     new LightPersonMapRepository()
   );
-	
-	// Newly create a new shared memory segment with certain size
-	boost::interprocess::shared_memory_object::remove(scene_interface_sma::NAME_SHARED_MEMORY);
-	segment = new boost::interprocess::managed_shared_memory(boost::interprocess::create_only, scene_interface_sma::NAME_SHARED_MEMORY, SIZE_SHAREDMEMORY);
+	// Shared memory segment
+  this->segment = new boost::interprocess::managed_shared_memory(boost::interprocess::open_only, scene_interface_sma::NAME_SHARED_MEMORY);
 	// Construct the people extracted queue in shared memory
-	const scene_interface_sma::PeopleQueueSMA si_people_queue_sma(this->segment->get_segment_manager());
-	this->si_people_queue = segment->construct<scene_interface_sma::PeopleQueue>(scene_interface_sma::NAME_PEOPLE_QUEUE)(si_people_queue_sma);
-	const peopleextractor_interface_sma::SceneframeQueueSMA sceneframe_queue_sma(this->segment->get_segment_manager());
-	this->pi_sceneframe_queue = segment->construct<peopleextractor_interface_sma::SceneframeQueue>(peopleextractor_interface_sma::NAME_SCENEFRAME_QUEUE)(sceneframe_queue_sma);
+	this->si_people_queue = this->segment->find<scene_interface_sma::PeopleQueue>(scene_interface_sma::NAME_PEOPLE_QUEUE).first;
+	this->pi_sceneframe_queue = this->segment->find<peopleextractor_interface_sma::SceneframeQueue>(peopleextractor_interface_sma::NAME_SCENEFRAME_QUEUE).first;
+	// Get the whole running class
+	this->running = this->segment->find<Running>(NAME_SHARED_MEMORY_RUNNING).first;
 }
 
 void ImoveSceneManager::run() {
@@ -54,7 +49,7 @@ void ImoveSceneManager::run() {
 	float SPF_capture_scene = 1.f / (float) this->calibration->getFpsCaptureScene();
 	
 	// while q not pressed
-	while (window_scene.shouldKeepOpen()) {
+	while (window_scene.shouldKeepOpen() && this->running->running) {
 		this->receiveExtractedpeopleAndUpdateScene();
 		
 		// draw next Scene frame based on clock difference
@@ -73,10 +68,6 @@ void ImoveSceneManager::run() {
 			capture_dt -= SPF_capture_scene;
 		}
 	}
-
-	//destroy shared memory segment
-	boost::interprocess::shared_memory_object::remove(scene_interface_sma::NAME_SHARED_MEMORY);
-	this->segment = NULL;
 }
 
 void ImoveSceneManager::receiveExtractedpeopleAndUpdateScene() {

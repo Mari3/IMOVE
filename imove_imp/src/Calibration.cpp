@@ -4,11 +4,11 @@
 #include <opencv2/core/persistence.hpp>
 #include <assert.h>
 
-#include "../OpenCVUtil.hpp"
+#include "OpenCVUtil.hpp"
 #include "Calibration.hpp"
-#include "../../../scene_interface/src/People.h"
+#include "../../scene_interface/src/People.h"
 
-Calibration::Calibration(const cv::Size& resolution_projector, const bool& fullscreen_projector, const cv::Size& resolution_camera, unsigned int camera_device, const Boundary& projection, unsigned int frames_projector_camera_delay, float projector_background_light, float meter, unsigned int maximum_fps_scene, unsigned int fps_capture_scene, unsigned int iterations_delay_peopleextracting, unsigned int factor_resize_capture_scene) :
+Calibration::Calibration(const cv::Size& resolution_projector, const bool& fullscreen_projector, const cv::Size& resolution_camera, unsigned int camera_device, const Boundary& projection, unsigned int frames_projector_camera_delay, float projector_background_light, float meter_camera, unsigned int maximum_fps_scene, unsigned int fps_capture_scene, unsigned int iterations_delay_peopleextracting, unsigned int factor_resize_capture_scene) :
 	resolution_projector(resolution_projector),
 	fullscreen_projector(fullscreen_projector),
 	resolution_camera(resolution_camera),
@@ -16,7 +16,7 @@ Calibration::Calibration(const cv::Size& resolution_projector, const bool& fulls
 	projection(projection),
 	frames_projector_camera_delay(frames_projector_camera_delay),
 	projector_background_light(projector_background_light),
-	meter(meter),
+	meter_camera(meter_camera),
 	maximum_fps_scene(maximum_fps_scene),
 	fps_capture_scene(fps_capture_scene),
 	iterations_delay_peopleextracting(iterations_delay_peopleextracting),
@@ -42,6 +42,7 @@ Calibration::Calibration(const cv::Size& resolution_projector, const bool& fulls
 		coordinate_corners_projection,
 		coordinate_corners_projector
 	);
+	this->setMeterCamera(meter_camera);
 }
 
 /**
@@ -110,9 +111,9 @@ Calibration* Calibration::readFile(const char* filepath) {
 	// read projector_background_light from yml using OpenCV FileNode
 	float projector_background_light;
 	fs["Projector_background_light"] >> projector_background_light;
-	// read meter from yml using OpenCV FileNode
-	float meter;
-	fs["Meter"] >> meter;
+	// read camera meter from yml using OpenCV FileNode
+	float meter_camera;
+	fs["Meter_camera"] >> meter_camera;
 
 	Calibration* calibration = new Calibration(
 		resolution_projector,
@@ -125,7 +126,7 @@ Calibration* Calibration::readFile(const char* filepath) {
 		),
 		Calibration::read(fs, "Frames_projector_camera_delay"),
 		projector_background_light,
-		meter,
+		meter_camera,
 		Calibration::read(fs, "Maximum_FPS_scene"),
 		Calibration::read(fs, "FPS_capture_scene"),
 		Calibration::read(fs, "Iterations_delay_peopleextracting"),
@@ -155,12 +156,12 @@ Calibration* Calibration::createFromFile(const char* filepath, unsigned int came
 	} else {
 		read_config["Fullscreen_projector"] >> fullscreen_projector;
 	}
-	// read meter from yml using OpenCV FileNode; default if not existing
-	float meter;
-	if (read_config["Meter"].isNone()) {
-		meter = Calibration::DEFAULT_METER;
+	// read meter_camera from yml using OpenCV FileNode; default if not existing
+	float meter_camera;
+	if (read_config["Meter_camera"].isNone()) {
+		meter_camera = Calibration::DEFAULT_METER_CAMERA;
 	} else {
-		read_config["Meter"] >> meter;
+		read_config["Meter_camera"] >> meter_camera;
 	}
  
 	// retreive camera resolution from OpenCV VideoCapture
@@ -191,7 +192,7 @@ Calibration* Calibration::createFromFile(const char* filepath, unsigned int came
 		projection,
 		Calibration::create(read_config, "Frames_projector_camera_delay", Calibration::DEFAULT_FRAMES_PROJECTOR_CAMERA_DELAY),
 		projector_background_light,
-		meter,
+		meter_camera,
 		Calibration::create(read_config, "Maximum_FPS_scene", Calibration::DEFAULT_MAXIMUM_FPS_SCENE),
 		Calibration::create(read_config, "FPS_capture_scene", Calibration::DEFAULT_FPS_CAPTURE_SCENE),
 		Calibration::create(read_config, "Iterations_delay_peopleextracting", Calibration::DEFAULT_ITERATIONS_DELAY_PEOPLEEXTRACTING),
@@ -214,7 +215,8 @@ void Calibration::writeFile(const char* filepath) const {
 	write_config << "Camera_projector_transformation"   <<       this->camera_projector_transformation;
 	write_config << "Frames_projector_camera_delay"     << (int) this->frames_projector_camera_delay;
 	write_config << "Projector_background_light"        <<       this->projector_background_light;
-	write_config << "Meter"                             <<       this->meter;
+	write_config << "Meter_camera"                      <<       this->meter_camera;
+	write_config << "Meter_projector"                   <<       this->meter_projector;
 	write_config << "Maximum_FPS_scene"                 << (int) this->maximum_fps_scene;
 	write_config << "FPS_capture_scene"                 << (int) this->fps_capture_scene;
 	write_config << "Iterations_delay_peopleextracting" << (int) this->iterations_delay_peopleextracting;
@@ -341,11 +343,34 @@ cv::Size Calibration::getResolutionCamera() const {
 unsigned int Calibration::getCameraDevice() const {
 	return this->camera_device;
 }
-void Calibration::setMeter(float meter) {
-	this->meter = meter;
+void Calibration::setMeterCamera(float meter_camera) {
+	this->meter_camera = meter_camera;
+	std::vector<cv::Point2f> projector_points;
+	std::vector<cv::Point2f> camera_points;
+	cv::Size resolution_camera = this->resolution_camera;
+	float half_meter = this->meter_camera / 2;
+	cv::Point2f center_camera(
+		resolution_camera.width / 2,
+		resolution_camera.height / 2
+	);
+	camera_points.push_back(cv::Point2f(
+		center_camera.x - half_meter,
+		center_camera.y
+	));
+	camera_points.push_back(cv::Point2f(
+		center_camera.x + half_meter,
+		center_camera.y
+	));
+	this->createPointsFrameProjectorFromPointsFrameCamera(projector_points, camera_points);
+	float xdiff = projector_points.at(0).x - projector_points.at(1).x;
+	float ydiff = projector_points.at(0).y - projector_points.at(1).y;
+	this->meter_projector = sqrt(xdiff * xdiff + ydiff * ydiff);
 }
-const float Calibration::getMeter() const {
-	return this->meter;
+const float Calibration::getMeterCamera() const {
+	return this->meter_camera;
+}
+const float Calibration::getProjectorMeter() const {
+	return this->meter_projector;
 }
 const Boundary Calibration::getProjection() const {
 	return this->projection;

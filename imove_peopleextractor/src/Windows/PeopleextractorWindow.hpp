@@ -1,7 +1,7 @@
 #include <opencv2/opencv.hpp>
 
 #include "../ImageProcessing/PeopleExtractor.h"
-#include "../OpenCVWindow.hpp"
+#include "../../../imove_imp/src/OpenCVWindow.hpp"
 
 // Window to display people extractor debug frame
 class PeopleextractorWindow : public OpenCVWindow {
