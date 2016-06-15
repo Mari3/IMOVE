@@ -1,8 +1,8 @@
 #include <opencv2/core/core.hpp>
 
-#include "../../../imove_imp/src/OpenCVWindow.hpp"
-#include "../../../imove_imp/src/OpenCVUtil.hpp"
-#include "../../../imove_imp/src/Calibration.hpp"
+#include "../../../util/src/OpenCVWindow.hpp"
+#include "../../../util/src/OpenCVUtil.hpp"
+#include "../../../util/src/Calibration.hpp"
 
 // Window to calibrete the width of a meter on the camera
 class CalibrationMeterWindow : public OpenCVWindow {
@@ -14,7 +14,7 @@ class CalibrationMeterWindow : public OpenCVWindow {
 		const int THICKNESS_CROSS = 1;
 		const int THICKNESS_LINE = 1;
 		
-		CalibrationMeterWindow(cv::Point2i position, Calibration* calibration);
+		CalibrationMeterWindow(cv::Point2i position, cv::Size size, Calibration* calibration);
 		
 		/**
 		 * Draws meter and last mouse position on image using line and crosses

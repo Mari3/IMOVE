@@ -1,7 +1,7 @@
 #ifndef IMOVE_LIGHTTRAIL_H
 #define IMOVE_LIGHTTRAIL_H
 
-#include "../../../../scene_interface/src/Vector2.h"
+#include "../../../../util/src/Vector2.h"
 #include "../Util/Timer.h"
 #include "Configuration/LightTrailSceneConfiguration.h"
 

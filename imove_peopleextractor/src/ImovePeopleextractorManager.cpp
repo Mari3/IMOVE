@@ -4,9 +4,9 @@
 
 #include "ImovePeopleextractorManager.hpp"
 
-#include "../../imove_imp/src/OpenCVUtil.hpp"
+#include "../../util/src/OpenCVUtil.hpp"
 #include "../../scene_interface/src/People.h"
-#include "../../scene_interface/src/Vector2.h"
+#include "../../util/src/Vector2.h"
 #include "Windows/PeopleextractorWindow.hpp"
 #include "Windows/DetectedPeopleCameraWindow.hpp"
 #include "Windows/DetectedPeopleProjectionWindow.hpp"
@@ -17,7 +17,7 @@ ImovePeopleextractorManager::ImovePeopleextractorManager(Calibration* calibratio
 	this->calibration = calibration;
 
 	// setup people extractor
-	this->people_extractor = new PeopleExtractor(this->calibration->getResolutionCamera(), this->calibration->getMeterCamera(), 216, this->calibration->getProjection());
+	this->people_extractor = new PeopleExtractor(this->calibration->getResolutionCamera(), this->calibration->getMeterCamera(), 216, this->calibration->getProjection().createReorientedTopLeftBoundary());
 
 	//Open the managed segment
 	this->segment = new boost::interprocess::managed_shared_memory(boost::interprocess::open_only, scene_interface_sma::NAME_SHARED_MEMORY);
@@ -36,10 +36,24 @@ void ImovePeopleextractorManager::receiveSceneFrameAndFeedProjectionThread(Imove
 
 void ImovePeopleextractorManager::run() {
 	// debug windows
-	PeopleextractorWindow window_peopleextractor(cv::Size(0, 0), this->people_extractor);
-	DetectedPeopleCameraWindow detectedpeople_camera_window(cv::Size(300, 0));
-	ImageWindow eliminatedprojection_camera_window("Eliminated projection camera frame", cv::Size(600, 0));
-	DetectedPeopleProjectionWindow detectedpeople_projection_window(cv::Size(900, 0));
+	PeopleextractorWindow window_peopleextractor(
+		cv::Point2i(this->calibration->getResolutionProjector().width, 0),
+		cv::Size(600, 600),
+		this->people_extractor
+	);
+	DetectedPeopleCameraWindow detectedpeople_camera_window(
+		cv::Point2i(this->calibration->getResolutionProjector().width + 600, 0),
+		cv::Size(600, 600)
+	);
+	ImageWindow eliminatedprojection_camera_window(
+		"Eliminated projection camera frame",
+		cv::Point2i(this->calibration->getResolutionProjector().width, 600),
+		cv::Size(300, 300)
+	);
+	DetectedPeopleProjectionWindow detectedpeople_projection_window(
+		cv::Point2i(this->calibration->getResolutionProjector().width + 300, 600),
+		cv::Size(300, 300)
+	);
 
 	// setup camera
 	cv::VideoCapture video_capture(this->calibration->getCameraDevice());

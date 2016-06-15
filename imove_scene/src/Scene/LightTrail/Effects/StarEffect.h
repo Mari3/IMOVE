@@ -7,7 +7,7 @@
 
 
 #include "Effect.h"
-#include "../../../../../scene_interface/src/Vector2.h"
+#include "../../../../../util/src/Vector2.h"
 #include "../Configuration/LightTrailSceneConfiguration.h"
 
 struct Star {

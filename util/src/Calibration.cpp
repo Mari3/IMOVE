@@ -105,9 +105,16 @@ Calibration* Calibration::readFile(const char* filepath) {
 	// read fullscreen_projector from yml using OpenCV FileNode
 	bool fullscreen_projector;
 	fs["Fullscreen_projector"] >> fullscreen_projector;
-	// read camera_projector_transformation from yml using OpenCV FileNode
-	cv::Mat camera_projector_transformation;
-	fs["Camera_projector_transformation"] >> camera_projector_transformation;
+	// read projection coordinates from yml using OpenCV FileNode
+	cv::Point2f cv_top_left, cv_top_right, cv_bottom_left, cv_bottom_right;
+	fs["Projection_top_left"]     >> cv_top_left;
+	fs["Projection_top_right"]    >> cv_top_right;
+	fs["Projection_bottom_left"]  >> cv_bottom_left;
+	fs["Projection_bottom_right"] >> cv_bottom_right;
+	Vector2 top_left     (cv_top_left.x,    cv_top_left.y    );
+	Vector2 top_right    (cv_top_right.x,   cv_top_right.y   );
+	Vector2 bottom_left  (cv_bottom_left.x, cv_bottom_left.y );
+	Vector2 bottom_right (cv_bottom_right.x, cv_bottom_right.y);
 	// read projector_background_light from yml using OpenCV FileNode
 	float projector_background_light;
 	fs["Projector_background_light"] >> projector_background_light;
@@ -120,9 +127,11 @@ Calibration* Calibration::readFile(const char* filepath) {
 		fullscreen_projector,
 		resolution_camera,
 		Calibration::read(fs, "Camera_device"),
-		createBoundaryProjectionFromCameraProjectorTransformation(
-			resolution_projector,
-			camera_projector_transformation
+		Boundary(
+			top_left,
+			top_right,
+			bottom_left,
+			bottom_right
 		),
 		Calibration::read(fs, "Frames_projector_camera_delay"),
 		projector_background_light,
@@ -171,15 +180,25 @@ Calibration* Calibration::createFromFile(const char* filepath, unsigned int came
 	
 	// read camera_projector_transformation from yml using OpenCV FileNode
 	Boundary projection;
-	if (read_config["Camera_projector_transformation"].isNone()) {
+	if (read_config["Projection_top_left"].isNone()) {
 		// if not exists in configuration; create projection as whole camera frame
 		projection = createBoundaryFrameCamera(resolution_camera);
 	} else {
-		cv::Mat camera_projector_transformation;
-		read_config["Camera_projector_transformation"] >> camera_projector_transformation;
-		projection = createBoundaryProjectionFromCameraProjectorTransformation(
-			resolution_projector,
-			camera_projector_transformation
+		// read projection coordinates from yml using OpenCV FileNode
+		cv::Point2f cv_top_left, cv_top_right, cv_bottom_left, cv_bottom_right;
+		read_config["Projection_top_left"]     >> cv_top_left;
+		read_config["Projection_top_right"]    >> cv_top_right;
+		read_config["Projection_bottom_left"]  >> cv_bottom_left;
+		read_config["Projection_bottom_right"] >> cv_bottom_right;
+		Vector2 top_left     (cv_top_left.x,     cv_top_left.y    );
+		Vector2 top_right    (cv_top_right.x,    cv_top_right.y   );
+		Vector2 bottom_left  (cv_bottom_left.x,  cv_bottom_left.y );
+		Vector2 bottom_right (cv_bottom_right.x, cv_bottom_right.y);
+		projection = Boundary(
+			top_left,
+			top_right,
+			bottom_left,
+			bottom_right
 		);
 	}
 	
@@ -212,7 +231,10 @@ void Calibration::writeFile(const char* filepath) const {
 	write_config << "Resolution_camera"                 <<       this->resolution_camera;
 	write_config << "Resolution_projector"              <<       this->resolution_projector;
 	write_config << "Fullscreen_projector"              <<       this->fullscreen_projector;
-	write_config << "Camera_projector_transformation"   <<       this->camera_projector_transformation;
+	write_config << "Projection_top_left"               <<       cv::Point2f( this->projection.getUpperLeft().x,  this->projection.getUpperLeft().y);
+	write_config << "Projection_top_right"              <<       cv::Point2f(this->projection.getUpperRight().x, this->projection.getUpperRight().y);
+	write_config << "Projection_bottom_left"            <<       cv::Point2f( this->projection.getLowerLeft().x,  this->projection.getLowerLeft().y);
+	write_config << "Projection_bottom_right"           <<       cv::Point2f(this->projection.getLowerRight().x, this->projection.getLowerRight().y);
 	write_config << "Frames_projector_camera_delay"     << (int) this->frames_projector_camera_delay;
 	write_config << "Projector_background_light"        <<       this->projector_background_light;
 	write_config << "Meter_camera"                      <<       this->meter_camera;

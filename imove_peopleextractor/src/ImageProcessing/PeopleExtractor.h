@@ -15,8 +15,8 @@
 #include "Identifier/PeopleIdentifier.h"
 #include "../Person.h"
 #include "../../../scene_interface/src/People.h"
-#include "../../../scene_interface/src/Vector2.h"
-#include "../../../scene_interface/src/Boundary.h"
+#include "../../../util/src/Vector2.h"
+#include "../../../util/src/Boundary.h"
 
 
 

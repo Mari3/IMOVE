@@ -9,7 +9,7 @@
 #include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 #include "../../../../../src/Scene/LightTrail/Actions/UpdateLightSourcesAction.h"
 #include "../../../../../src/Scene/Util/Range.h"
-#include "../../../../../../scene_interface/src/Vector2.h"
+#include "../../../../../../util/src/Vector2.h"
 
 using namespace fakeit;
 

@@ -1,6 +1,6 @@
 #include "CalibrationManager.hpp"
 
-#include "../../imove_imp/src/OpenCVUtil.hpp"
+#include "../../util/src/OpenCVUtil.hpp"
 #include "Windows/ProjectionWindow.hpp"
 #include "Windows/ProjectorWindow.hpp"
 #include "Windows/CalibrationProjectionWindow.hpp"
@@ -18,11 +18,11 @@ void CalibrationManager::run() {
 	camera_videoreader.set(cv::CAP_PROP_AUTOFOCUS, 0);
 	
 	// setup Calibration windows
-	ProjectorWindow projector_window(cv::Size(0, 0));
-	CalibrationProjectionWindow calibrationprojection_window(cv::Point2i(300, 0), calibration);
-	CalibrationMeterWindow calibrationmeter_window(cv::Point2i(600, 0), calibration);
-	EliminateProjectionWindow eliminateprojection_window(cv::Size(900, 0), calibration);
-	ProjectionWindow projection_window(cv::Size(1200, 0), calibration);
+	ProjectorWindow projector_window(cv::Point2i(0, 0), cv::Size(300, 300));
+	CalibrationProjectionWindow calibrationprojection_window(cv::Point2i(300, 0), cv::Size(300, 300), calibration);
+	CalibrationMeterWindow calibrationmeter_window(cv::Point2i(600, 0), cv::Size(300, 300), calibration);
+	EliminateProjectionWindow eliminateprojection_window(cv::Point2i(900, 0), cv::Size(300, 300), calibration);
+	ProjectionWindow projection_window(cv::Point2i(1200, 0), cv::Size(300, 300), calibration);
 
 	cv::Mat frame_projector;
 	// while camera frame can be read and while no key pressed

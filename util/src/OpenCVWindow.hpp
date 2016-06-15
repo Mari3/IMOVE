@@ -6,7 +6,7 @@
 
 class OpenCVWindow {
 	public:
-		OpenCVWindow(const char* name_window, cv::Point2i position);
+		OpenCVWindow(const char* name_window, cv::Point2i position, cv::Size size);
 		
 		cv::Mat getClonedImage() const;
 		void drawImage(cv::Mat& image);

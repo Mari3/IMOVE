@@ -3,7 +3,7 @@
 
 
 #include "../Util/Range.h"
-#include "../../../../scene_interface/src/Vector2.h"
+#include "../../../../util/src/Vector2.h"
 #include "LightTrail.h"
 #include "Configuration/LightTrailSceneConfiguration.h"
 
