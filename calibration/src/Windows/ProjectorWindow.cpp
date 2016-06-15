@@ -3,7 +3,7 @@
 #include "../../../imove_imp/src/OpenCVUtil.hpp"
 #include "./ProjectorWindow.hpp"
 
-ProjectorWindow::ProjectorWindow(cv::Point2i position) : OpenCVWindow("Projector", position) {
+ProjectorWindow::ProjectorWindow(cv::Point2i position, cv::Size size) : OpenCVWindow("Projector", position, size) {
 	
 }
 

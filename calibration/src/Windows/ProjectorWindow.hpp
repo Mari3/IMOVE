@@ -7,7 +7,7 @@ class ProjectorWindow : public OpenCVWindow {
 	public:
 		const unsigned int lanes = 24;
 		
-		ProjectorWindow(cv::Point2i position);
+		ProjectorWindow(cv::Point2i position, cv::Size size);
 		
 		void drawImage(cv::Mat& image_projector);
 	

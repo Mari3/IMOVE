@@ -14,7 +14,7 @@ class CalibrationMeterWindow : public OpenCVWindow {
 		const int THICKNESS_CROSS = 1;
 		const int THICKNESS_LINE = 1;
 		
-		CalibrationMeterWindow(cv::Point2i position, Calibration* calibration);
+		CalibrationMeterWindow(cv::Point2i position, cv::Size size, Calibration* calibration);
 		
 		/**
 		 * Draws meter and last mouse position on image using line and crosses

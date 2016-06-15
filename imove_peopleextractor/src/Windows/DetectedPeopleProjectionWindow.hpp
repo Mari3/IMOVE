@@ -11,7 +11,7 @@ class DetectedPeopleProjectionWindow : public OpenCVWindow {
 		const unsigned int THICKNESS_CIRCLE_PROJECTION_DEBUG = 8;
 		const unsigned int SIZE_FONT_DEBUG = 1;
 		
-		DetectedPeopleProjectionWindow(cv::Point2i position);
+		DetectedPeopleProjectionWindow(cv::Point2i position, cv::Size size);
 		
 		// draw detected people in the projection image
 		void drawImage(cv::Mat& image_projection, const scene_interface::People& detectedpeople_projection);

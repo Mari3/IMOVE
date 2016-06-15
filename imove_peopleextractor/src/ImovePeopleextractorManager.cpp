@@ -36,10 +36,24 @@ void ImovePeopleextractorManager::receiveSceneFrameAndFeedProjectionThread(Imove
 
 void ImovePeopleextractorManager::run() {
 	// debug windows
-	PeopleextractorWindow window_peopleextractor(cv::Size(0, 0), this->people_extractor);
-	DetectedPeopleCameraWindow detectedpeople_camera_window(cv::Size(300, 0));
-	ImageWindow eliminatedprojection_camera_window("Eliminated projection camera frame", cv::Size(600, 0));
-	DetectedPeopleProjectionWindow detectedpeople_projection_window(cv::Size(900, 0));
+	PeopleextractorWindow window_peopleextractor(
+		cv::Point2i(this->calibration->getResolutionProjector().width, 0),
+		cv::Size(600, 600),
+		this->people_extractor
+	);
+	DetectedPeopleCameraWindow detectedpeople_camera_window(
+		cv::Point2i(this->calibration->getResolutionProjector().width + 300, 0),
+		cv::Size(600, 600)
+	);
+	ImageWindow eliminatedprojection_camera_window(
+		"Eliminated projection camera frame",
+		cv::Point2i(this->calibration->getResolutionProjector().width + 600, 0),
+		cv::Size(200, 200)
+	);
+	DetectedPeopleProjectionWindow detectedpeople_projection_window(
+		cv::Point2i(this->calibration->getResolutionProjector().width + 900, 0),
+		cv::Size(200, 200)
+	);
 
 	// setup camera
 	cv::VideoCapture video_capture(this->calibration->getCameraDevice());

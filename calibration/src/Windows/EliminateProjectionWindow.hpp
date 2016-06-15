@@ -11,7 +11,7 @@ class EliminateProjectionWindow : public OpenCVWindow {
 		
 		void drawImage(cv::Mat image_camera);
 
-		EliminateProjectionWindow(cv::Point2i position, Calibration* calibration);
+		EliminateProjectionWindow(cv::Point2i position, cv::Size size, Calibration* calibration);
 
 	protected:
 		Calibration* calibration;
