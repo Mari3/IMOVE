@@ -42,17 +42,17 @@ void ImovePeopleextractorManager::run() {
 		this->people_extractor
 	);
 	DetectedPeopleCameraWindow detectedpeople_camera_window(
-		cv::Point2i(this->calibration->getResolutionProjector().width + 300, 0),
+		cv::Point2i(this->calibration->getResolutionProjector().width + 600, 0),
 		cv::Size(600, 600)
 	);
 	ImageWindow eliminatedprojection_camera_window(
 		"Eliminated projection camera frame",
-		cv::Point2i(this->calibration->getResolutionProjector().width + 600, 0),
-		cv::Size(200, 200)
+		cv::Point2i(this->calibration->getResolutionProjector().width, 600),
+		cv::Size(300, 300)
 	);
 	DetectedPeopleProjectionWindow detectedpeople_projection_window(
-		cv::Point2i(this->calibration->getResolutionProjector().width + 900, 0),
-		cv::Size(200, 200)
+		cv::Point2i(this->calibration->getResolutionProjector().width + 300, 600),
+		cv::Size(300, 300)
 	);
 
 	// setup camera
