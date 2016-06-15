@@ -10,8 +10,8 @@
 
 #include "../../scene_interface_sma/src/SharedMemory.hpp"
 
-void ImoveSceneManager::sendSceneFrameThread(ImoveSceneManager* imove_scene_manager, sf::Image sf_image) {
-	imove_scene_manager->sendSceneFrame(sf_image);
+void ImoveSceneManager::sendingSceneFrameThread(ImoveSceneManager* imove_scene_manager) {
+	imove_scene_manager->sendingSceneFrame();
 }
 
 ImoveSceneManager::ImoveSceneManager(Calibration* calibration, LightTrailSceneConfiguration& configuration_lighttrail) {
@@ -42,7 +42,7 @@ void ImoveSceneManager::run() {
 	// setup clock
 	sf::Clock clock;
 
-	std::thread* previous_thread = NULL;
+	std::thread sending_sceneframe_thread = std::thread(ImoveSceneManager::sendingSceneFrameThread, this);
 
 	float dt;
 	float capture_dt = 0;
@@ -61,10 +61,7 @@ void ImoveSceneManager::run() {
 		
 		capture_dt += dt;
 		if (capture_dt > SPF_capture_scene) {
-			if (previous_thread != NULL) {
-				previous_thread->join();
-			}
-			previous_thread = new std::thread(ImoveSceneManager::sendSceneFrameThread, this, window_scene.captureFrameScene());
+			this->sceneframe_queue.push(window_scene.captureFrameScene());
 			capture_dt -= SPF_capture_scene;
 		}
 		
@@ -74,6 +71,8 @@ void ImoveSceneManager::run() {
 			this->running->reboot_on_shutdown = false;
 		}
 	}
+
+	sending_sceneframe_thread.join();
 }
 
 void ImoveSceneManager::receiveExtractedpeopleAndUpdateScene() {
@@ -142,24 +141,30 @@ void ImoveSceneManager::receiveExtractedpeopleAndUpdateScene() {
 	}
 }
 
-void ImoveSceneManager::sendSceneFrame(const sf::Image& frame_scene) {
-	// create shared memory scene frame from sfml image
-	sf::Vector2u size_image = frame_scene.getSize();
-	boost::interprocess::offset_ptr<peopleextractor_interface_sma::Image> pi_sceneframe = this->segment->construct<peopleextractor_interface_sma::Image>(boost::interprocess::anonymous_instance)(
-		((unsigned int) size_image.x) / this->calibration->getFactorResizeCaptureScene(), 
-		((unsigned int) size_image.y) / this->calibration->getFactorResizeCaptureScene(),
-		this->segment
-	);
-	for (unsigned int x = 0; x < ((unsigned int) size_image.x) / this->calibration->getFactorResizeCaptureScene(); ++x) {
-		for (unsigned int y = 0; y < ((unsigned int) size_image.y) / this->calibration->getFactorResizeCaptureScene(); ++y) {
-			sf::Color sf_pixel = frame_scene.getPixel(
-				x * (signed int) this->calibration->getFactorResizeCaptureScene(),
-				y * (signed int) this->calibration->getFactorResizeCaptureScene()
+void ImoveSceneManager::sendingSceneFrame() {
+	while (this->running->running) {
+		if (!this->sceneframe_queue.empty()) {
+			const sf::Image frame_scene = this->sceneframe_queue.front();
+			// create shared memory scene frame from sfml image
+			sf::Vector2u size_image = frame_scene.getSize();
+			boost::interprocess::offset_ptr<peopleextractor_interface_sma::Image> pi_sceneframe = this->segment->construct<peopleextractor_interface_sma::Image>(boost::interprocess::anonymous_instance)(
+				((unsigned int) size_image.x) / this->calibration->getFactorResizeCaptureScene(), 
+				((unsigned int) size_image.y) / this->calibration->getFactorResizeCaptureScene(),
+				this->segment
 			);
-			pi_sceneframe->setRGB(x, y, (unsigned char) sf_pixel.r, (unsigned char) sf_pixel.g, (unsigned char) sf_pixel.b);
+			for (unsigned int x = 0; x < ((unsigned int) size_image.x) / this->calibration->getFactorResizeCaptureScene(); ++x) {
+				for (unsigned int y = 0; y < ((unsigned int) size_image.y) / this->calibration->getFactorResizeCaptureScene(); ++y) {
+					sf::Color sf_pixel = frame_scene.getPixel(
+						x * (signed int) this->calibration->getFactorResizeCaptureScene(),
+						y * (signed int) this->calibration->getFactorResizeCaptureScene()
+					);
+					pi_sceneframe->setRGB(x, y, (unsigned char) sf_pixel.r, (unsigned char) sf_pixel.g, (unsigned char) sf_pixel.b);
+				}
+			}
+
+			// push on shared memory queue for people extractor to pop
+			this->pi_sceneframe_queue->push_back(pi_sceneframe);
+			this->sceneframe_queue.pop();
 		}
 	}
-
-	// push on shared memory queue for people extractor to pop
-	this->pi_sceneframe_queue->push_back(pi_sceneframe);
 }
