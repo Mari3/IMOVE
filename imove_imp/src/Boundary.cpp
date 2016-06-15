@@ -1,3 +1,4 @@
+#include <algorithm>
 
 #include "Boundary.h"
 
@@ -95,4 +96,57 @@ const Vector2 Boundary::getLowerLeft() const {
 
 const Vector2 Boundary::getLowerRight() const {
 	return this->lower_right;
+}
+
+const Boundary Boundary::createReorientedTopLeftBoundary() const {
+	const Vector2 upper_left  = this->upper_left;
+	const Vector2 upper_right = this->upper_right;
+	const Vector2 lower_left  = this->lower_left;
+	const Vector2 lower_right = this->lower_right;
+	Vector2 origin(0, 0);
+	float distance_upper_left  = origin.distance(upper_left );
+	float distance_upper_right = origin.distance(upper_right);
+	float distance_lower_left  = origin.distance(lower_left );
+	float distance_lower_right = origin.distance(lower_right);
+	float minimum_distance = std::min(
+		std::min(
+			distance_upper_left,
+			distance_upper_right
+		),
+		std::min(
+			distance_lower_left,
+			distance_lower_right
+		)
+	);
+	Boundary reoriented_boundary;
+	if (minimum_distance == distance_upper_left) {
+		reoriented_boundary = Boundary(
+			upper_left,
+      upper_right,
+      lower_left,
+      lower_right
+		);
+	} else if (minimum_distance == distance_upper_right) {
+		reoriented_boundary = Boundary(
+      upper_right,
+      lower_right,
+			upper_left,
+      lower_left
+		);
+	} else if (minimum_distance == distance_lower_left) {
+		reoriented_boundary = Boundary(
+      lower_left,
+			upper_left,
+      lower_right,
+      upper_right
+		);
+	} else {
+		reoriented_boundary = Boundary(
+      lower_right,
+      lower_left,
+      upper_right,
+			upper_left
+		);
+	}
+	return reoriented_boundary;
 }
