@@ -1,7 +1,7 @@
 #ifndef IMOVE_LIGHTTRAIL_H
 #define IMOVE_LIGHTTRAIL_H
 
-#include "../../../../imove_imp/src/Vector2.h"
+#include "../../../../util/src/Vector2.h"
 #include "../Util/Timer.h"
 
 class LightTrail {

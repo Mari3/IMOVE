@@ -15,7 +15,7 @@
 #include "../../../../../src/Scene/LightTrail/Conditions/PersonChangedTypeCondition.h"
 #include "../../../../../src/Scene/LightTrail/Actions/BystanderGravityPointAction.h"
 #include "../../../../../src/Scene/LightTrail/Actions/ParticipantGravityPointAction.h"
-#include "../../../../../../imove_imp/src/Vector2.h"
+#include "../../../../../../util/src/Vector2.h"
 #include "../../../../../../scene_interface/src/Person.h"
 
 <<<<<<< 06aee995ed42b7f05c320c1bec41f7877dc357ba

@@ -10,7 +10,7 @@
 #include "opencv2/imgcodecs.hpp"
 #include "opencv2/imgproc.hpp"
 #include "opencv2/videoio.hpp"
-#include "../../../../imove_imp/src/Vector2.h"
+#include "../../../../util/src/Vector2.h"
 
 class PeopleDetector {
  private:

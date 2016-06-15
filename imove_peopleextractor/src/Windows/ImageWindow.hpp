@@ -1,6 +1,6 @@
 #include <opencv2/opencv.hpp>
 
-#include "../../../imove_imp/src/OpenCVWindow.hpp"
+#include "../../../util/src/OpenCVWindow.hpp"
 
 // Window to display camera frame for debugging information 
 class ImageWindow : public OpenCVWindow {

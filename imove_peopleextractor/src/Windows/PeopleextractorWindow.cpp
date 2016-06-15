@@ -1,6 +1,6 @@
 #include <opencv2/opencv.hpp>
 
-#include "../../../imove_imp/src/OpenCVUtil.hpp"
+#include "../../../util/src/OpenCVUtil.hpp"
 #include "PeopleextractorWindow.hpp"
 
 PeopleextractorWindow::PeopleextractorWindow(cv::Point2i position, cv::Size size, PeopleExtractor* peopleextractor) : OpenCVWindow("Frame", position, size), peopleextractor(peopleextractor) { }

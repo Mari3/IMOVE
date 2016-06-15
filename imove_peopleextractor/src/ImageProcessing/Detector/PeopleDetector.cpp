@@ -1,7 +1,7 @@
 #include <vector>
 
 #include "PeopleDetector.h"
-#include "../../../../imove_imp/src/Vector2.h"
+#include "../../../../util/src/Vector2.h"
 
 PeopleDetector::PeopleDetector() {}
 

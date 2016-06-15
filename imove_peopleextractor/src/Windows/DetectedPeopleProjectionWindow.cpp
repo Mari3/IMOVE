@@ -1,6 +1,6 @@
 #include <opencv2/opencv.hpp>
 
-#include "../../../imove_imp/src/OpenCVUtil.hpp"
+#include "../../../util/src/OpenCVUtil.hpp"
 #include "DetectedPeopleProjectionWindow.hpp"
 
 DetectedPeopleProjectionWindow::DetectedPeopleProjectionWindow(cv::Point2i position, cv::Size size) : OpenCVWindow("Detected people on projection", position, size) { }
