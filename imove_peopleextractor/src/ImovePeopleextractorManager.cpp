@@ -104,6 +104,8 @@ void ImovePeopleextractorManager::run() {
 
 	// safe release video capture
 	video_capture.release();
+	
+	this->running->reboot_on_shutdown = false;
 }
 
 void ImovePeopleextractorManager::sendExtractedpeople(const scene_interface::People extractedpeople) {

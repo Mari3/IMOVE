@@ -68,6 +68,8 @@ void ImoveSceneManager::run() {
 			capture_dt -= SPF_capture_scene;
 		}
 	}
+
+	this->running->reboot_on_shutdown = false;
 }
 
 void ImoveSceneManager::receiveExtractedpeopleAndUpdateScene() {
