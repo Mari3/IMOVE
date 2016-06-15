@@ -4,7 +4,7 @@
 
 #include <cmath>
 #include "LightSource.h"
-#include "../../../../scene_interface/src/Vector2.h"
+#include "../../../../imove_imp/src/Vector2.h"
 
 #define PI 3.14159265358979323846
 

@@ -13,7 +13,7 @@
 #include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneRepositories.h"
 #include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 #include "../../../../../src/Scene/LightTrail/Actions/BystanderGravityPointAction.h"
-#include "../../../../../../scene_interface/src/Vector2.h"
+#include "../../../../../../imove_imp/src/Vector2.h"
 #include "../../../../../../scene_interface/src/Person.h"
 
 <<<<<<< 06aee995ed42b7f05c320c1bec41f7877dc357ba

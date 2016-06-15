@@ -9,7 +9,7 @@
 #include <vector>
 #include <iostream>
 
-#include "../../../../scene_interface/src/Boundary.h"
+#include "../../../../imove_imp/src/Boundary.h"
 #include "../../Person.h"
 
 class PeopleIdentifier {

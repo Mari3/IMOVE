@@ -13,7 +13,7 @@
 #include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 #include "../../../../../src/Scene/LightTrail/Repositories/LightsSceneRepositories.h"
 #include "../../../../../src/Scene/LightTrail/Actions/UpdateLightTrailsAction.h"
-#include "../../../../../../scene_interface/src/Vector2.h"
+#include "../../../../../../imove_imp/src/Vector2.h"
 
 <<<<<<< 06aee995ed42b7f05c320c1bec41f7877dc357ba
 LightTrailConfiguration config2(0, 0, std::vector<util::Range>(), LightSourceConfig(), ParticipantGravityConfig(),
