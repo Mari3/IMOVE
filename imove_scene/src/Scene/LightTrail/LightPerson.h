@@ -4,7 +4,7 @@
 #include <list>
 
 #include "../../../../scene_interface/src/Person.h"
-#include "../../../../imove_imp/src/Vector2.h"
+#include "../../../../util/src/Vector2.h"
 #include "../Util/Range.h"
 
 class LightPerson{

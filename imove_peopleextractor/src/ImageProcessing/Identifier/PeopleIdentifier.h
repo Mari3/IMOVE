@@ -9,7 +9,7 @@
 #include <vector>
 #include <iostream>
 
-#include "../../../../imove_imp/src/Boundary.h"
+#include "../../../../util/src/Boundary.h"
 #include "../../Person.h"
 
 class PeopleIdentifier {

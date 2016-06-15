@@ -1,6 +1,6 @@
 #include <opencv2/opencv.hpp>
 
-#include "../../../imove_imp/src/OpenCVUtil.hpp"
+#include "../../../util/src/OpenCVUtil.hpp"
 #include "DetectedPeopleCameraWindow.hpp"
 #include "../../../scene_interface/src/People.h"
 
