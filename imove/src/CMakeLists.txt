@@ -5,6 +5,7 @@ link_directories(${Boost_LIBRARY_DIR})
 
 file(GLOB_RECURSE SOURCE_FILES "*.cpp" "../../scene_interface_sma/src/*.cpp" "../../peopleextractor_interface_sma/src/*.cpp")
 ADD_EXECUTABLE(imove ${SOURCE_FILES})
+ADD_DEPENDENCIES(imove imove_peopleextractor imove_scene)
 SET_TARGET_PROPERTIES(imove PROPERTIES ENABLE_EXPORTS true)
 SET_TARGET_PROPERTIES(imove PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
 
