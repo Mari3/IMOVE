@@ -26,6 +26,11 @@ public:
 	const Vector2 getUpperRight() const;
 	const Vector2 getLowerLeft() const;
 	const Vector2 getLowerRight() const;
+
+	/**
+	 * Creates a Boundary from current coordinates and rotates so that top left is least amount of distance from origin on coordinate system
+	 **/
+	const Boundary createReorientedTopLeftBoundary() const;
 };
 
 #endif // SCENEINTERFACE_BOUNDARY_H

@@ -17,7 +17,7 @@ ImovePeopleextractorManager::ImovePeopleextractorManager(Calibration* calibratio
 	this->calibration = calibration;
 
 	// setup people extractor
-	this->people_extractor = new PeopleExtractor(this->calibration->getResolutionCamera(), this->calibration->getMeterCamera(), 216, this->calibration->getProjection());
+	this->people_extractor = new PeopleExtractor(this->calibration->getResolutionCamera(), this->calibration->getMeterCamera(), 216, this->calibration->getProjection().createReorientedTopLeftBoundary());
 
 	//Open the managed segment
 	this->segment = new boost::interprocess::managed_shared_memory(boost::interprocess::open_only, scene_interface_sma::NAME_SHARED_MEMORY);
