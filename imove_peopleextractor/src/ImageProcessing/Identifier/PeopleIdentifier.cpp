@@ -47,7 +47,6 @@ std::vector<Person> PeopleIdentifier::match(std::vector<Vector2>& locations) {
   }
   // Go over all remaining locations and turn them into a new person
   for (unsigned int j = 0; j < locations.size(); j++) {
-    std::cout << "check frame bounds new" << std::endl;
     if (!frame_boundary.inBounds(locations[j])) {
       Person new_person = Person(locations[j], Person::PersonType::Bystander);
       detected_people.push_back(new_person);
