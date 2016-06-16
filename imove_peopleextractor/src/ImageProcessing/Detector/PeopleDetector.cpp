@@ -22,7 +22,6 @@ PeopleDetector::PeopleDetector(float pixels_per_meter, bool low_camera) : pixels
     params.minArea = pixels_per_meter*5;
     params.minDistBetweenBlobs = params.minArea*0.15;
   } else {
-    std::cout << "high camera" << std::endl;
     params.minArea = pixels_per_meter*1.5;
     params.minDistBetweenBlobs = params.minArea*0.6;
   }
@@ -63,11 +62,11 @@ std::vector<Vector2> PeopleDetector::detect(cv::Mat& frame) {
     int xco;
     int yco;
     if (keypoint.pt.y < frame_height/3) {
-      yco = keypoint.pt.y+(pixels_per_meter/6);
+      yco = keypoint.pt.y+2*(pixels_per_meter/6);
     } else if (keypoint.pt.y < (frame_height*2)/3) {
-      yco = keypoint.pt.y;
+      yco = keypoint.pt.y+(pixels_per_meter/6);
     } else {
-      yco = keypoint.pt.y-(pixels_per_meter/6);
+      yco = keypoint.pt.y;
     }
     if (keypoint.pt.x < frame_width/3) {
       xco = keypoint.pt.x +(pixels_per_meter/6);
