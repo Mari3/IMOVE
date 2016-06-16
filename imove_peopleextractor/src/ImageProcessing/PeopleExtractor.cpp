@@ -19,10 +19,6 @@ PeopleExtractor::PeopleExtractor(cv::Size frame_size, float pixels_per_meter, fl
 
   // Initialize Identifier
   float boundary_edge = (pixels_per_meter/resize_ratio)*1.5;
-  std::cout << "Frame bounds" << std::endl;
-  std::cout << boundary_edge << std::endl;
-  std::cout << frame_size_resized.height - boundary_edge << std::endl;
-  std::cout << frame_size_resized.width - boundary_edge << std::endl;
 
   Boundary frame_bound = Boundary(Vector2(boundary_edge, boundary_edge),
                             Vector2(frame_size_resized.width - boundary_edge, boundary_edge),
