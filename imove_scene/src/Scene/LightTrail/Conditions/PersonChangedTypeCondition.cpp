@@ -13,7 +13,9 @@ int PersonChangedTypeCondition::check(float dt, std::vector<Action*> &actions) {
         if((oldPersonType.count(person->getId()) == 0 || oldPersonType[person->getId()] != scene_interface::Person::PersonType::Bystander) && person->person_type == scene_interface::Person::PersonType::Bystander){
             // Create a new bystander action
             i++;
-            actions.push_back(new BystanderGravityPointAction(person,gravityPoints,config));
+            actions.push_back(new BystanderGravityPointAction(person,lightSources,new LightTrailVectorRepository(),
+                                                              lightTrails,
+                                                              config,texture));
         } // Else if the person turned particpant
         else if((oldPersonType.count(person->getId()) == 0 || oldPersonType[person->getId()] != scene_interface::Person::PersonType::Participant) && person->person_type == scene_interface::Person::PersonType::Participant)
         {
@@ -22,7 +24,11 @@ int PersonChangedTypeCondition::check(float dt, std::vector<Action*> &actions) {
             // Create a new participant action
             i += 2;
             actions.push_back(new ParticipantGravityPointAction(person,gravityPoints,config));
-            actions.push_back(new InitiateParticipantAction(lightTrails,new LightTrailVectorRepository(),lightSources,person,config,texture));
+            if((oldPersonType.count(person->getId()) == 0 || oldPersonType[person->getId()] != scene_interface::Person::PersonType::Bystander)) {
+                actions.push_back(
+                        new InitiateParticipantAction(lightTrails, new LightTrailVectorRepository(), lightSources,
+                                                      person, config, texture));
+            }
         }
         oldPersonType[person->getId()] = person->person_type;
         oldMovementType[person->getId()] = person->movement_type;
