@@ -56,7 +56,7 @@ void ImovePeopleextractorManager::run() {
 	// setup camera
 	cv::VideoCapture video_capture(this->calibration->getCameraDevice());
 
-	std::thread receive_scene_frame_and_feed_projection_thread(ImovePeopleextractorManager::receiveSceneFrameAndFeedProjectionThread, this);
+	//std::thread receive_scene_frame_and_feed_projection_thread(ImovePeopleextractorManager::receiveSceneFrameAndFeedProjectionThread, this);
 
 	cv::Mat frame_camera;
 	cv::Mat frame_projection;
@@ -102,7 +102,7 @@ void ImovePeopleextractorManager::run() {
 	}
 
 	// make other thread stop
-	receive_scene_frame_and_feed_projection_thread.join();
+	//receive_scene_frame_and_feed_projection_thread.join();
 
 	// safe release video capture
 	video_capture.release();
