@@ -16,6 +16,7 @@ InitiateParticipantAction::InitiateParticipantAction(LightTrailRepository *globa
         if(fabsf(source->getHue().getCenter() - person->hue.getCenter()) < 45){
             for(int i=0;i<10;++i) {
                 myTrails->add(std::shared_ptr<LightTrail>(source->sendOut()));
+                person->initiativeTrailCount++;
             }
         }
     });
@@ -23,13 +24,7 @@ InitiateParticipantAction::InitiateParticipantAction(LightTrailRepository *globa
 }
 
 bool InitiateParticipantAction::isDone(std::vector<Action *> &followUp) {
-    if(person->person_type != scene_interface::Person::Participant){
-        myTrails->for_each([&](std::shared_ptr<LightTrail> trail){
-            globalTrails->add(trail);
-        });
-        return true;
-    }
-    return myTrails->size() == 0;
+    return person->person_type != scene_interface::Person::Participant || myTrails->size() == 0;
 }
 
 void InitiateParticipantAction::execute(float dt) {
@@ -45,6 +40,7 @@ void InitiateParticipantAction::execute(float dt) {
         if(dist > 200) {
             globalTrails->add(trail);
             myTrails->scheduleForRemoval(trail);
+            person->initiativeTrailCount--;
         }
     });
     myTrails->removeAll();
