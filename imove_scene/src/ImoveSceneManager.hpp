@@ -25,6 +25,8 @@ class ImoveSceneManager {
 	protected:
 		Calibration* calibration;
 		Scene* scene = NULL;
+
+		std::queue<sf::Image> sceneframe_queue;
 		
 		// shared memory segment
 		boost::interprocess::managed_shared_memory* segment;
@@ -40,10 +42,10 @@ class ImoveSceneManager {
 		 **/
 		void receiveExtractedpeopleAndUpdateScene();
 
-		static void sendSceneFrameThread(ImoveSceneManager* imove_scene_manager, sf::Image sf_image);
+		static void sendingSceneFrameThread(ImoveSceneManager* imove_scene_manager);
 		
 		/**
 		 * Send scene frame to people extractor via shared memory queue
 		 **/
-		void sendSceneFrame(const sf::Image& frame_scene);
+		void sendingSceneFrame();
 };
