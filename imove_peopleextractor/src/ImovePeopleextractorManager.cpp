@@ -66,7 +66,7 @@ void ImovePeopleextractorManager::run() {
 	scene_interface::People people_camera;
 	this->still_run_receive_scene_frames = true;
 	// while no key pressed
-	while (cv::waitKey(1) == OpenCVUtil::NOKEY_ANYKEY && video_capture.read(frame_camera) && this->running->running) {
+	while (video_capture.read(frame_camera) && this->running->running) {
 		// debug projection frame
 		this->calibration->createFrameProjectionFromFrameCamera(
 			frame_projection,
@@ -96,6 +96,12 @@ void ImovePeopleextractorManager::run() {
 		
 		// send extracted people via shared memory to scene
 		this->sendExtractedpeople(people_projector);
+
+		// shutdown on keypress
+		if (cv::waitKey(1) != OpenCVUtil::NOKEY_ANYKEY) {
+			this->running->running = false;
+			this->running->reboot_on_shutdown = false;
+		}
 	}
 
 	// make other thread stop

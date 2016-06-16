@@ -48,8 +48,8 @@ void ImoveSceneManager::run() {
 	float capture_dt = 0;
 	float SPF_capture_scene = 1.f / (float) this->calibration->getFpsCaptureScene();
 	
-	// while q not pressed
-	while (window_scene.shouldKeepOpen() && this->running->running) {
+	// while allowed to run
+	while (this->running->running) {
 		this->receiveExtractedpeopleAndUpdateScene();
 		
 		// draw next Scene frame based on clock difference
@@ -63,6 +63,12 @@ void ImoveSceneManager::run() {
 		if (capture_dt > SPF_capture_scene) {
 			this->sceneframe_queue.push(window_scene.captureFrameScene());
 			capture_dt -= SPF_capture_scene;
+		}
+		
+		// if window should be closed, shutdown application
+		if (!window_scene.shouldKeepOpen()) {
+			this->running->running = false;
+			this->running->reboot_on_shutdown = false;
 		}
 	}
 
