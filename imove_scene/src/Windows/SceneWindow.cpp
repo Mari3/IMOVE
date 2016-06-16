@@ -13,13 +13,13 @@ SceneWindow::SceneWindow(cv::Size resolution_projector, const bool& fullscreen_p
 			? sf::Style::Fullscreen
 			: sf::Style::Titlebar | sf::Style::Resize | sf::Style::Close
 	);
-  this->window_scene->clear(sf::Color::Black);
+  this->window_scene->clear(sf::Color::White);
   this->window_scene->display();
 	this->window_scene->setFramerateLimit(60);
 }
 
 void SceneWindow::drawScene(Scene* scene) {
-	this->window_scene->clear(sf::Color::Black);
+	this->window_scene->clear(sf::Color::White);
 	scene->draw(*this->window_scene);
 	
 	this->window_scene->display();

@@ -331,7 +331,7 @@ int main(int argc, char** argv){
     }
 
     sf::RenderWindow window(sf::VideoMode(config.screenWidth(),config.screenHeight()),"Projection");
-    window.clear(sf::Color::Black);
+    window.clear(sf::Color::White);
     window.setFramerateLimit(60);
     window.display();
     sf::Clock clock;
@@ -353,7 +353,7 @@ int main(int argc, char** argv){
         scene->updatePeople(people);
         scene->update(dt);
 
-        window.clear(sf::Color::Black);
+        window.clear(sf::Color::White);
         scene->draw(window);
 
 

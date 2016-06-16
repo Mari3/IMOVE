@@ -35,8 +35,6 @@ class ImovePeopleextractorManager {
 		boost::interprocess::offset_ptr<peopleextractor_interface_sma::SceneframeQueue> pi_sceneframe_queue;
 		// shared memory running all processes
 		boost::interprocess::offset_ptr<Running> running;
-
-		bool still_run_receive_scene_frames = true;
 		
 		/**
 		 * Push extractedpeople on shared memory query for scene to pop.

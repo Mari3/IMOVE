@@ -4,5 +4,5 @@
 #include <SFML/Graphics/Color.hpp>
 
 namespace HueConverter {
-    sf::Color ToColor(float hue);
+    sf::Color ToColor(float hue, bool inverted = false);
 }

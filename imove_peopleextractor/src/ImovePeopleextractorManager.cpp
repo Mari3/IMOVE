@@ -27,9 +27,7 @@ ImovePeopleextractorManager::ImovePeopleextractorManager(Calibration& calibratio
 }
 
 void ImovePeopleextractorManager::receiveSceneFrameAndFeedProjectionThread(ImovePeopleextractorManager* imove_peopleextractor_manager) {
-	while (imove_peopleextractor_manager->still_run_receive_scene_frames) {
-		imove_peopleextractor_manager->receiveSceneFrameAndFeedProjection();
-	}
+	imove_peopleextractor_manager->receiveSceneFrameAndFeedProjection();
 }
 
 void ImovePeopleextractorManager::run() {
@@ -56,15 +54,12 @@ void ImovePeopleextractorManager::run() {
 	// setup camera
 	cv::VideoCapture video_capture(this->calibration.getCameraDevice());
 
-	std::thread receive_scene_frame_and_feed_projection_thread(ImovePeopleextractorManager::receiveSceneFrameAndFeedProjectionThread, this);
-
 	cv::Mat frame_camera;
 	cv::Mat frame_projection;
 	cv::Mat detectpeople_frame;
 	scene_interface::People people_camera;
-	this->still_run_receive_scene_frames = true;
 	// while no key pressed
-	while (cv::waitKey(1) == OpenCVUtil::NOKEY_ANYKEY && video_capture.read(frame_camera) && this->running->running) {
+	while (video_capture.read(frame_camera) && this->running->running) {
 		// debug projection frame
 		this->projection.createFrameProjectionFromFrameCamera(
 			frame_projection,
@@ -94,11 +89,13 @@ void ImovePeopleextractorManager::run() {
 		
 		// send extracted people via shared memory to scene
 		this->sendExtractedpeople(people_projector);
-	}
 
-	// make other thread stop
-	this->still_run_receive_scene_frames = false;
-	receive_scene_frame_and_feed_projection_thread.join();
+		// shutdown on keypress
+		if (cv::waitKey(1) != OpenCVUtil::NOKEY_ANYKEY) {
+			this->running->running = false;
+			this->running->reboot_on_shutdown = false;
+		}
+	}
 
 	// safe release video capture
 	video_capture.release();
@@ -166,29 +163,36 @@ void ImovePeopleextractorManager::sendExtractedpeople(const scene_interface::Peo
 }
 
 void ImovePeopleextractorManager::receiveSceneFrameAndFeedProjection() {
-	// pop all frames which we are not able to process so fast
-	while (this->pi_sceneframe_queue->size() > 2) {
-		this->pi_sceneframe_queue->pop_front();
-	}
-	// when scene frame available
-	if (!this->pi_sceneframe_queue->empty()) {
-		// convert from sma to opencv mat
-		boost::interprocess::offset_ptr<peopleextractor_interface_sma::Image> pi_sceneframe = this->pi_sceneframe_queue->front();
-		cv::Mat cv_sceneframe = cv::Mat::zeros(pi_sceneframe->getHeight(), pi_sceneframe->getWidth(), CV_8UC3);
-		for (unsigned int x = 0; x < pi_sceneframe->getWidth(); ++x) {
-			for (unsigned int y = 0; y < pi_sceneframe->getHeight(); ++y) {
-				cv_sceneframe.at<cv::Vec3b>(y, x) = cv::Vec3b(
-					pi_sceneframe->getBlue(x, y),
-					pi_sceneframe->getGreen(x, y),
-					pi_sceneframe->getRed(x, y)
-				);
+	boost::interprocess::offset_ptr<peopleextractor_interface_sma::SceneframeQueue>& pi_sceneframe_queue = this->pi_sceneframe_queue;
+	boost::interprocess::offset_ptr<Running>& running = this->running;
+	const Calibration& calibration = this->calibration;
+	Projection& projection = this->projection;
+
+	while (running->running) {
+		// when scene frame available
+		if (!pi_sceneframe_queue->empty()) {
+			// pop all frames which we are not able to process so fast
+			while (pi_sceneframe_queue->size() > 2) {
+				pi_sceneframe_queue->pop_front();
 			}
+			// convert from sma to opencv mat
+			boost::interprocess::offset_ptr<peopleextractor_interface_sma::Image> pi_sceneframe = pi_sceneframe_queue->front();
+			cv::Mat cv_sceneframe = cv::Mat::zeros(pi_sceneframe->getHeight(), pi_sceneframe->getWidth(), CV_8UC3);
+			for (unsigned int x = 0; x < pi_sceneframe->getWidth(); ++x) {
+				for (unsigned int y = 0; y < pi_sceneframe->getHeight(); ++y) {
+					cv_sceneframe.at<cv::Vec3b>(y, x) = cv::Vec3b(
+						pi_sceneframe->getBlue(x, y),
+						pi_sceneframe->getGreen(x, y),
+						pi_sceneframe->getRed(x, y)
+					);
+				}
+			}
+			cv::Mat cv_sceneframe_resize;
+			cv::resize(cv_sceneframe, cv_sceneframe_resize, cv::Size(pi_sceneframe->getWidth() * calibration.getFactorResizeCaptureScene(), pi_sceneframe->getHeight() * calibration.getFactorResizeCaptureScene()));
+			// feed opencv image to calibration
+			projection.feedFrameProjector(cv_sceneframe_resize);
+			// remove from queue
+			pi_sceneframe_queue->pop_front();
 		}
-		cv::Mat cv_sceneframe_resize;
-		cv::resize(cv_sceneframe, cv_sceneframe_resize, cv::Size(pi_sceneframe->getWidth() * this->calibration.getFactorResizeCaptureScene(), pi_sceneframe->getHeight() * this->calibration.getFactorResizeCaptureScene()));
-		// feed opencv image to calibration
-		this->projection.feedFrameProjector(cv_sceneframe_resize);
-		// remove from queue
-		this->pi_sceneframe_queue->pop_front();
 	}
 }

@@ -20,13 +20,26 @@
 #include "Actions/StarEffectAction.h"
 
 void LightTrailScene::draw(sf::RenderTarget &target) {
+    if(config.trail().draw().inverted)
+        target.clear(sf::Color::White);
+    else
+        target.clear(sf::Color::Black);
+
     //Slightly fade the current texture
     sf::RectangleShape rect(sf::Vector2f(config.screenWidth(), config.screenHeight()));
-    rect.setFillColor(sf::Color(0,0,0,config.trail().fade()));
 
-    sf::BlendMode subtract(sf::BlendMode::Zero,sf::BlendMode::Factor::OneMinusSrcAlpha,sf::BlendMode::Add);
+    if(config.trail().draw().inverted) {
+        sf::BlendMode add(sf::BlendMode::SrcAlpha, sf::BlendMode::Factor::One, sf::BlendMode::Add,
+                               sf::BlendMode::Zero, sf::BlendMode::Factor::OneMinusSrcAlpha, sf::BlendMode::Add
+        );
+        rect.setFillColor(sf::Color(255,255,255, config.trail().draw().fade));
+        texture.draw(rect,add);
+    }else{
+        sf::BlendMode subtract(sf::BlendMode::Zero, sf::BlendMode::Factor::OneMinusSrcAlpha, sf::BlendMode::Add);
+        rect.setFillColor(sf::Color(0,0,0, config.trail().draw().fade*2));
+        texture.draw(rect,subtract);
+    }
 
-    texture.draw(rect,subtract);
 
     for(auto &action : actions){
         action->draw(target);

@@ -16,8 +16,13 @@ struct LightSourceConfig {
 };
 
 struct TrailConfig {
-    float speedCap;
+    float speedCap, maxLength;
     int thickness;
+};
+
+struct DrawConfig {
+    uint8_t fade;
+    bool inverted;
 };
 
 class TrailConfiguration {
@@ -35,11 +40,11 @@ private:
     TrailConfig _trailConfig;
 
     // Display
-    uint8_t _fade;
+    DrawConfig _drawConfig;
 public:
 
     TrailConfiguration(const std::vector<util::Range> &_cornerHues, const LightSourceConfig &_lightSourceConfig,
-                       bool _sidesEnabled, const TrailConfig &_trailConfig, uint8_t _fade);
+                       bool _sidesEnabled, const TrailConfig &_trailConfig, const DrawConfig &_drawConfig);
 
 
     const std::vector<util::Range> & cornerHues() const;
@@ -50,7 +55,7 @@ public:
 
     const TrailConfig & trail() const;
 
-    uint8_t fade() const;
+    const DrawConfig & draw() const;
 };
 
 

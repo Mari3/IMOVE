@@ -29,6 +29,7 @@ LightTrailSceneConfiguration LightTrailSceneConfiguration::readFromFile(char *fi
     GravityConfig lightSourceGravityConfig;
     ColorHoleConfig colorHoleConfig;
     StarConfig starConfig;
+    DrawConfig drawConfig;
 
     float meter;
     int fadeint;
@@ -102,6 +103,8 @@ LightTrailSceneConfiguration LightTrailSceneConfiguration::readFromFile(char *fi
     colorHoleConfig.consumeRange *= meter;
     fs["ColorHoleGravityRange"] >> colorHoleConfig.range;
     colorHoleConfig.range *= meter;
+    fs["ColorHoleDestructionRange"] >> colorHoleConfig.destructionRange;
+    colorHoleConfig.destructionRange *= meter;
 
     fs["StarAmount"] >> starConfig.amount;
     fs["StarSpeed"] >> starConfig.speed;
@@ -113,15 +116,19 @@ LightTrailSceneConfiguration LightTrailSceneConfiguration::readFromFile(char *fi
     fs["MixingEffectThickness"] >> mixingConfig.thickness;
     mixingConfig.thickness *= meter;
 
+    fs["TrailMaxLength"] >> trailConfig.maxLength;
+
     float standingStillFadeTime;
     fs["StandingStillFadeTime"] >> standingStillFadeTime;
 
-    uint8_t fade = static_cast<uint8_t>(fadeint > 255 ? 255 : fadeint);
+    fs["Inverted"] >> drawConfig.inverted;
+
+    drawConfig.fade = static_cast<uint8_t>(fadeint > 255 ? 255 : fadeint);
 
     unsigned int w = static_cast<unsigned int>(resolution.width);
     unsigned int h = static_cast<unsigned int>(resolution.height);
 
-    TrailConfiguration trailConfiguration(cornerHues,lightSourceConfig,sidesEnabled,trailConfig,fade);
+    TrailConfiguration trailConfiguration(cornerHues,lightSourceConfig,sidesEnabled,trailConfig,drawConfig);
     EffectConfiguration effectConfiguration(mixingConfig,explosionConfig,colorHoleConfig,starConfig,standingStillFadeTime);
     GravityConfiguration gravityConfiguration(lightSourceGravityConfig,participantGravityConfig,
                                               bystanderGravityConfig,alternatingGravityConfig,

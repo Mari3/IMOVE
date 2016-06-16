@@ -16,11 +16,11 @@ void CalibrationManager::run() {
 	camera_videoreader.set(cv::CAP_PROP_AUTOFOCUS, 0);
 	
 	// setup Calibration windows
-	ProjectorWindow projector_window(cv::Point2i(0, 0), cv::Size(300, 300));
-	CalibrationProjectionWindow calibrationprojection_window(cv::Point2i(300, 0), cv::Size(300, 300), calibration);
-	CalibrationMeterWindow calibrationmeter_window(cv::Point2i(600, 0), cv::Size(300, 300), calibration);
-	EliminateProjectionWindow eliminateprojection_window(cv::Point2i(900, 0), cv::Size(300, 300), calibration, projection);
-	ProjectionWindow projection_window(cv::Point2i(1200, 0), cv::Size(300, 300), projection);
+	ProjectorWindow projector_window(cv::Point2i(this->calibration.getResolutionProjector().width, 0), cv::Size(300, 300));
+	CalibrationProjectionWindow calibrationprojection_window(cv::Point2i(this->calibration.getResolutionProjector().width + 300, 0), cv::Size(300, 300), this->calibration);
+	CalibrationMeterWindow calibrationmeter_window(cv::Point2i(this->calibration.getResolutionProjector().width + 600, 0), cv::Size(300, 300), this->calibration);
+	EliminateProjectionWindow eliminateprojection_window(cv::Point2i(this->calibration.getResolutionProjector().width, 300), cv::Size(300, 300), this->calibration, this->projection);
+	ProjectionWindow projection_window(cv::Point2i(this->calibration.getResolutionProjector().width + 300, 300), cv::Size(300, 300), this->projection);
 
 	cv::Mat frame_projector;
 	// while camera frame can be read and while no key pressed
