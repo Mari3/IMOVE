@@ -16,7 +16,7 @@ struct LightSourceConfig {
 };
 
 struct TrailConfig {
-    float speedCap;
+    float speedCap, maxLength;
     int thickness;
 };
 

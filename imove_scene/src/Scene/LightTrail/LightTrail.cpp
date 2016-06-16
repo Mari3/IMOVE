@@ -65,8 +65,8 @@ float LightTrail::getAngle() {
     return static_cast<float>(atan2f(diff.y,diff.x)*180.f/M_PI);
 }
 
-Vector2 LightTrail::getSize() {
-    float sp = speed.size()/340.f*3.f;
+Vector2 LightTrail::getSize(const LightTrailSceneConfiguration &config) {
+    float sp = speed.size()/config.trail().trail().speedCap*config.trail().trail().maxLength;
 
 
     Vector2 diff = location-prevLocation;
