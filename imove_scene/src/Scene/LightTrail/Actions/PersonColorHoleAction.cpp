@@ -22,7 +22,7 @@ PersonColorHoleAction::PersonColorHoleAction(const std::shared_ptr<LightPerson> 
 }
 
 bool PersonColorHoleAction::isDone(std::vector<Action *> &followUp) {
-    if(person->person_type == scene_interface::Person::PersonType::None){
+    if(person->person_type != scene_interface::Person::PersonType::Participant){
         finish();
         return true;
     }
@@ -30,7 +30,7 @@ bool PersonColorHoleAction::isDone(std::vector<Action *> &followUp) {
     lightPeople->for_each([&](std::shared_ptr<LightPerson> person){
         if(!done && person != this->person) {
             float diff = (person->getLocation() - colorHole->location).size();
-            if (diff < config.effect().colorHole().consumeRange) {
+            if (diff < config.effect().colorHole().destructionRange) {
                 finish();
                 //TODO create followup
                 done = true;

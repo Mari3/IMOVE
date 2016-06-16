@@ -103,6 +103,8 @@ LightTrailSceneConfiguration LightTrailSceneConfiguration::readFromFile(char *fi
     colorHoleConfig.consumeRange *= meter;
     fs["ColorHoleGravityRange"] >> colorHoleConfig.range;
     colorHoleConfig.range *= meter;
+    fs["ColorHoleDestructionRange"] >> colorHoleConfig.destructionRange;
+    colorHoleConfig.destructionRange *= meter;
 
     fs["StarAmount"] >> starConfig.amount;
     fs["StarSpeed"] >> starConfig.speed;

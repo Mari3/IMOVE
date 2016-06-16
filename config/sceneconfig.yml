@@ -34,10 +34,11 @@ ExplosionGravity: 10.38
 ExplosionExTime: .2
 ExplosionInTime: .3
 LightSourceGravity: 3.46
-ColorHoleDelay: 140.
+ColorHoleDelay: 4.
 ColorHoleGravity: 5
 ColorHoleGravityRange: 1.2
 ColorHoleRange: .2
+ColorHoleDestructionRange: .8
 MixingEffectThickness: .05
 ColorHoleEffectThickness: .03
 ColorHoleEffectPeriod: .35

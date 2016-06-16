@@ -6,7 +6,7 @@
 #define IMOVE_EFFECTCONFIGURATION_H
 
 struct ColorHoleConfig {
-    float gravity, range, delay, consumeRange, thickness, period;
+    float gravity, range, delay, consumeRange, thickness, period, destructionRange;
 };
 
 struct MixingConfig {
