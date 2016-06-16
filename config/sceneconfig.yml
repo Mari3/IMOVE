@@ -1,5 +1,5 @@
 %YAML:1.0
-Resolution: [ 800, 600 ]
+Resolution: [ 1600, 1000 ]
 Meter: 100
 Inverted: 0
 TopLeftHue: [ 0, 90 ]
@@ -34,7 +34,7 @@ ExplosionGravity: 10.38
 ExplosionExTime: .2
 ExplosionInTime: .3
 LightSourceGravity: 3.46
-ColorHoleDelay: 4.
+ColorHoleDelay: 100.
 ColorHoleGravity: 5
 ColorHoleGravityRange: 1.2
 ColorHoleRange: .2

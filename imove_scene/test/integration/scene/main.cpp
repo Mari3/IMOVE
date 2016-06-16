@@ -233,13 +233,18 @@ struct SourceColorScenario : public Scenario {
     float thresh;
 
     SourceColorScenario(const LightTrailSceneConfiguration& config) {
-        people.push_back(Person(Vector2(20,config.screenHeight()/2),Participant));
+        people.push_back(TestingPerson(0,
+                                       si::Location(20,config.screenHeight()/2),
+                                       scene_interface::Person::Participant,
+                                       scene_interface::Person::Moving
+        ));
         thresh = config.screenHeight()-50;
     }
 
     void update(float dt) override {
-        if(people[0].getLocation().y < thresh){
-            people[0].setLocation(people[0].getLocation()+Vector2(0,20*dt));
+        si::Location p0loc = people[0].getLocation();
+        if(p0loc.getY() < thresh){
+            people[0].setLocation(si::Location(p0loc.getX(), 20.f * dt + p0loc.getX()));
         }
     }
 
@@ -250,12 +255,22 @@ struct StandingStillScenario : public Scenario {
     Timer timer;
 
     StandingStillScenario(const LightTrailSceneConfiguration& config) : timer (30.f) {
-        people.push_back(Person(Vector2(config.screenWidth()/2,config.screenHeight()/2),Participant));
+        people.push_back(TestingPerson(0,
+                                       si::Location(config.screenWidth()/2,config.screenHeight()/2),
+                                       si::Person::Participant,
+                                       si::Person::Moving
+        ));
     }
 
     void update(float dt) override {
         if(timer.update(dt)){
-            people[0].type = StandingStill;
+            si::Location loc = people[0].getLocation();
+            people.clear();
+            people.push_back(TestingPerson(0,
+                                           loc,
+                                           si::Person::Participant,
+                                           si::Person::StandingStill
+            ));
         }
     }
 

@@ -37,7 +37,7 @@ void InitiateParticipantAction::execute(float dt) {
         trail->applyForce(force,dt,config.trail().trail().speedCap,config.trail().sidesEnabled(),config.screenWidth(),config.screenHeight());
 
         float dist = (trail->location-person->getLocation()).size();
-        if(dist > 200) {
+        if(dist < 200) {
             globalTrails->add(trail);
             myTrails->scheduleForRemoval(trail);
             person->initiativeTrailCount--;
