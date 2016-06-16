@@ -23,22 +23,13 @@ InitiateParticipantAction::InitiateParticipantAction(LightTrailRepository *globa
 }
 
 bool InitiateParticipantAction::isDone(std::vector<Action *> &followUp) {
-    bool done = true;
-
-    //TODO replace with find_if
-    myTrails->for_each([&](std::shared_ptr<LightTrail> trail){
-        float dist = (trail->location-person->getLocation()).size();
-        if(dist > 200)
-            done = false;
-    });
-
-    if(done){
+    if(person->person_type != scene_interface::Person::Participant){
         myTrails->for_each([&](std::shared_ptr<LightTrail> trail){
             globalTrails->add(trail);
         });
         return true;
     }
-    return false;
+    return myTrails->size() == 0;
 }
 
 void InitiateParticipantAction::execute(float dt) {
@@ -49,7 +40,14 @@ void InitiateParticipantAction::execute(float dt) {
     myTrails->for_each([&](std::shared_ptr<LightTrail> trail){
         Vector2 force = gravityPoint.calculateForce(*trail,config);
         trail->applyForce(force,dt,config.trail().trail().speedCap,config.trail().sidesEnabled(),config.screenWidth(),config.screenHeight());
+
+        float dist = (trail->location-person->getLocation()).size();
+        if(dist > 200) {
+            globalTrails->add(trail);
+            myTrails->scheduleForRemoval(trail);
+        }
     });
+    myTrails->removeAll();
 
 }
 
