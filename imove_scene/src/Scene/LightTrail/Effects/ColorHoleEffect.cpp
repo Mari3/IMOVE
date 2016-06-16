@@ -43,7 +43,7 @@ void ColorHoleEffect::draw(sf::RenderTarget &target) {
 }
 
 void ColorHoleEffect::addCircle() {
-    sf::Color color = HueConverter::ToColor(hue);
+    sf::Color color = HueConverter::ToColor(hue,config.trail().draw().inverted);
     hue += 45;
     hue = fmodf(hue,360);
     color.a = 0;

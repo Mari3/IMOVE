@@ -1,6 +1,7 @@
 %YAML:1.0
-Resolution: [ 800, 500 ]
+Resolution: [ 800, 600 ]
 Meter: 100
+Inverted: 0
 TopLeftHue: [ 0, 90 ]
 TopRightHue: [ 90, 180 ]
 BottomRightHue : [ 180, 270 ]
@@ -38,7 +39,7 @@ ColorHoleGravity: 5
 ColorHoleGravityRange: 1.2
 ColorHoleRange: .2
 MixingEffectThickness: .05
-ColorHoleEffectThickness: .01
+ColorHoleEffectThickness: .03
 ColorHoleEffectPeriod: .35
 StarAmount: 10
 StarSpeed: .10
