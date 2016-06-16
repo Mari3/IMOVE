@@ -3,7 +3,7 @@ project(tests)
 file(GLOB_RECURSE TEST_FILES "*.cpp")
 
 file(GLOB_RECURSE IMOVE_SOURCES "../scene_interface/src/*.h" "../../src/Util/*.h"
-        "../../src/Util/*.cpp" "../../src/Scene/*.h" "../../src/Scene/*.cpp")
+        "../../src/Util/*.cpp" "../../src/Scene/*.h" "../../src/Scene/*.cpp" "../../../../utill/src/*.cpp")
 
 add_executable(runMyTests ${TEST_FILES} ${IMOVE_SOURCES})
 

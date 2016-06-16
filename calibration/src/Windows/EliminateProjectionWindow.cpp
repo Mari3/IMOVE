@@ -1,6 +1,6 @@
 #include "./EliminateProjectionWindow.hpp"
 
-EliminateProjectionWindow::EliminateProjectionWindow(cv::Point2i position, Calibration* calibration) : OpenCVWindow("Eliminate projection", position) {
+EliminateProjectionWindow::EliminateProjectionWindow(cv::Point2i position, cv::Size size, Calibration* calibration) : OpenCVWindow("Eliminate projection", position, size) {
 	this->calibration = calibration;
 	track_projector_background_light = round(this->calibration->getProjectorBackgroundLight() * FLOAT_FULL_PERCENTAGE);
 	cv::createTrackbar(this->name_trackbar_ratio_projector_background_light, this->name_window, &this->track_projector_background_light, this->INT_FULL_PERCENTAGE, EliminateProjectionWindow::onProjectorBackgroundLight, (void*) &*this);

@@ -1,10 +1,10 @@
 #include <opencv2/opencv.hpp>
 
-#include "../../../imove_imp/src/OpenCVUtil.hpp"
+#include "../../../util/src/OpenCVUtil.hpp"
 #include "DetectedPeopleCameraWindow.hpp"
 #include "../../../scene_interface/src/People.h"
 
-DetectedPeopleCameraWindow::DetectedPeopleCameraWindow(cv::Point2i position) : OpenCVWindow("Detected people on camera", position) { }
+DetectedPeopleCameraWindow::DetectedPeopleCameraWindow(cv::Point2i position, cv::Size size) : OpenCVWindow("Detected people on camera", position, size) { }
 
 void DetectedPeopleCameraWindow::drawImage(cv::Mat& image_camera, scene_interface::People& detectedpeople) {
 	// debug people drawing on camera frame

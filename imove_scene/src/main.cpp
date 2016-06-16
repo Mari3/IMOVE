@@ -2,7 +2,7 @@
 #include <string>
 
 #include "ImoveSceneManager.hpp"
-#include "../../imove_imp/src/Calibration.hpp"
+#include "../../util/src/Calibration.hpp"
 
 const unsigned int CONFIGURATION_CALIBRATION_ARGN = 1;
 const unsigned int CONFIGURATION_LIGHTTRAIL_ARGN = 2;

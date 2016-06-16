@@ -6,7 +6,7 @@
 #define IMOVE_LIGHTSOURCE_H
 
 
-#include "../../../../scene_interface/src/Vector2.h"
+#include "../../../../util/src/Vector2.h"
 #include "../Util/Range.h"
 #include "LightTrail.h"
 

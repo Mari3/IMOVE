@@ -7,7 +7,7 @@
 #include <queue>
 
 #include "../../scene_interface/src/People.h"
-#include "../../scene_interface/src/Boundary.h"
+#include "../../util/src/Boundary.h"
 
 // Mappings for projector frames and points from camera frames and points based on camera and projector properties
 class Calibration {

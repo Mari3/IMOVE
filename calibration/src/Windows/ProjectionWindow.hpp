@@ -1,11 +1,11 @@
 #include <opencv2/opencv.hpp>
 
-#include "../../../imove_imp/src/OpenCVWindow.hpp"
-#include "../../../imove_imp/src/Calibration.hpp"
+#include "../../../util/src/OpenCVWindow.hpp"
+#include "../../../util/src/Calibration.hpp"
 
 class ProjectionWindow : public OpenCVWindow {
 	public:
-		ProjectionWindow(cv::Point2i position, Calibration* calibration);
+		ProjectionWindow(cv::Point2i position, cv::Size size, Calibration* calibration);
 		
 		void drawImage(cv::Mat image_camera);
 

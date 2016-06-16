@@ -7,7 +7,7 @@
 #include "../GravityPoint.h"
 #include "../Repositories/LightsSceneRepositories.h"
 #include "../Configuration/LightTrailSceneConfiguration.h"
-#include "../../../../../scene_interface/src/Vector2.h"
+#include "../../../../../util/src/Vector2.h"
 
 class UpdateLightTrailsAction : public Action {
 private:

@@ -5,7 +5,7 @@
 #include "./CalibrationMeterWindow.hpp"
 
 
-CalibrationMeterWindow::CalibrationMeterWindow(cv::Point2i position, Calibration* calibration) : OpenCVWindow("Calibrate meter", position) {
+CalibrationMeterWindow::CalibrationMeterWindow(cv::Point2i position, cv::Size size, Calibration* calibration) : OpenCVWindow("Calibrate meter", position, size) {
 	this->calibration = calibration;
 
 	// Initialize meter on top left with offset 10

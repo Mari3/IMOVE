@@ -2,11 +2,11 @@
 
 #include <functional>
 
-#include "../../../imove_imp/src/OpenCVUtil.hpp"
+#include "../../../util/src/OpenCVUtil.hpp"
 #include "./CalibrationProjectionWindow.hpp"
 
 
-CalibrationProjectionWindow::CalibrationProjectionWindow(cv::Point2i position, Calibration* calibration) : OpenCVWindow("Calibrate projection", position) {
+CalibrationProjectionWindow::CalibrationProjectionWindow(cv::Point2i position, cv::Size size, Calibration* calibration) : OpenCVWindow("Calibrate projection", position, size) {
 	this->calibration = calibration;
 	// set ui color of corners
 	this->color_corners[0] = OpenCVUtil::Color::ORANGE;

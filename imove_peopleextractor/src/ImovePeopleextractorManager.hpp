@@ -2,7 +2,7 @@
 #include <boost/interprocess/offset_ptr.hpp>
 #include <vector>
 
-#include "../../imove_imp/src/Calibration.hpp"
+#include "../../util/src/Calibration.hpp"
 #include "ImageProcessing/PeopleExtractor.h"
 #include "../../scene_interface_sma/src/PeopleQueue.hpp"
 #include "../../peopleextractor_interface_sma/src/SceneframeQueue.hpp"
