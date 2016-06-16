@@ -18,6 +18,7 @@
 #include "Conditions/ColorHoleTimerCondition.h"
 #include "Conditions/ParticipantCloseToSourceCondition.h"
 #include "Actions/StarEffectAction.h"
+#include "Conditions/PersonDisappearedCondition.h"
 
 void LightTrailScene::draw(sf::RenderTarget &target) {
     if(config.trail().draw().inverted)
@@ -156,6 +157,9 @@ LightPersonRepository* lightPeople) : Scene(),
     ));
     conditions.push_back(std::unique_ptr<Condition>(
             static_cast<Condition*>(new ParticipantCloseToSourceCondition(lightPeople,lightSources,config))
+    ));
+    conditions.push_back(std::unique_ptr<Condition>(
+            static_cast<Condition*>(new PersonDisappearedCondition(lightPeople,lightTrails,config))
     ));
 }
 
