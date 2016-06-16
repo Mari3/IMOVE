@@ -8,7 +8,7 @@
 #include "Calibration.hpp"
 #include "../../scene_interface/src/People.h"
 
-Calibration::Calibration(const cv::Size& resolution_projector, const bool& fullscreen_projector, const cv::Size& resolution_camera, unsigned int camera_device, const Boundary& projection, unsigned int frames_projector_camera_delay, float projector_background_light, float meter_camera, unsigned int maximum_fps_scene, unsigned int fps_capture_scene, unsigned int iterations_delay_peopleextracting, unsigned int factor_resize_capture_scene) :
+Calibration::Calibration(const cv::Size& resolution_projector, const bool& fullscreen_projector, const cv::Size& resolution_camera, unsigned int camera_device, const Boundary& projection, unsigned int frames_projector_camera_delay, float projector_background_light, float meter_camera, unsigned int maximum_fps_scene, unsigned int fps_capture_scene, unsigned int iterations_delay_peopleextracting, unsigned int factor_resize_capture_scene, bool debug_mode) :
 	resolution_projector(resolution_projector),
 	fullscreen_projector(fullscreen_projector),
 	resolution_camera(resolution_camera),
@@ -20,7 +20,8 @@ Calibration::Calibration(const cv::Size& resolution_projector, const bool& fulls
 	maximum_fps_scene(maximum_fps_scene),
 	fps_capture_scene(fps_capture_scene),
 	iterations_delay_peopleextracting(iterations_delay_peopleextracting),
-	factor_resize_capture_scene(factor_resize_capture_scene)
+	factor_resize_capture_scene(factor_resize_capture_scene),
+	debug_mode(debug_mode)
 {
 	// create camera projection transformation based on 4 corners of the projection and the projector
 	const unsigned int REQUIRED_CORNERS = 4;
@@ -121,6 +122,9 @@ Calibration* Calibration::readFile(const char* filepath) {
 	// read camera meter from yml using OpenCV FileNode
 	float meter_camera;
 	fs["Meter_camera"] >> meter_camera;
+	// read debug mode from yml using OpenCV FileNode
+	bool debug_mode;
+	fs["Debug_mode"] >> debug_mode;
 
 	Calibration* calibration = new Calibration(
 		resolution_projector,
@@ -139,7 +143,8 @@ Calibration* Calibration::readFile(const char* filepath) {
 		Calibration::read(fs, "Maximum_FPS_scene"),
 		Calibration::read(fs, "FPS_capture_scene"),
 		Calibration::read(fs, "Iterations_delay_peopleextracting"),
-		Calibration::read(fs, "Factor_resize_capture_scene")
+		Calibration::read(fs, "Factor_resize_capture_scene"),
+		debug_mode
 	);
 
 	fs.release();
@@ -171,6 +176,13 @@ Calibration* Calibration::createFromFile(const char* filepath, unsigned int came
 		meter_camera = Calibration::DEFAULT_METER_CAMERA;
 	} else {
 		read_config["Meter_camera"] >> meter_camera;
+	}
+	// read debug mode from yml using OpenCV FileNode; default if not existing
+	bool debug_mode;
+	if (read_config["Debug_mode"].isNone()) {
+		debug_mode = Calibration::DEFAULT_DEBUG_MODE;
+	} else {
+		read_config["Debug_mode"] >> debug_mode;
 	}
  
 	// retreive camera resolution from OpenCV VideoCapture
@@ -215,7 +227,8 @@ Calibration* Calibration::createFromFile(const char* filepath, unsigned int came
 		Calibration::create(read_config, "Maximum_FPS_scene", Calibration::DEFAULT_MAXIMUM_FPS_SCENE),
 		Calibration::create(read_config, "FPS_capture_scene", Calibration::DEFAULT_FPS_CAPTURE_SCENE),
 		Calibration::create(read_config, "Iterations_delay_peopleextracting", Calibration::DEFAULT_ITERATIONS_DELAY_PEOPLEEXTRACTING),
-		Calibration::create(read_config, "Factor_resize_capture_scene", Calibration::DEFAULT_FACTOR_RESIZE_CAPTURE_SCENE)
+		Calibration::create(read_config, "Factor_resize_capture_scene", Calibration::DEFAULT_FACTOR_RESIZE_CAPTURE_SCENE),
+		debug_mode
 	);
 
 	read_config.release();
@@ -243,6 +256,7 @@ void Calibration::writeFile(const char* filepath) const {
 	write_config << "FPS_capture_scene"                 << (int) this->fps_capture_scene;
 	write_config << "Iterations_delay_peopleextracting" << (int) this->iterations_delay_peopleextracting;
 	write_config << "Factor_resize_capture_scene"       << (int) this->factor_resize_capture_scene;
+	write_config << "Debug_mode"                        << (int) this->debug_mode;
 	
 	write_config.release();
 }
@@ -420,4 +434,7 @@ void Calibration::setFactorResizeCaptureScene(unsigned int factor_resize_capture
 }
 const unsigned int Calibration::getFactorResizeCaptureScene() const {
 	return this->factor_resize_capture_scene;
+}
+const bool Calibration::getDebugMode() const {
+	return this->debug_mode;
 }

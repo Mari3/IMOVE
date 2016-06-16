@@ -21,6 +21,8 @@ class Calibration {
 		static constexpr unsigned int    DEFAULT_ITERATIONS_DELAY_PEOPLEEXTRACTING = 5000;
 		static constexpr unsigned int    DEFAULT_FACTOR_RESIZE_CAPTURE_SCENE       = 10;
 		static constexpr          bool   DEFAULT_FULLSCREEN_PROJECTOR              = true;
+		static constexpr          bool   DEFAULT_DEBUG_MODE                        = true;
+		// Debug mode for outputting windows about recognition etc
 		
 		/**
 		 * Setup properties for mapping projector from camera.
@@ -37,8 +39,9 @@ class Calibration {
 		 * @param fps_capture_scene The fps capture scene for projection elimination
 		 * @param iterations_delay_peopleextracting The amount of iterations to stall for syncing people extracting and slow scene capture image
 		 * @param factor_resize_capture_scene The factor to resize the captured scene before sending over to people extractor
+		 * @param debug_mode Debug mode for outputting windows about recognition etc
 		 **/
-		Calibration(const cv::Size& resolution_projector, const bool& fullscreen_projector, const cv::Size& resolution_camera, unsigned int camera_device, const Boundary& projection, unsigned int frames_projector_camera_delay, float projector_background_light, float meter, unsigned int maximum_fps_scene, unsigned int fps_capture_scene, unsigned int iterations_delay_peopleextracting, unsigned int factor_resize_capture_scene);
+		Calibration(const cv::Size& resolution_projector, const bool& fullscreen_projector, const cv::Size& resolution_camera, unsigned int camera_device, const Boundary& projection, unsigned int frames_projector_camera_delay, float projector_background_light, float meter, unsigned int maximum_fps_scene, unsigned int fps_capture_scene, unsigned int iterations_delay_peopleextracting, unsigned int factor_resize_capture_scene, bool debug_mode);
 
 		/**
 		 * Creates the Calibration from a file by which the filepath is given
@@ -225,6 +228,11 @@ class Calibration {
 		 * Gets the factor to resize the captured scene before sending over to people extractor
 		 **/
 		const unsigned int getFactorResizeCaptureScene() const;
+		
+		/**
+		 * Gets wether to run in debug mode or not
+		 **/
+		const bool getDebugMode() const;
 
 	protected:
 		/**
@@ -297,6 +305,8 @@ class Calibration {
 		unsigned int iterations_delay_peopleextracting;
 		// factor to resize the captured scene before sending over to people extractor
 		unsigned int factor_resize_capture_scene;
+		// Debug mode for outputting windows about recognition etc
+		bool debug_mode;
 };
 
 #endif // CALIBRATION_H

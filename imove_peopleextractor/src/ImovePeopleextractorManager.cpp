@@ -36,24 +36,30 @@ void ImovePeopleextractorManager::receiveSceneFrameAndFeedProjectionThread(Imove
 
 void ImovePeopleextractorManager::run() {
 	// debug windows
-	PeopleextractorWindow window_peopleextractor(
-		cv::Point2i(this->calibration->getResolutionProjector().width, 0),
-		cv::Size(600, 600),
-		this->people_extractor
-	);
-	DetectedPeopleCameraWindow detectedpeople_camera_window(
-		cv::Point2i(this->calibration->getResolutionProjector().width + 600, 0),
-		cv::Size(600, 600)
-	);
-	ImageWindow eliminatedprojection_camera_window(
-		"Eliminated projection camera frame",
-		cv::Point2i(this->calibration->getResolutionProjector().width, 600),
-		cv::Size(300, 300)
-	);
-	DetectedPeopleProjectionWindow detectedpeople_projection_window(
-		cv::Point2i(this->calibration->getResolutionProjector().width + 300, 600),
-		cv::Size(300, 300)
-	);
+	PeopleextractorWindow* window_peopleextractor;
+	DetectedPeopleCameraWindow* detectedpeople_camera_window;
+	ImageWindow* eliminatedprojection_camera_window;
+	DetectedPeopleProjectionWindow* detectedpeople_projection_window;
+	if (this->calibration->getDebugMode()) {
+		window_peopleextractor = new PeopleextractorWindow(
+			cv::Point2i(this->calibration->getResolutionProjector().width, 0),
+			cv::Size(600, 600),
+			this->people_extractor
+		);
+		detectedpeople_camera_window = new DetectedPeopleCameraWindow(
+			cv::Point2i(this->calibration->getResolutionProjector().width + 600, 0),
+			cv::Size(600, 600)
+		);
+		eliminatedprojection_camera_window = new ImageWindow(
+			"Eliminated projection camera frame",
+			cv::Point2i(this->calibration->getResolutionProjector().width, 600),
+			cv::Size(300, 300)
+		);
+		detectedpeople_projection_window = new DetectedPeopleProjectionWindow(
+			cv::Point2i(this->calibration->getResolutionProjector().width + 300, 600),
+			cv::Size(300, 300)
+		);
+	}
 
 	// setup camera
 	cv::VideoCapture video_capture(this->calibration->getCameraDevice());
@@ -78,21 +84,29 @@ void ImovePeopleextractorManager::run() {
 		// eliminate projection from camera frame
 		cv::Mat frame_eliminatedprojection;
 		this->calibration->eliminateProjectionFeedbackFromFrameCamera(frame_eliminatedprojection, frame_camera);
-		eliminatedprojection_camera_window.drawImage(frame_eliminatedprojection);
+		if (this->calibration->getDebugMode()) {
+			eliminatedprojection_camera_window->drawImage(frame_eliminatedprojection);
+		}
 
 		// extract people from camera frame
 		detectpeople_frame = frame_eliminatedprojection.clone();
 		people_camera = this->people_extractor->extractPeople(detectpeople_frame);
-		window_peopleextractor.drawFrame();
+		if (this->calibration->getDebugMode()) {
+			window_peopleextractor->drawFrame();
+		}
 
-		// draw detected people camera image
-		detectedpeople_camera_window.drawImage(frame_camera, people_camera);
+		if (this->calibration->getDebugMode()) {
+			// draw detected people camera image
+			detectedpeople_camera_window->drawImage(frame_camera, people_camera);
+		}
 
 		// change extrated people to projector location from camera location
 		const scene_interface::People people_projector = this->calibration->createPeopleProjectorFromPeopleCamera(people_camera);
 
 		// draw detected people projection image
-		detectedpeople_projection_window.drawImage(frame_projection, people_projector);
+		if (this->calibration->getDebugMode()) {
+			detectedpeople_projection_window->drawImage(frame_projection, people_projector);
+		}
 		
 		// send extracted people via shared memory to scene
 		this->sendExtractedpeople(people_projector);
