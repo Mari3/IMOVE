@@ -22,26 +22,7 @@ Calibration::Calibration(const cv::Size& resolution_projector, const bool& fulls
 	iterations_delay_peopleextracting(iterations_delay_peopleextracting),
 	factor_resize_capture_scene(factor_resize_capture_scene)
 {
-	// create camera projection transformation based on 4 corners of the projection and the projector
-	const unsigned int REQUIRED_CORNERS = 4;
-	const unsigned int TOPLEFT          = 0;
-	const unsigned int TOPRIGHT         = 1;
-	const unsigned int BOTTOMLEFT       = 2;
-	const unsigned int BOTTOMRIGHT      = 3;
-	cv::Point2f* coordinate_corners_projector = new cv::Point2f[REQUIRED_CORNERS];
-	coordinate_corners_projector[TOPLEFT]     = cv::Point2f(        OpenCVUtil::ORIGIN2D.x,          OpenCVUtil::ORIGIN2D.y);
-	coordinate_corners_projector[TOPRIGHT]    = cv::Point2f(this->resolution_projector.width - 1,          OpenCVUtil::ORIGIN2D.y);
-	coordinate_corners_projector[BOTTOMLEFT]  = cv::Point2f(		  	OpenCVUtil::ORIGIN2D.x, this->resolution_projector.height - 1);
-	coordinate_corners_projector[BOTTOMRIGHT] = cv::Point2f(this->resolution_projector.width - 1, this->resolution_projector.height - 1);
-	cv::Point2f* coordinate_corners_projection  = new cv::Point2f[REQUIRED_CORNERS];
-	coordinate_corners_projection[TOPLEFT]     = cv::Point2f(this->projection.getUpperLeft().x, this->projection.getUpperLeft().y);
-	coordinate_corners_projection[TOPRIGHT]    = cv::Point2f(this->projection.getUpperRight().x, this->projection.getUpperRight().y);
-	coordinate_corners_projection[BOTTOMLEFT]  = cv::Point2f(this->projection.getLowerLeft().x, this->projection.getLowerLeft().y);
-	coordinate_corners_projection[BOTTOMRIGHT] = cv::Point2f(this->projection.getLowerRight().x, this->projection.getLowerRight().y);
-	this->camera_projector_transformation = cv::getPerspectiveTransform(
-		coordinate_corners_projection,
-		coordinate_corners_projector
-	);
+	this->setProjection(projection);
 	this->setMeterCamera(meter_camera);
 }
 
@@ -91,7 +72,7 @@ const Boundary createBoundaryProjectionFromCameraProjectorTransformation(const c
 	);
 }
 
-Calibration* Calibration::readFile(const char* filepath) {
+const Calibration Calibration::readFile(const char* filepath) {
 	// read Calibration config
 	cv::FileStorage fs;
 	fs.open(filepath, cv::FileStorage::READ);
@@ -122,7 +103,7 @@ Calibration* Calibration::readFile(const char* filepath) {
 	float meter_camera;
 	fs["Meter_camera"] >> meter_camera;
 
-	Calibration* calibration = new Calibration(
+	const Calibration calibration(
 		resolution_projector,
 		fullscreen_projector,
 		resolution_camera,
@@ -147,7 +128,7 @@ Calibration* Calibration::readFile(const char* filepath) {
 	return calibration;
 }
 
-Calibration* Calibration::createFromFile(const char* filepath, unsigned int cameradevice, cv::Size resolution_projector) {
+Calibration Calibration::createFromFile(const char* filepath, unsigned int cameradevice, cv::Size resolution_projector) {
 	cv::FileStorage read_config;
 	read_config.open(filepath, cv::FileStorage::READ);
 	
@@ -203,7 +184,7 @@ Calibration* Calibration::createFromFile(const char* filepath, unsigned int came
 	}
 	
  	// create initial Calibration based on configuration, arguments and defaults
-	Calibration* calibration = new Calibration(
+	Calibration calibration = Calibration(
 		resolution_projector,
 		fullscreen_projector,
 		resolution_camera,
@@ -262,9 +243,6 @@ void Calibration::setProjectorBackgroundLight(float projector_background_light) 
 cv::Mat Calibration::getCameraProjectorTransformation() const {
 	return this->camera_projector_transformation;
 }
-void Calibration::setCameraProjectorTransformation(cv::Mat& camera_projector_transformation) {
-	this->camera_projector_transformation = camera_projector_transformation;
-}
 bool Calibration::getFullscreenProjector() const {
 	return this->fullscreen_projector;
 }
@@ -309,6 +287,29 @@ const float Calibration::getMeterCamera() const {
 }
 const float Calibration::getProjectorMeter() const {
 	return this->meter_projector;
+}
+void Calibration::setProjection(const Boundary& projection) {
+	this->projection = projection;
+	// create camera projection transformation based on 4 corners of the projection and the projector
+	const unsigned int REQUIRED_CORNERS = 4;
+	const unsigned int TOPLEFT          = 0;
+	const unsigned int TOPRIGHT         = 1;
+	const unsigned int BOTTOMLEFT       = 2;
+	const unsigned int BOTTOMRIGHT      = 3;
+	cv::Point2f* coordinate_corners_projector = new cv::Point2f[REQUIRED_CORNERS];
+	coordinate_corners_projector[TOPLEFT]     = cv::Point2f(        OpenCVUtil::ORIGIN2D.x,          OpenCVUtil::ORIGIN2D.y);
+	coordinate_corners_projector[TOPRIGHT]    = cv::Point2f(this->resolution_projector.width - 1,          OpenCVUtil::ORIGIN2D.y);
+	coordinate_corners_projector[BOTTOMLEFT]  = cv::Point2f(		  	OpenCVUtil::ORIGIN2D.x, this->resolution_projector.height - 1);
+	coordinate_corners_projector[BOTTOMRIGHT] = cv::Point2f(this->resolution_projector.width - 1, this->resolution_projector.height - 1);
+	cv::Point2f* coordinate_corners_projection  = new cv::Point2f[REQUIRED_CORNERS];
+	coordinate_corners_projection[TOPLEFT]     = cv::Point2f(this->projection.getUpperLeft().x, this->projection.getUpperLeft().y);
+	coordinate_corners_projection[TOPRIGHT]    = cv::Point2f(this->projection.getUpperRight().x, this->projection.getUpperRight().y);
+	coordinate_corners_projection[BOTTOMLEFT]  = cv::Point2f(this->projection.getLowerLeft().x, this->projection.getLowerLeft().y);
+	coordinate_corners_projection[BOTTOMRIGHT] = cv::Point2f(this->projection.getLowerRight().x, this->projection.getLowerRight().y);
+	this->camera_projector_transformation = cv::getPerspectiveTransform(
+		coordinate_corners_projection,
+		coordinate_corners_projector
+	);
 }
 const Boundary Calibration::getProjection() const {
 	return this->projection;

@@ -18,7 +18,7 @@ class Projection {
 		 * 
 		 * @param calibration Calibration which contains configuration on which to map projection 
 		 **/
-		Projection(Calibration* calibration);
+		Projection(Calibration& calibration);
 
 		/**
 		 * Adds a projector frame which is used for eliminating the projection
@@ -64,7 +64,7 @@ class Projection {
 		std::queue<cv::Mat> frames_delay_projector;
 		
 		// The calibration including configuration of camera and projector
-		Calibration* calibration;
+		Calibration& calibration;
 };
 
 #endif // PROJECTION_H

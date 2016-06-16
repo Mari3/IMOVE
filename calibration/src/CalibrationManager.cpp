@@ -7,15 +7,12 @@
 #include "Windows/CalibrationMeterWindow.hpp"
 #include "Windows/EliminateProjectionWindow.hpp"
 
-CalibrationManager::CalibrationManager(Calibration* calibration) {
-	this->calibration = calibration;
-	this->projection = projection;
-}
+CalibrationManager::CalibrationManager(Calibration& calibration) : calibration(calibration), projection(Projection(calibration)) {}
 
 void CalibrationManager::run() {
 	// setup camera
 	cv::Mat frame_camera;
-	cv::VideoCapture camera_videoreader(calibration->getCameraDevice());
+	cv::VideoCapture camera_videoreader(calibration.getCameraDevice());
 	camera_videoreader.set(cv::CAP_PROP_AUTOFOCUS, 0);
 	
 	// setup Calibration windows
@@ -29,12 +26,12 @@ void CalibrationManager::run() {
 	// while camera frame can be read and while no key pressed
 	while (cv::waitKey(1) == OpenCVUtil::NOKEY_ANYKEY && camera_videoreader.read(frame_camera)) {
 		// initialize a black projector frame
-		frame_projector = cv::Mat::zeros(calibration->getResolutionProjector(), CV_8UC3);
+		frame_projector = cv::Mat::zeros(calibration.getResolutionProjector(), CV_8UC3);
 		// draw projector image for Calibration
 		projector_window.drawImage(frame_projector);
 		
 		// feed Calibration image for delay and brightness Calibration
-		projection->feedFrameProjector(projector_window.getClonedImage());
+		projection.feedFrameProjector(projector_window.getClonedImage());
 		// draw calibrated eliminated camera image
 		eliminateprojection_window.drawImage(frame_camera);
 		

@@ -12,11 +12,11 @@ class EliminateProjectionWindow : public OpenCVWindow {
 		
 		void drawImage(cv::Mat image_camera);
 
-		EliminateProjectionWindow(cv::Point2i position, cv::Size size, Calibration* calibration, Projection* projection);
+		EliminateProjectionWindow(cv::Point2i position, cv::Size size, Calibration& calibration, Projection& projection);
 
 	protected:
-		Calibration* calibration;
-		Projection* projection;
+		Calibration& calibration;
+		Projection& projection;
 	
 		int track_projector_background_light;
 		int track_frames_projector_camera_delay;

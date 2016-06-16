@@ -3,6 +3,7 @@
 
 #include "ImovePeopleextractorManager.hpp"
 #include "../../util/src/Calibration.hpp"
+#include "../../util/src/Projection.hpp"
 
 const unsigned int CONFIGURATION_CALIBRATION_ARGN = 1;
 
@@ -13,7 +14,7 @@ int main(int argc, char* argv[]) {
 		std::cerr << "Usage: <path to configuration file>" << std::endl;
 		return EXIT_SUCCESS;
 	}
-	Calibration* calibration = Calibration::readFile(argv[CONFIGURATION_CALIBRATION_ARGN]);
+	Calibration calibration = Calibration::readFile(argv[CONFIGURATION_CALIBRATION_ARGN]);
 
 	ImovePeopleextractorManager manager(calibration);
 	manager.run();

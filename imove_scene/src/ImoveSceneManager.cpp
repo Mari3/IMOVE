@@ -14,9 +14,10 @@ void ImoveSceneManager::sendSceneFrameThread(ImoveSceneManager* imove_scene_mana
 	imove_scene_manager->sendSceneFrame(sf_image);
 }
 
-ImoveSceneManager::ImoveSceneManager(Calibration* calibration, LightTrailSceneConfiguration& configuration_lighttrail) {
-	this->calibration = calibration;
-
+ImoveSceneManager::ImoveSceneManager(Calibration& calibration, const LightTrailSceneConfiguration& configuration_lighttrail) :
+calibration(calibration),
+projection(Projection(calibration))
+{
 	// setup scene
   this->scene = new LightTrailScene(
 		configuration_lighttrail,
@@ -37,7 +38,7 @@ ImoveSceneManager::ImoveSceneManager(Calibration* calibration, LightTrailSceneCo
 
 void ImoveSceneManager::run() {
 	// setup scene window
-	SceneWindow window_scene(this->calibration->getResolutionProjector(), this->calibration->getFullscreenProjector());
+	SceneWindow window_scene(this->calibration.getResolutionProjector(), this->calibration.getFullscreenProjector());
 
 	// setup clock
 	sf::Clock clock;
@@ -46,7 +47,7 @@ void ImoveSceneManager::run() {
 
 	float dt;
 	float capture_dt = 0;
-	float SPF_capture_scene = 1.f / (float) this->calibration->getFpsCaptureScene();
+	float SPF_capture_scene = 1.f / (float) this->calibration.getFpsCaptureScene();
 	
 	// while q not pressed
 	while (window_scene.shouldKeepOpen() && this->running->running) {
@@ -140,15 +141,15 @@ void ImoveSceneManager::sendSceneFrame(const sf::Image& frame_scene) {
 	// create shared memory scene frame from sfml image
 	sf::Vector2u size_image = frame_scene.getSize();
 	boost::interprocess::offset_ptr<peopleextractor_interface_sma::Image> pi_sceneframe = this->segment->construct<peopleextractor_interface_sma::Image>(boost::interprocess::anonymous_instance)(
-		((unsigned int) size_image.x) / this->calibration->getFactorResizeCaptureScene(), 
-		((unsigned int) size_image.y) / this->calibration->getFactorResizeCaptureScene(),
+		((unsigned int) size_image.x) / this->calibration.getFactorResizeCaptureScene(), 
+		((unsigned int) size_image.y) / this->calibration.getFactorResizeCaptureScene(),
 		this->segment
 	);
-	for (unsigned int x = 0; x < ((unsigned int) size_image.x) / this->calibration->getFactorResizeCaptureScene(); ++x) {
-		for (unsigned int y = 0; y < ((unsigned int) size_image.y) / this->calibration->getFactorResizeCaptureScene(); ++y) {
+	for (unsigned int x = 0; x < ((unsigned int) size_image.x) / this->calibration.getFactorResizeCaptureScene(); ++x) {
+		for (unsigned int y = 0; y < ((unsigned int) size_image.y) / this->calibration.getFactorResizeCaptureScene(); ++y) {
 			sf::Color sf_pixel = frame_scene.getPixel(
-				x * (signed int) this->calibration->getFactorResizeCaptureScene(),
-				y * (signed int) this->calibration->getFactorResizeCaptureScene()
+				x * (signed int) this->calibration.getFactorResizeCaptureScene(),
+				y * (signed int) this->calibration.getFactorResizeCaptureScene()
 			);
 			pi_sceneframe->setRGB(x, y, (unsigned char) sf_pixel.r, (unsigned char) sf_pixel.g, (unsigned char) sf_pixel.b);
 		}

@@ -5,10 +5,10 @@
 
 class ProjectionWindow : public OpenCVWindow {
 	public:
-		ProjectionWindow(cv::Point2i position, cv::Size size, Projection* projection);
+		ProjectionWindow(cv::Point2i position, cv::Size size, Projection& projection);
 		
 		void drawImage(cv::Mat image_camera);
 
 	protected:
-		Projection* projection;
+		Projection& projection;
 };

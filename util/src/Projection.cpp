@@ -6,7 +6,7 @@
 #include "Projection.hpp"
 #include "../../scene_interface/src/People.h"
 
-Projection::Projection(Calibration* calibration)
+Projection::Projection(Calibration& calibration)
 : calibration(calibration)
 {}
 
@@ -17,10 +17,10 @@ void Projection::feedFrameProjector(const cv::Mat& frame_projector) {
 
 void Projection::eliminateProjectionFeedbackFromFrameCamera(cv::Mat& frame_projectioneliminated, const cv::Mat& frame_camera) {
 	// Skip frames which are older than delay
-	while ((((signed int) frames_delay_projector.size()) - 1) > (signed int) this->calibration->getFramesProjectorCameraDelay()) {
+	while ((((signed int) frames_delay_projector.size()) - 1) > (signed int) this->calibration.getFramesProjectorCameraDelay()) {
 	  this->frames_delay_projector.pop();
 	}
-	if (this->frames_delay_projector.size() <= this->calibration->getFramesProjectorCameraDelay()) {
+	if (this->frames_delay_projector.size() <= this->calibration.getFramesProjectorCameraDelay()) {
 		// use camera frame when no projector frames are (yet) fed
 		frame_projectioneliminated = frame_camera;
 	} else {
@@ -28,14 +28,14 @@ void Projection::eliminateProjectionFeedbackFromFrameCamera(cv::Mat& frame_proje
 		cv::warpPerspective(
 			this->frames_delay_projector.front(),
 			frame_projectioneliminated,
-			this->calibration->getCameraProjectorTransformation(),
+			this->calibration.getCameraProjectorTransformation(),
 			frame_camera.size(),
 			cv::INTER_LINEAR | cv::WARP_INVERSE_MAP,
 			cv::BORDER_CONSTANT,
 			OpenCVUtil::Color::BLACK
 		);
 		// subtract given image based on light level difference between projection and background
-		frame_projectioneliminated = frame_camera - (frame_projectioneliminated * this->calibration->getProjectorBackgroundLight());
+		frame_projectioneliminated = frame_camera - (frame_projectioneliminated * this->calibration.getProjectorBackgroundLight());
 	}
 }
 
@@ -46,7 +46,7 @@ void Projection::createPointsFrameProjectorFromPointsFrameCamera(std::vector<cv:
 		cv::perspectiveTransform(
 			points_frame_camera,
 			points_frame_projector,
-			this->calibration->getCameraProjectorTransformation()
+			this->calibration.getCameraProjectorTransformation()
 		);
 	}
 }
@@ -91,7 +91,7 @@ void Projection::createFrameProjectionFromFrameCamera(cv::Mat& frame_projection,
 	cv::warpPerspective(
 		frame_camera,
 		frame_projection,
-		this->calibration->getCameraProjectorTransformation(),
-		this->calibration->getResolutionProjector()
+		this->calibration.getCameraProjectorTransformation(),
+		this->calibration.getResolutionProjector()
 	);
 }

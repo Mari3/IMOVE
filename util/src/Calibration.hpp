@@ -45,14 +45,14 @@ class Calibration {
 		 * 
 		 * @param filepath Path to file from which to read Calibration
 		 **/
-		static Calibration* readFile(const char* filepath);
+		static const Calibration readFile(const char* filepath);
 		
 		/**
 		 * Creates the Calibration from a file by which the filepath is given and defaults
 		 * 
 		 * @param filepath Path to file from which to load Calibration
 		 **/
-		static Calibration* createFromFile(const char* filepath, unsigned int cameradevice, cv::Size resolution_projector);
+		static Calibration createFromFile(const char* filepath, unsigned int cameradevice, cv::Size resolution_projector);
 		
 		/**
 		 * Creates the file by which the filepath is given from the Calibration
@@ -84,13 +84,6 @@ class Calibration {
 		 * @param projector_background_light The light level difference between the projectors projection light level and background level
 		 **/
 		void setProjectorBackgroundLight(float projector_background_light);
-
-		/**
-		 * Sets the projection transformation matrix between the camera and the projection.
-		 * 
-		 * @param camera_projector_transformation The projection transformation matrix between the camera and projection
-		 **/
-		void setCameraProjectorTransformation(cv::Mat& camera_projector_transformation);
 
 		/**
 		 * Gets the projection transformation matrix between the camera and the projection.
@@ -133,6 +126,13 @@ class Calibration {
 		 * Gets the one meter in pixels on a projector image.
 		 **/
 		const float getProjectorMeter() const;
+
+		/**
+		 * Sets (the boundary of) the projection and calculates camera projector transformation
+		 *
+		 * @param projection The (boundary of the) projection
+		 **/
+		void setProjection(const Boundary& projection);
 
 		/**
 		 * Gets (the boundary of) the projection
