@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "../../util/src/Calibration.hpp"
+#include "../../util/src/Projection.hpp"
 #include "ImageProcessing/PeopleExtractor.h"
 #include "../../scene_interface_sma/src/PeopleQueue.hpp"
 #include "../../peopleextractor_interface_sma/src/SceneframeQueue.hpp"
@@ -23,6 +24,7 @@ class ImovePeopleextractorManager {
 
 	protected:
 		Calibration* calibration;
+		Projection* projection;
 		PeopleExtractor* people_extractor;
 
 		// shared memory segment between extractedpeople and scene

@@ -15,6 +15,7 @@
 
 ImovePeopleextractorManager::ImovePeopleextractorManager(Calibration* calibration) {
 	this->calibration = calibration;
+	this->projection = new Projection(this->calibration);
 
 	// setup people extractor
 	this->people_extractor = new PeopleExtractor(this->calibration->getResolutionCamera(), this->calibration->getMeterCamera(), 216, this->calibration->getProjection().createReorientedTopLeftBoundary());
@@ -68,7 +69,7 @@ void ImovePeopleextractorManager::run() {
 	// while no key pressed
 	while (cv::waitKey(1) == OpenCVUtil::NOKEY_ANYKEY && video_capture.read(frame_camera) && this->running->running) {
 		// debug projection frame
-		this->calibration->createFrameProjectionFromFrameCamera(
+		this->projection->createFrameProjectionFromFrameCamera(
 			frame_projection,
 			frame_camera
 		);
@@ -77,7 +78,7 @@ void ImovePeopleextractorManager::run() {
 		for (unsigned int i = 0; i < this->calibration->getIterationsDelayPeopleextracting(); ++i) {}
 		// eliminate projection from camera frame
 		cv::Mat frame_eliminatedprojection;
-		this->calibration->eliminateProjectionFeedbackFromFrameCamera(frame_eliminatedprojection, frame_camera);
+		this->projection->eliminateProjectionFeedbackFromFrameCamera(frame_eliminatedprojection, frame_camera);
 		eliminatedprojection_camera_window.drawImage(frame_eliminatedprojection);
 
 		// extract people from camera frame
@@ -89,7 +90,7 @@ void ImovePeopleextractorManager::run() {
 		detectedpeople_camera_window.drawImage(frame_camera, people_camera);
 
 		// change extrated people to projector location from camera location
-		const scene_interface::People people_projector = this->calibration->createPeopleProjectorFromPeopleCamera(people_camera);
+		const scene_interface::People people_projector = this->projection->createPeopleProjectorFromPeopleCamera(people_camera);
 
 		// draw detected people projection image
 		detectedpeople_projection_window.drawImage(frame_projection, people_projector);
@@ -189,7 +190,7 @@ void ImovePeopleextractorManager::receiveSceneFrameAndFeedProjection() {
 		cv::Mat cv_sceneframe_resize;
 		cv::resize(cv_sceneframe, cv_sceneframe_resize, cv::Size(pi_sceneframe->getWidth() * this->calibration->getFactorResizeCaptureScene(), pi_sceneframe->getHeight() * this->calibration->getFactorResizeCaptureScene()));
 		// feed opencv image to calibration
-		this->calibration->feedFrameProjector(cv_sceneframe_resize);
+		this->projection->feedFrameProjector(cv_sceneframe_resize);
 		// remove from queue
 		this->pi_sceneframe_queue->pop_front();
 	}

@@ -9,6 +9,7 @@
 
 CalibrationManager::CalibrationManager(Calibration* calibration) {
 	this->calibration = calibration;
+	this->projection = projection;
 }
 
 void CalibrationManager::run() {
@@ -21,8 +22,8 @@ void CalibrationManager::run() {
 	ProjectorWindow projector_window(cv::Point2i(0, 0), cv::Size(300, 300));
 	CalibrationProjectionWindow calibrationprojection_window(cv::Point2i(300, 0), cv::Size(300, 300), calibration);
 	CalibrationMeterWindow calibrationmeter_window(cv::Point2i(600, 0), cv::Size(300, 300), calibration);
-	EliminateProjectionWindow eliminateprojection_window(cv::Point2i(900, 0), cv::Size(300, 300), calibration);
-	ProjectionWindow projection_window(cv::Point2i(1200, 0), cv::Size(300, 300), calibration);
+	EliminateProjectionWindow eliminateprojection_window(cv::Point2i(900, 0), cv::Size(300, 300), calibration, projection);
+	ProjectionWindow projection_window(cv::Point2i(1200, 0), cv::Size(300, 300), projection);
 
 	cv::Mat frame_projector;
 	// while camera frame can be read and while no key pressed
@@ -33,7 +34,7 @@ void CalibrationManager::run() {
 		projector_window.drawImage(frame_projector);
 		
 		// feed Calibration image for delay and brightness Calibration
-		calibration->feedFrameProjector(projector_window.getClonedImage());
+		projection->feedFrameProjector(projector_window.getClonedImage());
 		// draw calibrated eliminated camera image
 		eliminateprojection_window.drawImage(frame_camera);
 		
