@@ -7,15 +7,18 @@
 #include "HueConverter.h"
 
 namespace HueConverter {
-    sf::Color ToColor(float hue) {
+    sf::Color ToColor(float hue, bool inverted) {
 
         float l = .5f;
-        if(hue < 90 && hue > 30) {
-            l = .5f * (1 - (hue - 30) / 120.f);
-        }else if(hue < 150 && hue > 90){
-            l = .5f * (1 - (hue - 90) / 120.f);
-        }else if(hue < 210 && hue > 150){
-            l = .5f*(1 - (hue-150)/120.f);
+
+        if(inverted) {
+            if (hue < 90 && hue > 30) {
+                l = .5f * (1 - (hue - 30) / 120.f);
+            } else if (hue < 150 && hue > 90) {
+                l = .5f * (1 - (hue - 90) / 120.f);
+            } else if (hue < 210 && hue > 150) {
+                l = .5f * (1 - (hue - 150) / 120.f);
+            }
         }
 
         float c = 1 - fabsf(2*l-1);

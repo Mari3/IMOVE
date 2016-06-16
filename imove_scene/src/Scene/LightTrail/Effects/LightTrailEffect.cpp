@@ -23,7 +23,7 @@ void LightTrailEffect::draw(sf::RenderTarget &target) {
         sf::RectangleShape circle(sf::Vector2f(size.x, size.y) );
         circle.setRotation(trail->getAngle());
         circle.setPosition(trail->getLocation().x,trail->getLocation().y);
-        circle.setFillColor(HueConverter::ToColor(trail->hue));
+        circle.setFillColor(HueConverter::ToColor(trail->hue,config.trail().draw().inverted));
         texture.draw(circle);
     });
 }

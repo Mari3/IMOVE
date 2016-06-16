@@ -9,9 +9,9 @@ MixingEffect::MixingEffect(const std::shared_ptr<LightPerson> &person1, const st
                            const LightTrailSceneConfiguration &config)
         : person1(person1), person2(person2),
           prevColor1(sf::Color::Transparent),
-          currentColor1(HueConverter::ToColor(person1->hue.getCenter())),
+          currentColor1(HueConverter::ToColor(person1->hue.getCenter(),config.trail().draw().inverted)),
           prevColor2(sf::Color::Transparent),
-          currentColor2(HueConverter::ToColor(person2->hue.getCenter())),
+          currentColor2(HueConverter::ToColor(person2->hue.getCenter(),config.trail().draw().inverted)),
           stepColor1(currentColor1),
           stepColor2(currentColor2), config(config) { }
 
@@ -20,10 +20,10 @@ void MixingEffect::update(float dt) {
     if(leftInCycle < 0){
         leftInCycle = cycle;
         prevColor1 = currentColor1;
-        currentColor1 = HueConverter::ToColor(person1->hue.getCenter());
+        currentColor1 = HueConverter::ToColor(person1->hue.getCenter(),config.trail().draw().inverted);
         stepColor1 = currentColor1;
         prevColor2 = currentColor2;
-        currentColor2 = HueConverter::ToColor(person2->hue.getCenter());
+        currentColor2 = HueConverter::ToColor(person2->hue.getCenter(),config.trail().draw().inverted);
         stepColor2 = currentColor2;
     }
     currentColor1.r -= stepColor1.r*dt/cycle*.3f;
