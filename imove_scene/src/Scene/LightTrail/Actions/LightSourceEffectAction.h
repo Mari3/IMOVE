@@ -18,7 +18,6 @@ private:
     GravityPoint gravityPoint;
     LightTrailRepository* myLightTrails;
     LightTrailSceneConfiguration config;
-    LightTrailEffect effect;
 public:
     LightSourceEffectAction(std::shared_ptr<LightSource> source, LightTrailRepository *myLightTrails,
                             const LightTrailSceneConfiguration& config, sf::RenderTexture &texture
@@ -27,8 +26,6 @@ public:
     bool isDone(std::vector<Action *> &followUp) override;
 
     void execute(float dt) override;
-
-    void draw(sf::RenderTarget &target) override;
 
 
 };

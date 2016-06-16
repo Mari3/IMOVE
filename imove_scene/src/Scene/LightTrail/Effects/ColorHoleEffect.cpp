@@ -37,7 +37,7 @@ void ColorHoleEffect::draw(sf::RenderTarget &target) {
         if(thickness == 0) thickness = 1;
         circleShape.setOutlineThickness(thickness);
         circleShape.setOutlineColor(circle.color);
-        circleShape.setPosition(sf::Vector2f(location.x-circle.radius,location.y-circle.radius));
+        circleShape.setPosition(sf::Vector2f(person->getLocation().x-circle.radius,person->getLocation().y-circle.radius));
         target.draw(circleShape);
     }
 }
@@ -50,15 +50,10 @@ void ColorHoleEffect::addCircle() {
     circles.push_back(ColorCircle(color,200));
 }
 
-ColorHoleEffect::ColorHoleEffect(const Vector2 &location, const LightTrailSceneConfiguration &config)
-        : timer(config.effect().colorHole().period, true), location(location), config(config) {
+ColorHoleEffect::ColorHoleEffect(const std::shared_ptr<LightPerson> &person, const LightTrailSceneConfiguration &config)
+        : timer(config.effect().colorHole().period, true), person(person), config(config) {
     addCircle();
 }
-
-void ColorHoleEffect::setLocation(const Vector2 &_location) {
-    location = _location;
-}
-
 
 
 

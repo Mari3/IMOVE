@@ -11,16 +11,12 @@
 #include "../../Action.h"
 
 class StarEffectAction : public Action{
-private:
-    StarEffect effect;
 public:
     StarEffectAction(const LightTrailSceneConfiguration &config);
 
     bool isDone(std::vector<Action *> &followUp) override;
 
     void execute(float dt) override;
-
-    void draw(sf::RenderTarget &target) override;
 
 
 };

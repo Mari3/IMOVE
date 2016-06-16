@@ -10,7 +10,7 @@ InitiateParticipantAction::InitiateParticipantAction(LightTrailRepository *globa
                                                      const LightTrailSceneConfiguration& config, sf::RenderTexture &texture
 ) : globalTrails(globalTrails), myTrails(myTrails), sources(sources), person(person),
     gravityPoint(person->getLocation(),person->hue,config.gravity().participant().gravity),
-    config(config), effect(myTrails,config,texture) {
+    config(config) {
 
     sources->for_each([&](std::shared_ptr<LightSource> source){
         if(fabsf(source->getHue().getCenter() - person->hue.getCenter()) < 45){
@@ -20,6 +20,10 @@ InitiateParticipantAction::InitiateParticipantAction(LightTrailRepository *globa
             }
         }
     });
+
+    effects.push_back(std::unique_ptr<Effect>(
+        static_cast<Effect*>(new LightTrailEffect(myTrails,config,texture))
+    ));
 
 }
 
@@ -45,8 +49,4 @@ void InitiateParticipantAction::execute(float dt) {
     });
     myTrails->removeAll();
 
-}
-
-void InitiateParticipantAction::draw(sf::RenderTarget &target) {
-    effect.draw(target);
 }
