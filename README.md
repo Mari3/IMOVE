@@ -2,7 +2,6 @@
 BEP Interactive Crowd Art
 
 This Repository contains the source and testing code of the I. M.O.V.E project. In this project we combine image processing, calibration techniques and computer graphics to create an interactive experience for the user, using a projector and a camera.
-It also contains the Google test (@ imove/test/lib/googletest) and fakeit source code until an alternative way of handling this is found. This code is _not_ written by us, it is just included to be used in testing.
 
 ## Building the project
 We use Cmake to build the project. It has been successfully built on OS X with gcc 4.2.1 and on Ubuntu with g++ 5.3.0.
@@ -25,10 +24,6 @@ Assuming 0 is the id of the primary camera of the OS.
 
 ### scene-integration
 This is an integration test for the graphics part of the program. Used primarily in development to develop the graphics without having to deal with the other parts of the software.
-
-### runMyTests
-This executes the tests written using the Google Test framework and the fakeit mocking library. Also used only in development.
-From cli (run from repository root): ./runMyTests 
 
 ## Parts of imove
 
