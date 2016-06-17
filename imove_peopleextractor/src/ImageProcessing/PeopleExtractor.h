@@ -30,23 +30,24 @@ class PeopleExtractor {
 
   // Current frame
   cv::Mat frame;
-  cv::Mat results_frame;
+  // Debug frame
+  cv::Mat debug_frame;
 
-  // Size of the frame
+  // Size of the frame after resizing
   cv::Size frame_size_resized;
+
+  // Convert objects from the People class to the scene interface People class
+  const scene_interface::People convert(std::vector<Person>& people);
 
   // Ratio with which the frame is resized
   float resize_ratio;
 
  public:
-  PeopleExtractor(cv:: Size frame_size, float pixels_per_meter, float resolution_resize_height, Boundary boundary);
+  PeopleExtractor(const cv::Size& frame_size, float pixels_per_meter, float resolution_resize_height, const Boundary& boundary);
   ~PeopleExtractor();
 
   // Main extraction function to extract people from a frame
   const scene_interface::People extractPeople(cv::Mat& new_frame);
-
-  // Convert people from the People class to the scene interface People class
-  const scene_interface::People convert(std::vector<Person> people);
 
   // Display image processing results
   const cv::Mat getDebugFrame() const;
