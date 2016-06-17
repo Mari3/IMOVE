@@ -21,7 +21,7 @@ public:
   Boundary();
   Boundary(const Vector2& upleft, const Vector2& upright, const Vector2& lowleft, const Vector2& lowright);
   ~Boundary();
-  bool inBounds(Vector2& location);
+  bool inBounds(const Vector2& location);
 
   // Getters
 	const Vector2 getUpperLeft() const;

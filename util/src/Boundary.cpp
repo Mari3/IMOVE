@@ -42,7 +42,7 @@ Boundary::Boundary(const Vector2& upleft, const Vector2& upright, const Vector2&
 
 Boundary::~Boundary() {}
 
-bool Boundary::inBounds(Vector2 location) {
+bool Boundary::inBounds(const Vector2& location) {
   // Perpendicular projection of the point on every edge
   float projection_edge1;
   float projection_edge2;
@@ -127,7 +127,7 @@ const Boundary Boundary::createReorientedTopLeftBoundary() const {
 	);
 
 	Boundary reoriented_boundary;
-  
+
   // Rotate corners accordingly
 	if (minimum_distance == distance_upper_left) {
 		reoriented_boundary = Boundary(
