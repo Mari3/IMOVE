@@ -18,7 +18,8 @@ PeopleExtractor::PeopleExtractor(cv::Size frame_size, float pixels_per_meter, fl
   }
 
   // Initialize Identifier
-  float boundary_edge = (pixels_per_meter/resize_ratio)/2;
+  float boundary_edge = (pixels_per_meter/resize_ratio)*1.5;
+
   Boundary frame_bound = Boundary(Vector2(boundary_edge, boundary_edge),
                             Vector2(frame_size_resized.width - boundary_edge, boundary_edge),
                             Vector2(boundary_edge, frame_size_resized.height - boundary_edge),
@@ -101,5 +102,9 @@ const scene_interface::People PeopleExtractor::convert(std::vector<Person> peopl
 }
 
 const cv::Mat PeopleExtractor::getDebugFrame() const {
+  cv::line(results_frame, cv::Point(36,36), cv::Point(347,36), cv::Scalar(0, 255, 0));
+  cv::line(results_frame, cv::Point(347,36), cv::Point(347,179), cv::Scalar(0, 255, 0));
+  cv::line(results_frame, cv::Point(347,179), cv::Point(36,179), cv::Scalar(0, 255, 0));
+  cv::line(results_frame, cv::Point(36,179), cv::Point(36,36), cv::Scalar(0, 255, 0));
   return results_frame;
 }

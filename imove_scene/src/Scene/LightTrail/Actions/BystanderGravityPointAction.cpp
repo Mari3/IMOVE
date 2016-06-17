@@ -12,12 +12,14 @@ BystanderGravityPointAction::BystanderGravityPointAction(std::shared_ptr<LightPe
                                                          const LightTrailSceneConfiguration &config,
                                                          sf::RenderTexture &texture)
   :
-        person(person),
-        sources(sources),
-        timer(Timer(config.gravity().bystander().delay, true)),
-        config(config),
-        myTrails(myTrails),
-        globalTrails(globalTrails), texture(texture) {
+    myTrails(myTrails),
+    globalTrails(globalTrails),
+    sources(sources),
+    person(person),
+    timer(Timer(config.gravity().bystander().delay, true)),
+    texture(texture),
+    config(config)
+{
     gravityPoint = std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(0,0),person->hue,config.gravity().bystander().gravity,
     config.gravity().bystander().range));
     setLocation();

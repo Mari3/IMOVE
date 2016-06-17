@@ -7,6 +7,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <queue>
+#include <memory>
 #include "../../Effect.h"
 #include "../LightPerson.h"
 #include "../../Util/Timer.h"

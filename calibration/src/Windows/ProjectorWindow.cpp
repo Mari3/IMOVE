@@ -3,9 +3,7 @@
 #include "../../../util/src/OpenCVUtil.hpp"
 #include "./ProjectorWindow.hpp"
 
-ProjectorWindow::ProjectorWindow(cv::Point2i position, cv::Size size) : OpenCVWindow("Projector", position, size) {
-	
-}
+ProjectorWindow::ProjectorWindow(cv::Point2i position, cv::Size size) : OpenCVWindow("Projector", position, size) {}
 
 void ProjectorWindow::drawImage(cv::Mat& image_projector) {
 	// create a red left and green right image with more intensity to the bottom. image has offset for each frame to uniquely id every frame to calibrating the delay of the projector output to the camera input

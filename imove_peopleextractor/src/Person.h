@@ -19,7 +19,7 @@ class Person {
     static unsigned int count;
 
     //
-    unsigned int not_moved_count = 100;
+    unsigned int not_moved_count = 1000;
 
  public:
 		enum PersonType{

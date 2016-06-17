@@ -23,9 +23,8 @@ ProximityRange: .7
 ProximityModifier: .7
 SidesEnabled: 1
 SpeedCap: 2.
-Fade: 2
-TrailThickness: .11
-TrailMaxLength: 2
+Fade: 4
+TrailThickness: .035
 MixingSpeed: 3.
 MixingDistance: 2.
 MixingRevertTime: 1.
@@ -38,9 +37,8 @@ ColorHoleDelay: 100.
 ColorHoleGravity: 5
 ColorHoleGravityRange: 1.2
 ColorHoleRange: .2
-ColorHoleDestructionRange: .8
 MixingEffectThickness: .05
-ColorHoleEffectThickness: .03
+ColorHoleEffectThickness: .01
 ColorHoleEffectPeriod: .35
 StarAmount: 10
 StarSpeed: .10

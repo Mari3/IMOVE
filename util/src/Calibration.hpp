@@ -45,14 +45,14 @@ class Calibration {
 		 * 
 		 * @param filepath Path to file from which to read Calibration
 		 **/
-		static Calibration* readFile(const char* filepath);
+		static const Calibration readFile(const char* filepath);
 		
 		/**
 		 * Creates the Calibration from a file by which the filepath is given and defaults
 		 * 
 		 * @param filepath Path to file from which to load Calibration
 		 **/
-		static Calibration* createFromFile(const char* filepath, unsigned int cameradevice, cv::Size resolution_projector);
+		static Calibration createFromFile(const char* filepath, unsigned int cameradevice, cv::Size resolution_projector);
 		
 		/**
 		 * Creates the file by which the filepath is given from the Calibration
@@ -60,45 +60,6 @@ class Calibration {
 		 * @param filepath Path to file to which to save Calibration
 		 **/
 		void writeFile(const char* filepath) const;
-
-		/**
-		 * Adds a projector frame which is used for eliminating the projection
-		 * 
-		 * @param frame_projector The next frame of the projection
-		 **/
-		void feedFrameProjector(const cv::Mat& frame_projector);
-
-		/**
-		 * Removes the projection on the camera frame based on fed projector frames, the amount of frames to delay and the projector background light level.
-		 * 
-		 * @param frame_projectioneliminated	The output camera frame on which the projection is eliminated
-		 * @param frame_camera								The input camera frame
-		 **/
-		void eliminateProjectionFeedbackFromFrameCamera(cv::Mat& frame_projectioneliminated, const cv::Mat& frame_camera);
-
-		/**
-		 * Creates points on the projector frame from the camera frame based on the given camera_projector_transformation
-		 * 
-		 * @param points_frame_projector	The output points on a projector frame
-		 * @param points_frame_camera			The input points on a camera frame
-		 **/
-
-		void createPointsFrameProjectorFromPointsFrameCamera(std::vector<cv::Point2f>& points_frame_projector, const std::vector<cv::Point2f>& points_frame_camera) const;
-		
-		/**
-		 * Creates the people on the projector from people on the camera using camera projector transformation
-		 * 
-		 * @param people_camera The people on the camera
-		 **/
-		const scene_interface::People createPeopleProjectorFromPeopleCamera(const scene_interface::People& people_camera) const;
-
-		/**
-		 * Creates a projection frame from the camera frame based on the given camera_projector_transformation
-		 * 
-		 * @param frame_projection	The output projection frame
-		 * @param frame_camera			The input camera frame
-		 **/
-		void createFrameProjectionFromFrameCamera(cv::Mat& frame_projection, const cv::Mat& frame_camera) const;
 
 		/**
 		 * Gets the amount of frames delay between the projectors projection captured by the camera.
@@ -123,13 +84,6 @@ class Calibration {
 		 * @param projector_background_light The light level difference between the projectors projection light level and background level
 		 **/
 		void setProjectorBackgroundLight(float projector_background_light);
-
-		/**
-		 * Sets the projection transformation matrix between the camera and the projection.
-		 * 
-		 * @param camera_projector_transformation The projection transformation matrix between the camera and projection
-		 **/
-		void setCameraProjectorTransformation(cv::Mat& camera_projector_transformation);
 
 		/**
 		 * Gets the projection transformation matrix between the camera and the projection.
@@ -172,6 +126,13 @@ class Calibration {
 		 * Gets the one meter in pixels on a projector image.
 		 **/
 		const float getProjectorMeter() const;
+
+		/**
+		 * Sets (the boundary of) the projection and calculates camera projector transformation
+		 *
+		 * @param projection The (boundary of the) projection
+		 **/
+		void setProjection(const Boundary& projection);
 
 		/**
 		 * Gets (the boundary of) the projection

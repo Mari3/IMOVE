@@ -25,24 +25,19 @@ int main(int argc, char* argv[]) {
 	std::string argv_str(argv[0]);
   std::string base = argv_str.substr(0, argv_str.find_last_of("/"));
 	
-	// Newly create a new shared memory segment with certain size
-	boost::interprocess::shared_memory_object::remove(scene_interface_sma::NAME_SHARED_MEMORY);
-	boost::interprocess::managed_shared_memory* segment = new boost::interprocess::managed_shared_memory(boost::interprocess::create_only, scene_interface_sma::NAME_SHARED_MEMORY, SIZE_SHAREDMEMORY);
-	// Construct the people extracted queue in shared memory
-	const scene_interface_sma::PeopleQueueSMA people_queue_sma(segment->get_segment_manager());
-	boost::interprocess::offset_ptr<scene_interface_sma::PeopleQueue> people_queue = segment->construct<scene_interface_sma::PeopleQueue>(scene_interface_sma::NAME_PEOPLE_QUEUE)(people_queue_sma);
-	const peopleextractor_interface_sma::SceneframeQueueSMA sceneframe_queue_sma(segment->get_segment_manager());
-	boost::interprocess::offset_ptr<peopleextractor_interface_sma::SceneframeQueue> sceneframe_queue = segment->construct<peopleextractor_interface_sma::SceneframeQueue>(peopleextractor_interface_sma::NAME_SCENEFRAME_QUEUE)(sceneframe_queue_sma);
-	boost::interprocess::offset_ptr<Running> running = segment->construct<Running>(NAME_SHARED_MEMORY_RUNNING)();
-	
-	// while set that it should not shutdown but (re)start
-	while (running->reboot_on_shutdown) {
-		while (!people_queue->empty()) {
-			people_queue->pop_front();
-		}
-		while (!sceneframe_queue->empty()) {
-			sceneframe_queue->pop_front();
-		}
+	boost::interprocess::offset_ptr<Running> running;
+	// while set that it should not shutdown but (re)start or when boost failed
+	while (running == NULL || running->reboot_on_shutdown) {
+		// Newly create a new shared memory segment with certain size
+		boost::interprocess::shared_memory_object::remove(scene_interface_sma::NAME_SHARED_MEMORY);
+		boost::interprocess::managed_shared_memory* segment = new boost::interprocess::managed_shared_memory(boost::interprocess::create_only, scene_interface_sma::NAME_SHARED_MEMORY, SIZE_SHAREDMEMORY);
+		// Construct the people extracted queue in shared memory
+		const scene_interface_sma::PeopleQueueSMA people_queue_sma(segment->get_segment_manager());
+		segment->construct<scene_interface_sma::PeopleQueue>(scene_interface_sma::NAME_PEOPLE_QUEUE)(people_queue_sma);
+		const peopleextractor_interface_sma::SceneframeQueueSMA sceneframe_queue_sma(segment->get_segment_manager());
+		segment->construct<peopleextractor_interface_sma::SceneframeQueue>(peopleextractor_interface_sma::NAME_SCENEFRAME_QUEUE)(sceneframe_queue_sma);
+		running = segment->construct<Running>(NAME_SHARED_MEMORY_RUNNING)();
+		
 		running->running = true;
 		// fork to create subprocess scene
 		pid_t pID_scene = fork();

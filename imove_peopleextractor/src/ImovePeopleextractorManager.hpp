@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "../../util/src/Calibration.hpp"
+#include "../../util/src/Projection.hpp"
 #include "ImageProcessing/PeopleExtractor.h"
 #include "../../scene_interface_sma/src/PeopleQueue.hpp"
 #include "../../peopleextractor_interface_sma/src/SceneframeQueue.hpp"
@@ -11,18 +12,19 @@
 // Setups people extractor and Scene, can let the Scene run using constant input of people extractor
 class ImovePeopleextractorManager {
 	public:
-		/**zO
+		/**
 		 * Setup people extractor and communicate to Scene.
 		 * 
-		 * @param Calibration              The camera projector Calibration
+		 * @param Calibration The camera projector Calibration
 		 **/
-		ImovePeopleextractorManager(Calibration* calibration);
+		ImovePeopleextractorManager(Calibration& calibration);
 
 		// Run the people extractor and Scene frame by frame
 		void run();
 
 	protected:
-		Calibration* calibration;
+		const Calibration& calibration;
+		Projection projection;
 		PeopleExtractor* people_extractor;
 
 		// shared memory segment between extractedpeople and scene
@@ -33,8 +35,6 @@ class ImovePeopleextractorManager {
 		boost::interprocess::offset_ptr<peopleextractor_interface_sma::SceneframeQueue> pi_sceneframe_queue;
 		// shared memory running all processes
 		boost::interprocess::offset_ptr<Running> running;
-
-		bool still_run_receive_scene_frames = true;
 		
 		/**
 		 * Push extractedpeople on shared memory query for scene to pop.
