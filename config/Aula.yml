@@ -1,4 +1,5 @@
 %YAML:1.0
+Debug_mode: 1
 Camera_device: 1
 Resolution_camera: [ 640, 480 ]
 Resolution_projector: [ 1280, 720 ]

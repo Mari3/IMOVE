@@ -1,7 +1,8 @@
 #include "ImoveConfiguration.hpp"
 #include "../OpenCVUtil.hpp"
 
-ImoveConfiguration::ImoveConfiguration(CameraConfiguration* camera_configuration, ProjectorConfiguration* projector_configuration, ProjectioneliminationConfiguration* projectionelimination_configuration) :
+ImoveConfiguration::ImoveConfiguration(const bool debug_mode, CameraConfiguration* camera_configuration, ProjectorConfiguration* projector_configuration, ProjectioneliminationConfiguration* projectionelimination_configuration) :
+debug_mode(debug_mode),
 camera_configuration(camera_configuration),
 projector_configuration(projector_configuration),
 projectionelimination_configuration(projectionelimination_configuration)
@@ -14,12 +15,17 @@ ImoveConfiguration* ImoveConfiguration::readFile(const char* filepath) {
 	// read ImoveConfiguration config
 	cv::FileStorage read_config;
 	read_config.open(filepath, cv::FileStorage::READ);
+	
+	// read debug mode from yml using OpenCV FileNode
+	bool debug_mode;
+	read_config["Debug_mode"] >> debug_mode;
  	
 	// create initial ImoveConfiguration based on configuration and defaults
 	CameraConfiguration* camera_configuration = CameraConfiguration::readNode(read_config);
 	ProjectorConfiguration* projector_configuration = ProjectorConfiguration::readNode(read_config);
 	ProjectioneliminationConfiguration* projectionelimination_configuration = ProjectioneliminationConfiguration::readNode(read_config);
 	ImoveConfiguration* calibration = new ImoveConfiguration(
+		debug_mode,
 		camera_configuration,
 		projector_configuration,
 		projectionelimination_configuration
@@ -34,11 +40,20 @@ ImoveConfiguration* ImoveConfiguration::createFromFile(const char* filepath, con
 	cv::FileStorage read_config;
 	read_config.open(filepath, cv::FileStorage::READ);
 	
+	// read debug mode from yml using OpenCV FileNode; default if not existing
+	bool debug_mode;
+	if (read_config["Debug_mode"].isNone()) {
+		debug_mode = ImoveConfiguration::DEFAULT_DEBUG_MODE;
+	} else {
+		read_config["Debug_mode"] >> debug_mode;
+	}
+	
  	// create initial ImoveConfiguration based on configuration and defaults
 	CameraConfiguration* camera_configuration = CameraConfiguration::createFromNode(read_config, deviceid_camera);
 	ProjectorConfiguration* projector_configuration = ProjectorConfiguration::createFromNode(read_config, resolution_projector);
 	ProjectioneliminationConfiguration* projectionelimination_configuration = ProjectioneliminationConfiguration::createFromNode(read_config);
 	ImoveConfiguration* calibration = new ImoveConfiguration(
+		debug_mode,
 		camera_configuration,
 		projector_configuration,
 		projectionelimination_configuration
@@ -52,6 +67,8 @@ ImoveConfiguration* ImoveConfiguration::createFromFile(const char* filepath, con
 void ImoveConfiguration::writeFile(const char* filepath) const {
 	// write configuration based on ImoveConfiguration
 	cv::FileStorage write_config(filepath, cv::FileStorage::WRITE);
+	
+	write_config << "Debug_mode" << (int) this->debug_mode;
 
 	this->camera_configuration->writeNode(write_config);
 	this->projector_configuration->writeNode(write_config);
@@ -125,4 +142,7 @@ void ImoveConfiguration::deriveCameraProjectorTransformation() {
 
 const cv::Mat ImoveConfiguration::getCameraProjectorTransformation() {
 	return this->camera_projector_transformation;
+}
+const bool ImoveConfiguration::getDebugMode() const {
+	return this->debug_mode;
 }
