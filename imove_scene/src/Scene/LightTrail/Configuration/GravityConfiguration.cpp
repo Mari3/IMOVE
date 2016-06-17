@@ -31,3 +31,13 @@ const DelayGravityConfig &GravityConfiguration::alternating() const {
 const ProximityConfig &GravityConfiguration::proximity() const {
     return _proximityConfig;
 }
+
+const GravityConfiguration GravityConfiguration::readFromFile(cv::FileStorage fs, float meter) {
+    return GravityConfiguration(GravityConfig(fs,meter,"LightSource"),
+                                ParticipantGravityConfig(fs,meter),
+                                DelayGravityConfig(fs,meter,"Bystander"),
+                                DelayGravityConfig(fs,meter,"Alternating"),
+                                ProximityConfig(fs,meter)
+    );
+}
+

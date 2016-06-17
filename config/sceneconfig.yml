@@ -12,7 +12,7 @@ TrailCap: 40
 ParticipantGravity: 3.46
 ParticipantAntiGravity: 0.46
 ParticipantGravityRange: 2.
-ParticipantGravityDistance: .25
+ParticipantGravityDistance: 0
 BystanderGravity: 15
 BystanderGravityDelay: 4.
 BystanderGravityRange: -2.

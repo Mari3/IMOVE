@@ -5,26 +5,79 @@
 #ifndef IMOVE_EFFECTCONFIGURATION_H
 #define IMOVE_EFFECTCONFIGURATION_H
 
+#include <opencv2/core/persistence.hpp>
+
 struct ColorHoleConfig {
     float gravity, range, delay, consumeRange, thickness, period, destructionRange;
+    ColorHoleConfig(){}
+    ColorHoleConfig(cv::FileStorage fs, float meter){
+        fs["ColorHoleDelay"] >> delay;
+        fs["ColorHoleGravity"] >> gravity;
+        fs["ColorHoleRange"] >> consumeRange;
+        fs["ColorHoleGravityRange"] >> range;
+        fs["ColorHoleDestructionRange"] >> destructionRange;
+        fs["ColorHoleEffectThickness"] >> thickness;
+        fs["ColorHoleEffectPeriod"] >> period;
+
+        gravity *= meter*meter;
+        consumeRange *= meter;
+        range *= meter;
+        destructionRange *= meter;
+    }
 };
 
 struct MixingConfig {
     float speed, distance, revertTime, thickness;
+    MixingConfig(){}
+    MixingConfig(cv::FileStorage fs, float meter){
+        fs["MixingSpeed"] >> speed;
+        fs["MixingDistance"] >> distance;
+        fs["MixingRevertTime"] >> revertTime;
+        fs["MixingEffectThickness"] >> thickness;
+
+        distance *= meter;
+        thickness *= meter;
+    }
 };
 
 struct ExplosionConfig {
     float gravity, antigravity, inTime, exTime;
+    ExplosionConfig(){}
+    ExplosionConfig(cv::FileStorage fs, float meter){
+        fs["ExplosionAntigravity"] >> antigravity;
+        fs["ExplosionGravity"] >> gravity;
+        fs["ExplosionExTime"] >> exTime;
+        fs["ExplosionInTime"] >> inTime;
+
+        antigravity *= meter*meter;
+        gravity *= meter*meter;
+    }
 };
 
 struct StarConfig {
     int amount;
     float speed;
+    StarConfig(){}
+    StarConfig(cv::FileStorage fs, float meter){
+        fs["StarAmount"] >> amount;
+        fs["StarSpeed"] >> speed;
+
+        speed *= meter;
+    }
 };
 
 struct TrailEffectConfig {
     int bystanderInitAmount, participantInitAmount;
     float initRange, standingStillFadeTime;
+    TrailEffectConfig(){}
+    TrailEffectConfig(cv::FileStorage fs, float meter){
+        fs["InitiateTrailRange"] >> initRange;
+        fs["BystanderInitiateTrails"] >> bystanderInitAmount;
+        fs["ParticiapntInitiateTrails"] >> participantInitAmount;
+        fs["StandingStillFadeTime"] >> standingStillFadeTime;
+
+        initRange *= meter;
+    }
 };
 
 class EffectConfiguration {
@@ -56,6 +109,8 @@ public:
     const StarConfig & star() const;
 
     const TrailEffectConfig & trail() const;
+
+    static const EffectConfiguration readFromFile(cv::FileStorage fs, float meter);
 };
 
 

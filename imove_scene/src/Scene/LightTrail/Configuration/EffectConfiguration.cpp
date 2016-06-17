@@ -31,3 +31,12 @@ const StarConfig &EffectConfiguration::star() const {
 const TrailEffectConfig &EffectConfiguration::trail() const {
     return _trailEffectConfig;
 }
+
+const EffectConfiguration EffectConfiguration::readFromFile(cv::FileStorage fs, float meter) {
+    return EffectConfiguration(MixingConfig(fs,meter),ExplosionConfig(fs,meter),
+                               ColorHoleConfig(fs,meter),StarConfig(fs,meter),
+                               TrailEffectConfig(fs,meter)
+    );
+}
+
+
