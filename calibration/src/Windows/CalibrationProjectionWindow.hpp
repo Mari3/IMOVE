@@ -1,7 +1,8 @@
 #include <opencv2/core/core.hpp>
 
 #include "../../../util/src/OpenCVWindow.hpp"
-#include "../../../util/src/Calibration.hpp"
+#include "../../../util/src/configuration/CameraConfiguration.hpp"
+#include "../../../util/src/Projection.hpp"
 
 // window to calibrate the projection coordinates on the camera and provide the transformation matrix to the projector coordinates
 class CalibrationProjectionWindow : public OpenCVWindow {
@@ -23,7 +24,7 @@ class CalibrationProjectionWindow : public OpenCVWindow {
 		const cv::Scalar color_bottomleft;
 		const cv::Scalar color_bottomright;
 
-		CalibrationProjectionWindow(cv::Point2i position, cv::Size size, Calibration& calibration);
+		CalibrationProjectionWindow(cv::Point2i position, cv::Size size, ImoveConfiguration* calibration);
 		
 		void drawImage(cv::Mat image);
 		
@@ -37,7 +38,7 @@ class CalibrationProjectionWindow : public OpenCVWindow {
 		// current corner which will be set and draw setting my mouse coordinate cross
 		CORNER current_corner = TOPLEFT;
 		
-		Calibration& calibration;
+		ImoveConfiguration* calibration;
 		
 		// position of mouse if ever moved over window
 		bool entered_mouse_projection = false;

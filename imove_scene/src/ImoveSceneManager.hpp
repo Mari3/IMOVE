@@ -1,7 +1,7 @@
 #include <boost/interprocess/offset_ptr.hpp>
 
 
-#include "../../util/src/Calibration.hpp"
+#include "../../util/src/configuration/ImoveConfiguration.hpp"
 #include "../../util/src/Projection.hpp"
 #include "Scene/LightTrail/Configuration/LightTrailSceneConfiguration.h"
 #include "Scene/Scene.h"
@@ -15,16 +15,16 @@ class ImoveSceneManager {
 		/**
 		 * Setup people extractor and Scene.
 		 * 
-		 * @param Calibration              The camera projector Calibration
+		 * @param calibration              The imove configuration
 		 * @param configuration_lighttrail The light trail Scene configuration
 		 **/
-		ImoveSceneManager(Calibration& calibration, const LightTrailSceneConfiguration& configuration_lighttrail);
+		ImoveSceneManager(ImoveConfiguration* calibration, const LightTrailSceneConfiguration& configuration_lighttrail);
 
 		// Run the people extractor and Scene frame by frame
 		void run();
 
 	protected:
-		const Calibration& calibration;
+		ImoveConfiguration* calibration;
 		Projection projection;
 		Scene* scene = NULL;
 
