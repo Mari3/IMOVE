@@ -22,12 +22,13 @@ int PersonChangedTypeCondition::check(float dt, std::vector<Action*> &actions) {
 						std::cerr << person->getLocation().x << "," << person->getLocation().y << std::endl; 
 						std::cerr << "1PGPA: " << person->getLocation().x << "," << person->getLocation().y << " lb: " << person->hue.lowerBound << " ub: " << person->hue.upperBound << std::endl; 
             // Create a new participant action
-            i += 2;
             actions.push_back(new ParticipantGravityPointAction(person,gravityPoints,config));
+            i++;
             if((oldPersonType.count(person->getId()) == 0 || oldPersonType[person->getId()] != scene_interface::Person::PersonType::Bystander)) {
                 actions.push_back(
                         new InitiateParticipantAction(lightTrails, new LightTrailVectorRepository(), lightSources,
                                                       person, config, texture));
+                i++;
             }
         }
         oldPersonType[person->getId()] = person->person_type;
