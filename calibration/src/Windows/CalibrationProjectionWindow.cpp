@@ -6,38 +6,17 @@
 #include "./CalibrationProjectionWindow.hpp"
 
 
-CalibrationProjectionWindow::CalibrationProjectionWindow(cv::Point2i position, cv::Size size, Calibration* calibration) : OpenCVWindow("Calibrate projection", position, size) {
-	this->calibration = calibration;
-	// set ui color of corners
-	this->color_corners[0] = OpenCVUtil::Color::ORANGE;
-	this->color_corners[1] = OpenCVUtil::Color::GREEN;
-	this->color_corners[2] = OpenCVUtil::Color::DARKBLUE;
-	this->color_corners[3] = OpenCVUtil::Color::LIGHTBLUE;
-	// set projector coordinates
-	coordinate_corners_projector[0] = cv::Point2f(        OpenCVUtil::ORIGIN2D.x,          OpenCVUtil::ORIGIN2D.y);
-	coordinate_corners_projector[1] = cv::Point2f(this->calibration->getResolutionProjector().width - 1,          OpenCVUtil::ORIGIN2D.y);
-	coordinate_corners_projector[2] = cv::Point2f(        OpenCVUtil::ORIGIN2D.x, this->calibration->getResolutionProjector().height - 1);
-	coordinate_corners_projector[3] = cv::Point2f(this->calibration->getResolutionProjector().width - 1, this->calibration->getResolutionProjector().height - 1);
-	
-	// reconstruct points camera from projector points and perspective transformation
-	// create vector of points to perform perspectiveTransform which requires a vector of points instead of an array
-	std::vector<cv::Point2f> points_projector = std::vector<cv::Point2f>(CalibrationProjectionWindow::REQUIRED_CORNERS);
-	points_projector.at(0) = coordinate_corners_projector[0];
-	points_projector.at(1) = coordinate_corners_projector[1];
-	points_projector.at(2) = coordinate_corners_projector[2];
-	points_projector.at(3) = coordinate_corners_projector[3];
-	std::vector<cv::Point2f> points_projection = std::vector<cv::Point2f>(CalibrationProjectionWindow::REQUIRED_CORNERS);
-	cv::perspectiveTransform(
-		points_projector,
-		points_projection,
-		calibration->getCameraProjectorTransformation().inv()
-	);
-	// create array of points after performing perspectiveTransform which required a vector of points instead of an array
-	coordinate_corners_camera[0] = points_projection.at(0);
-	coordinate_corners_camera[1] = points_projection.at(1);
-	coordinate_corners_camera[2] = points_projection.at(2);
-	coordinate_corners_camera[3] = points_projection.at(3);
-	
+CalibrationProjectionWindow::CalibrationProjectionWindow(cv::Point2i position, cv::Size size, Calibration& calibration) : OpenCVWindow("Calibrate projection", position, size),
+	color_topleft    (OpenCVUtil::Color::ORANGE),
+	color_topright   (OpenCVUtil::Color::GREEN),
+	color_bottomleft (OpenCVUtil::Color::DARKBLUE),
+	color_bottomright(OpenCVUtil::Color::LIGHTBLUE),
+	coordinate_topleft    ( calibration.getProjection().getUpperLeft().x,  calibration.getProjection().getUpperLeft().y),
+	coordinate_topright   (calibration.getProjection().getUpperRight().x, calibration.getProjection().getUpperRight().y),
+	coordinate_bottomleft ( calibration.getProjection().getLowerLeft().x,  calibration.getProjection().getLowerLeft().y),
+	coordinate_bottomright(calibration.getProjection().getLowerRight().x, calibration.getProjection().getLowerRight().y),
+	calibration(calibration)
+{
 	cv::setMouseCallback(this->name_window, CalibrationProjectionWindow::onMouse, (void*) &*this);
 }
 
@@ -51,16 +30,31 @@ void CalibrationProjectionWindow::onMouse(int event, int x, int y, int flags) {
 	this->entered_mouse_projection = true;
 
 	if (event == cv::EVENT_LBUTTONUP) {
-		// set new corner based on last mouse position
-		this->coordinate_corners_camera[this->current_corner] = this->coordinate_mouse_projection;
-		// set new current corner to set
-		this->current_corner = (this->current_corner + 1) % CalibrationProjectionWindow::REQUIRED_CORNERS;
-		// calculate and set new perspective map
-		cv::Mat camera_projector_transformation = cv::getPerspectiveTransform(
-			this->coordinate_corners_camera,
-			this->coordinate_corners_projector
-		);
-		this->calibration->setCameraProjectorTransformation(camera_projector_transformation);
+		// set new corner based on last mouse position & set new current corner
+		switch (this->current_corner) {
+			case TOPLEFT:
+				this->current_corner = TOPRIGHT;
+				this->coordinate_topleft = coordinate_mouse_projection;
+				break;
+			case TOPRIGHT:
+				this->current_corner = BOTTOMRIGHT;
+				this->coordinate_topright = coordinate_mouse_projection;
+				break;
+			case BOTTOMRIGHT:
+				this->current_corner = BOTTOMLEFT;
+				this->coordinate_bottomright = coordinate_mouse_projection;
+				break;
+			case BOTTOMLEFT:
+				this->current_corner = TOPLEFT;
+				this->coordinate_bottomleft = coordinate_mouse_projection;
+				break;
+		}
+
+		const Vector2 upperleft = Vector2(coordinate_topleft.x, coordinate_topleft.y);
+		const Vector2 upperright = Vector2(coordinate_topright.x, coordinate_topright.y);
+		const Vector2 lowerleft = Vector2(coordinate_bottomleft.x, coordinate_bottomleft.y);
+		const Vector2 lowerright = Vector2(coordinate_bottomright.x, coordinate_bottomright.y);
+		this->calibration.setProjection(Boundary(upperleft, upperright, lowerleft, lowerright));
 	}
 }
 
@@ -68,14 +62,21 @@ void CalibrationProjectionWindow::onMouse(int event, int x, int y, int flags) {
  * Draws projection boundaries on image as polylines between corners, draw crosses on corners and draw last mouse position
  **/
 void CalibrationProjectionWindow::drawImage(cv::Mat image) {
+	const Boundary& projection = this->calibration.getProjection();
+	const unsigned int REQUIRED_CORNERS = 4;
+	const Vector2& topleft     = projection.getUpperLeft();
+	const Vector2& topright    = projection.getUpperRight();
+	const Vector2& bottomleft  = projection.getLowerLeft();
+	const Vector2& bottomright = projection.getLowerRight();
+
 	// draw polylines on this->frame to indicate boundaries
-	cv::Point polypoints[CalibrationProjectionWindow::REQUIRED_CORNERS];
-	polypoints[0] = this->coordinate_corners_camera[0];
-	polypoints[1] = this->coordinate_corners_camera[1];
-	polypoints[2] = this->coordinate_corners_camera[3];
-	polypoints[3] = this->coordinate_corners_camera[2];
+	cv::Point polypoints[REQUIRED_CORNERS];
+	polypoints[0] = cv::Point2f(    topleft.x,     topleft.y);
+	polypoints[1] = cv::Point2f(   topright.x,    topright.y);
+	polypoints[2] = cv::Point2f(bottomright.x, bottomright.y);
+	polypoints[3] = cv::Point2f( bottomleft.x,  bottomleft.y);
 	const cv::Point* ppt[1] = { polypoints };
-	int npt[] = {CalibrationProjectionWindow::REQUIRED_CORNERS};
+	int npt[] = {REQUIRED_CORNERS};
 	cv::polylines(
 		image,
 		ppt,
@@ -88,27 +89,60 @@ void CalibrationProjectionWindow::drawImage(cv::Mat image) {
 	);
 
 	// draw cross on corner projection boundaries
-	for (unsigned int i = 0; i < CalibrationProjectionWindow::REQUIRED_CORNERS; ++i) {
-		OpenCVUtil::drawCrossOnImage(
-			image,
-			this->coordinate_corners_camera[i],
-			this->color_corners[i],
-			this->SIZE_CROSS,
-			this->THICKNESS_CROSS
-		);
-	}
-	
+	OpenCVUtil::drawCrossOnImage(
+		image,
+		coordinate_topleft,
+		color_topleft,
+		this->SIZE_CROSS,
+		this->THICKNESS_CROSS
+	);
+	OpenCVUtil::drawCrossOnImage(
+		image,
+		coordinate_topright,
+		color_topright,
+		this->SIZE_CROSS,
+		this->THICKNESS_CROSS
+	);
+	OpenCVUtil::drawCrossOnImage(
+		image,
+		coordinate_bottomleft,
+		color_bottomleft,
+		this->SIZE_CROSS,
+		this->THICKNESS_CROSS
+	);
+	OpenCVUtil::drawCrossOnImage(
+		image,
+		coordinate_bottomright,
+		color_bottomright,
+		this->SIZE_CROSS,
+		this->THICKNESS_CROSS
+	);
+
 	// draw mouse on image if ever entered
 	if (this->entered_mouse_projection) {
+		cv::Scalar mouse_cross_color;
+		switch (this->current_corner) {
+			case TOPLEFT:
+				mouse_cross_color = color_topleft / 2;
+				break;
+			case TOPRIGHT:
+				mouse_cross_color = color_topright / 2;
+				break;
+			case BOTTOMLEFT:
+				mouse_cross_color = color_bottomleft / 2;
+				break;
+			case BOTTOMRIGHT:
+				mouse_cross_color = color_bottomright / 2;
+				break;
+		}
 		OpenCVUtil::drawCrossOnImage(
 			image,
 			this->coordinate_mouse_projection,
-			this->color_corners[this->current_corner],
+			mouse_cross_color,
 			this->SIZE_CROSS,
 			this->THICKNESS_CROSS
 		);
 	}
-	
+
 	OpenCVWindow::drawImage(image);
 }
-

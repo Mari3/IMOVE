@@ -20,8 +20,9 @@ int main(int argc, char* argv[]) {
 	}
 
 	const char* configurationfilepath_calibration = argv[CONFIGPATH_ARGN];
-	// read config if property is not set, use default
-	Calibration* calibration = Calibration::createFromFile(
+	
+	// read from config if property is not set, use default
+	Calibration calibration =	Calibration::createFromFile(
 		configurationfilepath_calibration,
 		std::stoi(argv[CAMERADEVICE_ARGN]),
 		cv::Size(
@@ -30,10 +31,14 @@ int main(int argc, char* argv[]) {
 		)
 	);
 
+	// start manager with calibration
 	CalibrationManager manager(calibration);
+	
+	// run calibration interaction
 	manager.run();
 	
-	calibration->writeFile(configurationfilepath_calibration);
+	// write calibrated config
+	calibration.writeFile(configurationfilepath_calibration);
 	
 	return EXIT_SUCCESS;
 }

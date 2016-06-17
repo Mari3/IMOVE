@@ -5,20 +5,53 @@
 #ifndef IMOVE_GRAVITYCONFGURATION_H
 #define IMOVE_GRAVITYCONFGURATION_H
 
+#include <opencv2/core/persistence.hpp>
+
 struct GravityConfig {
     float gravity, range;
+    GravityConfig(){}
+    GravityConfig(cv::FileStorage fs, float meter, cv::String prefix){
+        fs[prefix + "Gravity"] >> gravity;
+        fs[prefix + "GravityRange"] >> range;
+
+        gravity *= meter*meter;
+        range *= meter;
+    }
 };
 
 struct ParticipantGravityConfig : public GravityConfig {
     float antigravity, distance;
+    ParticipantGravityConfig(){}
+    ParticipantGravityConfig(cv::FileStorage fs, float meter)
+    : GravityConfig(fs,meter,"Participant")
+    {
+        fs["ParticipantAntiGravity"] >> antigravity;
+        fs["ParticipantGravityDistance"] >> distance;
+
+        antigravity *= meter*meter;
+        distance *= meter;
+    }
 };
 
 struct DelayGravityConfig : public GravityConfig {
     float delay;
+    DelayGravityConfig(){}
+    DelayGravityConfig(cv::FileStorage fs, float meter, cv::String prefix)
+    : GravityConfig(fs,meter,prefix)
+    {
+        fs[prefix + "GravityDelay"] >> delay;
+    }
 };
 
 struct ProximityConfig {
     float range, modifier;
+    ProximityConfig(){}
+    ProximityConfig(cv::FileStorage fs, float meter){
+        fs["ProximityRange"] >> range;
+        fs["ProximityModifier"] >> modifier;
+
+        range *= meter;
+    }
 };
 
 class GravityConfiguration {
@@ -43,6 +76,8 @@ public:
     const DelayGravityConfig & alternating() const;
 
     const ProximityConfig & proximity() const;
+
+    static const GravityConfiguration readFromFile(cv::FileStorage fs, float meter);
 };
 
 

@@ -7,7 +7,8 @@
 
 #include <SFML/Graphics.hpp>
 #include <queue>
-#include "Effect.h"
+#include <memory>
+#include "../../Effect.h"
 #include "../LightPerson.h"
 #include "../../Util/Timer.h"
 #include "../Configuration/LightTrailSceneConfiguration.h"
@@ -25,12 +26,11 @@ private:
     float hue = 0;
     std::deque<ColorCircle> circles;
     Timer timer;
-    Vector2 location;
+    std::shared_ptr<LightPerson> person;
     LightTrailSceneConfiguration config;
     void addCircle();
 public:
-    ColorHoleEffect(const Vector2 &loc, const LightTrailSceneConfiguration &config);
-    void setLocation(const Vector2 &loc);
+    ColorHoleEffect(const std::shared_ptr<LightPerson> &person, const LightTrailSceneConfiguration &config);
     void update(float dt) override;
     void draw(sf::RenderTarget &target) override;
 
