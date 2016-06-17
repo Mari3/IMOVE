@@ -17,7 +17,9 @@ MixingEffect::MixingEffect(const std::shared_ptr<LightPerson> &person1, const st
 
 void MixingEffect::update(float dt) {
     leftInCycle -= dt;
+    // If the cycle is done
     if(leftInCycle < 0){
+        // Set new colors
         leftInCycle = cycle;
         prevColor1 = currentColor1;
         currentColor1 = HueConverter::ToColor(person1->hue.getCenter(),config.trail().draw().inverted);
@@ -26,6 +28,7 @@ void MixingEffect::update(float dt) {
         currentColor2 = HueConverter::ToColor(person2->hue.getCenter(),config.trail().draw().inverted);
         stepColor2 = currentColor2;
     }
+    // Darken the current color
     currentColor1.r -= stepColor1.r*dt/cycle*.3f;
     currentColor1.g -= stepColor1.g*dt/cycle*.3f;
     currentColor1.b -= stepColor1.b*dt/cycle*.3f;
@@ -51,6 +54,8 @@ void MixingEffect::draw(sf::RenderTarget &target) {
     float split = (1-leftInCycle/cycle)*dist;
     float thickness = config.effect().mixing().thickness;
 
+
+    // Draw progress bars
     vertices.append(sf::Vertex(p1Loc,currentColor1));
     vertices.append(sf::Vertex(p1Loc+x*split,currentColor1));
     vertices.append(sf::Vertex(p1Loc+x*split-thickness*y,currentColor1));
