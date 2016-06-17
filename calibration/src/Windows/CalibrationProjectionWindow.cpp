@@ -6,15 +6,15 @@
 #include "./CalibrationProjectionWindow.hpp"
 
 
-CalibrationProjectionWindow::CalibrationProjectionWindow(cv::Point2i position, cv::Size size, Calibration& calibration) : OpenCVWindow("Calibrate projection", position, size),
+CalibrationProjectionWindow::CalibrationProjectionWindow(cv::Point2i position, cv::Size size, ImoveConfiguration* calibration) : OpenCVWindow("Calibrate projection", position, size),
 	color_topleft    (OpenCVUtil::Color::ORANGE),
 	color_topright   (OpenCVUtil::Color::GREEN),
 	color_bottomleft (OpenCVUtil::Color::DARKBLUE),
 	color_bottomright(OpenCVUtil::Color::LIGHTBLUE),
-	coordinate_topleft    ( calibration.getProjection().getUpperLeft().x,  calibration.getProjection().getUpperLeft().y),
-	coordinate_topright   (calibration.getProjection().getUpperRight().x, calibration.getProjection().getUpperRight().y),
-	coordinate_bottomleft ( calibration.getProjection().getLowerLeft().x,  calibration.getProjection().getLowerLeft().y),
-	coordinate_bottomright(calibration.getProjection().getLowerRight().x, calibration.getProjection().getLowerRight().y),
+	coordinate_topleft    ( calibration->getCameraConfiguration()->getProjection().getUpperLeft().x,  calibration->getCameraConfiguration()->getProjection().getUpperLeft().y),
+	coordinate_topright   (calibration->getCameraConfiguration()->getProjection().getUpperRight().x, calibration->getCameraConfiguration()->getProjection().getUpperRight().y),
+	coordinate_bottomleft ( calibration->getCameraConfiguration()->getProjection().getLowerLeft().x,  calibration->getCameraConfiguration()->getProjection().getLowerLeft().y),
+	coordinate_bottomright(calibration->getCameraConfiguration()->getProjection().getLowerRight().x, calibration->getCameraConfiguration()->getProjection().getLowerRight().y),
 	calibration(calibration)
 {
 	cv::setMouseCallback(this->name_window, CalibrationProjectionWindow::onMouse, (void*) &*this);
@@ -49,12 +49,12 @@ void CalibrationProjectionWindow::onMouse(int event, int x, int y, int flags) {
 				this->coordinate_bottomleft = coordinate_mouse_projection;
 				break;
 		}
-
 		const Vector2 upperleft = Vector2(coordinate_topleft.x, coordinate_topleft.y);
 		const Vector2 upperright = Vector2(coordinate_topright.x, coordinate_topright.y);
 		const Vector2 lowerleft = Vector2(coordinate_bottomleft.x, coordinate_bottomleft.y);
 		const Vector2 lowerright = Vector2(coordinate_bottomright.x, coordinate_bottomright.y);
-		this->calibration.setProjection(Boundary(upperleft, upperright, lowerleft, lowerright));
+		this->calibration->getCameraConfiguration()->setProjection(Boundary(upperleft, upperright, lowerleft, lowerright));
+		this->calibration->deriveCameraProjectorTransformation();
 	}
 }
 
@@ -62,7 +62,7 @@ void CalibrationProjectionWindow::onMouse(int event, int x, int y, int flags) {
  * Draws projection boundaries on image as polylines between corners, draw crosses on corners and draw last mouse position
  **/
 void CalibrationProjectionWindow::drawImage(cv::Mat image) {
-	const Boundary& projection = this->calibration.getProjection();
+	const Boundary& projection = this->calibration->getCameraConfiguration()->getProjection();
 	const unsigned int REQUIRED_CORNERS = 4;
 	const Vector2& topleft     = projection.getUpperLeft();
 	const Vector2& topright    = projection.getUpperRight();

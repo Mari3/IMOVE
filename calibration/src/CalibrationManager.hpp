@@ -1,4 +1,4 @@
-#include "../../util/src/Calibration.hpp"
+#include "../../util/src/configuration/ImoveConfiguration.hpp"
 #include "../../util/src/Projection.hpp"
 
 /**
@@ -7,12 +7,12 @@
  **/
 class CalibrationManager {
 	public:
-		CalibrationManager(Calibration& calibration);
+		CalibrationManager(ImoveConfiguration* calibration);
 		
 		// runs the Calibration using windows and camera as input and sets values in Calibration using mouse input untill key pressed meaning its done
 		void run();
 
 	protected:
-		Calibration& calibration;
+		ImoveConfiguration* calibration;
 		Projection projection;
 };

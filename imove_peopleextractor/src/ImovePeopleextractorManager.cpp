@@ -4,6 +4,7 @@
 
 #include "ImovePeopleextractorManager.hpp"
 
+#include "../../util/src/configuration/ImoveConfiguration.hpp"
 #include "../../util/src/OpenCVUtil.hpp"
 #include "../../scene_interface/src/People.h"
 #include "../../util/src/Vector2.h"
@@ -13,9 +14,10 @@
 #include "Windows/ImageWindow.hpp"
 #include "../../scene_interface_sma/src/SharedMemory.hpp"
 
-ImovePeopleextractorManager::ImovePeopleextractorManager(Calibration& calibration) : calibration(calibration), projection(Projection(calibration)) {
+ImovePeopleextractorManager::ImovePeopleextractorManager(ImoveConfiguration* calibration) : calibration(calibration), projection(Projection(calibration)) {
+	CameraConfiguration* camera_configuration = this->calibration->getCameraConfiguration();
 	// setup people extractor
-	this->people_extractor = new PeopleExtractor(this->calibration.getResolutionCamera(), this->calibration.getMeterCamera(), 216, this->calibration.getProjection().createReorientedTopLeftBoundary());
+	this->people_extractor = new PeopleExtractor(camera_configuration->getResolution(), camera_configuration->getMeter(), 216, camera_configuration->getProjection().createReorientedTopLeftBoundary());
 
 	//Open the managed segment
 	this->segment = new boost::interprocess::managed_shared_memory(boost::interprocess::open_only, scene_interface_sma::NAME_SHARED_MEMORY);
@@ -31,34 +33,37 @@ void ImovePeopleextractorManager::receiveSceneFrameAndFeedProjectionThread(Imove
 }
 
 void ImovePeopleextractorManager::run() {
+	const unsigned int& iterations_delay_peopleextracting = this->calibration->getProjectioneliminationConfiguration()->getIterationsDelayPeopleextracting();
+
 	// debug windows
 	PeopleextractorWindow* window_peopleextractor;
 	DetectedPeopleCameraWindow* detectedpeople_camera_window;
 	ImageWindow* eliminatedprojection_camera_window;
 	DetectedPeopleProjectionWindow* detectedpeople_projection_window;
 	if (this->calibration->getDebugMode()) {
+		float width_resolution_projector = this->calibration->getProjectorConfiguration()->getResolution().width;
 		 window_peopleextractor = new PeopleextractorWindow(
-			cv::Point2i(this->calibration.getResolutionProjector().width, 0),
+			cv::Point2i(width_resolution_projector, 0),
 			cv::Size(600, 600),
 			this->people_extractor
 		);
 		detectedpeople_camera_window = new DetectedPeopleCameraWindow(
-			cv::Point2i(this->calibration.getResolutionProjector().width + 600, 0),
+			cv::Point2i(width_resolution_projector + 600, 0),
 			cv::Size(600, 600)
 		);
 		eliminatedprojection_camera_window = new ImageWindow(
 			"Eliminated projection camera frame",
-			cv::Point2i(this->calibration.getResolutionProjector().width, 600),
+			cv::Point2i(width_resolution_projector, 600),
 			cv::Size(300, 300)
 		);
 		detectedpeople_projection_window = new DetectedPeopleProjectionWindow(
-			cv::Point2i(this->calibration.getResolutionProjector().width + 300, 600),
+			cv::Point2i(width_resolution_projector + 300, 600),
 			cv::Size(300, 300)
 		);
 	}
 
 	// setup camera
-	cv::VideoCapture video_capture(this->calibration.getCameraDevice());
+	cv::VideoCapture video_capture(this->calibration->getCameraConfiguration()->getDeviceid());
 
 	cv::Mat frame_camera;
 	cv::Mat frame_projection;
@@ -73,12 +78,12 @@ void ImovePeopleextractorManager::run() {
 		);
 		
 		// delay for syncing processing projection elimination
-		for (unsigned int i = 0; i < this->calibration.getIterationsDelayPeopleextracting(); ++i) {}
+		for (unsigned int i = 0; i < iterations_delay_peopleextracting; ++i) {}
 		// eliminate projection from camera frame
 		cv::Mat frame_eliminatedprojection;
 		this->projection.eliminateProjectionFeedbackFromFrameCamera(frame_eliminatedprojection, frame_camera);
 		if (this->calibration->getDebugMode()) {
-			eliminatedprojection_camera_window.drawImage(frame_eliminatedprojection);
+			eliminatedprojection_camera_window->drawImage(frame_eliminatedprojection);
 		}
 
 		// extract people from camera frame
@@ -179,7 +184,7 @@ void ImovePeopleextractorManager::sendExtractedpeople(const scene_interface::Peo
 void ImovePeopleextractorManager::receiveSceneFrameAndFeedProjection() {
 	boost::interprocess::offset_ptr<peopleextractor_interface_sma::SceneframeQueue>& pi_sceneframe_queue = this->pi_sceneframe_queue;
 	boost::interprocess::offset_ptr<Running>& running = this->running;
-	const Calibration& calibration = this->calibration;
+	const float factor_resize_capture_scene = this->calibration->getProjectioneliminationConfiguration()->getFactorResizeCaptureScene();
 	Projection& projection = this->projection;
 
 	while (running->running) {
@@ -202,7 +207,7 @@ void ImovePeopleextractorManager::receiveSceneFrameAndFeedProjection() {
 				}
 			}
 			cv::Mat cv_sceneframe_resize;
-			cv::resize(cv_sceneframe, cv_sceneframe_resize, cv::Size(pi_sceneframe->getWidth() * calibration.getFactorResizeCaptureScene(), pi_sceneframe->getHeight() * calibration.getFactorResizeCaptureScene()));
+			cv::resize(cv_sceneframe, cv_sceneframe_resize, cv::Size(pi_sceneframe->getWidth() * factor_resize_capture_scene, pi_sceneframe->getHeight() * factor_resize_capture_scene));
 			// feed opencv image to calibration
 			projection.feedFrameProjector(cv_sceneframe_resize);
 			// remove from queue

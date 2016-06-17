@@ -2,7 +2,7 @@
 #include <boost/interprocess/offset_ptr.hpp>
 #include <vector>
 
-#include "../../util/src/Calibration.hpp"
+#include "../../util/src/configuration/ImoveConfiguration.hpp"
 #include "../../util/src/Projection.hpp"
 #include "ImageProcessing/PeopleExtractor.h"
 #include "../../scene_interface_sma/src/PeopleQueue.hpp"
@@ -17,13 +17,13 @@ class ImovePeopleextractorManager {
 		 * 
 		 * @param Calibration The camera projector Calibration
 		 **/
-		ImovePeopleextractorManager(Calibration& calibration);
+		ImovePeopleextractorManager(ImoveConfiguration* calibration);
 
 		// Run the people extractor and Scene frame by frame
 		void run();
 
 	protected:
-		const Calibration& calibration;
+		ImoveConfiguration* calibration;
 		Projection projection;
 		PeopleExtractor* people_extractor;
 

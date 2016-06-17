@@ -1,7 +1,7 @@
 #include <opencv2/opencv.hpp>
 
 #include "../../../util/src/OpenCVWindow.hpp"
-#include "../../../util/src/Calibration.hpp"
+#include "../../../util/src/configuration/ProjectioneliminationConfiguration.hpp"
 #include "../../../util/src/Projection.hpp"
 
 // Window to calibrate the elimination of the projection on the camera based on the projector frame with some delay and intensity
@@ -12,10 +12,10 @@ class EliminateProjectionWindow : public OpenCVWindow {
 		
 		void drawImage(cv::Mat image_camera);
 
-		EliminateProjectionWindow(cv::Point2i position, cv::Size size, Calibration& calibration, Projection& projection);
+		EliminateProjectionWindow(cv::Point2i position, cv::Size size, ProjectioneliminationConfiguration* calibration, Projection& projection);
 
 	protected:
-		Calibration& calibration;
+		ProjectioneliminationConfiguration* calibration;
 		Projection& projection;
 	
 		int track_projector_background_light;

@@ -1,4 +1,5 @@
 %YAML:1.0
+Debug_mode: 1
 Camera_device: 0
 Resolution_camera: [ 640, 480 ]
 Resolution_projector: [ 1024, 750 ]
@@ -15,4 +16,3 @@ Maximum_FPS_scene: 60
 FPS_capture_scene: 8
 Iterations_delay_peopleextracting: 5000
 Factor_resize_capture_scene: 10
-Debug_mode: 1
