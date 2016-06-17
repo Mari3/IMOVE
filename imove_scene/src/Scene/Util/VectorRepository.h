@@ -47,7 +47,8 @@ public:
             }
             items[i].swap(items.back());
             items.pop_back();
-            swapped[items.size()] = i;
+            if(items.size() != i)
+                swapped[items.size()] = i;
         }
         scheduledForRemoval.clear();
     }
