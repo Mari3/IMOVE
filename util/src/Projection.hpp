@@ -6,7 +6,7 @@
 #include <vector>
 #include <queue>
 
-#include "Calibration.hpp"
+#include "configuration/ImoveConfiguration.hpp"
 #include "../../scene_interface/src/People.h"
 #include "../../util/src/Boundary.h"
 
@@ -16,9 +16,9 @@ class Projection {
 		/**
 		 * Setup properties for mapping projector from camera.
 		 * 
-		 * @param calibration Calibration which contains configuration on which to map projection 
+		 * @param calibration Imove configuration which contains configuration on which to map projection
 		 **/
-		Projection(Calibration& calibration);
+		Projection(ImoveConfiguration* calibration);
 
 		/**
 		 * Adds a projector frame which is used for eliminating the projection
@@ -64,7 +64,7 @@ class Projection {
 		std::queue<cv::Mat> frames_delay_projector;
 		
 		// The calibration including configuration of camera and projector
-		Calibration& calibration;
+		ImoveConfiguration* calibration;
 };
 
 #endif // PROJECTION_H
