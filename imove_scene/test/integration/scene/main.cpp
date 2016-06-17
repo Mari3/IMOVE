@@ -20,6 +20,9 @@ public:
     void setLocation(const si::Location &location){
         this->location = location;
     }
+    void setType(si::Person::PersonType type){
+        this->person_type = type;
+    }
 };
 
 struct Scenario{
@@ -173,6 +176,9 @@ struct RestartAlternatingScenario : public Scenario {
 
 struct BystanderScenario : public Scenario {
 
+    float height;
+    bool done = false, done2 = false;
+
     BystanderScenario(const LightTrailSceneConfiguration &config, Scene *scene) {
         for(int i=0;i<300;++i)
             scene->update(.1f);
@@ -181,10 +187,35 @@ struct BystanderScenario : public Scenario {
                                        si::Person::PersonType::Bystander,
                                        si::Person::MovementType::Moving
         ));
-        people.push_back(TestingPerson(1,
-                                       si::Location(config.screenWidth()/4,config.screenHeight()/2),
-                                       si::Person::PersonType::Participant,
-                                       si::Person::MovementType::StandingStill));
+        height = config.screenHeight();
+    }
+
+    void update(float dt) override {
+        if(!done) {
+            si::Location p0loc = people[0].getLocation();
+            if (p0loc.getY() < height) {
+                people.clear();
+                people.push_back(TestingPerson(0,
+                                               p0loc,
+                                               si::Person::PersonType::Participant,
+                                               si::Person::MovementType::Moving
+                ));
+            }
+            people[0].setLocation(si::Location(p0loc.getX(),p0loc.getY()-20.f*dt));
+            if(p0loc.getY() < height/2){
+                done = true;
+            }
+        }else if(!done2){
+            si::Location p0loc = people[0].getLocation();
+            people[0].setLocation(si::Location(p0loc.getX(),p0loc.getY()+20.f*dt));
+            if(p0loc.getY() > height){
+                people[0].setType(si::Person::Bystander);
+            }
+            if(p0loc.getY() > height+120) {
+                done2 = true;
+                people[0].setType(si::Person::None);
+            }
+        }
     }
 
 };
@@ -233,13 +264,18 @@ struct SourceColorScenario : public Scenario {
     float thresh;
 
     SourceColorScenario(const LightTrailSceneConfiguration& config) {
-        people.push_back(Person(Vector2(20,config.screenHeight()/2),Participant));
+        people.push_back(TestingPerson(0,
+                                       si::Location(20,config.screenHeight()/2),
+                                       scene_interface::Person::Participant,
+                                       scene_interface::Person::Moving
+        ));
         thresh = config.screenHeight()-50;
     }
 
     void update(float dt) override {
-        if(people[0].getLocation().y < thresh){
-            people[0].setLocation(people[0].getLocation()+Vector2(0,20*dt));
+        si::Location p0loc = people[0].getLocation();
+        if(p0loc.getY() < thresh){
+            people[0].setLocation(si::Location(p0loc.getX(), 20.f * dt + p0loc.getX()));
         }
     }
 
@@ -250,15 +286,62 @@ struct StandingStillScenario : public Scenario {
     Timer timer;
 
     StandingStillScenario(const LightTrailSceneConfiguration& config) : timer (30.f) {
-        people.push_back(Person(Vector2(config.screenWidth()/2,config.screenHeight()/2),Participant));
+        people.push_back(TestingPerson(0,
+                                       si::Location(config.screenWidth()/2,config.screenHeight()/2),
+                                       si::Person::Participant,
+                                       si::Person::Moving
+        ));
     }
 
     void update(float dt) override {
         if(timer.update(dt)){
-            people[0].type = StandingStill;
+            si::Location loc = people[0].getLocation();
+            people.clear();
+            people.push_back(TestingPerson(0,
+                                           loc,
+                                           si::Person::Participant,
+                                           si::Person::StandingStill
+            ));
         }
     }
 
+};
+
+struct ManyBystandersScenario : public Scenario {
+    Timer addTimer, removeTimer;
+    float x,y;
+
+    unsigned int counter = 1;
+    unsigned int removeCounter = 0;
+
+    ManyBystandersScenario(const LightTrailSceneConfiguration& config) : addTimer(10.f,true), removeTimer(30.f,true)
+    {
+        x = config.screenWidth()/10;
+        y = config.screenHeight()+100;
+        people.push_back(TestingPerson(counter,
+                                       si::Location(counter*x,y),
+                                       si::Person::PersonType::Bystander,
+                                       si::Person::MovementType::Moving
+        ));
+        counter++;
+    }
+
+    void update(float dt) override {
+        if(addTimer.update(dt)){
+            people.push_back(TestingPerson(counter,
+                                           si::Location(counter*x,y),
+                                           si::Person::PersonType::Bystander,
+                                           si::Person::MovementType::Moving
+            ));
+            counter++;
+        }
+        if(removeTimer.update(dt)){
+            people[removeCounter].setType(si::Person::PersonType::None);
+            removeCounter++;
+            people[removeCounter].setType(si::Person::PersonType::None);
+            removeCounter++;
+        }
+    }
 };
 
 namespace SceneIntegration {
@@ -272,7 +355,8 @@ namespace SceneIntegration {
         Bystander,
         ColorHole,
         SourceColor,
-        StandingStill
+        StandingStill,
+        ManyBystanders
     };
 }
 
@@ -327,6 +411,9 @@ int main(int argc, char** argv){
             break;
         case SceneIntegration::StandingStill:
             scenario = new StandingStillScenario(config);
+            break;
+        case SceneIntegration::ManyBystanders:
+            scenario = new ManyBystandersScenario(config);
             break;
     }
 

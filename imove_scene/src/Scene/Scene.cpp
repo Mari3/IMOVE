@@ -29,6 +29,7 @@ void Scene::update(float dt) {
     for(unsigned int i = 0; i < actions.size(); ++i) {
         // Execute the action
         actions[i]->execute(dt);
+        actions[i]->updateEffects(dt);
 
         // Remove action if it is done
         std::vector<Action*> followUp;

@@ -17,13 +17,13 @@ PeopleDetector::PeopleDetector(float pixels_per_meter, bool low_camera) : pixels
   params.filterByArea = true;
   params.maxArea = 1000000;
 
-  // Set parameters for SimpleBlobDetector according wether the camera height is low or not
+  // Set parameters for SimpleBlobDetector according to the camera height
   if (low_camera) {
     params.minArea = pixels_per_meter*5;
     params.minDistBetweenBlobs = params.minArea*0.15;
   } else {
-    params.minArea = pixels_per_meter*2;
-    params.minDistBetweenBlobs = params.minArea*0.25;
+    params.minArea = pixels_per_meter*1.2;
+    params.minDistBetweenBlobs = params.minArea*0.6;
   }
   // Create SimpleBlobDetector
   blob_detector = cv::SimpleBlobDetector::create(params);
@@ -50,39 +50,16 @@ std::vector<Vector2> PeopleDetector::detect(cv::Mat& frame) {
   std::vector<cv::KeyPoint> keypoints;
   // Detect blobs as keypoints
   blob_detector->detect(thresh_frame, keypoints);
-  cvtColor(thresh_frame, thresh_frame, CV_GRAY2RGB);
   // Draw circle around keypoints
   cv::drawKeypoints(thresh_frame, keypoints, keypoints_frame, cv::Scalar(0, 0, 255), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 
-  float frame_height = frame.rows;
-  float frame_width = frame.cols;
-
   // Change keypoint locations according to perspective
   for (auto &keypoint : keypoints) {
-    int xco;
-    int yco;
-    if (keypoint.pt.y < frame_height/3) {
-      yco = keypoint.pt.y+(pixels_per_meter/6);
-    } else if (keypoint.pt.y < (frame_height*2)/3) {
-      yco = keypoint.pt.y;
-    } else {
-      yco = keypoint.pt.y-(pixels_per_meter/6);
-    }
-    if (keypoint.pt.x < frame_width/3) {
-      xco = keypoint.pt.x +(pixels_per_meter/6);
-    } else if (keypoint.pt.x < (frame_width*2)/3) {
-      xco = keypoint.pt.x;
-    } else {
-      xco = keypoint.pt.x-(pixels_per_meter/6);
-    }
-
-    cv::circle(keypoints_frame, cv::Point(xco, yco), 5, cv::Scalar(0, 0, 255));
-
-    // Add location to locations vector
-    Vector2 new_location = Vector2(xco, yco);
+    Vector2 new_location = changeToPerspective(keypoint.pt.x, keypoint.pt.y, frame.rows, frame.cols);
     new_locations.push_back(new_location);
   }
 
+  // Set frame with visible keyoints as frame to display
   display_frame = keypoints_frame;
 
   // Return all new locations
@@ -91,4 +68,28 @@ std::vector<Vector2> PeopleDetector::detect(cv::Mat& frame) {
 
 cv::Mat PeopleDetector::getDisplayFrame() {
   return display_frame;
+}
+
+Vector2 PeopleDetector::changeToPerspective(int keypoint_x, int keypoint_y, float frame_height, float frame_width) {
+  int xco;
+  int yco;
+
+  // Adjust y
+  if (keypoint_y < frame_height/3) {
+    yco = keypoint_y+2*(pixels_per_meter/6);
+  } else if (keypoint_y < (frame_height*2)/3) {
+    yco = keypoint_y+(pixels_per_meter/6);
+  } else {
+    yco = keypoint_y;
+  }
+  // Adjust x
+  if (keypoint_x < frame_width/3) {
+    xco = keypoint_x +(pixels_per_meter/6);
+  } else if (keypoint_x < (frame_width*2)/3) {
+    xco = keypoint_x;
+  } else {
+    xco = keypoint_x-(pixels_per_meter/6);
+  }
+
+  return Vector2(xco, yco);
 }

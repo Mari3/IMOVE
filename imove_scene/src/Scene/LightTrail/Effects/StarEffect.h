@@ -6,7 +6,7 @@
 #define IMOVE_STAREFFECT_H
 
 
-#include "Effect.h"
+#include "../../Effect.h"
 #include "../../../../../util/src/Vector2.h"
 #include "../Configuration/LightTrailSceneConfiguration.h"
 
