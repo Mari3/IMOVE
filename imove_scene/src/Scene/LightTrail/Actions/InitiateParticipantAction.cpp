@@ -15,7 +15,7 @@ InitiateParticipantAction::InitiateParticipantAction(LightTrailRepository *globa
     sources->for_each([&](std::shared_ptr<LightSource> source){
         if(fabsf(source->getHue().getCenter() - person->hue.getCenter()) < 45){
             int amount = config.effect().trail().participantInitAmount-static_cast<int>(myTrails->size());
-            for(unsigned int i=0;i<amount;++i) {
+            for(int i=0;i<amount;++i) {
                 myTrails->add(std::shared_ptr<LightTrail>(source->sendOut()));
                 person->initiativeTrailCount++;
             }
