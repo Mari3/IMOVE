@@ -11,6 +11,8 @@ LightSourceGravityPointAction::LightSourceGravityPointAction(LightPersonReposito
           gravityPoints(gravityPoints),
           config(config) {
     float gravity = config.gravity().lightSource().gravity;
+
+    // Create a gravity point for every source
     gPoints[0] = std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(0,0),config.trail().cornerHues()[0],gravity));
     gPoints[1] = std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(config.screenWidth(),0),config.trail().cornerHues()[1],gravity));
     gPoints[2] = std::shared_ptr<GravityPoint>(new GravityPoint(Vector2(0,config.screenHeight()),config.trail().cornerHues()[2],gravity));
@@ -29,6 +31,7 @@ bool LightSourceGravityPointAction::isDone(std::vector<Action *> &followUp) {
 
 void LightSourceGravityPointAction::execute(float dt) {
     for(int i=0;i<4;++i){
+        // Find out which part of the source hue is covered by players and which is not
         float highest = config.trail().cornerHues()[i].start;
         float lowest = config.trail().cornerHues()[i].end;
         util::Range lowestRange(highest,lowest,true);
@@ -54,9 +57,12 @@ void LightSourceGravityPointAction::execute(float dt) {
                 }
             }
         });
+        // If the entire range is covered
         if(!lowestRange.contains(highest) || noGpoint){
+            // Set the gravity to zero
             gPoints[i]->gravity = 0;
         }else{
+            // Apply the gravity to the part of the range that was not covered
             gPoints[i]->gravity = config.gravity().lightSource().gravity;
             gPoints[i]->hue.start = highest;
             gPoints[i]->hue.end = lowest;

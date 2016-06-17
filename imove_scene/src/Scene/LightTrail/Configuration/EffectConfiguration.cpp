@@ -6,11 +6,13 @@
 
 EffectConfiguration::EffectConfiguration(const MixingConfig &_mixingConfig, const ExplosionConfig &_explosionConfig,
                                          const ColorHoleConfig &_colorHoleConfig, const StarConfig &_starConfig,
-                                         TrailEffectConfig _trailEffectConfig) : _mixingConfig(_mixingConfig),
-                                                                                 _explosionConfig(_explosionConfig),
-                                                                                 _colorHoleConfig(_colorHoleConfig),
-                                                                                 _starConfig(_starConfig),
-                                                                                 _trailEffectConfig(_trailEffectConfig) { }
+                                         TrailEffectConfig _trailEffectConfig,
+                                         SourceEffectConfig _sourceEffectConfig) : _mixingConfig(_mixingConfig),
+                                                                                   _explosionConfig(_explosionConfig),
+                                                                                   _colorHoleConfig(_colorHoleConfig),
+                                                                                   _starConfig(_starConfig),
+                                                                                   _trailEffectConfig(_trailEffectConfig),
+                                                                                   _sourceEffectConfig(_sourceEffectConfig) { }
 
 const MixingConfig &EffectConfiguration::mixing() const {
     return _mixingConfig;
@@ -33,10 +35,12 @@ const TrailEffectConfig &EffectConfiguration::trail() const {
 }
 
 const EffectConfiguration EffectConfiguration::readFromFile(cv::FileStorage fs, float meter) {
-    return EffectConfiguration(MixingConfig(fs,meter),ExplosionConfig(fs,meter),
-                               ColorHoleConfig(fs,meter),StarConfig(fs,meter),
-                               TrailEffectConfig(fs,meter)
-    );
+    return EffectConfiguration(MixingConfig(fs, meter), ExplosionConfig(fs, meter), ColorHoleConfig(fs, meter),
+                               StarConfig(fs, meter), TrailEffectConfig(fs, meter),
+                               SourceEffectConfig(fs,meter));
 }
 
 
+const SourceEffectConfig &EffectConfiguration::source() const {
+    return _sourceEffectConfig;
+}

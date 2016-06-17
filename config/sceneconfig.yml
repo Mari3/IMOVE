@@ -50,3 +50,5 @@ StandingStillFadeTime: 40
 InitiateTrailRange: 1.8
 BystanderInitiateTrails: 10
 ParticipantInitiateTrails: 10
+SourceTrailAmount: 10
+SourceTrailPlacementRange: .2

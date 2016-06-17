@@ -11,8 +11,8 @@ LightSourceEffectAction::LightSourceEffectAction(std::shared_ptr<LightSource> so
           myLightTrails(myLightTrails),
           config(config)
 {
-    util::Range range(-40,40);
-    for(int i=0;i<10;++i){
+    util::Range range(-config.effect().source().placementRange,config.effect().source().placementRange);
+    for(int i=0;i<config.effect().source().trailAmount;++i){
         myLightTrails->add(std::shared_ptr<LightTrail>(
                 new LightTrail(
                         Vector2(source->getLocation().x+range.drawRandom(),source->getLocation().y+range.drawRandom()),
