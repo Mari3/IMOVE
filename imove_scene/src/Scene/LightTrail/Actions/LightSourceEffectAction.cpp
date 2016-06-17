@@ -9,8 +9,7 @@ LightSourceEffectAction::LightSourceEffectAction(std::shared_ptr<LightSource> so
 )
         : gravityPoint(source->getLocation(),source->getHue(),20000),
           myLightTrails(myLightTrails),
-          config(config),
-          effect(myLightTrails,config,texture)
+          config(config)
 {
     util::Range range(-40,40);
     for(int i=0;i<10;++i){
@@ -22,6 +21,10 @@ LightSourceEffectAction::LightSourceEffectAction(std::shared_ptr<LightSource> so
                 )
         ));
     }
+
+    effects.push_back(std::unique_ptr<Effect>(
+            static_cast<Effect*>(new LightTrailEffect(myLightTrails,config,texture))
+    ));
 }
 
 bool LightSourceEffectAction::isDone(std::vector<Action *> &followUp) {
@@ -34,8 +37,4 @@ void LightSourceEffectAction::execute(float dt) {
         Vector2 force = gravityPoint.calculateForce(*trail,config);
         trail->applyForce(force,dt,config.trail().trail().speedCap,config.trail().sidesEnabled(),config.screenWidth(),config.screenHeight());
     });
-}
-
-void LightSourceEffectAction::draw(sf::RenderTarget &target) {
-    effect.draw(target);
 }

@@ -24,7 +24,6 @@ private:
     LightTrailRepository* lightTrails;
     LightPersonRepository* lightPeople;
     LightTrailSceneConfiguration config;
-    ColorHoleEffect effect;
     void finish();
 public:
 
@@ -36,8 +35,6 @@ public:
     bool isDone(std::vector<Action *> &followUp) override;
 
     void execute(float dt) override;
-
-    void draw(sf::RenderTarget &target) override;
 
 
 };

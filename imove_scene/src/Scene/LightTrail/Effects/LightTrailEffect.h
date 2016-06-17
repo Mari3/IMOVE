@@ -6,7 +6,7 @@
 #define IMOVE_LIGHTTRAILEFFECT_H
 
 
-#include "Effect.h"
+#include "../../Effect.h"
 #include "../Repositories/LightsSceneRepositories.h"
 
 // Draws light trails on a texture

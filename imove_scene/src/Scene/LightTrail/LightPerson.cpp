@@ -28,3 +28,5 @@ Vector2 LightPerson::getLocation() {
 unsigned int LightPerson::getId() {
     return id;
 }
+
+

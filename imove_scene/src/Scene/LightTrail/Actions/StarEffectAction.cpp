@@ -9,14 +9,11 @@ bool StarEffectAction::isDone(std::vector<Action *> &followUp) {
 }
 
 void StarEffectAction::execute(float dt) {
-    effect.update(dt);
 }
 
-void StarEffectAction::draw(sf::RenderTarget &target) {
-    effect.draw(target);
-}
-
-StarEffectAction::StarEffectAction(const LightTrailSceneConfiguration &config) : effect(config) {
-
+StarEffectAction::StarEffectAction(const LightTrailSceneConfiguration &config) {
+    effects.push_back(std::unique_ptr<Effect>(
+        static_cast<Effect*>(new StarEffect(config))
+    ));
 }
 
