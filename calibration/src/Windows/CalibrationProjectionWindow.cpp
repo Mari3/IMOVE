@@ -49,12 +49,12 @@ void CalibrationProjectionWindow::onMouse(int event, int x, int y, int flags) {
 				this->coordinate_bottomleft = coordinate_mouse_projection;
 				break;
 		}
-		this->calibration.setProjection(Boundary(
-			Vector2(coordinate_topleft    .x, coordinate_topleft    .y),
-			Vector2(coordinate_topright   .x, coordinate_topright   .y),
-			Vector2(coordinate_bottomleft .x, coordinate_bottomleft .y),
-			Vector2(coordinate_bottomright.x, coordinate_bottomright.y)
-		));
+
+		const Vector2 upperleft = Vector2(coordinate_topleft.x, coordinate_topleft.y);
+		const Vector2 upperright = Vector2(coordinate_topright.x, coordinate_topright.y);
+		const Vector2 lowerleft = Vector2(coordinate_bottomleft.x, coordinate_bottomleft.y);
+		const Vector2 lowerright = Vector2(coordinate_bottomright.x, coordinate_bottomright.y);
+		this->calibration.setProjection(Boundary(upperleft, upperright, lowerleft, lowerright));
 	}
 }
 
@@ -68,7 +68,7 @@ void CalibrationProjectionWindow::drawImage(cv::Mat image) {
 	const Vector2& topright    = projection.getUpperRight();
 	const Vector2& bottomleft  = projection.getLowerLeft();
 	const Vector2& bottomright = projection.getLowerRight();
-	
+
 	// draw polylines on this->frame to indicate boundaries
 	cv::Point polypoints[REQUIRED_CORNERS];
 	polypoints[0] = cv::Point2f(    topleft.x,     topleft.y);
@@ -117,7 +117,7 @@ void CalibrationProjectionWindow::drawImage(cv::Mat image) {
 		this->SIZE_CROSS,
 		this->THICKNESS_CROSS
 	);
-	
+
 	// draw mouse on image if ever entered
 	if (this->entered_mouse_projection) {
 		cv::Scalar mouse_cross_color;
@@ -143,7 +143,6 @@ void CalibrationProjectionWindow::drawImage(cv::Mat image) {
 			this->THICKNESS_CROSS
 		);
 	}
-	
+
 	OpenCVWindow::drawImage(image);
 }
-

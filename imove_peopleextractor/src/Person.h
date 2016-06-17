@@ -18,13 +18,12 @@ class Person {
     // Object counter to create unique ids
     static unsigned int count;
 
-    //
+    // Counter to check how long a person has not moved
     unsigned int not_moved_count = 1000;
 
  public:
 		enum PersonType{
 		    Bystander,
-		    Passerthrough,
 		    Participant,
 		    None
 		};
@@ -34,20 +33,16 @@ class Person {
 			Moving
 		};
 
-		enum InterframeType{
-			InterStandingStill,
-			InterMoving
-		};
-
+    // Type of person according to position on the scene
     PersonType person_type;
+    // Moving or standing still
 		MovementType movement_type;
-		InterframeType interframe_type;
 
-		Person(Vector2 location, PersonType type);
+		Person(const Vector2& location, const PersonType type);
 
     //Getters and setters
     Vector2 getLocation();
-		void setLocation(Vector2 location);
+		void setLocation(const Vector2& location);
     unsigned int getId();
 	  unsigned int getNotMovedCount();
 
