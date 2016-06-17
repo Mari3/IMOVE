@@ -30,6 +30,7 @@ LightTrailSceneConfiguration LightTrailSceneConfiguration::readFromFile(char *fi
     ColorHoleConfig colorHoleConfig;
     StarConfig starConfig;
     DrawConfig drawConfig;
+    TrailEffectConfig trailEffectConfig;
 
     float meter;
     int fadeint;
@@ -118,10 +119,14 @@ LightTrailSceneConfiguration LightTrailSceneConfiguration::readFromFile(char *fi
 
     fs["TrailMaxLength"] >> trailConfig.maxLength;
 
-    float standingStillFadeTime;
-    fs["StandingStillFadeTime"] >> standingStillFadeTime;
+    fs["StandingStillFadeTime"] >> trailEffectConfig.standingStillFadeTime;
 
     fs["Inverted"] >> drawConfig.inverted;
+
+    fs["InitiateTrailRange"] >> trailEffectConfig.initRange;
+    fs["BystanderInitiateTrails"] >> trailEffectConfig.bystanderInitAmount;
+    fs["ParticiapntInitiateTrails"] >> trailEffectConfig.participantInitAmount;
+    trailEffectConfig.initRange *= meter;
 
     drawConfig.fade = static_cast<uint8_t>(fadeint > 255 ? 255 : fadeint);
 
@@ -129,7 +134,8 @@ LightTrailSceneConfiguration LightTrailSceneConfiguration::readFromFile(char *fi
     unsigned int h = static_cast<unsigned int>(resolution.height);
 
     TrailConfiguration trailConfiguration(cornerHues,lightSourceConfig,sidesEnabled,trailConfig,drawConfig);
-    EffectConfiguration effectConfiguration(mixingConfig,explosionConfig,colorHoleConfig,starConfig,standingStillFadeTime);
+    EffectConfiguration effectConfiguration(mixingConfig, explosionConfig, colorHoleConfig, starConfig,
+                                            trailEffectConfig);
     GravityConfiguration gravityConfiguration(lightSourceGravityConfig,participantGravityConfig,
                                               bystanderGravityConfig,alternatingGravityConfig,
                                               proximityConfig

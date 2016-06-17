@@ -173,6 +173,9 @@ struct RestartAlternatingScenario : public Scenario {
 
 struct BystanderScenario : public Scenario {
 
+    float height;
+    bool done = false;
+
     BystanderScenario(const LightTrailSceneConfiguration &config, Scene *scene) {
         for(int i=0;i<300;++i)
             scene->update(.1f);
@@ -181,10 +184,31 @@ struct BystanderScenario : public Scenario {
                                        si::Person::PersonType::Bystander,
                                        si::Person::MovementType::Moving
         ));
-        people.push_back(TestingPerson(1,
-                                       si::Location(config.screenWidth()/4,config.screenHeight()/2),
-                                       si::Person::PersonType::Participant,
-                                       si::Person::MovementType::StandingStill));
+        height = config.screenHeight();
+    }
+
+    void update(float dt) override {
+        if(!done) {
+            si::Location p0loc = people[0].getLocation();
+            if (p0loc.getY() < height) {
+                people.clear();
+                people.push_back(TestingPerson(0,
+                                               p0loc,
+                                               si::Person::PersonType::Participant,
+                                               si::Person::MovementType::Moving
+                ));
+            }
+            people[0].setLocation(si::Location(p0loc.getX(),p0loc.getY()-20.f*dt));
+            if(p0loc.getY() < height/2){
+                done = true;
+                people.clear();
+                people.push_back(TestingPerson(0,
+                                               p0loc,
+                                               si::Person::PersonType::None,
+                                               si::Person::MovementType::Moving
+                ));
+            }
+        }
     }
 
 };

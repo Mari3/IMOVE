@@ -115,8 +115,8 @@ void ParticipantGravityPointAction::execute(float dt) {
     setLocation(dt);
 
     if(person->movement_type == scene_interface::Person::StandingStill){
-        gravityPoint->gravity -= config.gravity().participant().gravity/config.effect().standingStillFadeTime()*dt;
-        antigravityPoint->gravity += config.gravity().participant().antigravity/config.effect().standingStillFadeTime()*dt;
+        gravityPoint->gravity -= config.gravity().participant().gravity/config.effect().trail().standingStillFadeTime*dt;
+        antigravityPoint->gravity += config.gravity().participant().antigravity/config.effect().trail().standingStillFadeTime*dt;
         if(gravityPoint->gravity < 0)gravityPoint->gravity = 0;
         if(antigravityPoint->gravity > 0)antigravityPoint->gravity = 0;
     }else{

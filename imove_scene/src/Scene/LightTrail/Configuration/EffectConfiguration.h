@@ -22,6 +22,11 @@ struct StarConfig {
     float speed;
 };
 
+struct TrailEffectConfig {
+    int bystanderInitAmount, participantInitAmount;
+    float initRange, standingStillFadeTime;
+};
+
 class EffectConfiguration {
 private:
     // Mixing
@@ -34,12 +39,12 @@ private:
 
     StarConfig _starConfig;
 
-    float _standingStillFadeTime;
+    TrailEffectConfig _trailEffectConfig;
 public:
 
     EffectConfiguration(const MixingConfig &_mixingConfig, const ExplosionConfig &_explosionConfig,
-                        const ColorHoleConfig &_colorHoleConfig, const StarConfig &_starConfig,
-                        float _standingStillFadeTime);
+                            const ColorHoleConfig &_colorHoleConfig, const StarConfig &_starConfig,
+                            TrailEffectConfig _trailEffectConfig);
 
 
     const MixingConfig & mixing() const;
@@ -50,7 +55,7 @@ public:
 
     const StarConfig & star() const;
 
-    float standingStillFadeTime() const;
+    const TrailEffectConfig & trail() const;
 };
 
 

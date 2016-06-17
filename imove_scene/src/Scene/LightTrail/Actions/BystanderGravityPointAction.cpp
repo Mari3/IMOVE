@@ -13,6 +13,7 @@ BystanderGravityPointAction::BystanderGravityPointAction(std::shared_ptr<LightPe
                                                          sf::RenderTexture &texture)
   :
         person(person),
+        sources(sources),
         timer(Timer(config.gravity().bystander().delay, true)),
         config(config),
         myTrails(myTrails),
@@ -24,7 +25,7 @@ BystanderGravityPointAction::BystanderGravityPointAction(std::shared_ptr<LightPe
 
     sources->for_each([&](std::shared_ptr<LightSource> source){
         if(fabsf(source->getHue().getCenter() - person->hue.getCenter()) < 45){
-            for(int i=0;i<10;++i) {
+            for(int i=0;i<config.effect().trail().bystanderInitAmount;++i) {
                 myTrails->add(std::shared_ptr<LightTrail>(source->sendOut()));
                 person->initiativeTrailCount++;
             }

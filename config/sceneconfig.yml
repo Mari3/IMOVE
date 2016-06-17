@@ -45,3 +45,6 @@ ColorHoleEffectPeriod: .35
 StarAmount: 10
 StarSpeed: .10
 StandingStillFadeTime: 40
+InitiateTrailRange: 1.8
+BystanderInitiateTrails: 20
+ParticipantInitiateTrails: 20
