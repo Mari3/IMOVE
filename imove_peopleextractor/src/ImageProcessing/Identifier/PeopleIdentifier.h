@@ -7,7 +7,6 @@
 
 #include <limits>
 #include <vector>
-#include <iostream>
 
 #include "../../../../util/src/Boundary.h"
 #include "../../Person.h"
@@ -17,21 +16,21 @@ class PeopleIdentifier {
   // Vector containing detected people in the frame
   std::vector<Person> detected_people;
 
-  //
+  // Boundary of projection to seperate bystanders from participants
   Boundary projection_boundary;
+  // Boundary of frame
   Boundary frame_boundary;
-
- public:
-  PeopleIdentifier();
-  PeopleIdentifier(Boundary projection_boundary, Boundary frame_boundary);
-  PeopleIdentifier(std::vector<Person>& people, Boundary projection_boundary, Boundary frame_boundary);
-  ~PeopleIdentifier();
-
-  // Match people to new locations
-  std::vector<Person> match(std::vector<Vector2>& locations);
 
   // Get closest location to a Person
   int getClosest(unsigned int index, std::vector<Vector2>& new_locations);
+
+ public:
+  PeopleIdentifier();
+  PeopleIdentifier(const Boundary& projection_boundary, const Boundary& frame_boundary);
+  ~PeopleIdentifier();
+
+  // Match people to new locations and locations to (new) people
+  std::vector<Person> match(std::vector<Vector2>& locations);
 };
 
 
