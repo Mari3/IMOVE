@@ -4,8 +4,9 @@
 
 Boundary::Boundary() {}
 
-Boundary::Boundary(Vector2 upleft, Vector2 upright, Vector2 lowleft, Vector2 lowright) :
+Boundary::Boundary(const Vector2& upleft, const Vector2& upright, const Vector2& lowleft, const Vector2& lowright) :
   upper_left(upleft), upper_right(upright), lower_left(lowleft), lower_right(lowright) {
+    // Calculate parameters for equations for every edge
     if ((upper_right.y - upper_left.y) == 0) {
       a1 = upper_left.y;
       b1 = 0;
@@ -42,11 +43,13 @@ Boundary::Boundary(Vector2 upleft, Vector2 upright, Vector2 lowleft, Vector2 low
 Boundary::~Boundary() {}
 
 bool Boundary::inBounds(Vector2 location) {
+  // Perpendicular projection of the point on every edge
   float projection_edge1;
   float projection_edge2;
   float projection_edge3;
   float projection_edge4;
 
+  // Calculate projection position on every edge
   if (b1 == 0) {
     projection_edge1 = a1;
   } else {
@@ -71,6 +74,7 @@ bool Boundary::inBounds(Vector2 location) {
     projection_edge4 = ((location.y + b4)/a4);
   }
 
+  // Check if location is within bounds
   if ((location.y > projection_edge1) && (location.y < projection_edge3)) {
     if ((location.x < projection_edge2) && (location.x > projection_edge4)) {
       return true;
@@ -82,6 +86,9 @@ bool Boundary::inBounds(Vector2 location) {
   }
 }
 
+/*--------------------
+ * Getters
+ * -----------------*/
 const Vector2 Boundary::getUpperLeft() const {
 	return this->upper_left;
 }
@@ -99,15 +106,15 @@ const Vector2 Boundary::getLowerRight() const {
 }
 
 const Boundary Boundary::createReorientedTopLeftBoundary() const {
-	const Vector2 upper_left  = this->upper_left;
-	const Vector2 upper_right = this->upper_right;
-	const Vector2 lower_left  = this->lower_left;
-	const Vector2 lower_right = this->lower_right;
 	Vector2 origin(0, 0);
+
+  // Calculate distance to origin for each corner
 	float distance_upper_left  = origin.distance(upper_left );
 	float distance_upper_right = origin.distance(upper_right);
 	float distance_lower_left  = origin.distance(lower_left );
 	float distance_lower_right = origin.distance(lower_right);
+
+  // Find corner closest to origin
 	float minimum_distance = std::min(
 		std::min(
 			distance_upper_left,
@@ -118,7 +125,10 @@ const Boundary Boundary::createReorientedTopLeftBoundary() const {
 			distance_lower_right
 		)
 	);
+
 	Boundary reoriented_boundary;
+  
+  // Rotate corners accordingly
 	if (minimum_distance == distance_upper_left) {
 		reoriented_boundary = Boundary(
 			upper_left,
