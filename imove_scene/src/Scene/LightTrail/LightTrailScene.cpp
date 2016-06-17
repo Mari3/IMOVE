@@ -190,7 +190,6 @@ void LightTrailScene::processPeople() {
 
                 //Create a new person with randomly generated hue
                 util::Range hue = config.trail().cornerHues()[hueCounter];
-								std::cerr << "lb :" << hue.lowerBound << "ub: " << hue.upperBound << "hueCounter: " << hueCounter << std::endl;
 								scene_interface::Location llocation = person.getLocation();
                 lightPeople->add(
                         std::shared_ptr<LightPerson>(new LightPerson(Vector2(
@@ -207,6 +206,7 @@ void LightTrailScene::processPeople() {
                 lightPeople->scheduleForRemoval(person);
             }
         });
+        lightPeople->removeAll();
     }
 }
 
