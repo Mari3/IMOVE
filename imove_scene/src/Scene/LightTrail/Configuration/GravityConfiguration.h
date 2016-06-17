@@ -20,16 +20,20 @@ struct GravityConfig {
 };
 
 struct ParticipantGravityConfig : public GravityConfig {
-    float antigravity, distance;
+    float antigravity, distance, movedThreshold, sideThreshold;
     ParticipantGravityConfig(){}
     ParticipantGravityConfig(cv::FileStorage fs, float meter)
     : GravityConfig(fs,meter,"Participant")
     {
         fs["ParticipantAntiGravity"] >> antigravity;
         fs["ParticipantGravityDistance"] >> distance;
+        fs["ParticipantMovedThreshold"] >> movedThreshold;
+        fs["ParticipantSideThreshold"] >> sideThreshold;
 
         antigravity *= meter*meter;
         distance *= meter;
+        movedThreshold *= meter;
+        sideThreshold *= meter;
     }
 };
 

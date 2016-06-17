@@ -52,7 +52,7 @@ void ParticipantGravityPointAction::setLocation(float dt) {
     float py = person->getLocation().y;
 
     if(!fixed) {
-        float diffThreshold = 10*dt;
+        float diffThreshold = config.gravity().participant().movedThreshold*dt;
 
         Vector2 diff = person->getLocation() - prevLocation;
 
@@ -69,7 +69,7 @@ void ParticipantGravityPointAction::setLocation(float dt) {
 
         // Put the gravityPoint in front of the person
         Vector2 gPointDirection = prevDirection;
-        float distThreshold = 400;
+        float distThreshold = config.gravity().participant().sideThreshold;
         float distToTop = py;
         float distToLeft = px;
         float distToRight = config.screenWidth()-px;

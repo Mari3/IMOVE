@@ -13,6 +13,8 @@ ParticipantGravity: 3.46
 ParticipantAntiGravity: 0.46
 ParticipantGravityRange: 2.
 ParticipantGravityDistance: 0
+ParticipantMovedThreshold: 1.
+ParticipantSideThreshold: 2.
 BystanderGravity: 15
 BystanderGravityDelay: 4.
 BystanderGravityRange: -2.
