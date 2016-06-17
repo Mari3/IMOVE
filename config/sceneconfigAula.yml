@@ -1,17 +1,17 @@
 %YAML:1.0
 Resolution: [ 1280, 720 ]
-Meter: 1.8675392150878906e+02
+Meter: 1.8366783142089844e+02
 TopLeftHue: [ 0, 90 ]
 TopRightHue: [ 90, 180 ]
 BottomRightHue : [ 180, 270 ]
 BottomLeftHue: [ 270, 0 ]
 SendOutDelay: 3.
 SendOutSpeed: [ 0, 2 ]
-TrailCap: 40
+TrailCap: 75
 ParticipantGravity: 3.46
 ParticipantAntiGravity: 0.46
 ParticipantGravityRange: 2.
-ParticipantGravityDistance: .00
+ParticipantGravityDistance: .25
 BystanderGravity: 10
 BystanderGravityDelay: 4.
 BystanderGravityRange: -2.
@@ -21,7 +21,7 @@ AlternatingGravityRange: -1
 ProximityRange: .7
 ProximityModifier: .7
 SidesEnabled: 1
-SpeedCap: 2.
+SpeedCap: 3.
 Fade: 8
 TrailThickness: .055
 MixingSpeed: 2.

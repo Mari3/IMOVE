@@ -1,7 +1,6 @@
 %YAML:1.0
-Resolution: [ 800, 600 ]
-Meter: 100
-Inverted: 0
+Resolution: [ 2400, 1500 ]
+Meter: 200
 TopLeftHue: [ 0, 90 ]
 TopRightHue: [ 90, 180 ]
 BottomRightHue : [ 180, 270 ]
@@ -23,9 +22,8 @@ ProximityRange: .7
 ProximityModifier: .7
 SidesEnabled: 1
 SpeedCap: 2.
-Fade: 2
-TrailThickness: .11
-TrailMaxLength: 2
+Fade: 4
+TrailThickness: .035
 MixingSpeed: 3.
 MixingDistance: 2.
 MixingRevertTime: 1.
@@ -38,9 +36,8 @@ ColorHoleDelay: 4.
 ColorHoleGravity: 5
 ColorHoleGravityRange: 1.2
 ColorHoleRange: .2
-ColorHoleDestructionRange: .8
 MixingEffectThickness: .05
-ColorHoleEffectThickness: .03
+ColorHoleEffectThickness: .01
 ColorHoleEffectPeriod: .35
 StarAmount: 10
 StarSpeed: .10
