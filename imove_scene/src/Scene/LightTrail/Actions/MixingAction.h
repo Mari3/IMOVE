@@ -21,15 +21,12 @@ private:
     LightTrailRepository* trails;
     GravityPointRepository* gravityPoints;
     bool mixingComplete = false;
-    MixingEffect effect;
 public:
     MixingAction(std::shared_ptr<LightPerson> person1, std::shared_ptr<LightPerson> person2, LightTrailRepository* trails,
                  GravityPointRepository* gravityPoints, const LightTrailSceneConfiguration& config);
     bool isDone(std::vector<Action*> &followUp) override;
 
     void execute(float dt) override;
-
-    void draw(sf::RenderTarget &target) override;
 
 
     static void shift(LightTrailRepository* trails, Vector2 location, util::Range& hue, float amount);

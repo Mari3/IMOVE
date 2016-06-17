@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "../LightPerson.h"
-#include "Effect.h"
+#include "../../Effect.h"
 #include "../Configuration/LightTrailSceneConfiguration.h"
 
 // Draws two 'progress bars' between two people,

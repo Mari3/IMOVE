@@ -14,6 +14,7 @@ private:
     unsigned int id;
 public:
     bool isColorHole;
+    unsigned int initiativeTrailCount = 0;
     scene_interface::Person::PersonType person_type;
     scene_interface::Person::MovementType movement_type;
     LightPerson(const Vector2 &location, unsigned int id, scene_interface::Person::PersonType person_type, scene_interface::Person::MovementType movement_type, util::Range hue);

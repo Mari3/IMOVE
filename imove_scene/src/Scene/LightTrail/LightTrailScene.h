@@ -8,7 +8,7 @@
 #include "ColorHole.h"
 #include "Repositories/LightPersonMapRepository.h"
 #include "Repositories/LightsSceneRepositories.h"
-#include "Effects/Effect.h"
+#include "../Effect.h"
 #include "Effects/LightTrailEffect.h"
 #include "Configuration/LightTrailSceneConfiguration.h"
 

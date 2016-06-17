@@ -20,7 +20,6 @@ private:
     std::shared_ptr<LightPerson> person;
     GravityPoint gravityPoint;
     LightTrailSceneConfiguration config;
-    LightTrailEffect effect;
 public:
     InitiateParticipantAction(LightTrailRepository *globalTrails, LightTrailRepository *myTrails,
                               LightSourceRepository *sources, const std::shared_ptr<LightPerson> &person,
@@ -30,8 +29,6 @@ public:
     bool isDone(std::vector<Action *> &followUp) override;
 
     void execute(float dt) override;
-
-    void draw(sf::RenderTarget &target) override;
 
 
 };

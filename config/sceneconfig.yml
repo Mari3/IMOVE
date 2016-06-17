@@ -1,6 +1,7 @@
 %YAML:1.0
-Resolution: [ 2400, 1500 ]
-Meter: 200
+Resolution: [ 1600, 1000 ]
+Meter: 150
+Inverted: 0
 TopLeftHue: [ 0, 90 ]
 TopRightHue: [ 90, 180 ]
 BottomRightHue : [ 180, 270 ]
@@ -12,7 +13,7 @@ ParticipantGravity: 3.46
 ParticipantAntiGravity: 0.46
 ParticipantGravityRange: 2.
 ParticipantGravityDistance: .25
-BystanderGravity: 10
+BystanderGravity: 15
 BystanderGravityDelay: 4.
 BystanderGravityRange: -2.
 AlternatingGravity: 4.15
@@ -32,7 +33,7 @@ ExplosionGravity: 10.38
 ExplosionExTime: .2
 ExplosionInTime: .3
 LightSourceGravity: 3.46
-ColorHoleDelay: 4.
+ColorHoleDelay: 100.
 ColorHoleGravity: 5
 ColorHoleGravityRange: 1.2
 ColorHoleRange: .2
