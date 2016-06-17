@@ -26,8 +26,11 @@ class PeopleDetector {
   // Nr of pixels equal to one meter on the Scene
   float pixels_per_meter;
 
-  // Frame to display
+  // Frame to display to check tracking
   cv::Mat display_frame;
+
+  // Change location coordinates according to perspective
+  Vector2 changeToPerspective(int keypoint_x, int keypoint_y, float frame_height, float frame_width);
 
  public:
   PeopleDetector();
@@ -38,6 +41,7 @@ class PeopleDetector {
   // Detect people in frame
   std::vector<Vector2> detect(cv::Mat& frame);
 
+  // Get display frame
   cv::Mat getDisplayFrame();
 };
 
