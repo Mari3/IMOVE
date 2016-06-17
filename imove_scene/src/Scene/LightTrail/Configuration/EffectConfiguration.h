@@ -73,7 +73,7 @@ struct TrailEffectConfig {
     TrailEffectConfig(cv::FileStorage fs, float meter){
         fs["InitiateTrailRange"] >> initRange;
         fs["BystanderInitiateTrails"] >> bystanderInitAmount;
-        fs["ParticiapntInitiateTrails"] >> participantInitAmount;
+        fs["ParticipantInitiateTrails"] >> participantInitAmount;
         fs["StandingStillFadeTime"] >> standingStillFadeTime;
 
         initRange *= meter;
