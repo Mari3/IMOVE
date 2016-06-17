@@ -19,8 +19,6 @@ int PersonChangedTypeCondition::check(float dt, std::vector<Action*> &actions) {
         } // Else if the person turned particpant
         else if((oldPersonType.count(person->getId()) == 0 || oldPersonType[person->getId()] != scene_interface::Person::PersonType::Participant) && person->person_type == scene_interface::Person::PersonType::Participant)
         {
-						std::cerr << person->getLocation().x << "," << person->getLocation().y << std::endl; 
-						std::cerr << "1PGPA: " << person->getLocation().x << "," << person->getLocation().y << " lb: " << person->hue.lowerBound << " ub: " << person->hue.upperBound << std::endl; 
             // Create a new participant action
             actions.push_back(new ParticipantGravityPointAction(person,gravityPoints,config));
             i++;

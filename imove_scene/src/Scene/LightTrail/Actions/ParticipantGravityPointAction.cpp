@@ -9,7 +9,6 @@ ParticipantGravityPointAction::ParticipantGravityPointAction(std::shared_ptr<Lig
 	: gravityPoints(gravityPoints), person(person), config(config), prevLocation(person->getLocation()),
       prevDirection(0,0), baseDirection(0,0)
 {
-		std::cerr << "PGPA: " << person->getLocation().x << "," << person->getLocation().y << " lb: " << person->hue.lowerBound << " ub: " << person->hue.upperBound << std::endl;
 
     //Create the gravity point
     gravityPoint = std::shared_ptr<GravityPoint>(new GravityPoint(
