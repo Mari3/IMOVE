@@ -15,6 +15,7 @@ bool RemoveTrailsAction::isDone(std::vector<Action *> &followUp) {
 void RemoveTrailsAction::execute(float dt) {
     int removalCount = config.effect().trail().participantInitAmount-person->initiativeTrailCount;
     int i=0;
+    // Remove the first [removalCount] trails of the persons hue that are within range
     trails->for_each([&](std::shared_ptr<LightTrail> trail){
         if(i < removalCount &&
            person->hue.contains(trail->hue) &&

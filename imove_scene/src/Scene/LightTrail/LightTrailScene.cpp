@@ -146,9 +146,6 @@ LightPersonRepository* lightPeople) : Scene(),
     conditions.push_back(std::unique_ptr<Condition>(
             static_cast<Condition*>(new PeopleEnteredMixingRangeCondition(lightPeople,lightTrails,gravityPoints,config))
     ));
-    /*conditions.push_back(std::unique_ptr<Condition>(
-            static_cast<Condition*>(new FirstParticipantCondition(lightPeople,config,gravityPoints))
-    ));*/
     conditions.push_back(std::unique_ptr<Condition>(
             static_cast<Condition*>(new NoPeopleCondition(lightPeople, gravityPoints, config, lightTrails))
     ));

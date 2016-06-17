@@ -27,16 +27,18 @@ struct ColorHoleConfig {
 };
 
 struct MixingConfig {
-    float speed, distance, revertTime, thickness;
+    float speed, distance, revertTime, thickness, trailRange;
     MixingConfig(){}
     MixingConfig(cv::FileStorage fs, float meter){
         fs["MixingSpeed"] >> speed;
         fs["MixingDistance"] >> distance;
         fs["MixingRevertTime"] >> revertTime;
         fs["MixingEffectThickness"] >> thickness;
+        fs["MixingTrailRange"] >> trailRange;
 
         distance *= meter;
         thickness *= meter;
+        trailRange *= meter;
     }
 };
 

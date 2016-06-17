@@ -31,6 +31,7 @@ TrailThickness: .035
 MixingSpeed: 3.
 MixingDistance: 2.
 MixingRevertTime: 1.
+MixingTrailRange: 2.
 ExplosionAntigravity: 27.68
 ExplosionGravity: 10.38
 ExplosionExTime: .2

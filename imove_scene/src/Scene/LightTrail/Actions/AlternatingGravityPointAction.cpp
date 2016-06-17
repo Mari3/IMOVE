@@ -18,7 +18,7 @@ void AlternatingGravityPointAction::execute(float dt) {
         myGravityPoint->location.y = yRange.drawRandom();
     }
 
-    MixingAction::shift(lightTrails,myGravityPoint->location,myGravityPoint->hue,10*dt);
+    MixingAction::shift(lightTrails,myGravityPoint->location,myGravityPoint->hue,10*dt, config.effect().mixing().trailRange);
 }
 
 AlternatingGravityPointAction::AlternatingGravityPointAction(
@@ -40,7 +40,8 @@ AlternatingGravityPointAction::AlternatingGravityPointAction(
 	    Vector2(0,0),
 		hue,
 		config.gravity().alternating().gravity
-    )))
+    ))),
+    config(config)
 {
     // Register the gravity point
     gravityPoints->add(myGravityPoint);

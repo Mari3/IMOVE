@@ -27,7 +27,7 @@ ParticipantGravityPointAction::ParticipantGravityPointAction(std::shared_ptr<Lig
     gravityPoints->add(gravityPoint);
     gravityPoints->add(antigravityPoint);
 
-    // Determine the starting direction
+    // Determine the starting direction based on where the person enters the scene
     float fromBottom = config.screenHeight()-person->getLocation().y;
     float fromRight = config.screenWidth()-person->getLocation().x;
     float fromLeft = person->getLocation().x;
@@ -51,7 +51,7 @@ void ParticipantGravityPointAction::setLocation(float dt) {
     float px = person->getLocation().x;
     float py = person->getLocation().y;
 
-    if(!fixed) {
+    if(!fixed) { // In place, should we ever want to go back to standard functionality dynamically.
         float diffThreshold = config.gravity().participant().movedThreshold*dt;
 
         Vector2 diff = person->getLocation() - prevLocation;
@@ -67,25 +67,29 @@ void ParticipantGravityPointAction::setLocation(float dt) {
             prevDirection = direction;
         }
 
-        // Put the gravityPoint in front of the person
+        // Set the direction in front of the person
         Vector2 gPointDirection = prevDirection;
         float distThreshold = config.gravity().participant().sideThreshold;
         float distToTop = py;
         float distToLeft = px;
         float distToRight = config.screenWidth()-px;
         float distToBottom = config.screenHeight()-py;
+        // Check whether the person is too close to the side of the scene
         if(distToTop < distThreshold || distToBottom < distThreshold){
+            // Move the gravity point to the left or right depending on which is further
             if(distToLeft < distToRight)
                 gPointDirection = Vector2(1,0);
             else
                 gPointDirection = Vector2(-1,0);
         }else if(distToLeft < distThreshold || distToRight < distThreshold){
+            // Move the gravity point to the top or bottom depending on which is further
             if(distToTop < distToBottom)
                 gPointDirection = Vector2(0,1);
             else
                 gPointDirection = Vector2(0,-1);
         }
 
+        // Place the gravity point at the right distance in the determined direction
         float x = px + config.gravity().participant().distance*gPointDirection.x;
         float y = py + config.gravity().participant().distance*gPointDirection.y;
         gravityPoint->location.x = x;
@@ -114,7 +118,9 @@ bool ParticipantGravityPointAction::isDone(std::vector<Action*> &followUp) {
 void ParticipantGravityPointAction::execute(float dt) {
     setLocation(dt);
 
+    // If the person is standing still
     if(person->movement_type == scene_interface::Person::StandingStill){
+        // Slowly fade out the gravity
         gravityPoint->gravity -= config.gravity().participant().gravity/config.effect().trail().standingStillFadeTime*dt;
         antigravityPoint->gravity += config.gravity().participant().antigravity/config.effect().trail().standingStillFadeTime*dt;
         if(gravityPoint->gravity < 0)gravityPoint->gravity = 0;

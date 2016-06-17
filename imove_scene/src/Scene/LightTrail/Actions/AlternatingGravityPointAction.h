@@ -19,6 +19,7 @@ private:
     LightTrailRepository* lightTrails;
     Timer timer;
     std::shared_ptr<GravityPoint> myGravityPoint;
+	LightTrailSceneConfiguration config;
 public:
 
     AlternatingGravityPointAction(
