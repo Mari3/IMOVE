@@ -41,5 +41,5 @@ void Person::decreaseNotMovedCount() {
 }
 
 void Person::resetNotMovedCount() {
-  not_moved_count = 100;
+  not_moved_count = 1000;
 }
