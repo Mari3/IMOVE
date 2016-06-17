@@ -26,6 +26,7 @@ PersonColorHoleAction::PersonColorHoleAction(const std::shared_ptr<LightPerson> 
 }
 
 bool PersonColorHoleAction::isDone(std::vector<Action *> &followUp) {
+    // If the person is not a participant anymore
     if(person->person_type != scene_interface::Person::PersonType::Participant){
         finish();
         return true;
@@ -34,9 +35,9 @@ bool PersonColorHoleAction::isDone(std::vector<Action *> &followUp) {
     lightPeople->for_each([&](std::shared_ptr<LightPerson> person){
         if(!done && person != this->person) {
             float diff = (person->getLocation() - colorHole->location).size();
+            // If the other person is close enough to this person
             if (diff < config.effect().colorHole().destructionRange) {
                 finish();
-                //TODO create followup
                 done = true;
             }
         }
@@ -45,12 +46,13 @@ bool PersonColorHoleAction::isDone(std::vector<Action *> &followUp) {
 }
 
 void PersonColorHoleAction::execute(float dt) {
-    //Logic
     colorHole->location.x = person->getLocation().x;
     colorHole->location.y = person->getLocation().y;
     lightTrails->for_each([&](std::shared_ptr<LightTrail> trail){
         float diff = (trail->getLocation()-colorHole->location).size();
+        // If a trail is close enough
         if(diff < config.effect().colorHole().consumeRange && colorHole->hue.contains(trail->hue)){
+            // Consume it
             colorHole->consume(trail);
             lightTrails->scheduleForRemoval(trail);
         }

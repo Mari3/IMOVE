@@ -38,11 +38,18 @@ public:
 
     void removeAll() override
     {
-        int modifier = 0;
+        std::map<long,long> swapped;
         for(auto &index : scheduledForRemoval)
         {
-            items.erase(items.cbegin()+index+modifier);
-            modifier--;
+            long i = index;
+            while(swapped.count(i) > 0){
+                i = swapped[index];
+            }
+            items[i].swap(items.back());
+            items.pop_back();
+            long size = static_cast<long>(items.size());
+            if(size != i)
+                swapped[size] = i;
         }
         scheduledForRemoval.clear();
     }

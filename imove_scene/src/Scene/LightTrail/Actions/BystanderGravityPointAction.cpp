@@ -24,7 +24,7 @@ BystanderGravityPointAction::BystanderGravityPointAction(std::shared_ptr<LightPe
     config.gravity().bystander().range));
     setLocation();
 
-
+    // Add trails specifically for this person
     sources->for_each([&](std::shared_ptr<LightSource> source){
         if(fabsf(source->getHue().getCenter() - person->hue.getCenter()) < 45){
             for(int i=0;i<config.effect().trail().bystanderInitAmount;++i) {
@@ -91,6 +91,7 @@ void BystanderGravityPointAction::execute(float dt) {
         }
     }
 
+    // Update the trails
     myTrails->for_each([&](std::shared_ptr<LightTrail> trail){
         Vector2 force = gravityPoint->calculateForce(*trail,config);
         trail->applyForce(force,dt,config.trail().trail().speedCap,config.trail().sidesEnabled(),config.screenWidth(),

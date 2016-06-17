@@ -9,10 +9,13 @@ BottomLeftHue: [ 270, 0 ]
 SendOutDelay: 3.
 SendOutSpeed: [ 0, 2 ]
 TrailCap: 40
+SourceHueChangeRange: 2.
 ParticipantGravity: 3.46
 ParticipantAntiGravity: 0.46
 ParticipantGravityRange: 2.
 ParticipantGravityDistance: 0
+ParticipantMovedThreshold: 1.
+ParticipantSideThreshold: 2.
 BystanderGravity: 15
 BystanderGravityDelay: 4.
 BystanderGravityRange: -2.
@@ -28,6 +31,7 @@ TrailThickness: .035
 MixingSpeed: 3.
 MixingDistance: 2.
 MixingRevertTime: 1.
+MixingTrailRange: 2.
 ExplosionAntigravity: 27.68
 ExplosionGravity: 10.38
 ExplosionExTime: .2
@@ -46,3 +50,5 @@ StandingStillFadeTime: 40
 InitiateTrailRange: 1.8
 BystanderInitiateTrails: 10
 ParticipantInitiateTrails: 10
+SourceTrailAmount: 10
+SourceTrailPlacementRange: .2

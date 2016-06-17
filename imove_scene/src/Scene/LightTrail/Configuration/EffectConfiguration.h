@@ -27,16 +27,18 @@ struct ColorHoleConfig {
 };
 
 struct MixingConfig {
-    float speed, distance, revertTime, thickness;
+    float speed, distance, revertTime, thickness, trailRange;
     MixingConfig(){}
     MixingConfig(cv::FileStorage fs, float meter){
         fs["MixingSpeed"] >> speed;
         fs["MixingDistance"] >> distance;
         fs["MixingRevertTime"] >> revertTime;
         fs["MixingEffectThickness"] >> thickness;
+        fs["MixingTrailRange"] >> trailRange;
 
         distance *= meter;
         thickness *= meter;
+        trailRange *= meter;
     }
 };
 
@@ -80,6 +82,18 @@ struct TrailEffectConfig {
     }
 };
 
+struct SourceEffectConfig {
+    int trailAmount;
+    float placementRange;
+    SourceEffectConfig(){}
+    SourceEffectConfig(cv::FileStorage fs, float meter){
+        fs["SourceTrailAmount"] >> trailAmount;
+        fs["SourceTrailPlacementRange"] >> placementRange;
+
+        placementRange *= meter;
+    }
+};
+
 class EffectConfiguration {
 private:
     // Mixing
@@ -93,11 +107,14 @@ private:
     StarConfig _starConfig;
 
     TrailEffectConfig _trailEffectConfig;
+
+    SourceEffectConfig  _sourceEffectConfig;
 public:
 
     EffectConfiguration(const MixingConfig &_mixingConfig, const ExplosionConfig &_explosionConfig,
                             const ColorHoleConfig &_colorHoleConfig, const StarConfig &_starConfig,
-                            TrailEffectConfig _trailEffectConfig);
+                            TrailEffectConfig _trailEffectConfig,
+                            SourceEffectConfig _sourceEffectConfig);
 
 
     const MixingConfig & mixing() const;
@@ -109,6 +126,8 @@ public:
     const StarConfig & star() const;
 
     const TrailEffectConfig & trail() const;
+
+    const SourceEffectConfig & source() const;
 
     static const EffectConfiguration readFromFile(cv::FileStorage fs, float meter);
 };

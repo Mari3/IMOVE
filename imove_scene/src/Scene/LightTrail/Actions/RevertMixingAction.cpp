@@ -30,6 +30,7 @@ void RevertMixingAction::execute(float dt) {
 
     progressLeft -= currentProgress;
 
-    MixingAction::shift(trails,person1->getLocation(), person1->hue,-currentProgress);
-    MixingAction::shift(trails,person2->getLocation(), person2->hue,currentProgress);
+    // Shift both the hues back
+    MixingAction::shift(trails,person1->getLocation(), person1->hue,-currentProgress, config.effect().mixing().trailRange);
+    MixingAction::shift(trails,person2->getLocation(), person2->hue,currentProgress, config.effect().mixing().trailRange);
 }

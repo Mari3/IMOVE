@@ -14,12 +14,12 @@ class ParticipantCloseToSourceCondition : public Condition {
 private:
     LightPersonRepository* lightPeople;
     LightSourceRepository* lightSources;
-    LightTrailSceneConfiguration config;
+    LightSourceConfig config;
 public:
 
     ParticipantCloseToSourceCondition(LightPersonRepository *lightPeople,
                                           LightSourceRepository *lightSources,
-                                          const LightTrailSceneConfiguration &config);
+                                          const LightSourceConfig &config);
 
     int check(float dt, std::vector<Action *> &actions) override;
 

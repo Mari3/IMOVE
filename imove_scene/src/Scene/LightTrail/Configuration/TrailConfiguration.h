@@ -11,7 +11,7 @@
 #include "../../Util/Range.h"
 
 struct LightSourceConfig {
-    float sendOutDelay;
+    float sendOutDelay, hueChangeRange;
     int trailCap;
     util::Range sendOutSpeed;
     LightSourceConfig(){}
@@ -23,6 +23,9 @@ struct LightSourceConfig {
         sendOutSpeed = util::Range(sos.val[0]*meter,sos.val[1]*meter);
 
         fs["TrailCap"] >> trailCap;
+
+        fs["SourceHueChangeRange"] >> hueChangeRange;
+        hueChangeRange *= meter;
     }
 };
 
