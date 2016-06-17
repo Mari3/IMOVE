@@ -13,5 +13,5 @@ Meter_camera: 63.
 Meter_projector: 1.9650152587890625e+02
 Maximum_FPS_scene: 60
 FPS_capture_scene: 8
-Iterations_delay_peopleextracting: 5000
+Iterations_delay_peopleextracting: 0
 Factor_resize_capture_scene: 10

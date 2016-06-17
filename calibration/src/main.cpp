@@ -2,7 +2,7 @@
 #include <string>
 
 #include "CalibrationManager.hpp"
-#include "../../util/src/Calibration.hpp"
+#include "../../util/src/configuration/ImoveConfiguration.hpp"
 
 
 // arguments
@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
 	const char* configurationfilepath_calibration = argv[CONFIGPATH_ARGN];
 	
 	// read from config if property is not set, use default
-	Calibration calibration =	Calibration::createFromFile(
+	ImoveConfiguration* calibration = ImoveConfiguration::createFromFile(
 		configurationfilepath_calibration,
 		std::stoi(argv[CAMERADEVICE_ARGN]),
 		cv::Size(
@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
 	manager.run();
 	
 	// write calibrated config
-	calibration.writeFile(configurationfilepath_calibration);
+	calibration->writeFile(configurationfilepath_calibration);
 	
 	return EXIT_SUCCESS;
 }

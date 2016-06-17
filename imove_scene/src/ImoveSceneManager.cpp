@@ -9,12 +9,13 @@
 #include "Windows/SceneWindow.hpp"
 
 #include "../../scene_interface_sma/src/SharedMemory.hpp"
+#include "../../util/src/configuration/ProjectorConfiguration.hpp"
 
 void ImoveSceneManager::sendingSceneFrameThread(ImoveSceneManager* imove_scene_manager) {
 	imove_scene_manager->sendingSceneFrame();
 }
 
-ImoveSceneManager::ImoveSceneManager(Calibration& calibration, const LightTrailSceneConfiguration& configuration_lighttrail) :
+ImoveSceneManager::ImoveSceneManager(ImoveConfiguration* calibration, const LightTrailSceneConfiguration& configuration_lighttrail) :
 calibration(calibration),
 projection(Projection(calibration))
 {
@@ -37,15 +38,17 @@ projection(Projection(calibration))
 }
 
 void ImoveSceneManager::run() {
+	ProjectorConfiguration* projector_configuration = this->calibration->getProjectorConfiguration();
+
 	// setup scene window
-	SceneWindow window_scene(this->calibration.getResolutionProjector(), this->calibration.getFullscreenProjector());
+	SceneWindow window_scene(projector_configuration->getResolution(), projector_configuration->getFullscreen());
 
 	// setup clock
 	sf::Clock clock;
 
 	float dt;
 	float capture_dt = 0;
-	float SPF_capture_scene = 1.f / (float) this->calibration.getFpsCaptureScene();
+	float SPF_capture_scene = 1.f / (float) this->calibration->getProjectioneliminationConfiguration()->getFpsCaptureScene();
 	
 	// while allowed to run
 	while (this->running->running) {
@@ -140,7 +143,7 @@ void ImoveSceneManager::receiveExtractedpeopleAndUpdateScene() {
 void ImoveSceneManager::sendingSceneFrame() {
 	boost::interprocess::offset_ptr<peopleextractor_interface_sma::SceneframeQueue>& pi_sceneframe_queue = this->pi_sceneframe_queue;
 	boost::interprocess::offset_ptr<Running>& running = this->running;
-	const Calibration& calibration = this->calibration;
+	const float& factor_resize_capture_scene = this->calibration->getProjectioneliminationConfiguration()->getFactorResizeCaptureScene();
 	std::queue<sf::Image>& sceneframe_queue = this->sceneframe_queue;
 	boost::interprocess::managed_shared_memory* segment = this->segment;
 
@@ -150,15 +153,15 @@ void ImoveSceneManager::sendingSceneFrame() {
 			// create shared memory scene frame from sfml image
 			sf::Vector2u size_image = frame_scene.getSize();
 			boost::interprocess::offset_ptr<peopleextractor_interface_sma::Image> pi_sceneframe = segment->construct<peopleextractor_interface_sma::Image>(boost::interprocess::anonymous_instance)(
-				((unsigned int) size_image.x) / calibration.getFactorResizeCaptureScene(),
-				((unsigned int) size_image.y) / calibration.getFactorResizeCaptureScene(),
+				((unsigned int) size_image.x) / factor_resize_capture_scene,
+				((unsigned int) size_image.y) / factor_resize_capture_scene,
 				segment
 			);
-			for (unsigned int x = 0; x < ((unsigned int) size_image.x) / calibration.getFactorResizeCaptureScene(); ++x) {
-				for (unsigned int y = 0; y < ((unsigned int) size_image.y) / calibration.getFactorResizeCaptureScene(); ++y) {
+			for (unsigned int x = 0; x < ((unsigned int) size_image.x) / factor_resize_capture_scene; ++x) {
+				for (unsigned int y = 0; y < ((unsigned int) size_image.y) / factor_resize_capture_scene; ++y) {
 					sf::Color sf_pixel = frame_scene.getPixel(
-						x * (signed int) calibration.getFactorResizeCaptureScene(),
-						y * (signed int) calibration.getFactorResizeCaptureScene()
+						x * (signed int) factor_resize_capture_scene,
+						y * (signed int) factor_resize_capture_scene
 					);
 					pi_sceneframe->setRGB(x, y, (unsigned char) sf_pixel.r, (unsigned char) sf_pixel.g, (unsigned char) sf_pixel.b);
 				}
