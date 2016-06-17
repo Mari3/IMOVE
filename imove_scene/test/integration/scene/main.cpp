@@ -20,6 +20,9 @@ public:
     void setLocation(const si::Location &location){
         this->location = location;
     }
+    void setType(si::Person::PersonType type){
+        this->person_type = type;
+    }
 };
 
 struct Scenario{
@@ -174,7 +177,7 @@ struct RestartAlternatingScenario : public Scenario {
 struct BystanderScenario : public Scenario {
 
     float height;
-    bool done = false;
+    bool done = false, done2 = false;
 
     BystanderScenario(const LightTrailSceneConfiguration &config, Scene *scene) {
         for(int i=0;i<300;++i)
@@ -201,12 +204,16 @@ struct BystanderScenario : public Scenario {
             people[0].setLocation(si::Location(p0loc.getX(),p0loc.getY()-20.f*dt));
             if(p0loc.getY() < height/2){
                 done = true;
-                people.clear();
-                people.push_back(TestingPerson(0,
-                                               p0loc,
-                                               si::Person::PersonType::None,
-                                               si::Person::MovementType::Moving
-                ));
+            }
+        }else if(!done2){
+            si::Location p0loc = people[0].getLocation();
+            people[0].setLocation(si::Location(p0loc.getX(),p0loc.getY()+20.f*dt));
+            if(p0loc.getY() > height){
+                people[0].setType(si::Person::Bystander);
+            }
+            if(p0loc.getY() > height+120) {
+                done2 = true;
+                people[0].setType(si::Person::None);
             }
         }
     }
@@ -300,6 +307,43 @@ struct StandingStillScenario : public Scenario {
 
 };
 
+struct ManyBystandersScenario : public Scenario {
+    Timer addTimer, removeTimer;
+    float x,y;
+
+    unsigned int counter = 1;
+    unsigned int removeCounter = 0;
+
+    ManyBystandersScenario(const LightTrailSceneConfiguration& config) : addTimer(10.f,true), removeTimer(30.f,true)
+    {
+        x = config.screenWidth()/10;
+        y = config.screenHeight()+100;
+        people.push_back(TestingPerson(counter,
+                                       si::Location(counter*x,y),
+                                       si::Person::PersonType::Bystander,
+                                       si::Person::MovementType::Moving
+        ));
+        counter++;
+    }
+
+    void update(float dt) override {
+        if(addTimer.update(dt)){
+            people.push_back(TestingPerson(counter,
+                                           si::Location(counter*x,y),
+                                           si::Person::PersonType::Bystander,
+                                           si::Person::MovementType::Moving
+            ));
+            counter++;
+        }
+        if(removeTimer.update(dt)){
+            people[removeCounter].setType(si::Person::PersonType::None);
+            removeCounter++;
+            people[removeCounter].setType(si::Person::PersonType::None);
+            removeCounter++;
+        }
+    }
+};
+
 namespace SceneIntegration {
     enum ScenarioCode {
         Standard,
@@ -311,7 +355,8 @@ namespace SceneIntegration {
         Bystander,
         ColorHole,
         SourceColor,
-        StandingStill
+        StandingStill,
+        ManyBystanders
     };
 }
 
@@ -366,6 +411,9 @@ int main(int argc, char** argv){
             break;
         case SceneIntegration::StandingStill:
             scenario = new StandingStillScenario(config);
+            break;
+        case SceneIntegration::ManyBystanders:
+            scenario = new ManyBystandersScenario(config);
             break;
     }
 

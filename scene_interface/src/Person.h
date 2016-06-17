@@ -34,12 +34,11 @@ namespace scene_interface {
 		// Current location
 		Location location;
 
-	private:
-			// Person type
-			PersonType person_type;
+		// Person type
+		PersonType person_type;
 
-			// Movement type
-			MovementType movement_type;
+		// Movement type
+		MovementType movement_type;
 	};
 }
 
