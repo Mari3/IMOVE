@@ -7,7 +7,7 @@
 
 ParticipantCloseToSourceCondition::ParticipantCloseToSourceCondition(LightPersonRepository *lightPeople,
                                                                      LightSourceRepository *lightSources,
-                                                                     const LightTrailSceneConfiguration &config)
+                                                                     const LightSourceConfig &config)
         : lightPeople(lightPeople), lightSources(lightSources), config(config) { }
 
 int ParticipantCloseToSourceCondition::check(float dt, std::vector<Action *> &actions) {
@@ -16,7 +16,7 @@ int ParticipantCloseToSourceCondition::check(float dt, std::vector<Action *> &ac
         lightSources->for_each([&](std::shared_ptr<LightSource> source){
             if(person->person_type == scene_interface::Person::Participant && !person->isColorHole) {
                 float diff = (person->getLocation() - source->getLocation()).size();
-                if (diff < 100.f) {
+                if (diff < config.hueChangeRange) {
                     Action* newAction = new ChangeHueToSourceAction(person,source);
                     actions.push_back(newAction);
                     ++i;

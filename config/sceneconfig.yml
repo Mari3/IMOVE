@@ -9,6 +9,7 @@ BottomLeftHue: [ 270, 0 ]
 SendOutDelay: 3.
 SendOutSpeed: [ 0, 2 ]
 TrailCap: 40
+SourceHueChangeRange: 2.
 ParticipantGravity: 3.46
 ParticipantAntiGravity: 0.46
 ParticipantGravityRange: 2.
