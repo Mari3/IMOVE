@@ -14,7 +14,8 @@ InitiateParticipantAction::InitiateParticipantAction(LightTrailRepository *globa
 
     sources->for_each([&](std::shared_ptr<LightSource> source){
         if(fabsf(source->getHue().getCenter() - person->hue.getCenter()) < 45){
-            for(unsigned int i=0;i<(10-myTrails->size());++i) {
+            int amount = config.effect().trail().participantInitAmount-static_cast<int>(myTrails->size());
+            for(int i=0;i<amount;++i) {
                 myTrails->add(std::shared_ptr<LightTrail>(source->sendOut()));
                 person->initiativeTrailCount++;
             }
@@ -41,7 +42,7 @@ void InitiateParticipantAction::execute(float dt) {
         trail->applyForce(force,dt,config.trail().trail().speedCap,config.trail().sidesEnabled(),config.screenWidth(),config.screenHeight());
 
         float dist = (trail->location-person->getLocation()).size();
-        if(dist < 200) {
+        if(dist < config.effect().trail().initRange) {
             globalTrails->add(trail);
             myTrails->scheduleForRemoval(trail);
             person->initiativeTrailCount--;

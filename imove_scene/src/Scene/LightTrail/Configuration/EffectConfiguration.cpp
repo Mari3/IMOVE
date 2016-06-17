@@ -6,10 +6,11 @@
 
 EffectConfiguration::EffectConfiguration(const MixingConfig &_mixingConfig, const ExplosionConfig &_explosionConfig,
                                          const ColorHoleConfig &_colorHoleConfig, const StarConfig &_starConfig,
-                                         float _standingStillFadeTime) : _mixingConfig(_mixingConfig),
-                                                                         _explosionConfig(_explosionConfig),
-                                                                         _colorHoleConfig(_colorHoleConfig), _starConfig(_starConfig),
-                                                                         _standingStillFadeTime(_standingStillFadeTime) { }
+                                         TrailEffectConfig _trailEffectConfig) : _mixingConfig(_mixingConfig),
+                                                                                 _explosionConfig(_explosionConfig),
+                                                                                 _colorHoleConfig(_colorHoleConfig),
+                                                                                 _starConfig(_starConfig),
+                                                                                 _trailEffectConfig(_trailEffectConfig) { }
 
 const MixingConfig &EffectConfiguration::mixing() const {
     return _mixingConfig;
@@ -27,6 +28,15 @@ const StarConfig &EffectConfiguration::star() const {
     return _starConfig;
 }
 
-float EffectConfiguration::standingStillFadeTime() const {
-    return _standingStillFadeTime;
+const TrailEffectConfig &EffectConfiguration::trail() const {
+    return _trailEffectConfig;
 }
+
+const EffectConfiguration EffectConfiguration::readFromFile(cv::FileStorage fs, float meter) {
+    return EffectConfiguration(MixingConfig(fs,meter),ExplosionConfig(fs,meter),
+                               ColorHoleConfig(fs,meter),StarConfig(fs,meter),
+                               TrailEffectConfig(fs,meter)
+    );
+}
+
+

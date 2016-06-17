@@ -13,12 +13,12 @@ bool RemoveTrailsAction::isDone(std::vector<Action *> &followUp) {
 }
 
 void RemoveTrailsAction::execute(float dt) {
-    int removalCount = 10-person->initiativeTrailCount;
+    int removalCount = config.effect().trail().participantInitAmount-person->initiativeTrailCount;
     int i=0;
     trails->for_each([&](std::shared_ptr<LightTrail> trail){
         if(i < removalCount &&
            person->hue.contains(trail->hue) &&
-           (trail->location-person->getLocation()).size() < 200
+           (trail->location-person->getLocation()).size() < config.effect().trail().initRange
                 ){
             trails->scheduleForRemoval(trail);
             i++;
