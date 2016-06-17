@@ -156,7 +156,7 @@ LightPersonRepository* lightPeople) : Scene(),
             static_cast<Condition*>(new ColorHoleTimerCondition(colorHoles,lightPeople,config,lightTrails,gravityPoints))
     ));
     conditions.push_back(std::unique_ptr<Condition>(
-            static_cast<Condition*>(new ParticipantCloseToSourceCondition(lightPeople,lightSources,config))
+            static_cast<Condition*>(new ParticipantCloseToSourceCondition(lightPeople,lightSources,config.trail().lightSource()))
     ));
     conditions.push_back(std::unique_ptr<Condition>(
             static_cast<Condition*>(new PersonDisappearedCondition(lightPeople,lightTrails,config))
