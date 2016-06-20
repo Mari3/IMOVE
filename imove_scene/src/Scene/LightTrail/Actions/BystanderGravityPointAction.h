@@ -11,7 +11,7 @@
 
 class BystanderGravityPointAction : public Action {
 private:
-    LightTrailRepository *myTrails, *globalTrails;
+    LightTrailRepository *globalTrails;
     LightSourceRepository* sources;
     std::shared_ptr<GravityPoint> gravityPoint;
     std::shared_ptr<LightPerson> person;
@@ -19,11 +19,11 @@ private:
     sf::RenderTexture &texture;
     bool gravityPointActive;
     LightTrailSceneConfiguration config;
+    bool init = true;
     void setLocation();
 public:
     explicit BystanderGravityPointAction(std::shared_ptr<LightPerson> person,
                                              LightSourceRepository *sources,
-                                             LightTrailRepository *myTrails,
                                              LightTrailRepository *globalTrails,
                                              const LightTrailSceneConfiguration &config,
                                              sf::RenderTexture &texture);

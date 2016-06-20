@@ -1,14 +1,13 @@
-#include <iostream>
 #include <math.h>
 #include "ParticipantGravityPointAction.h"
 #include "../../../../../scene_interface/src/Person.h"
 
 ParticipantGravityPointAction::ParticipantGravityPointAction(std::shared_ptr<LightPerson> person,
-                                                             GravityPointRepository* gravityPoints,
-                                                             const LightTrailSceneConfiguration& config)
-	: gravityPoints(gravityPoints), person(person), config(config), prevLocation(person->getLocation()),
-      prevDirection(0,0), baseDirection(0,0)
-{
+                                                             GravityPointRepository *gravityPoints,
+                                                             const LightTrailSceneConfiguration &config,
+                                                             LightTrailRepository *trails)
+	: gravityPoints(gravityPoints), trails(trails), person(person), config(config), prevLocation(person->getLocation()),
+      prevDirection(0,0), baseDirection(0,0) {
 
     //Create the gravity point
     gravityPoint = std::shared_ptr<GravityPoint>(new GravityPoint(
@@ -109,6 +108,27 @@ bool ParticipantGravityPointAction::isDone(std::vector<Action*> &followUp) {
     if(person->person_type != scene_interface::Person::PersonType::Participant){
         gravityPoints->scheduleForRemoval(gravityPoint);
         gravityPoints->scheduleForRemoval(antigravityPoint);
+
+        int removalCount = config.effect().trail().participantInitAmount-person->trails->size();
+
+        std::vector<std::shared_ptr<LightTrail>> hueTrails;
+
+        trails->for_each([&](std::shared_ptr<LightTrail> trail){
+            hueTrails.push_back(trail);
+        });
+
+        Vector2 ploc = person->getLocation();
+        std::sort(hueTrails.begin(),hueTrails.end(),[ploc](std::shared_ptr<LightTrail> x, std::shared_ptr<LightTrail> y){
+            return (x->location-ploc).size() < (y->location-ploc).size();
+        });
+
+        for(unsigned int i=0;i<(unsigned int) removalCount&&i<hueTrails.size();++i){
+            trails->scheduleForRemoval(hueTrails[i]);
+            if(person->person_type != scene_interface::Person::None && person->hue.contains(hueTrails[i]->hue)){
+                person->trails->add(hueTrails[i]);
+            }
+        }
+
         return true;
     }
     return false;

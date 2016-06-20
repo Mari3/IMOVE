@@ -11,6 +11,7 @@
 class ParticipantGravityPointAction : public Action {
 private:
     GravityPointRepository* gravityPoints;
+    LightTrailRepository* trails;
     std::shared_ptr<GravityPoint> gravityPoint;
     std::shared_ptr<GravityPoint> antigravityPoint;
     std::shared_ptr<LightPerson> person;
@@ -20,8 +21,10 @@ private:
     bool fixed = false;
     void setLocation(float dt);
 public:
-    explicit ParticipantGravityPointAction(std::shared_ptr<LightPerson> person, GravityPointRepository* gravityPoints,
-    const LightTrailSceneConfiguration& config);
+    explicit ParticipantGravityPointAction(std::shared_ptr<LightPerson> person,
+                                               GravityPointRepository *gravityPoints,
+                                               const LightTrailSceneConfiguration &config,
+                                               LightTrailRepository *trails);
 
     bool isDone(std::vector<Action*> &followUp) override;
 
