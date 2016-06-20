@@ -14,15 +14,21 @@ bool RemoveTrailsAction::isDone(std::vector<Action *> &followUp) {
 
 void RemoveTrailsAction::execute(float dt) {
     int removalCount = config.effect().trail().participantInitAmount-person->initiativeTrailCount;
-    int i=0;
-    // Remove the first [removalCount] trails of the persons hue that are within range
+
+    std::vector<std::shared_ptr<LightTrail>> hueTrails;
+
     trails->for_each([&](std::shared_ptr<LightTrail> trail){
-        if(i < removalCount &&
-           person->hue.contains(trail->hue) &&
-           (trail->location-person->getLocation()).size() < config.effect().trail().initRange
-                ){
-            trails->scheduleForRemoval(trail);
-            i++;
+        if(person->hue.contains(trail->hue)){
+            hueTrails.push_back(trail);
         }
     });
+
+    Vector2 ploc = person->getLocation();
+    std::sort(hueTrails.begin(),hueTrails.end(),[ploc](std::shared_ptr<LightTrail> x, std::shared_ptr<LightTrail> y){
+        return (x->location-ploc).size() < (y->location-ploc).size();
+    });
+
+    for(int i=0;i<removalCount;++i){
+        trails->scheduleForRemoval(hueTrails[i]);
+    }
 }
