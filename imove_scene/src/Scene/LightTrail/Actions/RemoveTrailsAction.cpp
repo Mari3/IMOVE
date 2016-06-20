@@ -18,9 +18,7 @@ void RemoveTrailsAction::execute(float dt) {
     std::vector<std::shared_ptr<LightTrail>> hueTrails;
 
     trails->for_each([&](std::shared_ptr<LightTrail> trail){
-        if(person->hue.contains(trail->hue)){
-            hueTrails.push_back(trail);
-        }
+        hueTrails.push_back(trail);
     });
 
     Vector2 ploc = person->getLocation();
