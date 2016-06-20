@@ -15,13 +15,13 @@
 class InitiateParticipantAction : public Action {
 private:
     LightTrailRepository* globalTrails;
-    LightTrailRepository* myTrails;
     LightSourceRepository* sources;
     std::shared_ptr<LightPerson> person;
     GravityPoint gravityPoint;
     LightTrailSceneConfiguration config;
+    bool init = true;
 public:
-    InitiateParticipantAction(LightTrailRepository *globalTrails, LightTrailRepository *myTrails,
+    InitiateParticipantAction(LightTrailRepository *globalTrails,
                               LightSourceRepository *sources, const std::shared_ptr<LightPerson> &person,
                               const LightTrailSceneConfiguration& config, sf::RenderTexture &texture
         );

@@ -1,12 +1,13 @@
 #include "LightPerson.h"
 
-LightPerson::LightPerson(const Vector2 &location, unsigned int id, scene_interface::Person::PersonType person_type, scene_interface::Person::MovementType movement_type, util::Range hue) : 
-                                                                                                 location(location),
-                                                                                                 id(id),
-                                                                                                 person_type(person_type),
-                                                                                                 movement_type(movement_type),
-    hue(hue)
-{ }
+LightPerson::LightPerson(const Vector2 &location, unsigned int id, scene_interface::Person::PersonType person_type,
+                         scene_interface::Person::MovementType movement_type, util::Range hue,
+                         Repository<LightTrail> *trails) :
+        location(location),
+        id(id),
+        person_type(person_type),
+        movement_type(movement_type),
+        hue(hue), trails(trails) { }
 
 void LightPerson::shiftHue(float shift) {
     hue += shift;

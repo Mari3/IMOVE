@@ -194,9 +194,9 @@ void LightTrailScene::processPeople() {
 								scene_interface::Location llocation = person.getLocation();
                 lightPeople->add(
                         std::shared_ptr<LightPerson>(new LightPerson(Vector2(
-													llocation.getX(),
-													llocation.getY()
-											  ), id, person.getPersonType(), person.getMovementType(), hue)));
+                                llocation.getX(),
+                                llocation.getY()
+                        ), id, person.getPersonType(), person.getMovementType(), hue, new LightTrailVectorRepository())));
 								hueCounter = (hueCounter + 1) % 4;
 
             }
@@ -205,9 +205,6 @@ void LightTrailScene::processPeople() {
             if(person->person_type == scene_interface::Person::PersonType::None){ //If this person does not exist anymore
                 //Remove it from the list
                 lightPeople->scheduleForRemoval(person);
-                actions.push_back(std::unique_ptr<Action>(
-                        static_cast<Action*>(new RemoveTrailsAction(person,lightTrails,config))
-                ));
             }
         });
         lightPeople->removeAll();

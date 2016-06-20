@@ -2,6 +2,7 @@
 // Created by Wouter Posdijk on 16/06/16.
 //
 
+#include <iostream>
 #include "RemoveTrailsAction.h"
 
 RemoveTrailsAction::RemoveTrailsAction(const std::shared_ptr<LightPerson> &person, LightTrailRepository *trails,
@@ -13,20 +14,5 @@ bool RemoveTrailsAction::isDone(std::vector<Action *> &followUp) {
 }
 
 void RemoveTrailsAction::execute(float dt) {
-    int removalCount = config.effect().trail().participantInitAmount-person->initiativeTrailCount;
 
-    std::vector<std::shared_ptr<LightTrail>> hueTrails;
-
-    trails->for_each([&](std::shared_ptr<LightTrail> trail){
-        hueTrails.push_back(trail);
-    });
-
-    Vector2 ploc = person->getLocation();
-    std::sort(hueTrails.begin(),hueTrails.end(),[ploc](std::shared_ptr<LightTrail> x, std::shared_ptr<LightTrail> y){
-        return (x->location-ploc).size() < (y->location-ploc).size();
-    });
-
-    for(unsigned int i=0;i<(unsigned int) removalCount&&i<hueTrails.size();++i){
-        trails->scheduleForRemoval(hueTrails[i]);
-    }
 }
