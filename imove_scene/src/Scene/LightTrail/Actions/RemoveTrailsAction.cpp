@@ -28,7 +28,7 @@ void RemoveTrailsAction::execute(float dt) {
         return (x->location-ploc).size() < (y->location-ploc).size();
     });
 
-    for(int i=0;i<removalCount;++i){
+    for(int i=0;i<removalCount&&i<hueTrails.size();++i){
         trails->scheduleForRemoval(hueTrails[i]);
     }
 }
