@@ -1,3 +1,4 @@
+#include <iostream>
 #include "../../../../../util/src/Vector2.h"
 #include "UpdateLightTrailsAction.h"
 
@@ -16,6 +17,8 @@ void UpdateLightTrailsAction::execute(float dt) {
             lightTrails->scheduleForRemoval(lightTrail);
         }
     });
+
+    std::cerr << "Lighttrail count: " << lightTrails->size() << std::endl;
 }
 
 UpdateLightTrailsAction::UpdateLightTrailsAction(LightTrailRepository* lightTrails, GravityPointRepository* gravityPoints,
