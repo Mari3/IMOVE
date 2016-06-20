@@ -2,7 +2,6 @@
 // Created by Wouter Posdijk on 30/05/16.
 //
 
-#include <iostream>
 #include "ExplosionAction.h"
 
 ExplosionAction::ExplosionAction(std::shared_ptr<LightPerson> person, GravityPointRepository *gravityPoints,

@@ -1,4 +1,3 @@
-#include <iostream>
 #include <math.h>
 #include "ParticipantGravityPointAction.h"
 #include "../../../../../scene_interface/src/Person.h"
@@ -111,8 +110,6 @@ bool ParticipantGravityPointAction::isDone(std::vector<Action*> &followUp) {
         gravityPoints->scheduleForRemoval(antigravityPoint);
 
         int removalCount = config.effect().trail().participantInitAmount-person->trails->size();
-        std::cerr << "Removalcount: " << config.effect().trail().participantInitAmount << " - " <<
-        person->trails->size() << " = " << removalCount << std::endl;
 
         std::vector<std::shared_ptr<LightTrail>> hueTrails;
 
@@ -126,7 +123,6 @@ bool ParticipantGravityPointAction::isDone(std::vector<Action*> &followUp) {
         });
 
         for(unsigned int i=0;i<(unsigned int) removalCount&&i<hueTrails.size();++i){
-            std::cerr << "rm: " << i << std::endl;
             trails->scheduleForRemoval(hueTrails[i]);
             if(person->person_type != scene_interface::Person::None && person->hue.contains(hueTrails[i]->hue)){
                 person->trails->add(hueTrails[i]);

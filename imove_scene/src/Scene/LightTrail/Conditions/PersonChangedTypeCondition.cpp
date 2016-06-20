@@ -1,10 +1,8 @@
 #include "PersonChangedTypeCondition.h"
 #include <memory>
-#include <iostream>
 #include "../Actions/BystanderGravityPointAction.h"
 #include "../Actions/ParticipantGravityPointAction.h"
 #include "../Actions/InitiateParticipantAction.h"
-#include "../Repositories/LightsSceneVectorRepositories.h"
 
 int PersonChangedTypeCondition::check(float dt, std::vector<Action*> &actions) {
     int i = 0;
@@ -16,7 +14,6 @@ int PersonChangedTypeCondition::check(float dt, std::vector<Action*> &actions) {
             actions.push_back(new BystanderGravityPointAction(person,lightSources,
                                                               lightTrails,
                                                               config,texture));
-            std::cerr << "Init bystander action: " << person->getId() << std::endl;
         } // Else if the person turned particpant
         else if((oldPersonType.count(person->getId()) == 0 || oldPersonType[person->getId()] != scene_interface::Person::PersonType::Participant) && person->person_type == scene_interface::Person::PersonType::Participant)
         {
