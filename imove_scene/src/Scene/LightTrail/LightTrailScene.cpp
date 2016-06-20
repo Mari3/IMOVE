@@ -19,6 +19,7 @@
 #include "Conditions/ParticipantCloseToSourceCondition.h"
 #include "Actions/StarEffectAction.h"
 #include "Conditions/PersonDisappearedCondition.h"
+#include "Actions/RemoveTrailsAction.h"
 
 void LightTrailScene::draw(sf::RenderTarget &target) {
     if(config.trail().draw().inverted)
@@ -204,6 +205,9 @@ void LightTrailScene::processPeople() {
             if(person->person_type == scene_interface::Person::PersonType::None){ //If this person does not exist anymore
                 //Remove it from the list
                 lightPeople->scheduleForRemoval(person);
+                actions.push_back(std::unique_ptr<Action>(
+                        static_cast<Action*>(new RemoveTrailsAction(person,lightTrails,config))
+                ));
             }
         });
         lightPeople->removeAll();
