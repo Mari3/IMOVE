@@ -11,7 +11,6 @@ ExplosionAction::ExplosionAction(std::shared_ptr<LightPerson> person, GravityPoi
 {
     gPoint = std::shared_ptr<GravityPoint>(new GravityPoint(person->getLocation(),person->hue,-config.effect().explosion().antigravity));
     gravityPoints->add(gPoint);
-    std::cout << "Explosion action created!" << std::endl;
 }
 
 bool ExplosionAction::isDone(std::vector<Action*> &followUp) {
