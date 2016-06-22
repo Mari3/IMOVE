@@ -9,7 +9,6 @@
 #include <map>
 #include <vector>
 #include <memory>
-#include <iostream>
 #include <assert.h>
 #include "../LightPerson.h"
 #include "../../Util/Repository.h"

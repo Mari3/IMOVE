@@ -43,7 +43,7 @@ public:
         {
             long i = index;
             while(swapped.count(i) > 0){
-                i = swapped[index];
+                i = swapped[i];
             }
             items[i].swap(items.back());
             items.pop_back();

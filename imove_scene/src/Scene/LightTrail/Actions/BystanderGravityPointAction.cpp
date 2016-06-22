@@ -7,12 +7,10 @@
 
 BystanderGravityPointAction::BystanderGravityPointAction(std::shared_ptr<LightPerson> person,
                                                          LightSourceRepository *sources,
-                                                         LightTrailRepository *myTrails,
                                                          LightTrailRepository *globalTrails,
                                                          const LightTrailSceneConfiguration &config,
                                                          sf::RenderTexture &texture)
   :
-    myTrails(myTrails),
     globalTrails(globalTrails),
     sources(sources),
     person(person),
@@ -24,20 +22,10 @@ BystanderGravityPointAction::BystanderGravityPointAction(std::shared_ptr<LightPe
     config.gravity().bystander().range));
     setLocation();
 
-    // Add trails specifically for this person
-    sources->for_each([&](std::shared_ptr<LightSource> source){
-        if(fabsf(source->getHue().getCenter() - person->hue.getCenter()) < 45){
-            for(int i=0;i<config.effect().trail().bystanderInitAmount;++i) {
-                myTrails->add(std::shared_ptr<LightTrail>(source->sendOut()));
-                person->initiativeTrailCount++;
-            }
-        }
-    });
-
     gravityPointActive = true;
 
     effects.push_back(std::unique_ptr<Effect>(
-        static_cast<Effect*>(new LightTrailEffect(myTrails,config,texture))
+        static_cast<Effect*>(new LightTrailEffect(person->trails,config,texture))
     ));
 }
 
@@ -66,16 +54,23 @@ void BystanderGravityPointAction::setLocation() {
 
 bool BystanderGravityPointAction::isDone(std::vector<Action*> &followUp) {
     //This action is done when the person it tracks is not a bystander anymore
-    if(person->person_type == scene_interface::Person::PersonType::Participant){
-        followUp.push_back(
-                new InitiateParticipantAction(globalTrails,myTrails,sources,person,config,texture)
-        );
-        return true;
-    }
     return person->person_type != scene_interface::Person::PersonType::Bystander;
 }
 
 void BystanderGravityPointAction::execute(float dt) {
+    if(init){
+        // Add trails specifically for this person
+        sources->for_each([&](std::shared_ptr<LightSource> source){
+            if(fabsf(source->getHue().getCenter() - person->hue.getCenter()) < 45){
+                float trailcount = config.effect().trail().bystanderInitAmount-person->trails->size();
+                for(int i=0;i<trailcount;++i) {
+                    person->trails->add(std::shared_ptr<LightTrail>(source->sendOut()));
+                }
+            }
+        });
+        init = false;
+    }
+
     setLocation();
 
     if(timer.update(dt)){ //If the timer is done
@@ -92,7 +87,7 @@ void BystanderGravityPointAction::execute(float dt) {
     }
 
     // Update the trails
-    myTrails->for_each([&](std::shared_ptr<LightTrail> trail){
+    person->trails->for_each([&](std::shared_ptr<LightTrail> trail){
         Vector2 force = gravityPoint->calculateForce(*trail,config);
         trail->applyForce(force,dt,config.trail().trail().speedCap,config.trail().sidesEnabled(),config.screenWidth(),
                           config.screenHeight());
