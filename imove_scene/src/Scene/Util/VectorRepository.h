@@ -6,6 +6,7 @@
 #define IMOVE_VECTORREPOSITORY_H
 
 #include <vector>
+#include <map>
 #include "Repository.h"
 #include <algorithm>
 #include <memory>

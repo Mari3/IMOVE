@@ -1,9 +1,9 @@
 #include "ColorHole.h"
-#include "Repositories/LightsSceneVectorRepositories.h"
+#include "../Util/VectorRepository.h"
 
 ColorHole::ColorHole(Vector2 location, util::Range hue, float gravity, float range) : GravityPoint(location, hue, gravity, range, true)
 {
-    consumedTrails = new LightTrailVectorRepository();
+    consumedTrails = new VectorRepository<LightTrail>();
 }
 
 void ColorHole::consume(std::shared_ptr<LightTrail> trail) {
@@ -12,7 +12,7 @@ void ColorHole::consume(std::shared_ptr<LightTrail> trail) {
 
 std::vector<std::shared_ptr<LightTrail>> ColorHole::explode() {
     std::vector<std::shared_ptr<LightTrail>> res;
-    consumedTrails->for_each([location](std::shared_ptr<LightTrail> trail){
+    consumedTrails->for_each([&](std::shared_ptr<LightTrail> trail){
         trail->location.x = location.x;
         trail->location.y = location.y;
         res.push_back(trail);
@@ -21,7 +21,7 @@ std::vector<std::shared_ptr<LightTrail>> ColorHole::explode() {
 }
 
 void ColorHole::tickTrails(float dt) {
-    consumedTrails->for_each([consumedTrails](std::shared_ptr<LightTrail> trail){
+    consumedTrails->for_each([&](std::shared_ptr<LightTrail> trail){
         if(trail->tick(dt)){
             consumedTrails->scheduleForRemoval(trail);
         }
