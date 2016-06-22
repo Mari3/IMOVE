@@ -1,18 +1,32 @@
 #include "ColorHole.h"
+#include "Repositories/LightsSceneVectorRepositories.h"
 
 ColorHole::ColorHole(Vector2 location, util::Range hue, float gravity, float range) : GravityPoint(location, hue, gravity, range, true)
 {
-    consumedTrails = std::vector<std::shared_ptr<LightTrail>>();
+    consumedTrails = new LightTrailVectorRepository();
 }
 
 void ColorHole::consume(std::shared_ptr<LightTrail> trail) {
-    consumedTrails.push_back(trail);
+    consumedTrails->add(trail);
 }
 
 std::vector<std::shared_ptr<LightTrail>> ColorHole::explode() {
-    for(auto &trail : consumedTrails){
+    std::vector<std::shared_ptr<LightTrail>> res;
+    consumedTrails->for_each([location](std::shared_ptr<LightTrail> trail){
         trail->location.x = location.x;
         trail->location.y = location.y;
-    }
-    return consumedTrails;
+        res.push_back(trail);
+    });
+    return res;
 }
+
+void ColorHole::tickTrails(float dt) {
+    consumedTrails->for_each([consumedTrails](std::shared_ptr<LightTrail> trail){
+        if(trail->tick(dt)){
+            consumedTrails->scheduleForRemoval(trail);
+        }
+    });
+    consumedTrails->removeAll();
+}
+
+

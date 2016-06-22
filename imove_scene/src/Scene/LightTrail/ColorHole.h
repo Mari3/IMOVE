@@ -6,13 +6,15 @@
 #include "GravityPoint.h"
 #include "LightTrail.h"
 #include "../../../../util/src/Vector2.h"
+#include "Repositories/LightsSceneRepositories.h"
 
 class ColorHole : public GravityPoint {
 private:
-    std::vector<std::shared_ptr<LightTrail>> consumedTrails;
+    LightTrailRepository*  consumedTrails;
 public:
     ColorHole(Vector2 location, util::Range hue, float gravity, float range=-1);
     void consume(std::shared_ptr<LightTrail> trail);
+    void tickTrails(float dt);
     std::vector<std::shared_ptr<LightTrail>> explode();
 };
 

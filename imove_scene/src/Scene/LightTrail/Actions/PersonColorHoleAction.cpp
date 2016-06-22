@@ -57,6 +57,7 @@ void PersonColorHoleAction::execute(float dt) {
             lightTrails->scheduleForRemoval(trail);
         }
     });
+    f
 }
 
 void PersonColorHoleAction::finish() {
