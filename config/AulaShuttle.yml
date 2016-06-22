@@ -1,0 +1,18 @@
+%YAML:1.0
+Debug_mode: 0
+Camera_device: 0
+Resolution_camera: [ 640, 480 ]
+Projection_top_left: [ 500., 304. ]
+Projection_top_right: [ 83., 304. ]
+Projection_bottom_left: [ 491., 82. ]
+Projection_bottom_right: [ 95., 78. ]
+Meter_camera: 57.
+Resolution_projector: [ 1920, 1080 ]
+Fullscreen_projector: 1
+Meter_projector: 2.6533520507812500e+02
+Maximum_FPS_scene: 60
+Frames_projector_camera_delay: 0
+Projector_background_light: 2.9999999329447746e-02
+FPS_capture_scene: 8
+Iterations_delay_peopleextracting: 0
+Factor_resize_capture_scene: 10
