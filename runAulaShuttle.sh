@@ -1,3 +1,3 @@
 #!/bin/bash
 set -e
-./build/bin/imove ./config/AulaShuttle.yml ./config/sceneconfigAula.yml
+./build/bin/imove ./config/AulaShuttle.yml ./config/sceneconfigAulaShuttle.yml
