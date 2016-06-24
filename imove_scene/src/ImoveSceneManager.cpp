@@ -46,6 +46,8 @@ void ImoveSceneManager::run() {
 	// setup clock
 	sf::Clock clock;
 
+	std::thread sending_sceneframe_thread = std::thread(ImoveSceneManager::sendingSceneFrameThread, this);
+
 	float dt;
 	float capture_dt = 0;
 	float SPF_capture_scene = 1.f / (float) this->calibration->getProjectioneliminationConfiguration()->getFpsCaptureScene();
@@ -63,6 +65,7 @@ void ImoveSceneManager::run() {
 		
 		capture_dt += dt;
 		if (capture_dt > SPF_capture_scene) {
+			this->sceneframe_queue.push(window_scene.captureFrameScene());
 			capture_dt -= SPF_capture_scene;
 		}
 		
@@ -72,6 +75,8 @@ void ImoveSceneManager::run() {
 			this->running->reboot_on_shutdown = false;
 		}
 	}
+
+	sending_sceneframe_thread.join();
 }
 
 void ImoveSceneManager::receiveExtractedpeopleAndUpdateScene() {

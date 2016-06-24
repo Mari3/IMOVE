@@ -62,6 +62,9 @@ void ImovePeopleextractorManager::run() {
 		);
 	}
 
+	// Start receive scene frame thread
+	std::thread receive_scene_frame_and_feed_projection_thread(ImovePeopleextractorManager::receiveSceneFrameAndFeedProjectionThread, this);
+
 	// setup camera
 	cv::VideoCapture video_capture(this->calibration->getCameraConfiguration()->getDeviceid());
 
@@ -115,6 +118,9 @@ void ImovePeopleextractorManager::run() {
 			this->running->reboot_on_shutdown = false;
 		}
 	}
+
+	// make other thread stop
+	receive_scene_frame_and_feed_projection_thread.join();
 
 	// safe release video capture
 	video_capture.release();
