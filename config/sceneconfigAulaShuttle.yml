@@ -41,7 +41,7 @@ ColorHoleDelay: 100.
 ColorHoleGravity: 5
 ColorHoleGravityRange: 1.2
 ColorHoleRange: .2
-MixingEffectThickness: .15
+MixingEffectThickness: .1
 ColorHoleEffectThickness: .03
 ColorHoleEffectPeriod: .35
 StarAmount: 10
