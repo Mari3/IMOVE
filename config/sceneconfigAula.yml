@@ -10,24 +10,24 @@ SendOutDelay: 3.
 SendOutSpeed: [ 0, 2 ]
 TrailCap: 40
 SourceHueChangeRange: 2.
-ParticipantGravity: 3.46
+ParticipantGravity: 5.46
 ParticipantAntiGravity: 0.46
 ParticipantGravityRange: 2.
-ParticipantGravityDistance: 0
+ParticipantGravityDistance: 0.4
 ParticipantMovedThreshold: 1.
 ParticipantSideThreshold: 2.
 BystanderGravity: 15
 BystanderGravityDelay: 4.
 BystanderGravityRange: -2.
-AlternatingGravity: 4.15
+AlternatingGravity: 6.15
 AlternatingGravityDelay: 10.
 AlternatingGravityRange: -1
 ProximityRange: .7
 ProximityModifier: .7
 SidesEnabled: 1
-SpeedCap: 2.
+SpeedCap: 3.
 Fade: 4
-TrailThickness: .035
+TrailThickness: .065
 MixingSpeed: 3.
 MixingDistance: 2.
 MixingRevertTime: 1.
@@ -36,7 +36,7 @@ ExplosionAntigravity: 27.68
 ExplosionGravity: 10.38
 ExplosionExTime: .2
 ExplosionInTime: .3
-LightSourceGravity: 3.46
+LightSourceGravity: 5.46
 ColorHoleDelay: 100.
 ColorHoleGravity: 5
 ColorHoleGravityRange: 1.2
@@ -52,3 +52,4 @@ BystanderInitiateTrails: 10
 ParticipantInitiateTrails: 10
 SourceTrailAmount: 10
 SourceTrailPlacementRange: .2
+TrailMaxLength: 2
