@@ -8,7 +8,7 @@ BottomRightHue : [ 180, 270 ]
 BottomLeftHue: [ 270, 0 ]
 SendOutDelay: 3.
 SendOutSpeed: [ 0, 2 ]
-TrailCap: 40
+TrailCap: 100
 SourceHueChangeRange: 2.
 ParticipantGravity: 5.46
 ParticipantAntiGravity: 0.46
@@ -28,8 +28,8 @@ SidesEnabled: 1
 SpeedCap: 3.
 Fade: 4
 TrailThickness: .065
-MixingSpeed: 3.
-MixingDistance: 2.
+MixingSpeed: 2.
+MixingDistance: 3.
 MixingRevertTime: 1.
 MixingTrailRange: 2.
 ExplosionAntigravity: 27.68
@@ -40,7 +40,7 @@ LightSourceGravity: 5.46
 ColorHoleDelay: 100.
 ColorHoleGravity: 5
 ColorHoleGravityRange: 1.2
-ColorHoleRange: .2
+ColorHoleRange: 2
 MixingEffectThickness: .05
 ColorHoleEffectThickness: .03
 ColorHoleEffectPeriod: .35
@@ -50,6 +50,6 @@ StandingStillFadeTime: 40
 InitiateTrailRange: 1.8
 BystanderInitiateTrails: 10
 ParticipantInitiateTrails: 10
-SourceTrailAmount: 10
-SourceTrailPlacementRange: .2
+SourceTrailAmount: 20
+SourceTrailPlacementRange: .3
 TrailMaxLength: 2
