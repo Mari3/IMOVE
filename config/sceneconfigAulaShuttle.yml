@@ -8,7 +8,7 @@ BottomRightHue : [ 180, 270 ]
 BottomLeftHue: [ 270, 0 ]
 SendOutDelay: 3.
 SendOutSpeed: [ 0, 2 ]
-TrailCap: 80
+TrailCap: 60
 SourceHueChangeRange: 2.
 ParticipantGravity: 5.46
 ParticipantAntiGravity: 0.46
@@ -19,10 +19,10 @@ ParticipantSideThreshold: 2.
 BystanderGravity: 15
 BystanderGravityDelay: 4.
 BystanderGravityRange: -2.
-AlternatingGravity: 6.15
+AlternatingGravity: 8
 AlternatingGravityDelay: 10.
 AlternatingGravityRange: -1
-ProximityRange: .7
+ProximityRange: .5
 ProximityModifier: .7
 SidesEnabled: 1
 SpeedCap: 3.
