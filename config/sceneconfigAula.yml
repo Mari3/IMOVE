@@ -8,7 +8,7 @@ BottomRightHue : [ 180, 270 ]
 BottomLeftHue: [ 270, 0 ]
 SendOutDelay: 3.
 SendOutSpeed: [ 0, 2 ]
-TrailCap: 80
+TrailCap: 40
 SourceHueChangeRange: 2.
 ParticipantGravity: 5.46
 ParticipantAntiGravity: 0.46
@@ -25,9 +25,9 @@ AlternatingGravityRange: -1
 ProximityRange: .7
 ProximityModifier: .7
 SidesEnabled: 1
-SpeedCap: 3.
+SpeedCap: 3.5
 Fade: 4
-TrailThickness: .065
+TrailThickness: .030
 MixingSpeed: 1.
 MixingDistance: 3.
 MixingRevertTime: 1.
