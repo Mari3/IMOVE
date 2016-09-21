@@ -28,7 +28,7 @@ SidesEnabled: 1
 SpeedCap: 3.
 Fade: 4
 TrailThickness: .065
-MixingSpeed: 2.
+MixingSpeed: 1.
 MixingDistance: 3.
 MixingRevertTime: 1.
 MixingTrailRange: 2.
