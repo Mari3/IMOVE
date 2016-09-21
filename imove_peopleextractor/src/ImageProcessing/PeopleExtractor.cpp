@@ -53,7 +53,7 @@ const scene_interface::People PeopleExtractor::extractPeople(cv::Mat& new_frame)
   // Rescale location of every person based on downscaling
   for (Person& p : people) {
     Vector2 location = p.getLocation();
-    cv::putText(debug_frame, std::to_string(p.getId()), cv::Point(location.x, location.y), cv::FONT_HERSHEY_SIMPLEX, 1, cv::Scalar(0, 0, 255));
+    //cv::putText(debug_frame, std::to_string(p.getId()), cv::Point(location.x, location.y), cv::FONT_HERSHEY_SIMPLEX, 1, cv::Scalar(0, 0, 255));
     p.setLocation(Vector2(location.x*resize_ratio,location.y*resize_ratio));
   }
 

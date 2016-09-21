@@ -417,9 +417,10 @@ int main(int argc, char** argv){
             break;
     }
 
-    sf::RenderWindow window(sf::VideoMode(config.screenWidth(),config.screenHeight()),"Projection");
+    sf::RenderWindow window(sf::VideoMode(config.screenWidth()+200,config.screenHeight()+200),"Projection");
     window.clear(sf::Color::White);
     window.setFramerateLimit(60);
+    window.setView(sf::View(sf::FloatRect(-100,-100,config.screenWidth()+200,config.screenHeight()+200)));
     window.display();
     sf::Clock clock;
 
@@ -441,6 +442,12 @@ int main(int argc, char** argv){
         scene->update(dt);
 
         window.clear(sf::Color::White);
+        sf::RectangleShape shape(sf::Vector2f(config.screenWidth(),config.screenHeight()));
+        shape.setPosition(0,0);
+        shape.setFillColor(sf::Color::Transparent);
+        shape.setOutlineColor(sf::Color::White);
+        shape.setOutlineThickness(3.f);
+        window.draw(shape);
         scene->draw(window);
 
 

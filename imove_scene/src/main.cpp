@@ -2,6 +2,7 @@
 #include <string>
 
 #include "ImoveSceneManager.hpp"
+#include "Scene/Pong/PongConfiguration.h"
 #include "../../util/src/configuration/ImoveConfiguration.hpp"
 
 const unsigned int CONFIGURATION_CALIBRATION_ARGN = 1;
@@ -17,9 +18,9 @@ int main(int argc, char* argv[]) {
 
 	ImoveConfiguration* calibration = ImoveConfiguration::readFile(argv[CONFIGURATION_CALIBRATION_ARGN]);
   
-	const LightTrailSceneConfiguration configuration_lighttrail = LightTrailSceneConfiguration::readFromFile(argv[CONFIGURATION_LIGHTTRAIL_ARGN]);
+	const PongConfiguration configuration_pong = PongConfiguration::readFromFile(argv[CONFIGURATION_LIGHTTRAIL_ARGN]);
 
-	ImoveSceneManager manager(calibration, configuration_lighttrail);
+	ImoveSceneManager manager(calibration, configuration_pong);
 	manager.run();
 	
 	return EXIT_SUCCESS;

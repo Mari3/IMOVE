@@ -4,8 +4,8 @@
 #include "ImoveSceneManager.hpp"
 
 #include "../../scene_interface/src/People.h"
-#include "Scene/LightTrail/LightTrailScene.h"
-#include "Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
+#include "Scene/Pong/PongScene.h"
+#include "Scene/Pong/PongConfiguration.h"
 #include "Windows/SceneWindow.hpp"
 
 #include "../../scene_interface_sma/src/SharedMemory.hpp"
@@ -15,18 +15,13 @@ void ImoveSceneManager::sendingSceneFrameThread(ImoveSceneManager* imove_scene_m
 	imove_scene_manager->sendingSceneFrame();
 }
 
-ImoveSceneManager::ImoveSceneManager(ImoveConfiguration* calibration, const LightTrailSceneConfiguration& configuration_lighttrail) :
+ImoveSceneManager::ImoveSceneManager(ImoveConfiguration* calibration, const PongConfiguration& configuration_pong) :
 calibration(calibration),
 projection(Projection(calibration))
 {
 	// setup scene
-  this->scene = new LightTrailScene(
-		configuration_lighttrail,
-    new LightSourceVectorRepository(),
-    new LightTrailVectorRepository(),
-    new GravityPointVectorRepository(),
-    new ColorHoleVectorRepository(),
-    new LightPersonMapRepository()
+  this->scene = new PongScene(
+		configuration_pong
   );
 	// Shared memory segment
   this->segment = new boost::interprocess::managed_shared_memory(boost::interprocess::open_only, scene_interface_sma::NAME_SHARED_MEMORY);

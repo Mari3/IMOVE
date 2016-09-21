@@ -9,7 +9,7 @@ InitiateParticipantAction::InitiateParticipantAction(LightTrailRepository *globa
                                                      LightSourceRepository *sources, const std::shared_ptr<LightPerson> &person,
                                                      const LightTrailSceneConfiguration& config, sf::RenderTexture &texture
 ) : globalTrails(globalTrails), sources(sources), person(person),
-    gravityPoint(person->getLocation(),person->hue,config.gravity().participant().gravity),
+    gravityPoint(person->getLocation(),util::Range(0,360,true),config.gravity().participant().gravity),
     config(config) {
 
     effects.push_back(std::unique_ptr<Effect>(

@@ -1,6 +1,6 @@
 %YAML:1.0
-Resolution: [ 640, 480 ]
-Meter: 80
+Resolution: [ 1200, 720 ]
+Meter: 200
 Inverted: 0
 TopLeftHue: [ 0, 90 ]
 TopRightHue: [ 90, 180 ]
@@ -28,6 +28,7 @@ SidesEnabled: 1
 SpeedCap: 2.
 Fade: 4
 TrailThickness: .035
+TrailMaxLength: 2.
 MixingSpeed: 3.
 MixingDistance: 2.
 MixingRevertTime: 1.

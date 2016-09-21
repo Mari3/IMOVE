@@ -3,7 +3,7 @@
 
 #include "../../util/src/configuration/ImoveConfiguration.hpp"
 #include "../../util/src/Projection.hpp"
-#include "Scene/LightTrail/Configuration/LightTrailSceneConfiguration.h"
+#include "Scene/Pong/PongConfiguration.h"
 #include "Scene/Scene.h"
 #include "../../scene_interface_sma/src/PeopleQueue.hpp"
 #include "../../peopleextractor_interface_sma/src/SceneframeQueue.hpp"
@@ -18,7 +18,7 @@ class ImoveSceneManager {
 		 * @param calibration              The imove configuration
 		 * @param configuration_lighttrail The light trail Scene configuration
 		 **/
-		ImoveSceneManager(ImoveConfiguration* calibration, const LightTrailSceneConfiguration& configuration_lighttrail);
+		ImoveSceneManager(ImoveConfiguration* calibration, const PongConfiguration& configuration_pong);
 
 		// Run the people extractor and Scene frame by frame
 		void run();
