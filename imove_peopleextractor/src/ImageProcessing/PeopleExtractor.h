@@ -42,6 +42,9 @@ class PeopleExtractor {
   // Ratio with which the frame is resized
   float resize_ratio;
 
+  int playfield_a = 25;
+  int playfield_b = 15;
+
  public:
   PeopleExtractor(const cv::Size& frame_size, float pixels_per_meter, float resolution_resize_height, const Boundary& boundary);
   ~PeopleExtractor();

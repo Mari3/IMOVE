@@ -7,6 +7,18 @@
 DetectedPeopleCameraWindow::DetectedPeopleCameraWindow(cv::Point2i position, cv::Size size) : OpenCVWindow("Detected people on camera", position, size) { }
 
 void DetectedPeopleCameraWindow::drawImage(cv::Mat& image_camera, scene_interface::People& detectedpeople) {
+
+	cv::line(image_camera, cv::Point2f(52.4*2.2222, 78.75*2.2222), cv::Point2f(92.4*2.2222, 78.75*2.2222), cv::Scalar(200, 100, 50));
+	cv::line(image_camera, cv::Point2f(92.4*2.2222, 78.75*2.2222), cv::Point2f(86.55*2.2222, 166.55*2.2222), cv::Scalar(200, 100, 50));
+	cv::line(image_camera, cv::Point2f(86.55*2.2222, 166.55*2.2222), cv::Point2f(46.55*2.2222, 166.55*2.2222), cv::Scalar(200, 100, 50));
+	cv::line(image_camera, cv::Point2f(46.55*2.2222, 166.55*2.2222), cv::Point2f(52.4*2.2222, 78.75*2.2222), cv::Scalar(200, 100, 50));
+
+	cv::line(image_camera, cv::Point2f(198.3*2.2222, 82.35*2.2222), cv::Point2f(238.3*2.2222, 82.35*2.2222), cv::Scalar(50, 100, 200));
+	cv::line(image_camera, cv::Point2f(198.3*2.2222, 82.35*2.2222), cv::Point2f(200.55*2.2222, 169.65*2.2222), cv::Scalar(50, 100, 200));
+	cv::line(image_camera, cv::Point2f(240.55*2.2222, 169.65*2.2222), cv::Point2f(238.3*2.2222, 82.35*2.2222), cv::Scalar(50, 100, 200));
+	cv::line(image_camera, cv::Point2f(240.55*2.2222, 169.65*2.2222), cv::Point2f(200.55*2.2222, 169.65*2.2222), cv::Scalar(50, 100, 200));
+
+
 	// debug people drawing on camera frame
 	for (unsigned int i = 0; i < detectedpeople.size(); ++i) {
 		scene_interface::Location location_detectedperson = detectedpeople.at(i).getLocation();
@@ -22,7 +34,6 @@ void DetectedPeopleCameraWindow::drawImage(cv::Mat& image_camera, scene_interfac
 			DetectedPeopleCameraWindow::THICKNESS_CIRCLE_CAMERA_DEBUG
 		);
 	}
-	
+
 	OpenCVWindow::drawImage(image_camera);
 }
-

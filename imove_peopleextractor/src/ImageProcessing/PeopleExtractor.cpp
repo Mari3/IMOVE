@@ -30,6 +30,31 @@ PeopleExtractor::PeopleExtractor(const cv::Size& frame_size, float pixels_per_me
                             Vector2(boundary.getLowerLeft().x/resize_ratio, boundary.getLowerLeft().y/resize_ratio),
                             Vector2(boundary.getLowerRight().x/resize_ratio, boundary.getLowerRight().y/resize_ratio));
 
+  Boundary left_field = Boundary(Vector2(proj_bound.getUpperLeft().x - playfield_a, proj_bound.getUpperLeft().y),
+                            Vector2(proj_bound.getUpperLeft().x + playfield_b, proj_bound.getUpperLeft().y),
+                            Vector2(proj_bound.getLowerLeft().x - playfield_a, proj_bound.getLowerLeft().y),
+                            Vector2(proj_bound.getLowerLeft().x + playfield_b, proj_bound.getLowerLeft().y));
+
+  // std::cout << "ULx - a = " + std::to_string(proj_bound.getUpperLeft().x - playfield_a) << std::endl;
+  // std::cout << "ULy = " + std::to_string(proj_bound.getUpperLeft().y) << std::endl;
+  // std::cout << "ULx + b = " + std::to_string(proj_bound.getUpperLeft().x + playfield_b) << std::endl;
+  // std::cout << "LLx - a = " + std::to_string(proj_bound.getLowerLeft().x - playfield_a) << std::endl;
+  // std::cout << "LLy = " + std::to_string(proj_bound.getLowerLeft().y) << std::endl;
+  // std::cout << "LLx + b = " + std::to_string(proj_bound.getLowerLeft().x + playfield_b) << std::endl;
+
+
+  Boundary right_field = Boundary(Vector2(proj_bound.getUpperRight().x - playfield_b, proj_bound.getUpperRight().y),
+                            Vector2(proj_bound.getUpperRight().x + playfield_a, proj_bound.getUpperRight().y),
+                            Vector2(proj_bound.getLowerRight().x - playfield_b, proj_bound.getLowerRight().y),
+                            Vector2(proj_bound.getLowerRight().x + playfield_a, proj_bound.getLowerRight().y));
+
+  // std::cout << "URx - b = " + std::to_string(proj_bound.getUpperRight().x - playfield_b) << std::endl;
+  // std::cout << "URy = " + std::to_string(proj_bound.getUpperRight().y) << std::endl;
+  // std::cout << "URx + a = " + std::to_string(proj_bound.getUpperRight().x + playfield_a) << std::endl;
+  // std::cout << "LRx - b  = " + std::to_string(proj_bound.getLowerRight().x - playfield_b) << std::endl;
+  // std::cout << "LRy = " + std::to_string(proj_bound.getLowerRight().y) << std::endl;
+  // std::cout << "LRx + a = " + std::to_string(proj_bound.getLowerRight().x + playfield_a) << std::endl;
+
   // Initialize Identifier
   identifier = PeopleIdentifier(proj_bound, frame_bound);
 }
@@ -49,6 +74,8 @@ const scene_interface::People PeopleExtractor::extractPeople(cv::Mat& new_frame)
   std::vector<Person> people = identifier.match(locations);
 
   debug_frame = detector.getDisplayFrame();
+
+  cv::line(debug_frame, cv::Point(77.4, 48.75), cv::Point(77.4, 88.75), cv::Scalar(200, 100, 50));
 
   // Rescale location of every person based on downscaling
   for (Person& p : people) {
