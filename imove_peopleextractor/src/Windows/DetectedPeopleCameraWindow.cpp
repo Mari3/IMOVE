@@ -8,15 +8,15 @@ DetectedPeopleCameraWindow::DetectedPeopleCameraWindow(cv::Point2i position, cv:
 
 void DetectedPeopleCameraWindow::drawImage(cv::Mat& image_camera, scene_interface::People& detectedpeople) {
 
-	cv::line(image_camera, cv::Point2f(52.4*2.2222, 78.75*2.2222), cv::Point2f(92.4*2.2222, 78.75*2.2222), cv::Scalar(200, 100, 50));
-	cv::line(image_camera, cv::Point2f(92.4*2.2222, 78.75*2.2222), cv::Point2f(86.55*2.2222, 166.55*2.2222), cv::Scalar(200, 100, 50));
-	cv::line(image_camera, cv::Point2f(86.55*2.2222, 166.55*2.2222), cv::Point2f(46.55*2.2222, 166.55*2.2222), cv::Scalar(200, 100, 50));
-	cv::line(image_camera, cv::Point2f(46.55*2.2222, 166.55*2.2222), cv::Point2f(52.4*2.2222, 78.75*2.2222), cv::Scalar(200, 100, 50));
+	cv::line(image_camera, cv::Point2f(57.4*2.2222, 78.75*2.2222), cv::Point2f(97.4*2.2222, 78.75*2.2222), cv::Scalar(200, 100, 50));
+	cv::line(image_camera, cv::Point2f(97.4*2.2222, 78.75*2.2222), cv::Point2f(91.55*2.2222, 166.55*2.2222), cv::Scalar(200, 100, 50));
+	cv::line(image_camera, cv::Point2f(91.55*2.2222, 166.55*2.2222), cv::Point2f(51.55*2.2222, 166.55*2.2222), cv::Scalar(200, 100, 50));
+	cv::line(image_camera, cv::Point2f(51.55*2.2222, 166.55*2.2222), cv::Point2f(57.4*2.2222, 78.75*2.2222), cv::Scalar(200, 100, 50));
 
-	cv::line(image_camera, cv::Point2f(198.3*2.2222, 82.35*2.2222), cv::Point2f(238.3*2.2222, 82.35*2.2222), cv::Scalar(50, 100, 200));
-	cv::line(image_camera, cv::Point2f(198.3*2.2222, 82.35*2.2222), cv::Point2f(200.55*2.2222, 169.65*2.2222), cv::Scalar(50, 100, 200));
-	cv::line(image_camera, cv::Point2f(240.55*2.2222, 169.65*2.2222), cv::Point2f(238.3*2.2222, 82.35*2.2222), cv::Scalar(50, 100, 200));
-	cv::line(image_camera, cv::Point2f(240.55*2.2222, 169.65*2.2222), cv::Point2f(200.55*2.2222, 169.65*2.2222), cv::Scalar(50, 100, 200));
+	cv::line(image_camera, cv::Point2f(193.3*2.2222, 82.35*2.2222), cv::Point2f(233.3*2.2222, 82.35*2.2222), cv::Scalar(50, 100, 200));
+	cv::line(image_camera, cv::Point2f(193.3*2.2222, 82.35*2.2222), cv::Point2f(195.55*2.2222, 169.65*2.2222), cv::Scalar(50, 100, 200));
+	cv::line(image_camera, cv::Point2f(235.55*2.2222, 169.65*2.2222), cv::Point2f(233.3*2.2222, 82.35*2.2222), cv::Scalar(50, 100, 200));
+	cv::line(image_camera, cv::Point2f(235.55*2.2222, 169.65*2.2222), cv::Point2f(195.55*2.2222, 169.65*2.2222), cv::Scalar(50, 100, 200));
 
 
 	// debug people drawing on camera frame

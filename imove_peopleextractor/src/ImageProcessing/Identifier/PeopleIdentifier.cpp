@@ -3,13 +3,19 @@
 
 PeopleIdentifier::PeopleIdentifier() {}
 
-PeopleIdentifier::PeopleIdentifier(const Boundary& projection_boundary, const Boundary& frame_boundary) : projection_boundary(projection_boundary), frame_boundary(frame_boundary) {}
+PeopleIdentifier::PeopleIdentifier(const Boundary& frame_boundary, const Boundary& left_playfield, const Boundary& right_playfield) : frame_boundary(frame_boundary), left_playfield(left_playfield), right_playfield(right_playfield) {}
 
 PeopleIdentifier::~PeopleIdentifier() {}
 
 std::vector<Person> PeopleIdentifier::match(std::vector<Vector2>& locations) {
   // Go over all people detected in the previous frame and determine their new location or delete them
   for (unsigned int i = 0; i < detected_people.size(); i++) {
+
+    if (!left_playfield.inBounds(detected_people[i].getLocation()) && !right_playfield.inBounds(detected_people[i].getLocation())) {
+      detected_people.erase(detected_people.begin() + i);
+      --i;
+    }
+
     // Get closest location to a person
     int index_closest = getClosest(i, locations);
     // If no close location is found, the person is standing still or left the scene
@@ -20,11 +26,8 @@ std::vector<Person> PeopleIdentifier::match(std::vector<Vector2>& locations) {
         --i;
       // If person is standing still ...
       } else if (detected_people[i].movement_type == Person::MovementType::StandingStill) {
-        // ... and standing close to the edge, change type to 'None'
-        if (!frame_boundary.inBounds(detected_people[i].getLocation())) {
-          detected_people[i].person_type = Person::PersonType::None;
         // ... and has not moved in while, change type to 'None'
-        } else if (detected_people[i].getNotMovedCount() <= 0) {
+        if (detected_people[i].getNotMovedCount() <= 0) {
           detected_people[i].person_type = Person::PersonType::None;
         // ... decrease the standing still counter
         } else {
@@ -37,13 +40,6 @@ std::vector<Person> PeopleIdentifier::match(std::vector<Vector2>& locations) {
       }
     // If a close location is found ...
     } else {
-      // ... determine if person is a bystander or a Participant based on location and boundary
-      if (projection_boundary.inBounds(locations[index_closest])) {
-        detected_people[i].person_type = Person::PersonType::Participant;
-      }
-      else {
-        detected_people[i].person_type = Person::PersonType::Bystander;
-      }
       //Set location of person to new location
       detected_people[i].setLocation(locations[index_closest]);
       detected_people[i].movement_type = Person::MovementType::Moving;
@@ -53,11 +49,11 @@ std::vector<Person> PeopleIdentifier::match(std::vector<Vector2>& locations) {
   }
   // Go over all remaining locations
   for (unsigned int j = 0; j < locations.size(); j++) {
-    // Turn locations into a new person if loction is close to the edge of the frame
-    if (!frame_boundary.inBounds(locations[j])) {
-      Person new_person = Person(locations[j], Person::PersonType::Bystander);
+    // Turn unmatched locations into a new person (if location is close to the edge of the frame)
+    //if (!frame_boundary.inBounds(locations[j])) {
+      Person new_person = Person(locations[j], Person::PersonType::Participant);
       detected_people.push_back(new_person);
-    }
+    //}
   }
   return detected_people;
 }
