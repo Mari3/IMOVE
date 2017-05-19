@@ -8,17 +8,22 @@ PeopleIdentifier::PeopleIdentifier(const Boundary& frame_boundary, const Boundar
 PeopleIdentifier::~PeopleIdentifier() {}
 
 std::vector<Person> PeopleIdentifier::match(std::vector<Vector2>& locations) {
+
+  // for (unsigned int j = 0; j < locations.size(); j++) {
+  //   if (!left_playfield.inBounds(locations[j]) && !right_playfield.inBounds(locations[j])) {
+  //     //std::cout << "Not in play zones" << std::endl;
+  //     locations.erase(locations.begin() + j);
+  //     --j;
+  //   }
+  // }
+
   // Go over all people detected in the previous frame and determine their new location or delete them
   for (unsigned int i = 0; i < detected_people.size(); i++) {
-
-    if (!left_playfield.inBounds(detected_people[i].getLocation()) && !right_playfield.inBounds(detected_people[i].getLocation())) {
-      detected_people.erase(detected_people.begin() + i);
-      --i;
-    }
 
     // Get closest location to a person
     int index_closest = getClosest(i, locations);
     // If no close location is found, the person is standing still or left the scene
+
     if (index_closest < 0) {
       // If a person's type is 'None', the person is deleted
       if (detected_people[i].person_type == Person::PersonType::None) {
@@ -39,13 +44,14 @@ std::vector<Person> PeopleIdentifier::match(std::vector<Vector2>& locations) {
         detected_people[i].resetNotMovedCount();
       }
     // If a close location is found ...
-    } else {
+  } else {
       //Set location of person to new location
       detected_people[i].setLocation(locations[index_closest]);
       detected_people[i].movement_type = Person::MovementType::Moving;
       // Delete locations that have been taken
       locations.erase(locations.begin() + index_closest);
     }
+
   }
   // Go over all remaining locations
   for (unsigned int j = 0; j < locations.size(); j++) {
@@ -55,7 +61,27 @@ std::vector<Person> PeopleIdentifier::match(std::vector<Vector2>& locations) {
       detected_people.push_back(new_person);
     //}
   }
+
+  for (unsigned int k = 0; k < detected_people.size(); k++) {
+    if (!left_playfield.inBounds(detected_people[k].getLocation()) && !right_playfield.inBounds(detected_people[k].getLocation())) {
+      detected_people.erase(detected_people.begin() + k);
+      --k;
+    }
+  }
+
+  identifyPlayers();
+
   return detected_people;
+}
+
+void PeopleIdentifier::identifyPlayers() {
+  int left_player = getClosestToLeftPaddle();
+  int right_player = getClosestToRightPaddle();
+
+  if (left_player != -1)
+    detected_people[left_player].person_type = Person::PersonType::Player;
+  if (right_player != -1)
+    detected_people[right_player].person_type = Person::PersonType::Player;
 }
 
 int PeopleIdentifier::getClosest(unsigned int index, std::vector<Vector2>& new_locations) {
@@ -76,5 +102,34 @@ int PeopleIdentifier::getClosest(unsigned int index, std::vector<Vector2>& new_l
     }
   }
   // Return index of closest location
+  return min_index;
+}
+
+int PeopleIdentifier::getClosestToLeftPaddle() {
+  float max_x = std::numeric_limits<float>::min();
+  int max_index = -1;
+
+  for (unsigned int i = 0; i < detected_people.size(); i++) {
+    detected_people[i].person_type = Person::PersonType::Participant;
+    float xco = detected_people[i].getLocation().x;
+    if (xco > max_x) {
+      max_x = xco;
+      max_index = i;
+    }
+  }
+  return max_index;
+}
+
+int PeopleIdentifier::getClosestToRightPaddle() {
+  float min_x = std::numeric_limits<float>::max();
+  int min_index = -1;
+
+  for (unsigned int i = 0; i < detected_people.size(); i++) {
+    float xco = detected_people[i].getLocation().x;
+    if (xco < min_x) {
+      min_x = xco;
+      min_index = i;
+    }
+  }
   return min_index;
 }

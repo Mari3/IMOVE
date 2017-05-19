@@ -76,7 +76,7 @@ void ImovePeopleextractorManager::run() {
 			frame_projection,
 			frame_camera
 		);
-		
+
 		// delay for syncing processing projection elimination
 		for (unsigned int i = 0; i < iterations_delay_peopleextracting; ++i) {}
 		// eliminate projection from camera frame
@@ -105,7 +105,7 @@ void ImovePeopleextractorManager::run() {
 		if (this->calibration->getDebugMode()) {
 			detectedpeople_projection_window->drawImage(frame_projection, people_projector);
 		}
-		
+
 		// send extracted people via shared memory to scene
 		this->sendExtractedpeople(people_projector);
 
@@ -123,7 +123,7 @@ void ImovePeopleextractorManager::run() {
 void ImovePeopleextractorManager::sendExtractedpeople(const scene_interface::People extractedpeople) {
 	//Initialize shared memory STL-compatible allocator
 	scene_interface_sma::PeopleSMA people_sma = scene_interface_sma::PeopleSMA((*this->segment).get_segment_manager());
-	
+
 	// create shared memory vector of extracted people
   boost::interprocess::offset_ptr<scene_interface_sma::People> si_people = this->segment->construct<scene_interface_sma::People>(boost::interprocess::anonymous_instance)(people_sma);
 
@@ -137,7 +137,7 @@ void ImovePeopleextractorManager::sendExtractedpeople(const scene_interface::Peo
 		locations->push_back(
 			this->segment->construct<scene_interface_sma::Location>(boost::interprocess::anonymous_instance)(location.getX(), location.getY())
 		);
-		
+
 		// create shared memory allocated person type from person type
 		scene_interface_sma::Person::PersonType person_type;
 		switch (person.getPersonType()) {
@@ -150,6 +150,9 @@ void ImovePeopleextractorManager::sendExtractedpeople(const scene_interface::Peo
 			case scene_interface::Person::PersonType::Participant:
 				person_type = scene_interface_sma::Person::PersonType::Participant;
 				break;
+			// case scene_interface::Person::PersonType::Participant:
+			// 	person_type = scene_interface_sma::Person::PersonType::Participant;
+			// 	break;
 			case scene_interface::Person::PersonType::None:
 				person_type = scene_interface_sma::Person::PersonType::None;
 				break;

@@ -25,6 +25,7 @@ class Person {
 		enum PersonType{
 		    Bystander,
 		    Participant,
+        Player,
 		    None
 		};
 

@@ -26,6 +26,11 @@ class PeopleIdentifier {
   // Get closest location to a Person
   int getClosest(unsigned int index, std::vector<Vector2>& new_locations);
 
+  void identifyPlayers();
+
+  int getClosestToLeftPaddle();
+  int getClosestToRightPaddle();
+
  public:
   PeopleIdentifier();
   PeopleIdentifier(const Boundary& frame_boundary, const Boundary& left_playfield, const Boundary& right_playfield);

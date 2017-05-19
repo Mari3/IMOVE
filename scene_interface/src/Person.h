@@ -11,6 +11,7 @@ namespace scene_interface {
 			Bystander,
 			Passerthrough,
 			Participant,
+			// Player,
 			None
 		};
 

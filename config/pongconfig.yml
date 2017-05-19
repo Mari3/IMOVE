@@ -2,5 +2,5 @@
 Resolution: [ 1920, 1200 ]
 BallSpeed: 400
 BallThickness: 20
-ControlRange: 400
+ControlRange: 100
 MaxAngle: 75

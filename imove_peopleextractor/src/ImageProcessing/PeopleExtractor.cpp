@@ -56,7 +56,7 @@ PeopleExtractor::PeopleExtractor(const cv::Size& frame_size, float pixels_per_me
   // std::cout << "LRx + a = " + std::to_string(proj_bound.getLowerRight().x + playfield_a) << std::endl;
 
   // Initialize Identifier
-  identifier = PeopleIdentifier(proj_bound, frame_bound);
+  identifier = PeopleIdentifier(frame_bound, left_field, right_field);
 }
 
 PeopleExtractor::~PeopleExtractor() {}
@@ -102,6 +102,9 @@ const scene_interface::People PeopleExtractor::convert(std::vector<Person>& peop
 		  case Person::PersonType::Participant:
 			  interface_person_type = scene_interface::Person::PersonType::Participant;
 			  break;
+      case Person::PersonType::Player:
+        interface_person_type = scene_interface::Person::PersonType::Participant;
+        break;
 		  case Person::PersonType::None:
 			  interface_person_type = scene_interface::Person::PersonType::None;
 			  break;

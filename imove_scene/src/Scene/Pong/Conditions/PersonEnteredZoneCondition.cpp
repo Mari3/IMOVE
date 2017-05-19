@@ -1,4 +1,5 @@
 #include "PersonEnteredZoneCondition.h"
+#include <iostream>
 
 PersonEnteredZoneCondition::PersonEnteredZoneCondition(
 	Repository<PongPerson>* people,
@@ -12,10 +13,14 @@ PersonEnteredZoneCondition::PersonEnteredZoneCondition(
 {}
 
 int PersonEnteredZoneCondition::check(float dt, std::vector<Action *> &actions){
+	// std::cout << "people size" + std::to_string(people->size()) << std::endl;
 	if(!p1->isControlled){ //If paddle 1 is not already controlled
 		people->for_each([&](std::shared_ptr<PongPerson> person){
+			// std::cout << "x location = " + std::to_string(person->location.x) << std::endl;
+			// std::cout << "person type = " + std::to_string(person->person_type) << std::endl;
 			if(person->person_type == scene_interface::Person::Participant
-				&& person->location.x > 0 && person->location.x < config.controlRange){
+			&& /*person->location.x > 0 &&*/ person->location.x < 200 /*config.controlRange*/){
+				// std::cout << "in orange zone" << std::endl;
 				actions.push_back(static_cast<Action*>(new ControlPaddleAction(p1,person,true,config)));
 			}
 		});
@@ -23,8 +28,11 @@ int PersonEnteredZoneCondition::check(float dt, std::vector<Action *> &actions){
 
 	if(!p2->isControlled){
 		people->for_each([&](std::shared_ptr<PongPerson> person){
+			// std::cout << "x location = " + std::to_string(person->location.x) << std::endl;
+			// std::cout << "person type = " + std::to_string(person->person_type) << std::endl;
 			if(person->person_type == scene_interface::Person::Participant
-				&& person->location.x > config.screenWidth-config.controlRange && person->location.x < config.screenWidth){
+			&& person->location.x > config.screenWidth-300 /*&& person->location.x < config.screenWidth*/){
+				// std::cout << "in blue zone" << std::endl;
 				actions.push_back(static_cast<Action*>(new ControlPaddleAction(p2,person,false,config)));
 			}
 		});

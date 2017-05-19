@@ -1,4 +1,5 @@
 #include "ControlPaddleAction.h"
+#include <iostream>
 
 ControlPaddleAction::ControlPaddleAction(
 	std::shared_ptr<Paddle> paddle, std::shared_ptr<PongPerson> person, bool isLeft, PongConfiguration config) :
@@ -25,8 +26,10 @@ bool ControlPaddleAction::isDone(std::vector<Action*> &followUp){
 
 	if(res){
 		paddle->isControlled = false;
+		std::cout << "isDone action = true"  << std::endl;
 		return true;
 	}
+	std::cout << "isDone action = false"  << std::endl;
 	return false;
 }
 
