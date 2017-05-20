@@ -94,9 +94,9 @@ void ImoveSceneManager::receiveExtractedpeopleAndUpdateScene() {
 				case scene_interface_sma::Person::PersonType::Participant:
 					person_type = scene_interface::Person::PersonType::Participant;
 					break;
-				// case scene_interface_sma::Person::PersonType::Player:
-				// 	person_type = scene_interface::Person::PersonType::Player;
-				// 	break;
+				case scene_interface_sma::Person::PersonType::Player:
+					person_type = scene_interface::Person::PersonType::Player;
+					break;
 				case scene_interface_sma::Person::PersonType::None:
 					person_type = scene_interface::Person::PersonType::None;
 					break;

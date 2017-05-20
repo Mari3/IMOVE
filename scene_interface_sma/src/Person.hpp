@@ -12,7 +12,7 @@ namespace scene_interface_sma {
 			    Bystander,
 			    Passerthrough,
 			    Participant,
-					//Player,
+					Player,
 			    None
 			};
 

@@ -103,7 +103,7 @@ const scene_interface::People PeopleExtractor::convert(std::vector<Person>& peop
 			  interface_person_type = scene_interface::Person::PersonType::Participant;
 			  break;
       case Person::PersonType::Player:
-        interface_person_type = scene_interface::Person::PersonType::Participant;
+        interface_person_type = scene_interface::Person::PersonType::Player;
         break;
 		  case Person::PersonType::None:
 			  interface_person_type = scene_interface::Person::PersonType::None;

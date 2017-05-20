@@ -150,9 +150,9 @@ void ImovePeopleextractorManager::sendExtractedpeople(const scene_interface::Peo
 			case scene_interface::Person::PersonType::Participant:
 				person_type = scene_interface_sma::Person::PersonType::Participant;
 				break;
-			// case scene_interface::Person::PersonType::Participant:
-			// 	person_type = scene_interface_sma::Person::PersonType::Participant;
-			// 	break;
+			case scene_interface::Person::PersonType::Player:
+				person_type = scene_interface_sma::Person::PersonType::Player;
+				break;
 			case scene_interface::Person::PersonType::None:
 				person_type = scene_interface_sma::Person::PersonType::None;
 				break;
