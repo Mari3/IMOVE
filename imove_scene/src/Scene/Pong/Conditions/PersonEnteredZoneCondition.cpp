@@ -19,7 +19,7 @@ int PersonEnteredZoneCondition::check(float dt, std::vector<Action *> &actions){
 			// std::cout << "x location = " + std::to_string(person->location.x) << std::endl;
 			// std::cout << "person type = " + std::to_string(person->person_type) << std::endl;
 			if(person->person_type == scene_interface::Person::Player
-			/* && person->location.x > 0*/ && person->location.x < 960 /*config.controlRange*/){
+			/* && person->location.x > 0*/ && person->location.x < config.screenWidth/2){
 				// std::cout << "in orange zone" << std::endl;
 				actions.push_back(static_cast<Action*>(new ControlPaddleAction(p1,person,true,config)));
 			}
@@ -31,7 +31,7 @@ int PersonEnteredZoneCondition::check(float dt, std::vector<Action *> &actions){
 			// std::cout << "x location = " + std::to_string(person->location.x) << std::endl;
 			// std::cout << "person type = " + std::to_string(person->person_type) << std::endl;
 			if(person->person_type == scene_interface::Person::Player
-				&& person->location.x > 960/*config.screenWidth-300 && person->location.x < config.screenWidth*/){
+				&& person->location.x > config.screenWidth/2){
 				// std::cout << "in blue zone" << std::endl;
 				actions.push_back(static_cast<Action*>(new ControlPaddleAction(p2,person,false,config)));
 			}

@@ -26,10 +26,10 @@ bool ControlPaddleAction::isDone(std::vector<Action*> &followUp){
 
 	if(res){
 		paddle->isControlled = false;
-		std::cout << "isDone action = true"  << std::endl;
+		// std::cout << "isDone action = true"  << std::endl;
 		return true;
 	}
-	std::cout << "isDone action = false"  << std::endl;
+	// std::cout << "isDone action = false"  << std::endl;
 	return false;
 }
 
