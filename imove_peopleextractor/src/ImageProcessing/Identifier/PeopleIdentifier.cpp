@@ -78,10 +78,12 @@ void PeopleIdentifier::identifyPlayers() {
   int left_player = getClosestToLeftPaddle();
   int right_player = getClosestToRightPaddle();
 
-  if (left_player != -1)
-    detected_people[left_player].person_type = Person::PersonType::Player;
-  if (right_player != -1)
-    detected_people[right_player].person_type = Person::PersonType::Player;
+  if (detected_people.size() > 0) {
+    if (left_player != -1)
+      detected_people[left_player].person_type = Person::PersonType::Player;
+    if (right_player != -1)
+      detected_people[right_player].person_type = Person::PersonType::Player;
+  }
 }
 
 int PeopleIdentifier::getClosest(unsigned int index, std::vector<Vector2>& new_locations) {
@@ -106,30 +108,36 @@ int PeopleIdentifier::getClosest(unsigned int index, std::vector<Vector2>& new_l
 }
 
 int PeopleIdentifier::getClosestToLeftPaddle() {
-  float max_x = std::numeric_limits<float>::min();
+  float max_x = 0;
   int max_index = -1;
 
   for (unsigned int i = 0; i < detected_people.size(); i++) {
     detected_people[i].person_type = Person::PersonType::Participant;
     float xco = detected_people[i].getLocation().x;
-    if (xco > max_x) {
-      max_x = xco;
-      max_index = i;
+    if (xco < 100) {
+      if (xco > max_x) {
+        max_x = xco;
+        max_index = i;
+      }
     }
   }
+  std::cout << "Closest to left = " + std::to_string(max_x) << std::endl;
   return max_index;
 }
 
 int PeopleIdentifier::getClosestToRightPaddle() {
-  float min_x = std::numeric_limits<float>::max();
+  float min_x = 300;
   int min_index = -1;
 
   for (unsigned int i = 0; i < detected_people.size(); i++) {
     float xco = detected_people[i].getLocation().x;
-    if (xco < min_x) {
-      min_x = xco;
-      min_index = i;
+    if (xco > 180) {
+      if (xco < min_x) {
+        min_x = xco;
+        min_index = i;
+      }
     }
   }
+  std::cout << "Closest to right = " + std::to_string(min_x) << std::endl;
   return min_index;
 }

@@ -1,6 +1,6 @@
 %YAML:1.0
 Debug_mode: 1
-Camera_device: 0
+Camera_device: 1
 Resolution_camera: [ 640, 480 ]
 Projection_top_left: [ 479., 377. ]
 Projection_top_right: [ 159., 371. ]
