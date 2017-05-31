@@ -37,6 +37,6 @@ int PersonEnteredZoneCondition::check(float dt, std::vector<Action *> &actions){
 			}
 		});
 	}
-
+	//std::cout << "Actions size = " + std::to_string(actions.size()) << std::endl;
 	return actions.size();
 }
