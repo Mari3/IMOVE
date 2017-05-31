@@ -35,12 +35,12 @@ PeopleExtractor::PeopleExtractor(const cv::Size& frame_size, float pixels_per_me
                             Vector2(proj_bound.getLowerLeft().x - playfield_a, proj_bound.getLowerLeft().y),
                             Vector2(proj_bound.getLowerLeft().x + playfield_b, proj_bound.getLowerLeft().y));
 
-  // std::cout << "ULx - a = " + std::to_string(proj_bound.getUpperLeft().x - playfield_a) << std::endl;
-  // std::cout << "ULy = " + std::to_string(proj_bound.getUpperLeft().y) << std::endl;
-  // std::cout << "ULx + b = " + std::to_string(proj_bound.getUpperLeft().x + playfield_b) << std::endl;
-  // std::cout << "LLx - a = " + std::to_string(proj_bound.getLowerLeft().x - playfield_a) << std::endl;
-  // std::cout << "LLy = " + std::to_string(proj_bound.getLowerLeft().y) << std::endl;
-  // std::cout << "LLx + b = " + std::to_string(proj_bound.getLowerLeft().x + playfield_b) << std::endl;
+  std::cout << "ULx - a = " + std::to_string(proj_bound.getUpperLeft().x - playfield_a) << std::endl;
+  std::cout << "ULy = " + std::to_string(proj_bound.getUpperLeft().y) << std::endl;
+  std::cout << "ULx + b = " + std::to_string(proj_bound.getUpperLeft().x + playfield_b) << std::endl;
+  std::cout << "LLx - a = " + std::to_string(proj_bound.getLowerLeft().x - playfield_a) << std::endl;
+  std::cout << "LLy = " + std::to_string(proj_bound.getLowerLeft().y) << std::endl;
+  std::cout << "LLx + b = " + std::to_string(proj_bound.getLowerLeft().x + playfield_b) << std::endl;
 
 
   Boundary right_field = Boundary(Vector2(proj_bound.getUpperRight().x - playfield_b, proj_bound.getUpperRight().y),
@@ -48,12 +48,12 @@ PeopleExtractor::PeopleExtractor(const cv::Size& frame_size, float pixels_per_me
                             Vector2(proj_bound.getLowerRight().x - playfield_b, proj_bound.getLowerRight().y),
                             Vector2(proj_bound.getLowerRight().x + playfield_a, proj_bound.getLowerRight().y));
 
-  // std::cout << "URx - b = " + std::to_string(proj_bound.getUpperRight().x - playfield_b) << std::endl;
-  // std::cout << "URy = " + std::to_string(proj_bound.getUpperRight().y) << std::endl;
-  // std::cout << "URx + a = " + std::to_string(proj_bound.getUpperRight().x + playfield_a) << std::endl;
-  // std::cout << "LRx - b  = " + std::to_string(proj_bound.getLowerRight().x - playfield_b) << std::endl;
-  // std::cout << "LRy = " + std::to_string(proj_bound.getLowerRight().y) << std::endl;
-  // std::cout << "LRx + a = " + std::to_string(proj_bound.getLowerRight().x + playfield_a) << std::endl;
+  std::cout << "URx - b = " + std::to_string(proj_bound.getUpperRight().x - playfield_b) << std::endl;
+  std::cout << "URy = " + std::to_string(proj_bound.getUpperRight().y) << std::endl;
+  std::cout << "URx + a = " + std::to_string(proj_bound.getUpperRight().x + playfield_a) << std::endl;
+  std::cout << "LRx - b  = " + std::to_string(proj_bound.getLowerRight().x - playfield_b) << std::endl;
+  std::cout << "LRy = " + std::to_string(proj_bound.getLowerRight().y) << std::endl;
+  std::cout << "LRx + a = " + std::to_string(proj_bound.getLowerRight().x + playfield_a) << std::endl;
 
   // Initialize Identifier
   identifier = PeopleIdentifier(frame_bound, left_field, right_field);

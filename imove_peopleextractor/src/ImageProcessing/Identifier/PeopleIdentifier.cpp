@@ -121,7 +121,7 @@ int PeopleIdentifier::getClosestToLeftPaddle() {
       }
     }
   }
-  std::cout << "Closest to left = " + std::to_string(max_x) << std::endl;
+  // std::cout << "Closest to left = " + std::to_string(max_x) << std::endl;
   return max_index;
 }
 
@@ -138,6 +138,6 @@ int PeopleIdentifier::getClosestToRightPaddle() {
       }
     }
   }
-  std::cout << "Closest to right = " + std::to_string(min_x) << std::endl;
+  // std::cout << "Closest to right = " + std::to_string(min_x) << std::endl;
   return min_index;
 }

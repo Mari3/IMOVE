@@ -1,11 +1,11 @@
 %YAML:1.0
 Debug_mode: 1
-Camera_device: 1
+Camera_device: 0
 Resolution_camera: [ 640, 480 ]
-Projection_top_left: [ 479., 377. ]
-Projection_top_right: [ 159., 371. ]
-Projection_bottom_left: [ 474., 183. ]
-Projection_bottom_right: [ 172., 175. ]
+Projection_top_left: [ 495., 309. ]
+Projection_top_right: [ 147., 301. ]
+Projection_bottom_left: [ 491., 121. ]
+Projection_bottom_right: [ 157., 112. ]
 Meter_camera: 6.0074954986572266e+01
 Resolution_projector: [ 1920, 1200 ]
 Fullscreen_projector: 0
