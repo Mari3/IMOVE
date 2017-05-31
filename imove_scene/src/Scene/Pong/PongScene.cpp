@@ -6,8 +6,8 @@
 #include "Conditions/BallHitsPaddleCondition.h"
 #include "Actions/MoveBallAction.h"
 
-PongScene::PongScene(PongConfiguration config) 
-: 
+PongScene::PongScene(PongConfiguration config)
+:
 ball(new Ball()),
 p1(new Paddle()),
 p2(new Paddle()),
@@ -61,9 +61,11 @@ void PongScene::draw(sf::RenderTarget &target) {
 	target.draw(ballShape);
 
 	sf::Text score1(std::to_string(score->player1),font,150);
-	score1.setPosition(config.screenWidth/2-150,20);
+	score1.setPosition(config.screenWidth/2-130,config.screenHeight-20);
+  score1.rotate(180);
 	sf::Text score2(std::to_string(score->player2),font,150);
-	score2.setPosition(config.screenWidth/2+75,20);
+	score2.setPosition(config.screenWidth/2+220,config.screenHeight-20);
+  score2.rotate(180);
 	target.draw(score1);
 	target.draw(score2);
 
@@ -71,6 +73,12 @@ void PongScene::draw(sf::RenderTarget &target) {
 		ballShape.setPosition(config.screenWidth/2-config.bt/2,i);
 		target.draw(ballShape);
 	}
+
+  sf::RectangleShape borderTop(sf::Vector2f(config.screenWidth,10));
+  target.draw(borderTop);
+  sf::RectangleShape borderBottom(sf::Vector2f(config.screenWidth,10));
+  borderBottom.setPosition(0, config.screenHeight-12);
+  target.draw(borderBottom);
 
 	sf::RectangleShape all(sf::Vector2f(config.screenWidth,config.screenHeight));
 	all.setFillColor(sf::Color(0,0,0,0));
@@ -93,7 +101,7 @@ void PongScene::processPeople(){
 				scene_interface::Location llocation = person.getLocation();
                 pPerson->location.x = llocation.getX();
 				pPerson->location.y = llocation.getY();
-                pPerson->person_type = person.getPersonType();	
+                pPerson->person_type = person.getPersonType();
 			} else {
 				scene_interface::Location llocation = person.getLocation();
 				people->add(
