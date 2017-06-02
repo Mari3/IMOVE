@@ -1,4 +1,5 @@
 #include "RestartBallAction.h"
+#include <iostream>
 
 RestartBallAction::RestartBallAction(std::shared_ptr<Ball> ball, bool left, PongConfiguration config) :
 	ball(ball), left(left), timer(2.f), config(config) {
@@ -13,12 +14,10 @@ bool RestartBallAction::isDone(std::vector<Action*> &followUp) {
 }
 
 void RestartBallAction::execute(float dt) {
-	if(timer.update(dt)){
-		if(left){
-			ball->velocity.x = -config.ballSpeed;
-		}else{
-			ball->velocity.x = config.ballSpeed;
-		}
-		done = true;
+	if(left){
+		ball->velocity.x = -config.ballSpeed;
+	}else{
+		ball->velocity.x = config.ballSpeed;
 	}
+	done = true;
 }

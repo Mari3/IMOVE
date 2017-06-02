@@ -13,12 +13,6 @@ ControlPaddleAction::ControlPaddleAction(
 
 bool ControlPaddleAction::isDone(std::vector<Action*> &followUp){
 	bool res = false;
-	// if(isLeft){
-	// 	if(person->location.x > config.controlRange*3)
-	// 		res = true;
-	// }else if(person->location.x < config.screenWidth-config.controlRange*3){
-	// 	res = true;
-	// }
 
 	if(!res && person->person_type != scene_interface::Person::Player){
 		res = true;
@@ -26,10 +20,10 @@ bool ControlPaddleAction::isDone(std::vector<Action*> &followUp){
 
 	if(res){
 		paddle->isControlled = false;
-		std::cout << "isDone action = true"  << std::endl;
+		// std::cout << "isDone action = true"  << std::endl;
 		return true;
 	}
-	std::cout << "isDone action = false"  << std::endl;
+	// std::cout << "isDone action = false"  << std::endl;
 	return false;
 }
 

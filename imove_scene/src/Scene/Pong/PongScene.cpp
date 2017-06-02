@@ -5,6 +5,7 @@
 #include "Conditions/ScoredCondition.h"
 #include "Conditions/BallHitsPaddleCondition.h"
 #include "Actions/MoveBallAction.h"
+#include "Conditions/BothPaddlesControlledCondition.h"
 
 PongScene::PongScene(PongConfiguration config)
 :
@@ -39,6 +40,9 @@ config(config)
 	conditions.push_back(std::unique_ptr<Condition>(
 		static_cast<Condition*>(new ScoredCondition(ball,score,config))
 	));
+  conditions.push_back(std::unique_ptr<Condition>(
+    static_cast<Condition*>(new BothPaddlesControlledCondition(p1,p2,config,ball))
+  ));
 
 
 	actions.push_back(std::unique_ptr<Action>(
