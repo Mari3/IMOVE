@@ -16,12 +16,13 @@ private:
 	PongConfiguration config;
 	std::shared_ptr<Ball> ball;
 	bool gameStarted = false;
+	std::shared_ptr<Score> score;
 
 	int interactionTimer = 0;
 public:
 	BothPaddlesControlledCondition(std::shared_ptr<Paddle> p1,
     std::shared_ptr<Paddle> p2, PongConfiguration config,
-		std::shared_ptr<Ball> ball);
+		std::shared_ptr<Ball> ball, std::shared_ptr<Score> score);
 	int check(float dt, std::vector<Action*> &actions) override;
 };
 

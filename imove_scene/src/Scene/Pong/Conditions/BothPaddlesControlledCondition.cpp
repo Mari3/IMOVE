@@ -5,8 +5,9 @@ BothPaddlesControlledCondition::BothPaddlesControlledCondition(
 	std::shared_ptr<Paddle> p1,
 	std::shared_ptr<Paddle> p2,
 	PongConfiguration config,
-	std::shared_ptr<Ball> ball
-) : p1(p1), p2(p2),config(config), ball(ball) {}
+	std::shared_ptr<Ball> ball,
+	std::shared_ptr<Score> score
+) : p1(p1), p2(p2),config(config), ball(ball), score(score) {}
 
 int BothPaddlesControlledCondition::check(float dt, std::vector<Action*> &actions) {
 	// If both paddles are being controlled
@@ -15,6 +16,8 @@ int BothPaddlesControlledCondition::check(float dt, std::vector<Action*> &action
 		if (!gameStarted) {
 			gameStarted = true;
 			std::cout << "Game started" << std::endl;
+			score->player1 = 0;
+			score->player2 = 0;
 		}
 
 	} else {

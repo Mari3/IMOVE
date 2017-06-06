@@ -41,7 +41,7 @@ config(config)
 		static_cast<Condition*>(new ScoredCondition(ball,score,config))
 	));
   conditions.push_back(std::unique_ptr<Condition>(
-    static_cast<Condition*>(new BothPaddlesControlledCondition(p1,p2,config,ball))
+    static_cast<Condition*>(new BothPaddlesControlledCondition(p1,p2,config,ball,score))
   ));
 
 
@@ -81,7 +81,7 @@ void PongScene::draw(sf::RenderTarget &target) {
   sf::RectangleShape borderTop(sf::Vector2f(config.screenWidth,10));
   target.draw(borderTop);
   sf::RectangleShape borderBottom(sf::Vector2f(config.screenWidth,10));
-  borderBottom.setPosition(0, config.screenHeight-12);
+  borderBottom.setPosition(0, config.screenHeight-10);
   target.draw(borderBottom);
 
 	sf::RectangleShape all(sf::Vector2f(config.screenWidth,config.screenHeight));
