@@ -12,23 +12,23 @@ BothPaddlesControlledCondition::BothPaddlesControlledCondition(
 int BothPaddlesControlledCondition::check(float dt, std::vector<Action*> &actions) {
 	// If both paddles are being controlled
   if (p1->isControlled == true && p2->isControlled == true) {
-		// If the game has already started, launch ball and continue
+		// If there is no game going, reset scores and start new game
 		if (!gameStarted) {
 			gameStarted = true;
-			std::cout << "Game started" << std::endl;
+			//std::cout << "Game started" << std::endl;
 			score->player1 = 0;
 			score->player2 = 0;
 		}
 
 	} else {
 		if (gameStarted) {
-			if (interactionTimer <= 500) {
+			if (interactionTimer <= 800) {
 				interactionTimer++;
 
 			} else {
 				interactionTimer = 0;
 				gameStarted = false;
-				std::cout << "Game ended" << std::endl;
+				//std::cout << "Game ended" << std::endl;
 				actions.push_back(
 					static_cast<Action*>(new RestartBallAction(ball,true,config))
 				);

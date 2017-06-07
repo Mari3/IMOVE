@@ -56,7 +56,7 @@ void PongScene::draw(sf::RenderTarget &target) {
 	sf::RectangleShape p1Shape(sf::Vector2f(config.bt,config.bt*10));
 	p1Shape.setPosition(sf::Vector2f(p1->x-config.bt/2,p1->y-config.bt*5));
 	sf::RectangleShape p2Shape(sf::Vector2f(config.bt,config.bt*10));
-	p2Shape.setPosition(sf::Vector2f(p2->x,p2->y-config.bt*5));
+	p2Shape.setPosition(sf::Vector2f(p2->x-config.bt/2,p2->y-config.bt*5));
 	target.draw(p1Shape);
 	target.draw(p2Shape);
 

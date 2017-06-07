@@ -132,6 +132,7 @@ const scene_interface::People PeopleExtractor::convert(std::vector<Person>& peop
 	      interface_movement_type
 	  ));
   }
+
   return interface_people;
 }
 

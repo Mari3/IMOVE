@@ -1,4 +1,5 @@
 #include "Scene.h"
+#include <iostream>
 
 Scene::Scene() {
     //Initialize vectors
@@ -24,6 +25,8 @@ void Scene::update(float dt) {
     }
 
     std::vector<int> toDelete;
+
+    //std::cout << actions.size() << std::endl;
 
     // Execute the actions
     for(unsigned int i = 0; i < actions.size(); ++i) {

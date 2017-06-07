@@ -1,6 +1,6 @@
 %YAML:1.0
 Resolution: [ 1920, 1200 ]
-BallSpeed: 400
+BallSpeed: 500
 BallThickness: 20
 ControlRange: 100
 MaxAngle: 75
