@@ -28,5 +28,8 @@ bool ControlPaddleAction::isDone(std::vector<Action*> &followUp){
 }
 
 void ControlPaddleAction::execute(float dt) {
-	paddle->y = person->location.y;
+	float newY = person->location.y;
+	if (newY > 0 && newY < config.screenHeight) {
+			paddle->y = newY;
+	}
 }
