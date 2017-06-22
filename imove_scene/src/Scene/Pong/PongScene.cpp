@@ -28,8 +28,14 @@ config(config)
 
 	p1->x = config.controlRange;
 	p1->y = config.screenHeight/2;
+  p1->y_target = config.screenHeight/2;
+  p1->prev_target = config.screenHeight/2;
+  p1->move_up = true;
 	p2->x = config.screenWidth-config.controlRange;
 	p2->y = config.screenHeight/2;
+  p2->y_target = config.screenHeight/2;
+  p2->prev_target = config.screenHeight/2;
+  p1->move_up = true;
 
 	conditions.push_back(std::unique_ptr<Condition>(
 		static_cast<Condition*>(new PersonEnteredZoneCondition(people,p1,p2,config))

@@ -23,7 +23,7 @@ PeopleDetector::PeopleDetector(float pixels_per_meter, bool low_camera) : pixels
     params.minDistBetweenBlobs = params.minArea*0.15;
   } else {
     params.minArea = pixels_per_meter*0.6;
-    params.minDistBetweenBlobs = params.minArea*1.2;
+    params.minDistBetweenBlobs = params.minArea*1.6;
   }
   // Create SimpleBlobDetector
   blob_detector = cv::SimpleBlobDetector::create(params);
@@ -71,8 +71,8 @@ cv::Mat PeopleDetector::getDisplayFrame() {
 }
 
 Vector2 PeopleDetector::changeToPerspective(int keypoint_x, int keypoint_y, float frame_height, float frame_width) {
-  int xco;
-  int yco;
+  int xco = keypoint_x;
+  int yco = keypoint_y;
 
   // Adjust y
   if (keypoint_y < frame_height/3) {

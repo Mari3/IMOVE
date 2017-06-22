@@ -63,7 +63,7 @@ PeopleExtractor::~PeopleExtractor() {}
 
 const scene_interface::People PeopleExtractor::extractPeople(cv::Mat& new_frame) {
   // Convert frame to grayscale
-  cvtColor(new_frame, new_frame, CV_RGB2GRAY);
+  //cvtColor(new_frame, new_frame, CV_RGB2GRAY);
   // Downscale frame
   resize(new_frame, new_frame, frame_size_resized);
 
@@ -74,8 +74,6 @@ const scene_interface::People PeopleExtractor::extractPeople(cv::Mat& new_frame)
   std::vector<Person> people = identifier.match(locations);
 
   debug_frame = detector.getDisplayFrame();
-
-  cv::line(debug_frame, cv::Point(77.4, 48.75), cv::Point(77.4, 88.75), cv::Scalar(200, 100, 50));
 
   // Rescale location of every person based on downscaling
   for (Person& p : people) {

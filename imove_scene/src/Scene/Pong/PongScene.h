@@ -7,8 +7,8 @@
 #include "PongConfiguration.h"
 
 struct Paddle {
-	float x, y, velocity;
-	bool isControlled;
+	float x, y, y_target, prev_target, velocity;
+	bool isControlled, move_up;
 };
 
 struct Ball {
