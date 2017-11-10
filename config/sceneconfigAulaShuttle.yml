@@ -1,6 +1,6 @@
 %YAML:1.0
-Resolution: [ 1920, 1080 ]
-Meter: 2.6533520507812500e+02
+Resolution: [ 1920, 1200 ]
+Meter: 2.8327456665039062e+02
 Inverted: 0
 TopLeftHue: [ 0, 90 ]
 TopRightHue: [ 90, 180 ]
@@ -8,40 +8,40 @@ BottomRightHue : [ 180, 270 ]
 BottomLeftHue: [ 270, 0 ]
 SendOutDelay: 3.
 SendOutSpeed: [ 0, 2 ]
-TrailCap: 100
+TrailCap: 40
 SourceHueChangeRange: 2.
-ParticipantGravity: 3.46
+ParticipantGravity: 5.46
 ParticipantAntiGravity: 0.46
 ParticipantGravityRange: 2.
-ParticipantGravityDistance: 0
+ParticipantGravityDistance: 0.4
 ParticipantMovedThreshold: 1.
 ParticipantSideThreshold: 2.
 BystanderGravity: 15
 BystanderGravityDelay: 4.
 BystanderGravityRange: -2.
-AlternatingGravity: 4.15
+AlternatingGravity: 6.15
 AlternatingGravityDelay: 10.
 AlternatingGravityRange: -1
 ProximityRange: .7
 ProximityModifier: .7
 SidesEnabled: 1
-SpeedCap: 2.
+SpeedCap: 3.5
 Fade: 4
-TrailThickness: .035
-MixingSpeed: 3.
-MixingDistance: 8.
+TrailThickness: .030
+MixingSpeed: 1.
+MixingDistance: 3.
 MixingRevertTime: 1.
 MixingTrailRange: 2.
 ExplosionAntigravity: 27.68
 ExplosionGravity: 10.38
 ExplosionExTime: .2
 ExplosionInTime: .3
-LightSourceGravity: 3.46
+LightSourceGravity: 5.46
 ColorHoleDelay: 100.
 ColorHoleGravity: 5
 ColorHoleGravityRange: 1.2
-ColorHoleRange: .2
-MixingEffectThickness: .15
+ColorHoleRange: 2
+MixingEffectThickness: .05
 ColorHoleEffectThickness: .03
 ColorHoleEffectPeriod: .35
 StarAmount: 10
@@ -50,5 +50,6 @@ StandingStillFadeTime: 40
 InitiateTrailRange: 1.8
 BystanderInitiateTrails: 10
 ParticipantInitiateTrails: 10
-SourceTrailAmount: 20
+SourceTrailAmount: 15
 SourceTrailPlacementRange: .3
+TrailMaxLength: 2

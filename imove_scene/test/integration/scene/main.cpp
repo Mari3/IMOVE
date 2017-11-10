@@ -23,6 +23,10 @@ public:
     void setType(si::Person::PersonType type){
         this->person_type = type;
     }
+    void move(Vector2 dist){
+        si::Location newLoc(this->location.getX()+dist.x,this->location.getY()+dist.y);
+        this->location = newLoc;
+    }
 };
 
 struct Scenario{
@@ -67,15 +71,15 @@ struct MixingScenario : public Scenario {
 
     MixingScenario(const LightTrailSceneConfiguration& config){
         unsigned int y = config.screenHeight()/2;
-        thresh = 340.f;
-        people.push_back(TestingPerson(0,si::Location(0,y),si::Person::PersonType::Participant,si::Person::MovementType::Moving));
-        people.push_back(TestingPerson(1,si::Location(config.screenWidth(),y),si::Person::PersonType::Participant,si::Person::MovementType::Moving));
+        thresh = config.effect().mixing().distance;
+        people.push_back(TestingPerson(999,si::Location(0,y),si::Person::PersonType::Participant,si::Person::MovementType::Moving));
+        people.push_back(TestingPerson(1000,si::Location(config.screenWidth(),y),si::Person::PersonType::Participant,si::Person::MovementType::Moving));
     }
 
     void update(float dt) override {
         si::Location p0loc = people[0].getLocation();
         si::Location p1loc = people[1].getLocation();
-        if(p1loc.getX()-p0loc.getX() > 320.f) {
+        if(p1loc.getX()-p0loc.getX() > thresh) {
             people[0].setLocation(si::Location(20.f * dt + p0loc.getX(), p0loc.getY()));
             people[1].setLocation(si::Location(-20.f * dt + p1loc.getX(), p1loc.getY()));
         }
@@ -344,6 +348,38 @@ struct ManyBystandersScenario : public Scenario {
     }
 };
 
+struct StressMixingScenario : public Scenario {
+    MixingScenario mixingScenario;
+    Timer addTimer, doneTimer;
+    util::Range xRange, yRange, angleRange;
+    unsigned int counter = 0;
+    bool done = false;
+
+    StressMixingScenario(LightTrailSceneConfiguration &config) :
+            mixingScenario(config), addTimer(.2f,true), doneTimer(60),
+            xRange(0,config.screenWidth()), yRange(0,config.screenHeight()),
+            angleRange(0,360,true)
+    {
+    }
+
+    void update(float dt) override {
+        if (counter <= 10 && addTimer.update(dt) && rand() % 10 == 0) {
+            people.push_back(TestingPerson(counter,
+                                           si::Location(xRange.drawRandom(), yRange.drawRandom()),
+                                           si::Person::Participant,
+                                           si::Person::Moving
+            ));
+            counter++;
+        }
+        for (auto &person : people) {
+            float angle = angleRange.drawRandom();
+            Vector2 dist(40.f * cosf(angle) * dt, 40.f * sinf(angle) * dt);
+            person.move(dist);
+        }
+    }
+
+};
+
 namespace SceneIntegration {
     enum ScenarioCode {
         Standard,
@@ -356,7 +392,8 @@ namespace SceneIntegration {
         ColorHole,
         SourceColor,
         StandingStill,
-        ManyBystanders
+        ManyBystanders,
+        StressMixing
     };
 }
 
@@ -414,6 +451,9 @@ int main(int argc, char** argv){
             break;
         case SceneIntegration::ManyBystanders:
             scenario = new ManyBystandersScenario(config);
+            break;
+        case SceneIntegration::StressMixing:
+            scenario = new StressMixingScenario(config);
             break;
     }
 
