@@ -9,13 +9,9 @@ PeopleExtractor::PeopleExtractor(const cv::Size& frame_size, float pixels_per_me
   // Calculate frame size after resizing
   frame_size_resized = cv::Size(frame_size.width/resize_ratio, resolution_resize_height);
 
-  if (pixels_per_meter/frame_size.height > 0.2) {
-    // Initialize Detector with low camera if meter/frame height > 0.2
-    detector = PeopleDetector(pixels_per_meter/resize_ratio, true);
-  } else {
-    // Initialize Detector with high camera if meter/frame height < 0.2
-    detector = PeopleDetector(pixels_per_meter/resize_ratio, false);
-  }
+  // Initialize Detector
+  detector = PeopleDetector(pixels_per_meter/resize_ratio);
+
 
   // Calculate area in frame considered close to edge
   float boundary_edge = (pixels_per_meter/resize_ratio)*1.5;

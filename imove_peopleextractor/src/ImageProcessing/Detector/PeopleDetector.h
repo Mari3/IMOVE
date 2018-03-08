@@ -35,7 +35,7 @@ class PeopleDetector {
  public:
   PeopleDetector();
   // Constructor with number of pixels that represent one meter and wether the camera height is low or not
-  PeopleDetector(float pixels_per_meter, bool low_camera);
+  PeopleDetector(float pixels_per_meter);
   ~PeopleDetector();
 
   // Detect people in frame

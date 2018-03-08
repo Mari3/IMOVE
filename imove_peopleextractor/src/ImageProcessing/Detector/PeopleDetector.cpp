@@ -5,7 +5,7 @@
 
 PeopleDetector::PeopleDetector() {}
 
-PeopleDetector::PeopleDetector(float pixels_per_meter, bool low_camera) : pixels_per_meter(pixels_per_meter) {
+PeopleDetector::PeopleDetector(float pixels_per_meter) : pixels_per_meter(pixels_per_meter) {
   // Initialize background subtractor
   background_subtractor = cv::createBackgroundSubtractorKNN();
 
@@ -18,13 +18,9 @@ PeopleDetector::PeopleDetector(float pixels_per_meter, bool low_camera) : pixels
   params.maxArea = 1000000;
 
   // Set parameters for SimpleBlobDetector according to the camera height
-  if (low_camera) {
-    params.minArea = pixels_per_meter*5;
-    params.minDistBetweenBlobs = params.minArea*0.15;
-  } else {
-    params.minArea = pixels_per_meter*1.2;
-    params.minDistBetweenBlobs = params.minArea*0.6;
-  }
+  params.minArea = pixels_per_meter*1.2;
+  params.minDistBetweenBlobs = params.minArea*0.6;
+
   // Create SimpleBlobDetector
   blob_detector = cv::SimpleBlobDetector::create(params);
 }
