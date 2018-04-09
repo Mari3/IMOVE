@@ -2,5 +2,5 @@
 set -e
 clear
 ./build.sh
-./calibrateTest.sh
-./runTest.sh
+./calibrate.sh
+./run.sh

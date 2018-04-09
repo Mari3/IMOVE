@@ -3,7 +3,7 @@
 
 PeopleIdentifier::PeopleIdentifier() {}
 
-PeopleIdentifier::PeopleIdentifier(const Boundary& projection_boundary, const Boundary& frame_boundary) : projection_boundary(projection_boundary), frame_boundary(frame_boundary) {}
+PeopleIdentifier::PeopleIdentifier(const Boundary& projection_boundary) : projection_boundary(projection_boundary) {}
 
 PeopleIdentifier::~PeopleIdentifier() {}
 
@@ -18,13 +18,13 @@ std::vector<Person> PeopleIdentifier::match(std::vector<Vector2>& locations) {
       if (detected_people[i].person_type == Person::PersonType::None) {
         detected_people.erase(detected_people.begin() + i);
         --i;
+      // If the person was standing outside the projection field when no new location was found, change type to 'None'
+      } else if (detected_people[i].person_type == Person::PersonType::Bystander) {
+        detected_people[i].person_type = Person::PersonType::None;
       // If person is standing still ...
       } else if (detected_people[i].movement_type == Person::MovementType::StandingStill) {
-        // ... and standing close to the edge, change type to 'None'
-        if (!frame_boundary.inBounds(detected_people[i].getLocation())) {
-          detected_people[i].person_type = Person::PersonType::None;
         // ... and has not moved in while, change type to 'None'
-        } else if (detected_people[i].getNotMovedCount() <= 0) {
+       if (detected_people[i].getNotMovedCount() <= 0) {
           detected_people[i].person_type = Person::PersonType::None;
         // ... decrease the standing still counter
         } else {
@@ -54,7 +54,7 @@ std::vector<Person> PeopleIdentifier::match(std::vector<Vector2>& locations) {
   // Go over all remaining locations
   for (unsigned int j = 0; j < locations.size(); j++) {
     // Turn locations into a new person if loction is close to the edge of the frame
-    if (!frame_boundary.inBounds(locations[j])) {
+    if (!projection_boundary.inBounds(locations[j])) {
       Person new_person = Person(locations[j], Person::PersonType::Bystander);
       detected_people.push_back(new_person);
     }

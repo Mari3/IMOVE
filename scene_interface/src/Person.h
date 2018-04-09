@@ -9,7 +9,6 @@ namespace scene_interface {
 	 public:
 		enum PersonType{
 			Bystander,
-			Passerthrough,
 			Participant,
 			None
 		};

@@ -12,14 +12,6 @@ PeopleExtractor::PeopleExtractor(const cv::Size& frame_size, float pixels_per_me
   // Initialize Detector
   detector = PeopleDetector(pixels_per_meter/resize_ratio);
 
-
-  // Calculate area in frame considered close to edge
-  float boundary_edge = (pixels_per_meter/resize_ratio)*1.5;
-  // Initialize frame boundary based on edge
-  Boundary frame_bound = Boundary(Vector2(boundary_edge, boundary_edge),
-                            Vector2(frame_size_resized.width - boundary_edge, boundary_edge),
-                            Vector2(boundary_edge, frame_size_resized.height - boundary_edge),
-                            Vector2(frame_size_resized.width - boundary_edge, frame_size_resized.height - boundary_edge));
   // Initialize projector boundary
   Boundary proj_bound = Boundary(Vector2(boundary.getUpperLeft().x/resize_ratio, boundary.getUpperLeft().y/resize_ratio),
                             Vector2(boundary.getUpperRight().x/resize_ratio, boundary.getUpperRight().y/resize_ratio),
@@ -27,7 +19,7 @@ PeopleExtractor::PeopleExtractor(const cv::Size& frame_size, float pixels_per_me
                             Vector2(boundary.getLowerRight().x/resize_ratio, boundary.getLowerRight().y/resize_ratio));
 
   // Initialize Identifier
-  identifier = PeopleIdentifier(proj_bound, frame_bound);
+  identifier = PeopleIdentifier(proj_bound);
 }
 
 PeopleExtractor::~PeopleExtractor() {}

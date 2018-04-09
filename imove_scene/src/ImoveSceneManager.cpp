@@ -49,23 +49,23 @@ void ImoveSceneManager::run() {
 	float dt;
 	float capture_dt = 0;
 	float SPF_capture_scene = 1.f / (float) this->calibration->getProjectioneliminationConfiguration()->getFpsCaptureScene();
-	
+
 	// while allowed to run
 	while (this->running->running) {
 		this->receiveExtractedpeopleAndUpdateScene();
-		
+
 		// draw next Scene frame based on clock difference
 		dt = clock.restart().asSeconds();
 		this->scene->update(dt);
-		
+
 		// draw the actual Scene on window
 		window_scene.drawScene(this->scene);
-		
+
 		capture_dt += dt;
 		if (capture_dt > SPF_capture_scene) {
 			capture_dt -= SPF_capture_scene;
 		}
-		
+
 		// if window should be closed, shutdown application
 		if (!window_scene.shouldKeepOpen()) {
 			this->running->running = false;
@@ -78,23 +78,20 @@ void ImoveSceneManager::receiveExtractedpeopleAndUpdateScene() {
 	if (!this->si_people_queue->empty()) {
 		//create vector of extracted people for input of scene
 		scene_interface::People extractedpeople;
-		
+
 		// receive extracted people from shared memory from peopleextractor
 		boost::interprocess::offset_ptr<scene_interface_sma::People> si_people = this->si_people_queue->front();
-		
+
 		extractedpeople = scene_interface::People();
 		for (unsigned int i = 0; i < si_people->size(); ++i) {
 			// receive extracted person from shared memory
 			boost::interprocess::offset_ptr<scene_interface_sma::Person> si_person = si_people->at(i);
-			
+
 			// create person type from shared memory person type
 			scene_interface::Person::PersonType person_type;
 			switch (si_person->getPersonType()) {
 				case scene_interface_sma::Person::PersonType::Bystander:
 					person_type = scene_interface::Person::PersonType::Bystander;
-					break;
-				case scene_interface_sma::Person::PersonType::Passerthrough:
-					person_type = scene_interface::Person::PersonType::Passerthrough;
 					break;
 				case scene_interface_sma::Person::PersonType::Participant:
 					person_type = scene_interface::Person::PersonType::Participant;
@@ -131,7 +128,7 @@ void ImoveSceneManager::receiveExtractedpeopleAndUpdateScene() {
 				)
 			);
 		}
-		
+
 		// update scene with extracted people from peopleextractor
 		this->scene->updatePeople(extractedpeople);
 

@@ -18,15 +18,13 @@ class PeopleIdentifier {
 
   // Boundary of projection to seperate bystanders from participants
   Boundary projection_boundary;
-  // Boundary of frame
-  Boundary frame_boundary;
 
   // Get closest location to a Person
   int getClosest(unsigned int index, std::vector<Vector2>& new_locations);
 
  public:
   PeopleIdentifier();
-  PeopleIdentifier(const Boundary& projection_boundary, const Boundary& frame_boundary);
+  PeopleIdentifier(const Boundary& projection_boundary);
   ~PeopleIdentifier();
 
   // Match people to new locations and locations to (new) people
