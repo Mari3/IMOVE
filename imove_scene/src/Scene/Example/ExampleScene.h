@@ -7,11 +7,17 @@
 
 class ExampleScene : public Scene{
 private:
-  void processPeople() override;
+  // Configuration of parameters used in the scene
   SceneConfiguration sceneConfig;
+  // Collection of circles to be drawn
   CircleRepository* circles;
+  // Processing of detected people
+  void processPeople() override;
+
 public:
+  // Constructor
 	ExampleScene(SceneConfiguration config);
+  // Function to draw the scene
 	void draw(sf::RenderTarget &target) override;
 };
 
