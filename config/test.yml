@@ -2,12 +2,12 @@
 Debug_mode: 1
 Camera_device: 0
 Resolution_camera: [ 640, 480 ]
-Resolution_projector: [ 800, 600 ]
+Resolution_projector: [ 1920, 1200 ]
 Fullscreen_projector: 0
 Projection_top_left: [ 100., 68. ]
-Projection_top_right: [ 550., 98. ]
-Projection_bottom_left: [ 122., 388. ]
-Projection_bottom_right: [ 544., 398. ]
+Projection_top_right: [ 1100., 68. ]
+Projection_bottom_left: [ 100., 600. ]
+Projection_bottom_right: [ 1100., 600. ]
 Frames_projector_camera_delay: 0
 Projector_background_light: 3.8999998569488525e-01
 Meter_camera: 100.

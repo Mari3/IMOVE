@@ -2,7 +2,7 @@
 #include <string>
 
 #include "ImoveSceneManager.hpp"
-#include "../../util/src/configuration/ImoveConfiguration.hpp"
+#include "Scene/SceneConfiguration.h"
 
 const unsigned int CONFIGURATION_CALIBRATION_ARGN = 1;
 const unsigned int CONFIGURATION_LIGHTTRAIL_ARGN = 2;
@@ -16,11 +16,11 @@ int main(int argc, char* argv[]) {
 	}
 
 	ImoveConfiguration* calibration = ImoveConfiguration::readFile(argv[CONFIGURATION_CALIBRATION_ARGN]);
-  
-	const LightTrailSceneConfiguration configuration_lighttrail = LightTrailSceneConfiguration::readFromFile(argv[CONFIGURATION_LIGHTTRAIL_ARGN]);
 
-	ImoveSceneManager manager(calibration, configuration_lighttrail);
+	const SceneConfiguration configuration = SceneConfiguration::readFromFile(argv[CONFIGURATION_LIGHTTRAIL_ARGN]);
+
+	ImoveSceneManager manager(calibration, configuration);
 	manager.run();
-	
+
 	return EXIT_SUCCESS;
 }

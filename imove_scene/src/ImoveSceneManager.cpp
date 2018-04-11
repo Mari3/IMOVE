@@ -4,7 +4,7 @@
 #include "ImoveSceneManager.hpp"
 
 #include "../../scene_interface/src/People.h"
-#include "Scene/LightTrail/LightTrailScene.h"
+#include "Scene/Example/ExampleScene.h"
 #include "Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 #include "Windows/SceneWindow.hpp"
 
@@ -15,19 +15,12 @@ void ImoveSceneManager::sendingSceneFrameThread(ImoveSceneManager* imove_scene_m
 	imove_scene_manager->sendingSceneFrame();
 }
 
-ImoveSceneManager::ImoveSceneManager(ImoveConfiguration* calibration, const LightTrailSceneConfiguration& configuration_lighttrail) :
+ImoveSceneManager::ImoveSceneManager(ImoveConfiguration* calibration, const SceneConfiguration& sceneConfig) :
 calibration(calibration),
 projection(Projection(calibration))
 {
 	// setup scene
-  this->scene = new LightTrailScene(
-		configuration_lighttrail,
-    new LightSourceVectorRepository(),
-    new LightTrailVectorRepository(),
-    new GravityPointVectorRepository(),
-    new ColorHoleVectorRepository(),
-    new LightPersonMapRepository()
-  );
+  this->scene = new ExampleScene(sceneConfig);
 	// Shared memory segment
   this->segment = new boost::interprocess::managed_shared_memory(boost::interprocess::open_only, scene_interface_sma::NAME_SHARED_MEMORY);
 	// Construct the people extracted queue in shared memory
