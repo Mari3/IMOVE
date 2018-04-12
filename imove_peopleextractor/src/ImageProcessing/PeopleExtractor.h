@@ -17,6 +17,7 @@
 #include "../../../scene_interface/src/People.h"
 #include "../../../util/src/Vector2.h"
 #include "../../../util/src/Boundary.h"
+#include "../../../util/src/configuration/CameraConfiguration.hpp"
 
 
 
@@ -43,7 +44,7 @@ class PeopleExtractor {
   float resize_ratio;
 
  public:
-  PeopleExtractor(const cv::Size& frame_size, float pixels_per_meter, float resolution_resize_height, const Boundary& boundary);
+  PeopleExtractor(CameraConfiguration* camConfig);
   ~PeopleExtractor();
 
   // Main extraction function to extract people from a frame

@@ -1,6 +1,15 @@
 #include "PeopleExtractor.h"
 
-PeopleExtractor::PeopleExtractor(const cv::Size& frame_size, float pixels_per_meter, float resolution_resize_height, const Boundary& boundary) {
+// PeopleExtractor::PeopleExtractor(const cv::Size& frame_size, float pixels_per_meter, float resolution_resize_height, const Boundary& boundary) {
+PeopleExtractor::PeopleExtractor(CameraConfiguration* camConfig) {
+  // Get values from camera configuration
+  cv::Size frame_size = camConfig->getResolution();
+  float pixels_per_meter = camConfig->getMeter();
+  Boundary boundary = camConfig->getProjection().createReorientedTopLeftBoundary();
+
+  // Height to which the frame needs to be downsized to speed up processing
+  float resolution_resize_height = 216;
+
   // Calculate resize ratio
   resize_ratio = frame_size.height/resolution_resize_height;
 
@@ -10,7 +19,7 @@ PeopleExtractor::PeopleExtractor(const cv::Size& frame_size, float pixels_per_me
   frame_size_resized = cv::Size(frame_size.width/resize_ratio, resolution_resize_height);
 
   // Initialize Detector
-  detector = PeopleDetector(pixels_per_meter/resize_ratio);
+  detector = PeopleDetector(pixels_per_meter/resize_ratio, camConfig->getMinBlobArea(), camConfig->getMinBlobDistance());
 
   // Initialize projector boundary
   Boundary proj_bound = Boundary(Vector2(boundary.getUpperLeft().x/resize_ratio, boundary.getUpperLeft().y/resize_ratio),

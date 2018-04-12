@@ -7,11 +7,13 @@
 #include "../OpenCVUtil.hpp"
 #include "CameraConfiguration.hpp"
 
-CameraConfiguration::CameraConfiguration(const cv::Size& resolution, unsigned int deviceid, const Boundary& projection, float meter) : Configuration(),
+CameraConfiguration::CameraConfiguration(const cv::Size& resolution, unsigned int deviceid, const Boundary& projection, float meter, float area, float dist) : Configuration(),
 	resolution(resolution),
 	deviceid(deviceid),
 	projection(projection),
-	meter(meter)
+	meter(meter),
+	minBlobArea(area),
+	minBlobDistance(dist)
 {
 	this->setProjection(projection);
 }
@@ -31,8 +33,10 @@ CameraConfiguration* CameraConfiguration::readNode(cv::FileStorage read_config) 
 	Vector2 bottom_left  (cv_bottom_left.x, cv_bottom_left.y );
 	Vector2 bottom_right (cv_bottom_right.x, cv_bottom_right.y);
 	// read camera meter from yml using OpenCV FileStorage
-	float meter;
+	float meter, area, distance;
 	read_config["Meter_camera"] >> meter;
+	read_config["Minimum_Area_Blobs"] >> area;
+	read_config["Minimum_Distance_Between_Blobs"] >> distance;
 
 	return new CameraConfiguration(
 		resolution,
@@ -43,7 +47,9 @@ CameraConfiguration* CameraConfiguration::readNode(cv::FileStorage read_config) 
 			bottom_left,
 			bottom_right
 		),
-		meter
+		meter,
+		area,
+		distance
 	);
 }
 
@@ -55,12 +61,12 @@ CameraConfiguration* CameraConfiguration::createFromNode(cv::FileStorage read_co
 	} else {
 		read_config["Meter_camera"] >> meter;
 	}
- 
+
 	// retreive camera resolution from OpenCV VideoCapture
 	cv::VideoCapture camera_videoreader(deviceid);
 	const cv::Size resolution(camera_videoreader.get(cv::CAP_PROP_FRAME_WIDTH), camera_videoreader.get(cv::CAP_PROP_FRAME_HEIGHT));
 	camera_videoreader.release();
-	
+
 	// read projection from yml using OpenCV FileStorage
 	Boundary projection;
 	if (read_config["Projection_top_left"].isNone()) {
@@ -89,13 +95,24 @@ CameraConfiguration* CameraConfiguration::createFromNode(cv::FileStorage read_co
 			bottom_right
 		);
 	}
-	
+
+	float area, distance;
+	if (read_config["Minimum_Area_Blobs"].isNone()) {
+		area = 50;
+		distance = 50;
+	} else {
+		read_config["Minimum_Area_Blobs"] >> area;
+		read_config["Minimum_Distance_Between_Blobs"] >> distance;
+	}
+
  	// create initial CameraConfiguration based on configuration, arguments and defaults
 	return new CameraConfiguration(
 		resolution,
 		deviceid,
 		projection,
-		meter
+		meter,
+		area,
+		distance
 	);
 }
 
@@ -126,4 +143,10 @@ void CameraConfiguration::setProjection(const Boundary& projection) {
 }
 const Boundary CameraConfiguration::getProjection() const {
 	return this->projection;
+}
+const float CameraConfiguration::getMinBlobArea() {
+	return this->minBlobArea;
+}
+const float CameraConfiguration::getMinBlobDistance() {
+	return this->minBlobDistance;
 }

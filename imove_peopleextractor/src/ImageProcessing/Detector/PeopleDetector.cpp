@@ -5,7 +5,7 @@
 
 PeopleDetector::PeopleDetector() {}
 
-PeopleDetector::PeopleDetector(float pixels_per_meter) : pixels_per_meter(pixels_per_meter) {
+PeopleDetector::PeopleDetector(float pixels_per_meter, float minBlobArea, float minBlobDist) : pixels_per_meter(pixels_per_meter) {
   // Initialize background subtractor
   background_subtractor = cv::createBackgroundSubtractorKNN();
 
@@ -18,8 +18,8 @@ PeopleDetector::PeopleDetector(float pixels_per_meter) : pixels_per_meter(pixels
   params.maxArea = 1000000;
 
   // Set parameters for SimpleBlobDetector according to the camera height
-  params.minArea = pixels_per_meter*1.2;
-  params.minDistBetweenBlobs = params.minArea*0.6;
+  params.minArea = minBlobArea;
+  params.minDistBetweenBlobs = minBlobDist;
 
   // Create SimpleBlobDetector
   blob_detector = cv::SimpleBlobDetector::create(params);
