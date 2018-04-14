@@ -1,13 +1,13 @@
 # How to Install, Build and Run the IMOVE Framework
 
-The IMOVE framework is written in C++ and can be built and run using simple terminal/cli commands. Below is a step-by-step guide on what to install, how to build and how to run the project. 
+The IMOVE framework is written in C++ and can be built and run using simple terminal/cli commands. Below is a step-by-step guide on what to install, how to build and how to run the project.
 
 ## What To Install
 
 This is an overview of everything that needs to be installed on your system to get the framework running.
 
 ### Tools
-This project is written in C++ and therefore requires a C++ compiler. It has been succesfully built using gcc and g++ from the GNU Compiler Collection.
+This project is written in C++ and therefore requires a C++ compiler. It has been successfully built using gcc and g++ from the GNU Compiler Collection.
 
 To build the project, CMake is required. It was last verified to work with CMake version 3.11.0.
 
@@ -33,7 +33,7 @@ Once all dependencies have been installed, building can easily be done using the
 ```
 $ ./build.sh
 ```
-from the repository root and the project will start building. After the initial build, some computers complain when the same script is used to rebuild after changes because a build directory already exists. In that case, use the rebuild script instead of the build script in the same way. It automatically removes the existing build directory before building. 
+from the repository root and the project will start building. After the initial build, some computers complain when the same script is used to rebuild after changes because a build directory already exists. In that case, use the rebuild script instead of the build script in the same way. It automatically removes the existing build directory before building.
 
 ## Running
 The building process creates 4 executables but only 2 of them should be run separately: calibration and imove.
@@ -60,7 +60,7 @@ To run the imove application, run the following cli command from the repository 
 ```
 $ ./build/bin/imove ./config/<system config file>.yml ./config/<scene config file>.yml
 ```
-The system config file specified here should be the same one that was used specified in the calibration command. During calibration, the settings are written into this file and in the main application the settings are read so they can be used in the system. Because this framework is designed to be flexible and adaptable enough to work in many different circumstances, both the tracking and projection system need some calibration and modification. Tracking is a fixed part of the system and therefore the tracking settings are included in the system config. The scene however is a modifiable part which can require its own settings which should be put into a separate file. That file can be specified as the scene config file in the command. 
+The system config file specified here should be the same one that was used specified in the calibration command. During calibration, the settings are written into this file and in the main application the settings are read so they can be used in the system. Because this framework is designed to be flexible and adaptable enough to work in many different circumstances, both the tracking and projection system need some calibration and modification. Tracking is a fixed part of the system and therefore the tracking settings are included in the system config. The scene however is a modifiable part which can require its own settings which should be put into a separate file. That file can be specified as the scene config file in the command.
 
 Similar to the calibration, a run script has been provided to simplify the command:
 ```
