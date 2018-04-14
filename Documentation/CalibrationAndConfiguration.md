@@ -29,3 +29,10 @@ An example of a system configuration file is *test.yml* in the *config* folder.
 Elements in the scene can also vary for every setup. It is also very useful to have all parameters in a scene in one place so it is easily and highly customizable. Therefore, it is recommended to use a scene configuration file. Scene parameters are different for every scene so scene configuration files have to be custom made. It is not mandatory for a scene to use a config file. An example of a system configuration file is *examplesceneconfig.yml* in the *config* folder. More examples can be found in the *config* folders on the [lighttrails branch](https://github.com/Mari3/ICA/tree/lighttrails) or the [pong branch](https://github.com/Mari3/ICA/tree/pong).
 
 ## Debug Mode
+When running the framework, one window, the scene window called *frame*, will always open because this contains the graphics that have to be projected. When debug mode is enabled, 4 other windows will open that provide information on different back-end stages of the application. Below is a list of all windows and what they show.
+
+- **Frame:** The frame window displays the scene that needs to be projected onto the floor. When a projector is attached to your computer, the frame should open on the projector and the other windows on your screen. If this is not the case, change the order settings of the screens or rearrange the windows.
+- **Detected people on projection/camera:** These windows show two stages of the detection process. One window shows the detection of people through movement and the other shows which people have been identified with a location and id.
+- **Eliminate projection camera frame:** This window shows the frame after projection elimination. The projection elimination feature is currently not enabled.
+- **Projector:** This window is a zoomed-in version of the frame with detected people showing only what is inside the boundaries of the projection. 
+
