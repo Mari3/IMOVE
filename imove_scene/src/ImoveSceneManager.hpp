@@ -3,7 +3,6 @@
 
 #include "../../util/src/configuration/ImoveConfiguration.hpp"
 #include "../../util/src/Projection.hpp"
-#include "Scene/LightTrail/Configuration/LightTrailSceneConfiguration.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneConfiguration.h"
 #include "../../scene_interface_sma/src/PeopleQueue.hpp"

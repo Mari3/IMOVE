@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.2.2)
- 
+
 PROJECT(imove)
- 
+
 FIND_PACKAGE(OpenCV REQUIRED )
 INCLUDE_DIRECTORIES( ${OPENCV_INCLUDE_DIR} )
 

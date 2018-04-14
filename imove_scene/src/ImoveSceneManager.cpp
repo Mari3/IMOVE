@@ -5,7 +5,6 @@
 
 #include "../../scene_interface/src/People.h"
 #include "Scene/Example/ExampleScene.h"
-#include "Scene/LightTrail/Repositories/LightsSceneVectorRepositories.h"
 #include "Windows/SceneWindow.hpp"
 
 #include "../../scene_interface_sma/src/SharedMemory.hpp"
