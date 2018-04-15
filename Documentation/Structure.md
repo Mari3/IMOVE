@@ -25,6 +25,7 @@ The project consists of many files and folders. This is a quick overview of what
 - **imove_peopleextractor:** All files for the detection part that extracts people's locations, more information on this part [here](https://github.com/Mari3/ICA/blob/master/Documentation/Detection.md).
 - **imove_scene:** All files for the scene part which is what will be projected, more information about the scene can be found [here](https://github.com/Mari3/ICA/blob/master/Documentation/Scene.md)
 - **modules:** Contains a cmakes file that searches for the SFML library
-- **imove_peopleextractor_interface_sma:** Contains files regarding the interface between the people extractor and the shared memory used to communicate across threads.
+- **peopleextractor_interface_sma:** Contains files regarding the interface between the people extractor and the shared memory used to communicate across threads.
 - **scene_interface_sma:** All files that take care of the communication between the scene and the shared memory.
+- **scene_interface:** Standard classes used by entities such as *Projection*, *PeopleExtractor* and *Scene* to adapt to the scene's specifications. 
 - **util:** Contains some generic classes that can be used as a base in different parts of the system
