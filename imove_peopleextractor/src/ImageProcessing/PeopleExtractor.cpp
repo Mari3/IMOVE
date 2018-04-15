@@ -8,7 +8,7 @@ PeopleExtractor::PeopleExtractor(CameraConfiguration* camConfig) {
   Boundary boundary = camConfig->getProjection().createReorientedTopLeftBoundary();
 
   // Height to which the frame needs to be downsized to speed up processing
-  float resolution_resize_height = 216;
+  float resolution_resize_height = 432;
 
   // Calculate resize ratio
   resize_ratio = frame_size.height/resolution_resize_height;
@@ -35,7 +35,7 @@ PeopleExtractor::~PeopleExtractor() {}
 
 const scene_interface::People PeopleExtractor::extractPeople(cv::Mat& new_frame) {
   // Convert frame to grayscale
-  cvtColor(new_frame, new_frame, CV_RGB2GRAY);
+  //cvtColor(new_frame, new_frame, CV_RGB2GRAY);
   // Downscale frame
   resize(new_frame, new_frame, frame_size_resized);
 
@@ -50,7 +50,7 @@ const scene_interface::People PeopleExtractor::extractPeople(cv::Mat& new_frame)
   // Rescale location of every person based on downscaling
   for (Person& p : people) {
     Vector2 location = p.getLocation();
-    cv::putText(debug_frame, std::to_string(p.getId()), cv::Point(location.x, location.y), cv::FONT_HERSHEY_SIMPLEX, 1, cv::Scalar(0, 0, 255));
+    //cv::putText(debug_frame, std::to_string(p.getId()), cv::Point(location.x, location.y), cv::FONT_HERSHEY_SIMPLEX, 1, cv::Scalar(0, 0, 255));
     p.setLocation(Vector2(location.x*resize_ratio,location.y*resize_ratio));
   }
 
