@@ -17,7 +17,7 @@ int main(int argc, char* argv[]) {
 
 	ImoveConfiguration* calibration = ImoveConfiguration::readFile(argv[CONFIGURATION_CALIBRATION_ARGN]);
 
-	const SceneConfiguration configuration = SceneConfiguration::readFromFile(argv[CONFIGURATION_LIGHTTRAIL_ARGN]);
+	const SceneConfiguration configuration = SceneConfiguration::readFromFile(argv[CONFIGURATION_LIGHTTRAIL_ARGN], calibration);
 
 	ImoveSceneManager manager(calibration, configuration);
 	manager.run();
