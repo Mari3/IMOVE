@@ -1,3 +1,3 @@
 #!/bin/bash
 set -e
-./build/bin/imove ./config/test.yml ./config/examplesceneconfig.yml
+./build/bin/imove ./config/Aula.yml ./config/examplesceneconfig.yml

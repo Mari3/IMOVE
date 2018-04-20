@@ -17,7 +17,7 @@ void CalibrationManager::run() {
 	ProjectioneliminationConfiguration* projectionelimination_configuration = this->calibration->getProjectioneliminationConfiguration();
 	cv::VideoCapture camera_videoreader(camera_configuration->getDeviceid());
 	camera_videoreader.set(cv::CAP_PROP_AUTOFOCUS, 0);
-	
+
 	// setup Calibration windows
 	const cv::Size& resolution_projector = projector_configuration->getResolution();
 	const float width_resolution_projector = resolution_projector.width;
@@ -34,21 +34,21 @@ void CalibrationManager::run() {
 		frame_projector = cv::Mat::zeros(resolution_projector, CV_8UC3);
 		// draw projector image for Calibration
 		projector_window.drawImage(frame_projector);
-		
+
 		// feed Calibration image for delay and brightness Calibration
 		projection.feedFrameProjector(projector_window.getClonedImage());
 		// draw calibrated eliminated camera image
 		eliminateprojection_window.drawImage(frame_camera);
-		
+
 		// draw calibrated eliminated projection image
 		projection_window.drawImage(eliminateprojection_window.getClonedImage());
-		
+
 		// draw Calibration projection image
 		calibrationprojection_window.drawImage(frame_camera.clone());
 		// draw Calibration meter image
 		calibrationmeter_window.drawImage(frame_camera.clone());
 	}
-	
+
 	//safe release camera
 	camera_videoreader.release();
 }
