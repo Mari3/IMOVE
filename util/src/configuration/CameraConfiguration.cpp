@@ -3,6 +3,7 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/core/persistence.hpp>
 #include <assert.h>
+#include <iostream>
 
 #include "../OpenCVUtil.hpp"
 #include "CameraConfiguration.hpp"
