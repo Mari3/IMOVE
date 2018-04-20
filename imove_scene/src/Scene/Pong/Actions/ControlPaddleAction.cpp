@@ -30,21 +30,28 @@ bool ControlPaddleAction::isDone(std::vector<Action*> &followUp){
 void ControlPaddleAction::execute(float dt) {
 	float newY = person->location.y;
 	float prev_target = paddle->y_target;
-	// if (std::abs(newY - paddle->y) > 200) {
-	// 	if (newY > 0 && newY < config.screenHeight) {
-	// 			paddle->y_target = newY - 80;
-	// 			paddle->y = newY - 80;
-	// 	}
-	// } else
-	if (std::abs(newY - paddle->y_target - 80) > 40.0) {
-		//std::cout << "Diff = " << std::abs(newY - paddle->y_target) << " > 40" << std::endl;
-		if (newY > 0 && newY < config.screenHeight) {
-				//std::cout << "prev: " << paddle->prev_target << std::endl;
-				paddle->prev_target = prev_target;
-				paddle->y_target = newY - 80;
-				//std::cout << "curr: " << paddle->y_target << std::endl;
+	if (newY - paddle->y_target - 80 > 0) {
+		if (newY - paddle->y_target - 80 > 40.0) {
+			//std::cout << "Diff = " << std::abs(newY - paddle->y_target) << " > 40" << std::endl;
+			if (newY > 0 && newY < config.screenHeight) {
+					//std::cout << "prev: " << paddle->prev_target << std::endl;
+					paddle->prev_target = prev_target;
+					paddle->y_target = newY - 80;
+					//std::cout << "curr: " << paddle->y_target << std::endl;
+			}
+		}
+	} else {
+		if (newY - paddle->y_target - 80 < -40.0) {
+			//std::cout << "Diff = " << std::abs(newY - paddle->y_target) << " > 40" << std::endl;
+			if (newY > 0 && newY < config.screenHeight) {
+					//std::cout << "prev: " << paddle->prev_target << std::endl;
+					paddle->prev_target = prev_target;
+					paddle->y_target = newY - 80;
+					//std::cout << "curr: " << paddle->y_target << std::endl;
+			}
 		}
 	}
+
 	if (paddle->prev_target - paddle->y_target > 0) {
 		//std::cout << "prev y: " << paddle->y << std::endl;
 		if (paddle->y >= paddle->y_target) {
