@@ -30,6 +30,10 @@ void CalibrationManager::run() {
 	cv::Mat frame_projector;
 	// while camera frame can be read and while no key pressed
 	while (cv::waitKey(1) == OpenCVUtil::NOKEY_ANYKEY && camera_videoreader.read(frame_camera)) {
+		cv::Rect crop(240, 1, 1435, 1075);
+		cv::Mat frame_cropped = frame_camera(crop);
+		cv::Mat frame_resized;
+		cv::resize(frame_cropped, frame_resized, cv::Size(640, 480));
 		// initialize a black projector frame
 		frame_projector = cv::Mat::zeros(resolution_projector, CV_8UC3);
 		// draw projector image for Calibration
@@ -38,15 +42,15 @@ void CalibrationManager::run() {
 		// feed Calibration image for delay and brightness Calibration
 		projection.feedFrameProjector(projector_window.getClonedImage());
 		// draw calibrated eliminated camera image
-		eliminateprojection_window.drawImage(frame_camera);
+		eliminateprojection_window.drawImage(frame_resized);
 
 		// draw calibrated eliminated projection image
 		projection_window.drawImage(eliminateprojection_window.getClonedImage());
 
 		// draw Calibration projection image
-		calibrationprojection_window.drawImage(frame_camera.clone());
+		calibrationprojection_window.drawImage(frame_resized.clone());
 		// draw Calibration meter image
-		calibrationmeter_window.drawImage(frame_camera.clone());
+		calibrationmeter_window.drawImage(frame_resized.clone());
 	}
 
 	//safe release camera

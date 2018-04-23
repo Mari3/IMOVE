@@ -72,17 +72,22 @@ void ImovePeopleextractorManager::run() {
 	scene_interface::People people_camera;
 	// while no key pressed
 	while (video_capture.read(frame_camera) && this->running->running) {
+		cv::Rect crop(240, 1, 1435, 1075);
+		cv::Mat frame_cropped = frame_camera(crop);
+		cv::Mat frame_resized;
+		cv::resize(frame_cropped, frame_resized, cv::Size(640, 480));
 		// debug projection frame
 		this->projection.createFrameProjectionFromFrameCamera(
 			frame_projection,
-			frame_camera
+			//frame_camera
+			frame_resized
 		);
 
 		// delay for syncing processing projection elimination
 		for (unsigned int i = 0; i < iterations_delay_peopleextracting; ++i) {}
 		// eliminate projection from camera frame
 		cv::Mat frame_eliminatedprojection;
-		this->projection.eliminateProjectionFeedbackFromFrameCamera(frame_eliminatedprojection, frame_camera);
+		this->projection.eliminateProjectionFeedbackFromFrameCamera(frame_eliminatedprojection, frame_resized);
 		if (this->calibration->getDebugMode()) {
 			eliminatedprojection_camera_window->drawImage(frame_eliminatedprojection);
 		}
@@ -96,7 +101,7 @@ void ImovePeopleextractorManager::run() {
 
 		if (this->calibration->getDebugMode()) {
 			// draw detected people camera image
-			detectedpeople_camera_window->drawImage(frame_camera, people_camera);
+			detectedpeople_camera_window->drawImage(frame_resized, people_camera);
 		}
 
 		// change extrated people to projector location from camera location
