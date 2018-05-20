@@ -35,7 +35,7 @@ class PeopleExtractor {
   cv::Mat debug_frame;
 
   // Size of the frame after resizing
-  cv::Size frame_size_resized;
+  cv::Size frame_size;
 
   // Convert objects from the People class to the scene interface People class
   const scene_interface::People convert(std::vector<Person>& people);

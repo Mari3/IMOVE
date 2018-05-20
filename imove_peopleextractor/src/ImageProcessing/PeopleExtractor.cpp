@@ -3,29 +3,24 @@
 // PeopleExtractor::PeopleExtractor(const cv::Size& frame_size, float pixels_per_meter, float resolution_resize_height, const Boundary& boundary) {
 PeopleExtractor::PeopleExtractor(CameraConfiguration* camConfig) {
   // Get values from camera configuration
-  cv::Size frame_size = camConfig->getResolution();
+  frame_size = camConfig->getResolution();
   float pixels_per_meter = camConfig->getMeter();
   Boundary boundary = camConfig->getProjection().createReorientedTopLeftBoundary();
 
-  // Height to which the frame needs to be downsized to speed up processing
-  float resolution_resize_height = 432;
-
   // Calculate resize ratio
-  resize_ratio = frame_size.height/resolution_resize_height;
+  resize_ratio = 1;
 
   // Initialize empty frame
-  frame = cv::Mat::zeros(resolution_resize_height, frame_size.width/resize_ratio, CV_8UC1);
-  // Calculate frame size after resizing
-  frame_size_resized = cv::Size(frame_size.width/resize_ratio, resolution_resize_height);
+  frame = cv::Mat::zeros(frame_size.height, frame_size.width, CV_8UC1);
 
   // Initialize Detector
-  detector = PeopleDetector(pixels_per_meter/resize_ratio, camConfig->getMinBlobArea(), camConfig->getMinBlobDistance());
+  detector = PeopleDetector(pixels_per_meter, camConfig->getMinBlobArea(), camConfig->getMinBlobDistance());
 
   // Initialize projector boundary
-  Boundary proj_bound = Boundary(Vector2(boundary.getUpperLeft().x/resize_ratio, boundary.getUpperLeft().y/resize_ratio),
-                            Vector2(boundary.getUpperRight().x/resize_ratio, boundary.getUpperRight().y/resize_ratio),
-                            Vector2(boundary.getLowerLeft().x/resize_ratio, boundary.getLowerLeft().y/resize_ratio),
-                            Vector2(boundary.getLowerRight().x/resize_ratio, boundary.getLowerRight().y/resize_ratio));
+  Boundary proj_bound = Boundary(Vector2(boundary.getUpperLeft().x, boundary.getUpperLeft().y),
+                            Vector2(boundary.getUpperRight().x, boundary.getUpperRight().y),
+                            Vector2(boundary.getLowerLeft().x, boundary.getLowerLeft().y),
+                            Vector2(boundary.getLowerRight().x, boundary.getLowerRight().y));
 
   // Initialize Identifier
   identifier = PeopleIdentifier(proj_bound);
@@ -37,7 +32,7 @@ const scene_interface::People PeopleExtractor::extractPeople(cv::Mat& new_frame)
   // Convert frame to grayscale
   //cvtColor(new_frame, new_frame, CV_RGB2GRAY);
   // Downscale frame
-  resize(new_frame, new_frame, frame_size_resized);
+  resize(new_frame, new_frame, frame_size);
 
   // Start working with new frame
   frame = new_frame;
