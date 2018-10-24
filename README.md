@@ -2,6 +2,8 @@
 
 This Repository contains the source code and documentation of the IMOVE project. This project is a framework that combines image processing, calibration techniques and computer graphics to create an interactive experience for the user, using a projector and a camera.
 
+License: MIT
+
 ## Building the project
 The project is built using CMake with gcc/g++. The easiest way to build it is to run the build script from terminal (./build.sh from repository root).
 
