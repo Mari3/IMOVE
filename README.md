@@ -4,17 +4,19 @@ This Repository contains the source code and documentation of the IMOVE project.
 
 License: MIT
 
+Project trailer: https://surfdrive.surf.nl/files/index.php/s/6vKv83chKxZsPUh
+
 ## Building the project
 The project is built using CMake with gcc/g++. The easiest way to build it is to run the build script from terminal (./build.sh from repository root).
 
 ### Dependencies
 To build this project you will need to have 3 libraries installed on your system: OpenCV 3.4.1, SFML 2.4.2, boost 1.66.0. The project should be able to find the libraries automatically.
 
-## Applications
-The following applications are built:
+## Components
+The following components are built:
 
 ### calibration
-This is a separate application used to calibrate the program to configure certain setup-specific variables, such as the location of the projection in the camera view.
+This is a separate component used to calibrate the program to configure certain setup-specific variables, such as the location of the projection in the camera view.
 
 From cli (run from repository root):
 ```
@@ -26,7 +28,7 @@ $ ./calibrate.sh
 ```
 
 ### imove
-This is the main application. It processes the camera input and turns it into the graphics that are to be projected by the projector. When running imove, it automatically splits itself up in two other applications, imove_peopleextractor which handles detection and imove_scene which handles the graphics being projected.
+This is the main component. It processes the camera input and turns it into the graphics that are to be projected by the projector. When running imove, it automatically splits itself into two components that run separately, imove_peopleextractor which handles detection and imove_scene which handles the graphics being projected.
 
 From cli (run from repository root):
 ```
