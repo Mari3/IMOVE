@@ -57,3 +57,7 @@ The people extractor and scene each run on their own threads which means that an
 
 ###### Scene
 The scene generates graphics based on the received locations which is what gets projected for the users to see and what they can interact with.
+
+## Applications
+There are 3 applications in this repository that were built with the IMOVE framework: the light trails application, which can be found in the lighttrails branch, the pong application in the pong branch and a simple example scene in the main branch. Another application can be found in this repository:
+https://github.com/maximliefaard/SaveTheTurtles
